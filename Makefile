@@ -3,7 +3,8 @@ CXXFLAGS=-Wall -Werror -Wextra
 
 EXEC=mhwibs
 SRCDIR=src
-OBJECTS=$(SRCDIR)/mhwi_build_search.o
+OBJECTS=$(SRCDIR)/mhwi_build_search.o \
+		$(SRCDIR)/database_weapons.o
 
 .PHONY : all
 all :
