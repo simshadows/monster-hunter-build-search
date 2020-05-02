@@ -1,0 +1,1478 @@
+{
+    "skills": {
+        "ADRENALINE": {
+                "name": "Adrenaline",
+                "limit": 1,
+
+                "tooltip": "((TODO))"
+        },
+        "AFFINITY_SLIDING": {
+                "name": "Affinity Sliding",
+                "limit": 1,
+
+                "tooltip": "((TODO))"
+        },
+        "AGITATOR": {
+                "name": "Agitator",
+                "limit": 5,
+
+                "extended_limit": 7,
+                "states": ["not enraged", "enraged"],
+
+                "tooltip": "((TODO))"
+        },
+        "AGITATOR_SECRET": {
+                "name": "Agitator Secret",
+                "limit": 1,
+
+                "tooltip": "((TODO))"
+        },
+        "AIRBORNE": {
+                "name": "Airborne",
+                "limit": 1,
+
+                "tooltip": "((TODO))"
+        },
+        "AQUATIC_POLAR_MOBILITY": {
+                "name": "Aquatic/Polar Mobility",
+                "limit": 3,
+
+                "tooltip": "((TODO))"
+        },
+        "ARTILLERY": {
+                "name": "Artillery",
+                "limit": 3,
+
+                "extended_limit": 5,
+
+                "tooltip": "((TODO))"
+        },
+        "ARTILLERY_SECRET": {
+                "name": "Artillery Secret",
+                "limit": 1,
+
+                "tooltip": "((TODO))"
+        },
+        "ATTACK_BOOST": {
+                "name": "Attack Boost",
+                "limit": 7,
+
+                "tooltip": "((TODO))"
+        },
+        "BBQ_MASTER": {
+                "name": "BBQ Master",
+                "limit": 1,
+
+                "tooltip": "((TODO))"
+        },
+        "BLAST_ATTACK": {
+                "name": "Blast Attack",
+                "limit": 4,
+
+                "tooltip": "((TODO))"
+        },
+        "BLAST_FUNCTIONALITY": {
+                "name": "Blast Functionality",
+                "limit": 1,
+
+                "tooltip": "((TODO))"
+        },
+        "BLAST_RESISTANCE": {
+                "name": "Blast Resistance",
+                "limit": 3,
+
+                "tooltip": "((TODO))"
+        },
+        "BLEEDING_RESISTANCE": {
+                "name": "Bleeding Resistance",
+                "limit": 3,
+
+                "tooltip": "((TODO))"
+        },
+        "BLIGHT_RESISTANCE": {
+                "name": "Blight Resistance",
+                "limit": 3,
+
+                "tooltip": "((TODO))"
+        },
+        "BLINDSIDER": {
+                "name": "Blindsider",
+                "limit": 1,
+
+                "tooltip": "((TODO))"
+        },
+        "BLUDGEONER": {
+                "name": "Bludgeoner",
+                "limit": 1,
+
+                "tooltip": "((TODO))"
+        },
+        "BOMBARDIER": {
+                "name": "Bombardier",
+                "limit": 3,
+
+                "extended_limit": 5,
+
+                "tooltip": "((TODO))"
+        },
+        "BOMBARDIER_SECRET": {
+                "name": "Bombardier Secret",
+                "limit": 1,
+
+                "tooltip": "((TODO))"
+        },
+        "BOTANIST": {
+                "name": "Botanist",
+                "limit": 4,
+
+                "tooltip": "((TODO))"
+        },
+        "BOW_CHARGE_PLUS": {
+                "name": "Bow Charge Plus",
+                "limit": 1,
+
+                "tooltip": "((TODO))"
+        },
+        "CAPACITY_BOOST": {
+                "name": "Capacity Boost",
+                "limit": 1,
+
+                "tooltip": "((TODO))"
+        },
+        "CAPTURE_MASTER": {
+                "name": "Capture Master",
+                "limit": 1,
+
+                "tooltip": "((TODO))"
+        },
+        "CARVING_MASTER": {
+                "name": "Carving Master",
+                "limit": 1,
+
+                "tooltip": "((TODO))"
+        },
+        "CARVING_PRO": {
+                "name": "Carving Pro",
+                "limit": 1,
+
+                "tooltip": "((TODO))"
+        },
+        "CLIFFHANGER": {
+                "name": "Cliffhanger",
+                "limit": 1,
+
+                "tooltip": "((TODO))"
+        },
+        "COALESCENCE": {
+                "name": "Coalescence",
+                "limit": 3,
+
+                "tooltip": "((TODO))"
+        },
+        "COLDPROOF": {
+                "name": "Coldproof",
+                "limit": 1,
+
+                "tooltip": "((TODO))"
+        },
+        "CONSTITUTION": {
+                "name": "Constitution",
+                "limit": 5,
+
+                "tooltip": "((TODO))"
+        },
+        "CRITICAL_BOOST": {
+                "name": "Critical Boost",
+                "limit": 3,
+
+                "tooltip": "((TODO))"
+        },
+        "CRITICAL_DRAW": {
+                "name": "Critical Draw",
+                "limit": 3,
+
+                "tooltip": "((TODO))"
+        },
+        "CRITICAL_ELEMENT": {
+                "name": "Critical Element",
+                "limit": 1,
+
+                "tooltip": "((TODO))"
+        },
+        "CRITICAL_EYE": {
+                "name": "Critical Eye",
+                "limit": 7,
+
+                "tooltip": "((TODO))"
+        },
+        "CRITICAL_STATUS": {
+                "name": "Critical Status",
+                "limit": 1,
+
+                "tooltip": "((TODO))"
+        },
+        "DEFENSE_BOOST": {
+                "name": "Defense Boost",
+                "limit": 7,
+
+                "tooltip": "((TODO))"
+        },
+        "DETECTOR": {
+                "name": "Detector",
+                "limit": 1,
+
+                "tooltip": "((TODO))"
+        },
+        "DIVINE_BLESSING": {
+                "name": "Divine Blessing",
+                "limit": 3,
+
+                "extended_limit": 5,
+
+                "tooltip": "((TODO))"
+        },
+        "DIVINE_BLESSING_SECRET": {
+                "name": "Divine Blessing Secret",
+                "limit": 1,
+
+                "tooltip": "((TODO))"
+        },
+        "DRAGON_ATTACK": {
+                "name": "Dragon Attack",
+                "limit": 6,
+
+                "tooltip": "((TODO))"
+        },
+        "DRAGON_RESISTANCE": {
+                "name": "Dragon Resistance",
+                "limit": 3,
+
+                "tooltip": "((TODO))"
+        },
+        "DRAGONVEIN_AWAKENING": {
+                "name": "Dragonvein Awakening",
+                "limit": 1,
+
+                "states": ["weapon sheathed", "weapon drawn"],
+                "zeroth_state_can_be_blank": true,
+
+                "tooltip": "Elem., abnormal status, & affinity up with weapon drawn. Take damage when attacking, but can be recovered by continually attacking."
+        },
+        "DUNGMASTER": {
+                "name": "Dungmaster",
+                "limit": 1,
+
+                "tooltip": "((TODO))"
+        },
+        "EARPLUGS": {
+                "name": "Earplugs",
+                "limit": 5,
+
+                "tooltip": "((TODO))"
+        },
+        "EFFLUVIA_RESISTANCE": {
+                "name": "Effluvia Resistance",
+                "limit": 3,
+
+                "tooltip": "((TODO))"
+        },
+        "EFFLUVIAL_EXPERT": {
+                "name": "Effluvial Expert",
+                "limit": 1,
+
+                "tooltip": "((TODO))"
+        },
+        "ELDERSEAL_BOOST": {
+                "name": "Elderseal Boost",
+                "limit": 1,
+
+                "tooltip": "((TODO))"
+        },
+        "ELEMENT_ACCELERATION": {
+                "name": "Element Acceleration",
+                "limit": 1,
+
+                "tooltip": "((TODO))"
+        },
+        "ELEMENTAL_AIRBORNE": {
+                "name": "Elemental Airborne",
+                "limit": 1,
+
+                "tooltip": "Elemental damage increased for jumping attacks."
+        },
+        "ENTOMOLOGIST": {
+                "name": "Entomologist",
+                "limit": 3,
+
+                "tooltip": "((TODO))"
+        },
+        "EVADE_EXTENDER": {
+                "name": "Evade Extender",
+                "limit": 3,
+
+                "tooltip": "((TODO))"
+        },
+        "EVADE_WINDOW": {
+                "name": "Evade Window",
+                "limit": 5,
+
+                "tooltip": "((TODO))"
+        },
+        "FIRE_ATTACK": {
+                "name": "Fire Attack",
+                "limit": 6,
+
+                "tooltip": "((TODO))"
+        },
+        "FIRE_RESISTANCE": {
+                "name": "Fire Resistance",
+                "limit": 3,
+
+                "tooltip": "((TODO))"
+        },
+        "FLINCH_FREE": {
+                "name": "Flinch Free",
+                "limit": 3,
+
+                "tooltip": "((TODO))"
+        },
+        "FOCUS": {
+                "name": "Focus",
+                "limit": 3,
+
+                "tooltip": "((TODO))"
+        },
+        "FORAGERS_LUCK": {
+                "name": "Forager's Luck",
+                "limit": 1,
+
+                "tooltip": "((TODO))"
+        },
+        "FORTIFY": {
+                "name": "Fortify",
+                "limit": 1,
+
+                "tooltip": "((TODO))"
+        },
+        "FREE_ELEM_AMMO_UP": {
+                "name": "Free Elem/Ammo Up",
+                "limit": 3,
+
+                "tooltip": "((TODO))"
+        },
+        "FREE_MEAL": {
+                "name": "Free Meal",
+                "limit": 1,
+
+                "extended_limit": 3,
+
+                "tooltip": "((TODO))"
+        },
+        "FREE_MEAL_SECRET": {
+                "name": "Free Meal Secret",
+                "limit": 1,
+
+                "tooltip": "((TODO))"
+        },
+        "FROSTCRAFT": {
+                "name": "Frostcraft",
+                "limit": 1,
+
+                "tooltip": "((TODO))"
+        },
+        "FULL_BLOOM_GRATITUDE": {
+                "name": "Full Bloom's Gratitude",
+                "limit": 1,
+
+                "tooltip": "((TODO))"
+        },
+        "FULL_BLOOMS_GIFT": {
+                "name": "Full Bloom's Gift",
+                "limit": 1,
+
+                "tooltip": "((TODO))"
+        },
+        "GAIAS_VEIL": {
+                "name": "Gaia's Veil",
+                "limit": 1,
+
+                "tooltip": "((TODO))"
+        },
+        "GEOLOGIST": {
+                "name": "Geologist",
+                "limit": 3,
+
+                "tooltip": "((TODO))"
+        },
+        "GOOD_LUCK": {
+                "name": "Good Luck",
+                "limit": 1,
+
+                "tooltip": "((TODO))"
+        },
+        "GRATITUDES_BLESSING": {
+                "name": "Gratitude's Blessing",
+                "limit": 1,
+
+                "tooltip": "((TODO))"
+        },
+        "GRATITUDES_GIFT": {
+                "name": "Gratitude's Gift",
+                "limit": 1,
+
+                "tooltip": "((TODO))"
+        },
+        "GREAT_LUCK": {
+                "name": "Great Luck",
+                "limit": 1,
+
+                "tooltip": "((TODO))"
+        },
+        "GUARD": {
+                "name": "Guard",
+                "limit": 5,
+
+                "tooltip": "((TODO))"
+        },
+        "GUARD_UP": {
+                "name": "Guard Up",
+                "limit": 1,
+
+                "tooltip": "((TODO))"
+        },
+        "GUTS": {
+                "name": "Guts",
+                "limit": 1,
+
+                "tooltip": "((TODO))"
+        },
+        "HANDICRAFT": {
+                "name": "Handicraft",
+                "limit": 5,
+
+                "tooltip": "((TODO))"
+        },
+        "HASTEN_RECOVERY": {
+                "name": "Hasten Recovery",
+                "limit": 1,
+
+                "tooltip": "((TODO))"
+        },
+        "HEALTH_BOOST": {
+                "name": "Health Boost",
+                "limit": 3,
+
+                "tooltip": "((TODO))"
+        },
+        "HEAT_GUARD": {
+                "name": "Heat Guard",
+                "limit": 1,
+
+                "tooltip": "((TODO))"
+        },
+        "HEAVY_ARTILLERY": {
+                "name": "Heavy Artillery",
+                "limit": 2,
+
+                "tooltip": "((TODO))"
+        },
+        "HEROICS": {
+                "name": "Heroics",
+                "limit": 5,
+
+                "tooltip": "((TODO))"
+        },
+        "HEROICS_SECRET": {
+                "name": "Heroics Secret",
+                "limit": 7,
+
+                "tooltip": "((TODO))"
+        },
+        "HONEY_HUNTER": {
+                "name": "Honey Hunter",
+                "limit": 1,
+
+                "tooltip": "((TODO))"
+        },
+        "HORN_MAESTRO": {
+                "name": "Horn Maestro",
+                "limit": 2,
+
+                "tooltip": "((TODO))"
+        },
+        "HUNGER_RESISTANCE": {
+                "name": "Hunger Resistance",
+                "limit": 3,
+
+                "tooltip": "((TODO))"
+        },
+        "ICE_ATTACK": {
+                "name": "Ice Attack",
+                "limit": 6,
+
+                "tooltip": "((TODO))"
+        },
+        "ICE_RESISTANCE": {
+                "name": "Ice Resistance",
+                "limit": 3,
+
+                "tooltip": "((TODO))"
+        },
+        "INTIMIDATOR": {
+                "name": "Intimidator",
+                "limit": 3,
+
+                "tooltip": "((TODO))"
+        },
+        "IRON_SKIN": {
+                "name": "Iron Skin",
+                "limit": 3,
+
+                "tooltip": "((TODO))"
+        },
+        "ITEM_PROLONGER": {
+                "name": "Item Prolonger",
+                "limit": 3,
+
+                "tooltip": "((TODO))"
+        },
+        "JOYS_GIFT": {
+                "name": "Joy's Gift",
+                "limit": 1,
+
+                "tooltip": "((TODO))"
+        },
+        "JOYS_GRATITUDE": {
+                "name": "Joy's Gratitude",
+                "limit": 1,
+
+                "tooltip": "((TODO))"
+        },
+        "JUMP_MASTER": {
+                "name": "Jump Master",
+                "limit": 1,
+
+                "tooltip": "((TODO))"
+        },
+        "LATENT_POWER": {
+                "name": "Latent Power",
+                "limit": 5,
+
+                "extended_limit": 7,
+
+                "tooltip": "((TODO))"
+        },
+        "LATENT_POWER_SECRET": {
+                "name": "Latent Power Secret",
+                "limit": 1,
+
+                "tooltip": "((TODO))"
+        },
+        "LEAP_OF_FAITH": {
+                "name": "Leap of Faith",
+                "limit": 1,
+
+                "tooltip": "((TODO))"
+        },
+        "MARATHON_RUNNER": {
+                "name": "Marathon Runner",
+                "limit": 3,
+
+                "tooltip": "((TODO))"
+        },
+        "MASTER_FISHER": {
+                "name": "Master Fisher",
+                "limit": 1,
+
+                "tooltip": "((TODO))"
+        },
+        "MASTER_GATHERER": {
+                "name": "Master Gatherer",
+                "limit": 1,
+
+                "tooltip": "((TODO))"
+        },
+        "MASTER_MOUNTER": {
+                "name": "Master Mounter",
+                "limit": 1,
+
+                "tooltip": "((TODO))"
+        },
+        "MASTERS_TOUCH": {
+                "name": "Master's Touch",
+                "limit": 1,
+
+                "tooltip": "Prevents your weapon from losing sharpness during critical hits."
+        },
+        "MAXIMUM_MIGHT": {
+                "name": "Maximum Might",
+                "limit": 3,
+
+                "extended_limit": 5,
+
+                "tooltip": "((TODO))"
+        },
+        "MAXIMUM_MIGHT_SECRET": {
+                "name": "Maximum Might Secret",
+                "limit": 1,
+
+                "tooltip": "((TODO))"
+        },
+        "MINDS_EYE_BALLISTICS": {
+                "name": "Mind's Eye/Ballistics",
+                "limit": 1,
+
+                "tooltip": "((TODO))"
+        },
+        "MUCK_RESISTANCE": {
+                "name": "Muck Resistance",
+                "limit": 1,
+
+                "tooltip": "((TODO))"
+        },
+        "MUSHROOMANCER": {
+                "name": "Mushroomancer",
+                "limit": 3,
+
+                "tooltip": "((TODO))"
+        },
+        "NON_ELEMENTAL_BOOST": {
+                "name": "Non-elemental Boost",
+                "limit": 1,
+
+                "tooltip": "((TODO))"
+        },
+        "NORMAL_SHOTS": {
+                "name": "Normal Shots",
+                "limit": 1,
+
+                "tooltip": "((TODO))"
+        },
+        "NULLIFY_WIND_PRESSURE": {
+                "name": "Nullify Wind Pressure",
+                "limit": 1,
+
+                "tooltip": "((TODO))"
+        },
+        "OFFENSIVE_GUARD": {
+                "name": "Offensive Guard",
+                "limit": 3,
+
+                "tooltip": "((TODO))"
+        },
+        "PALICO_RALLY": {
+                "name": "Palico Rally",
+                "limit": 5,
+
+                "tooltip": "((TODO))"
+        },
+        "PARALYSIS_ATTACK": {
+                "name": "Paralysis Attack",
+                "limit": 4,
+
+                "tooltip": "((TODO))"
+        },
+        "PARALYSIS_FUNCTIONALITY": {
+                "name": "Para Functionality",
+                "limit": 1,
+
+                "tooltip": "((TODO))"
+        },
+        "PARALYSIS_RESISTANCE": {
+                "name": "Paralysis Resistance",
+                "limit": 3,
+
+                "tooltip": "((TODO))"
+        },
+        "PARTBREAKER": {
+                "name": "Partbreaker",
+                "limit": 3,
+
+                "tooltip": "((TODO))"
+        },
+        "PEAK_PERFORMANCE": {
+                "name": "Peak Performance",
+                "limit": 3,
+
+                "states": ["not full health", "full health"],
+
+                "tooltip": "((TODO))"
+        },
+        "PIERCING_SHOTS": {
+                "name": "Piercing Shots",
+                "limit": 1,
+
+                "tooltip": "((TODO))"
+        },
+        "POISON_ATTACK": {
+                "name": "Poison Attack",
+                "limit": 4,
+
+                "tooltip": "((TODO))"
+        },
+        "POISON_DURATION_UP": {
+                "name": "Poison Duration Up",
+                "limit": 1,
+
+                "tooltip": "((TODO))"
+        },
+        "POISON_FUNCTIONALITY": {
+                "name": "Poison Functionality",
+                "limit": 1,
+
+                "tooltip": "((TODO))"
+        },
+        "POISON_RESISTANCE": {
+                "name": "Poison Resistance",
+                "limit": 3,
+
+                "tooltip": "((TODO))"
+        },
+        "POWER_PROLONGER": {
+                "name": "Power Prolonger",
+                "limit": 3,
+
+                "tooltip": "((TODO))"
+        },
+        "PRO_TRANSPORTER": {
+                "name": "Pro Transporter",
+                "limit": 1,
+
+                "tooltip": "((TODO))"
+        },
+        "PROTECTIVE_POLISH": {
+                "name": "Protective Polish",
+                "limit": 1,
+
+                "tooltip": "((TODO))"
+        },
+        "PROVOKER": {
+                "name": "Provoker",
+                "limit": 1,
+
+                "tooltip": "((TODO))"
+        },
+        "PUNISHING_DRAW": {
+                "name": "Punishing Draw",
+                "limit": 1,
+
+                "tooltip": "((TODO))"
+        },
+        "QUICK_SHEATH": {
+                "name": "Quick Sheath",
+                "limit": 3,
+
+                "tooltip": "((TODO))"
+        },
+        "RAZOR_SHARP_SPARE_SHOT": {
+                "name": "Razor Sharp/Spare Shot",
+                "limit": 1,
+
+                "tooltip": "((TODO))"
+        },
+        "RECOVERY_SPEED": {
+                "name": "Recovery Speed",
+                "limit": 3,
+
+                "tooltip": "((TODO))"
+        },
+        "RECOVERY_UP": {
+                "name": "Recovery Up",
+                "limit": 3,
+
+                "tooltip": "((TODO))"
+        },
+        "RESENTMENT": {
+                "name": "Resentment",
+                "limit": 5,
+
+                "states": ["no recoverable health", "with recoverable health"],
+
+                "tooltip": "((TODO))"
+        },
+        "RESUSCITATE": {
+                "name": "Resuscitate",
+                "limit": 1,
+
+                "tooltip": "((TODO))"
+        },
+        "SAFE_LANDING": {
+                "name": "Safe Landing",
+                "limit": 1,
+
+                "tooltip": "((TODO))"
+        },
+        "SCENTHOUND": {
+                "name": "Scenthound",
+                "limit": 1,
+
+                "tooltip": "((TODO))"
+        },
+        "SCHOLAR": {
+                "name": "Scholar",
+                "limit": 1,
+
+                "tooltip": "((TODO))"
+        },
+        "SCOUTFLY_RANGE_UP": {
+                "name": "Scoutfly Range Up",
+                "limit": 1,
+
+                "tooltip": "((TODO))"
+        },
+        "SLEEP_ATTACK": {
+                "name": "Sleep Attack",
+                "limit": 4,
+
+                "tooltip": "((TODO))"
+        },
+        "SLEEP_FUNCTIONALITY": {
+                "name": "Sleep Functionality",
+                "limit": 1,
+
+                "tooltip": "((TODO))"
+        },
+        "SLEEP_RESISTANCE": {
+                "name": "Sleep Resistance",
+                "limit": 3,
+
+                "tooltip": "((TODO))"
+        },
+        "SLINGER_AMMO_SECRET": {
+                "name": "Slinger Ammo Secret",
+                "limit": 1,
+
+                "tooltip": "Raises the maximum level of the Slinger Capacity skill."
+        },
+        "SLINGER_CAPACITY": {
+                "name": "Slinger Capacity",
+                "limit": 3,
+
+                "extended_limit": 5,
+
+                "tooltip": "((TODO))"
+        },
+        "SLUGGER": {
+                "name": "Slugger",
+                "limit": 3,
+
+                "extended_limit": 5,
+
+                "tooltip": "((TODO))"
+        },
+        "SLUGGER_SECRET": {
+                "name": "Slugger Secret",
+                "limit": 1,
+
+                "tooltip": "((TODO))"
+        },
+        "SPECIAL_AMMO_BOOST": {
+                "name": "Special Ammo Boost",
+                "limit": 2,
+
+                "tooltip": "((TODO))"
+        },
+        "SPEED_CRAWLER": {
+                "name": "Speed Crawler",
+                "limit": 1,
+
+                "tooltip": "((TODO))"
+        },
+        "SPEED_EATING": {
+                "name": "Speed Eating",
+                "limit": 3,
+
+                "tooltip": "((TODO))"
+        },
+        "SPEED_SHARPENING": {
+                "name": "Speed Sharpening",
+                "limit": 3,
+
+                "tooltip": "((TODO))"
+        },
+        "SPREAD_POWER_SHOTS": {
+                "name": "Spread/Power Shots",
+                "limit": 1,
+
+                "tooltip": "((TODO))"
+        },
+        "STAMINA_CAP_UP": {
+                "name": "Stamina Cap Up",
+                "limit": 1,
+
+                "tooltip": "((TODO))"
+        },
+        "STAMINA_SURGE": {
+                "name": "Stamina Surge",
+                "limit": 3,
+
+                "tooltip": "((TODO))"
+        },
+        "STAMINA_THIEF": {
+                "name": "Stamina Thief",
+                "limit": 3,
+
+                "extended_limit": 5,
+
+                "tooltip": "((TODO))"
+        },
+        "STAMINA_THIEF_SECRET": {
+                "name": "Stamina Thief Secret",
+                "limit": 1,
+
+                "tooltip": "((TODO))"
+        },
+        "STEALTH": {
+                "name": "Stealth",
+                "limit": 3,
+
+                "tooltip": "((TODO))"
+        },
+        "STUN_RESISTANCE": {
+                "name": "Stun Resistance",
+                "limit": 3,
+
+                "tooltip": "((TODO))"
+        },
+        "SUPER_RECOVERY": {
+                "name": "Super Recovery",
+                "limit": 1,
+
+                "tooltip": "((TODO))"
+        },
+        "SURVIVAL_EXPERT": {
+                "name": "Survival Expert",
+                "limit": 3,
+
+                "tooltip": "((TODO))",
+
+                "previous_name": "Sporepuff Expert"
+        },
+        "THUNDER_ATTACK": {
+                "name": "Thunder Attack",
+                "limit": 6,
+
+                "tooltip": "((TODO))"
+        },
+        "THUNDER_RESISTANCE": {
+                "name": "Thunder Resistance",
+                "limit": 3,
+
+                "tooltip": "((TODO))"
+        },
+        "TOOL_SPECIALIST": {
+                "name": "Tool Specialist",
+                "limit": 3,
+
+                "extended_limit": 5,
+
+                "tooltip": "((TODO))"
+        },
+        "TOOL_SPECIALIST_SECRET": {
+                "name": "Tool Specialist Secret",
+                "limit": 1,
+
+                "tooltip": "((TODO))"
+        },
+        "TREMOR_RESISTANCE": {
+                "name": "Tremor Resistance",
+                "limit": 3,
+
+                "tooltip": "((TODO))"
+        },
+        "TRUE_CRITICAL_ELEMENT": {
+                "name": "True Critical Element",
+                "limit": 1,
+
+                "tooltip": "((TODO))"
+        },
+        "TRUE_CRITICAL_STATUS": {
+                "name": "True Critical Status",
+                "limit": 1,
+
+                "tooltip": "((TODO))"
+        },
+        "TRUE_DRAGONVEIN_AWAKENING": {
+                "name": "True Dragonvein Awakening",
+                "limit": 1,
+
+                "states": ["weapon sheathed", "weapon drawn"],
+                "zeroth_state_can_be_blank": true,
+
+                "tooltip": "Enhances attacks even more with weapon drawn. Take damage when attacking, but can be recovered by continually attacking."
+        },
+        "TRUE_ELEMENT_ACCELERATION": {
+                "name": "True Element Acceleration",
+                "limit": 1,
+
+                "tooltip": "((TODO))"
+        },
+        "TRUE_GAIAS_VEIL": {
+                "name": "True Gaia's Veil",
+                "limit": 1,
+
+                "tooltip": "((TODO))"
+        },
+        "TRUE_RAZOR_SHARP_SPARE_SHOT": {
+                "name": "True Razor Sharp/Spare Shot",
+                "limit": 1,
+
+                "tooltip": "((TODO))"
+        },
+        "WATER_ATTACK": {
+                "name": "Water Attack",
+                "limit": 6,
+
+                "tooltip": "((TODO))"
+        },
+        "WATER_RESISTANCE": {
+                "name": "Water Resistance",
+                "limit": 3,
+
+                "tooltip": "((TODO))"
+        },
+        "WEAKNESS_EXPLOIT": {
+                "name": "Weakness Exploit",
+                "limit": 3,
+
+                "states": ["non-weak point", "weak point", "wounded"],
+                "zeroth_state_can_be_blank": false,
+
+                "tooltip": "((TODO))"
+        },
+        "WIDE_RANGE": {
+                "name": "Wide-Range",
+                "limit": 5,
+
+                "tooltip": "((TODO))"
+        },
+        "WINDPROOF": {
+                "name": "Windproof",
+                "limit": 5,
+
+                "tooltip": "((TODO))"
+        }
+    },
+    "set_bonuses": {
+        "ANCIENT_DIVINITY": {
+            "name": "Ancient Divinity",
+            "stages": [
+                {
+                    "parts": 2,
+                    "skill": "CRITICAL_STATUS"
+                }
+            ]
+        },
+        "ANJANATH_DOMINANCE": {
+            "name": "Anjanath Dominance",
+            "stages": [
+                {
+                    "parts": 2,
+                    "skill": "STAMINA_CAP_UP"
+                }
+            ]
+        },
+        "APPRECIATION_BLESSING": {
+            "name": "Appreciation Blessing",
+            "stages": [
+                {
+                    "parts": 3,
+                    "skill": "GRATITUDES_GIFT"
+                },
+                {
+                    "parts": 5,
+                    "skill": "GRATITUDES_BLESSING"
+                }
+            ]
+        },
+        "BARIOTH_HIDDEN_ART": {
+            "name": "Barioth Hidden Art",
+            "stages": [
+                {
+                    "parts": 2,
+                    "skill": "PUNISHING_DRAW"
+                }
+            ]
+        },
+        "BAZELGEUSE_AMBITION": {
+            "name": "Bazelgeuse Ambition",
+            "stages": [
+                {
+                    "parts": 2,
+                    "skill": "GUTS"
+                }
+            ]
+        },
+        "BRACHYDIOS_ESSENCE": {
+            "name": "Brachydios Essence",
+            "stages": [
+                {
+                    "parts": 3,
+                    "skill": "AGITATOR_SECRET"
+                }
+            ]
+        },
+        "BRACHYDIOS_WILL": {
+            "name": "Brachydios Will",
+            "stages": [
+                {
+                    "parts": 2,
+                    "skill": "AGITATOR_SECRET"
+                },
+                {
+                    "parts": 4,
+                    "skill": "ARTILLERY_SECRET"
+                }
+            ]
+        },
+        "COMMISSION_ALCHEMY": {
+            "name": "Commission Alchemy",
+            "stages": [
+                {
+                    "parts": 3,
+                    "skill": "BOMBARDIER_SECRET"
+                }
+            ]
+        },
+        "DEVILJHO_ESSENCE": {
+            "name": "Deviljho Essence",
+            "stages": [
+                {
+                    "parts": 3,
+                    "skill": "STAMINA_THIEF_SECRET"
+                }
+            ]
+        },
+        "DIABLOS_AMBITION": {
+            "name": "Diablos Ambition",
+            "stages": [
+                {
+                    "parts": 3,
+                    "skill": "SLUGGER_SECRET"
+                }
+            ]
+        },
+        "FULL_BLOOM_BLESSING": {
+            "name": "Full Bloom Blessing",
+            "stages": [
+                {
+                    "parts": 3,
+                    "skill": "FULL_BLOOMS_GIFT"
+                },
+                {
+                    "parts": 5,
+                    "skill": "FULL_BLOOM_GRATITUDE"
+                }
+            ]
+        },
+        "GLAVENUS_ESSENCE": {
+            "name": "Glavenus Essence",
+            "stages": [
+                {
+                    "parts": 3,
+                    "skill": "MAXIMUM_MIGHT_SECRET"
+                }
+            ]
+        },
+        "GOLD_RATHIAN_ESSENCE": {
+            "name": "Gold Rathian Essence",
+            "stages": [
+                {
+                    "parts": 2,
+                    "skill": "DIVINE_BLESSING_SECRET"
+                },
+                {
+                    "parts": 4,
+                    "skill": "TRUE_CRITICAL_STATUS"
+                }
+            ]
+        },
+        "GUILD_PRIDE": {
+            "name": "Guild Pride",
+            "stages": [
+                {
+                    "parts": 2,
+                    "skill": "GOOD_LUCK"
+                },
+                {
+                    "parts": 4,
+                    "skill": "CARVING_MASTER"
+                }
+            ]
+        },
+        "INSTRUCTORS_GUIDANCE": {
+            "name": "Instructor's Guidance",
+            "stages": [
+                {
+                    "parts": 2,
+                    "skill": "CAPTURE_MASTER"
+                }
+            ]
+        },
+        "JOYFUL_BLESSING": {
+            "name": "Joyful Blessing",
+            "stages": [
+                {
+                    "parts": 3,
+                    "skill": "JOYS_GIFT"
+                },
+                {
+                    "parts": 5,
+                    "skill": "JOYS_GRATITUDE"
+                }
+            ]
+        },
+        "KIRIN_DIVINITY": {
+            "name": "Kirin Divinity",
+            "stages": [
+                {
+                    "parts": 3,
+                    "skill": "GREAT_LUCK"
+                }
+            ]
+        },
+        "KULVE_TAROTH_ESSENCE": {
+            "name": "Kulve Taroth Essence",
+            "stages": [
+                {
+                    "parts": 2,
+                    "skill": "GUTS"
+                },
+                {
+                    "parts": 4,
+                    "skill": "FREE_MEAL_SECRET"
+                }
+            ]
+        },
+        "KUSHALA_DAORA_FLIGHT": {
+            "name": "Kushala Daora Flight",
+            "stages": [
+                {
+                    "parts": 3,
+                    "skill": "NULLIFY_WIND_PRESSURE"
+                }
+            ]
+        },
+        "LEGIANA_AMBITION": {
+            "name": "Legiana Ambition",
+            "stages": [
+                {
+                    "parts": 3,
+                    "skill": "BOW_CHARGE_PLUS"
+                }
+            ]
+        },
+        "LUNASTRA_ESSENCE": {
+            "name": "Lunastra Essence",
+            "stages": [
+                {
+                    "parts": 3,
+                    "skill": "TOOL_SPECIALIST_SECRET"
+                }
+            ]
+        },
+        "NAMIELLE_DIVINITY": {
+            "name": "Namielle Divinity",
+            "stages": [
+                {
+                    "parts": 2,
+                    "skill": "ELEMENT_ACCELERATION"
+                },
+                {
+                    "parts": 4,
+                    "skill": "TRUE_ELEMENT_ACCELERATION"
+                }
+            ]
+        },
+        "NARGACUGA_ESSENCE": {
+            "name": "Nargacuga Essence",
+            "stages": [
+                {
+                    "parts": 3,
+                    "skill": "TRUE_RAZOR_SHARP_SPARE_SHOT"
+                }
+            ]
+        },
+        "NERGIGANTE_AMBITION": {
+            "name": "Nergigante Ambition",
+            "stages": [
+                {
+                    "parts": 2,
+                    "skill": "HASTEN_RECOVERY"
+                }
+            ]
+        },
+        "ODOGARON_ESSENCE": {
+            "name": "Odogaron Essence",
+            "stages": [
+                {
+                    "parts": 3,
+                    "skill": "PROTECTIVE_POLISH"
+                }
+            ]
+        },
+        "RATHALOS_ESSENCE": {
+            "name": "Rathalos Essence",
+            "stages": [
+                {
+                    "parts": 3,
+                    "skill": "MINDS_EYE_BALLISTICS"
+                }
+            ]
+        },
+        "RAJANGS_RAGE": {
+            "name": "Rajang's Rage",
+            "stages": [
+                {
+                    "parts": 2,
+                    "skill": "MINDS_EYE_BALLISTICS"
+                },
+                {
+                    "parts": 4,
+                    "skill": "PROTECTIVE_POLISH"
+                }
+            ]
+        },
+        "RAJANG_WILL": {
+            "name": "Rajang Will",
+            "stages": [
+                {
+                    "parts": 2,
+                    "skill": "MAXIMUM_MIGHT_SECRET"
+                },
+                {
+                    "parts": 4,
+                    "skill": "HEROICS_SECRET"
+                }
+            ]
+        },
+        "RATHIAN_ESSENCE": {
+            "name": "Rathian Essence",
+            "stages": [
+                {
+                    "parts": 2,
+                    "skill": "POISON_DURATION_UP"
+                }
+            ]
+        },
+        "SAFI_JIIVA_SEAL": {
+            "name": "Safi'jiiva Seal",
+            "stages": [
+                {
+                    "parts": 3,
+                    "skill": "DRAGONVEIN_AWAKENING"
+                },
+                {
+                    "parts": 5,
+                    "skill": "TRUE_DRAGONVEIN_AWAKENING"
+                }
+            ]
+        },
+        "SHARA_ISHVALDA_DIVINITY": {
+            "name": "Shara Ishvalda Divinity",
+            "stages": [
+                {
+                    "parts": 4,
+                    "skill": "GAIAS_VEIL"
+                },
+                {
+                    "parts": 5,
+                    "skill": "TRUE_GAIAS_VEIL"
+                }
+            ]
+        },
+        "SILVER_RATHALOS_ESSENCE": {
+            "name": "Silver Rathalos Essence",
+            "stages": [
+                {
+                    "parts": 2,
+                    "skill": "SLINGER_AMMO_SECRET"
+                },
+                {
+                    "parts": 4,
+                    "skill": "TRUE_CRITICAL_ELEMENT"
+                }
+            ]
+        },
+        "SOUL_OF_THE_DRAGOON": {
+            "name": "Soul of the Dragoon",
+            "stages": [
+                {
+                    "parts": 2,
+                    "skill": "ELEMENTAL_AIRBORNE"
+                },
+                {
+                    "parts": 4,
+                    "skill": "MASTERS_TOUCH"
+                }
+            ]
+        },
+        "TEOSTRA_TECHNIQUE": {
+            "name": "Teostra Technique",
+            "stages": [
+                {
+                    "parts": 3,
+                    "skill": "MASTERS_TOUCH"
+                }
+            ]
+        },
+        "TIGREX_ESSENCE": {
+            "name": "Tigrex Essence",
+            "stages": [
+                {
+                    "parts": 3,
+                    "skill": "FREE_MEAL_SECRET"
+                }
+            ]
+        },
+        "URAGAAN_AMBITION": {
+            "name": "Uragaan Ambition",
+            "stages": [
+                {
+                    "parts": 2,
+                    "skill": "GUARD_UP"
+                }
+            ]
+        },
+        "VAAL_SOULVEIN": {
+            "name": "Vaal Soulvein",
+            "stages": [
+                {
+                    "parts": 2,
+                    "skill": "SUPER_RECOVERY"
+                }
+            ]
+        },
+        "VELKHANA_DIVINITY": {
+            "name": "Velkhana Divinity",
+            "stages": [
+                {
+                    "parts": 2,
+                    "skill": "CRITICAL_ELEMENT"
+                },
+                {
+                    "parts": 4,
+                    "skill": "FROSTCRAFT"
+                }
+            ]
+        },
+        "ZINOGRE_ESSENCE": {
+            "name": "Zinogre Essence",
+            "stages": [
+                {
+                    "parts": 3,
+                    "skill": "LATENT_POWER_SECRET"
+                }
+            ]
+        },
+        "ZORAH_MAGDAROS_ESSENCE": {
+            "name": "Zorah Magdaros Essence",
+            "stages": [
+                {
+                    "parts": 3,
+                    "skill": "ARTILLERY_SECRET"
+                }
+            ]
+        }
+    }
+}
