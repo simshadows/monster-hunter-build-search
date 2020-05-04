@@ -1463,7 +1463,7 @@
         "upgrade_scheme"     : "ICEBORNE_COMMON"
     },
     "LUNATIC_ROSE": {
-        "class" : "GREATSWORD",
+        "class" : "SWORD_AND_SHIELD",
         "rarity": 12,
         
         "name"    : "Lunatic Rose",
