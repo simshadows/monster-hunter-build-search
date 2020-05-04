@@ -1,15 +1,29 @@
 /*
- * File: database_weapons.cpp
+ * File: database.h
  * Author: <contact@simshadows.com>
  */
+
+#ifndef MHWIBS_DATABASE_H
+#define MHWIBS_DATABASE_H
 
 #include <array>
 #include <vector>
 
-#include "database_skills.h"
+
+namespace Database {
 
 
-namespace Weapons {
+/****************************************************************************************
+ * Skills Database
+ ***************************************************************************************/
+
+
+constexpr unsigned int k_HANDICRAFT_MAX = 5;
+
+
+/****************************************************************************************
+ * Weapons Database
+ ***************************************************************************************/
 
 
 enum class WeaponClass {
@@ -109,10 +123,30 @@ struct WeaponsDatabase {
 
     // Access
     const Weapon* at(const std::string& weapon_id) const;
+
 private:
     WeaponsDatabase() = default;
 };
 
 
+/****************************************************************************************
+ * Database Manager
+ ***************************************************************************************/
+
+struct Database {
+    // Field
+    const WeaponsDatabase weapons {};
+
+    // Constructor
+    static const Database get_db();
+
+private:
+    // Constructor
+    Database() noexcept;
+};
+
+
 } // namespace
+
+#endif // MHWIBS_DATABASE_H
 

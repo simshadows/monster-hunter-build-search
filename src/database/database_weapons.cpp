@@ -8,15 +8,14 @@
 #include <array>
 #include <assert.h>
 
-#include "../dependencies/json-3-7-3/json.hpp"
+#include "../../dependencies/json-3-7-3/json.hpp"
 
-#include "database_weapons.h"
-#include "database_skills.h"
+#include "database.h"
 
-#include "utils.h"
+#include "../utils.h"
 
 
-namespace Weapons {
+namespace Database {
 
 
 /*
@@ -116,11 +115,11 @@ SharpnessGauge SharpnessGauge::from_vector(const std::vector<unsigned int>& vec)
 
 
 SharpnessGauge SharpnessGauge::apply_handicraft(unsigned int handicraft_lvl) const noexcept {
-    assert(handicraft_lvl <= Skills::k_HANDICRAFT_MAX);
+    assert(handicraft_lvl <= k_HANDICRAFT_MAX);
 
     SharpnessGauge ret;
 
-    unsigned int hits_to_subtract = (Skills::k_HANDICRAFT_MAX - handicraft_lvl) * 10;
+    unsigned int hits_to_subtract = (k_HANDICRAFT_MAX - handicraft_lvl) * 10;
 
     // TODO: Rewrite this unsafe reverse loop.
     assert(ret.hits.size() == this->hits.size());

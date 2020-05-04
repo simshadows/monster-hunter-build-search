@@ -8,7 +8,7 @@
 #include <iostream>
 #include <cmath>
 
-#include "database_weapons.h"
+#include "database/database.h"
 #include "utils.h"
 
 
@@ -56,7 +56,7 @@ static double calculate_efr(unsigned int weapon_raw, // True raw, not bloated ra
 }
 
 
-double calculate_efr_from_lookup(const Weapons::Weapon& weapon) {
+double calculate_efr_from_lookup(const Database::Weapon& weapon) {
     double raw_multiplier = k_NON_ELEMENTAL_BOOST_MULTIPLIER; // Arbitrary for testing
     unsigned int added_raw = k_POWERCHARM_RAW + k_POWERTALON_RAW;
     unsigned int added_aff = 10; // Arbitrary for testing
@@ -77,15 +77,15 @@ int main(int argc, char** argv) {
     (void)argc;
     (void)argv;
 
-    const Weapons::WeaponsDatabase weapon_db = Weapons::WeaponsDatabase::read_weapon_db_file("data/database_weapons.json");
+    const Database::Database db = Database::Database::get_db();
 
     /*
      * Using values for Royal Venus Blade with only one affinity augment and Elementless Jewel 2.
      */
 
-    const Weapons::Weapon* w = weapon_db.at("WYVERN_IMPACT_SILVER");
+    const Database::Weapon* weapon = db.weapons.at("WYVERN_IMPACT_SILVER");
 
-    double efr = calculate_efr_from_lookup(*w);
+    double efr = calculate_efr_from_lookup(*weapon);
 
     std::clog << efr << std::endl;
 
