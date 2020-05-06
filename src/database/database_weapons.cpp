@@ -3,7 +3,6 @@
  * Author: <contact@simshadows.com>
  */
 
-#include <iostream>
 #include <fstream>
 #include <array>
 #include <assert.h>
@@ -11,7 +10,6 @@
 #include "../../dependencies/json-3-7-3/json.hpp"
 
 #include "database.h"
-
 #include "../utils.h"
 
 
@@ -186,7 +184,7 @@ SharpnessGauge::SharpnessGauge() noexcept
 
 
 // static
-const WeaponsDatabase WeaponsDatabase::read_weapon_db_file(const std::string& filename) {
+const WeaponsDatabase WeaponsDatabase::read_weapon_db_file(const std::string& filename, const SkillsDatabase& skills_db) {
     WeaponsDatabase new_db;
     new_db.all_weapons = std::vector<Weapon>(); // Do I need to do this?
 
@@ -221,11 +219,12 @@ const WeaponsDatabase WeaponsDatabase::read_weapon_db_file(const std::string& fi
 
         std::vector<unsigned int> deco_slots = jj["slots"];
 
-        std::string skill_tmp;
+        const Skill* skill;
         if (jj["skill"].is_null()) {
-            skill_tmp = "";
+            skill = nullptr;
         } else {
-            skill_tmp = jj["skill"];
+            const std::string& skill_id = jj["skill"];
+            skill = skills_db.skill_at(skill_id);
         }
 
         std::string augmentation_scheme = jj["augmentation_scheme"];
@@ -249,7 +248,7 @@ const WeaponsDatabase WeaponsDatabase::read_weapon_db_file(const std::string& fi
 
                                              deco_slots,
 
-                                             skill_tmp,
+                                             skill,
 
                                              augmentation_scheme,
                                              upgrade_scheme,

@@ -6,11 +6,18 @@
 #ifndef MHWIBS_DATABASE_H
 #define MHWIBS_DATABASE_H
 
+#include <memory>
 #include <array>
 #include <vector>
+#include <tuple>
+#include <unordered_map>
 
 
 namespace Database {
+
+
+static constexpr char k_WEAPONS_DB_FILEPATH[] = "data/database_weapons.json";
+static constexpr char k_SKILLS_DB_FILEPATH[]  = "data/database_skills.json";
 
 
 /****************************************************************************************
@@ -19,6 +26,72 @@ namespace Database {
 
 
 constexpr unsigned int k_HANDICRAFT_MAX = 5;
+
+
+struct Skill {
+    const std::string  id;            // The "UPPER_SNAKE_CASE" identifier of the skill.
+
+    const std::string  name;          // Actual skill name, as it appears in-game.
+    const unsigned int normal_limit;  // Maximum level without "secret" skills.
+    const unsigned int secret_limit;  // Maximum level possible, usually only attainable with "secret" skills.
+                                      // For programming convenience, normal_limit and secret_limit are equal
+                                      // if no corresponding "secret" skill is available.
+
+    const unsigned int states;        // Number of meaningful "states" that a skill has.
+                                      // All skills have at least two states.
+                                      // State 0 is always "off".
+                                      // State 1 is always "on".
+                                      // States beyond 1 are additional states that depend on the particular skill.
+                                      // E.g. Weakness Exploit has three states depending on if you're hitting
+                                      // a non-weakspot, a weakspot, or a tenderized weakspot.
+
+    // The fields below are currently unused.
+
+    //const std::string  tooltip;       // Tooltip for the skill, as it appears in-game.
+    //const std::string  info;          // Additional information about a skill.
+
+    //const std::string  previous_name; // Additional information about a skill.
+
+    Skill(std::string  new_id,
+          std::string  new_name,
+          unsigned int new_normal_limit,
+          unsigned int new_secret_limit,
+          unsigned int new_states) noexcept;
+};
+
+
+struct SetBonus {
+    const std::string id;
+    const std::string name;
+    const std::vector<std::tuple<unsigned int, const Skill*>> stages; // tuple format: (number of stages, skill)
+
+    SetBonus(const std::string&& new_id,
+             const std::string&& new_name,
+             const std::vector<std::tuple<unsigned int, const Skill*>>&& new_stages) noexcept
+        : id     (std::move(new_id    ))
+        , name   (std::move(new_name  ))
+        , stages (std::move(new_stages))
+    {
+    }
+};
+
+
+class SkillsDatabase {
+    // TODO: Make these std::unique_ptr<...> somehow. I don't see why the compilers keep
+    //       complaining about a call to an implicitly deleted copy constructor because
+    //       I don't see why a copy constructor is even needed.
+    std::unordered_map<std::string, std::shared_ptr<Skill   >> skills_map      {};
+    std::unordered_map<std::string, std::shared_ptr<SetBonus>> set_bonuses_map {};
+public:
+    // Constructor
+    static const SkillsDatabase read_skills_db_file(const std::string& filename);
+
+    // Access
+    const Skill* skill_at(const std::string& skill_id) const;
+
+private:
+    SkillsDatabase() = default;
+};
 
 
 /****************************************************************************************
@@ -91,35 +164,34 @@ protected:
 
 
 struct Weapon {
-    std::string    id; // The "UPPER_SNAKE_CASE" identifier of a weapon.
+    const std::string    id; // The "UPPER_SNAKE_CASE" identifier of the weapon.
 
-    WeaponClass    weapon_class;
+    const WeaponClass    weapon_class;
 
-    std::string    name; // Actual name, as it appears in-game.
-    unsigned int   rarity;
-    unsigned int   true_raw; // Must be converted from its bloated raw.
-    int            affinity;
+    const std::string    name; // Actual name, as it appears in-game.
+    const unsigned int   rarity;
+    const unsigned int   true_raw; // Must be converted from its bloated raw.
+    const int            affinity;
 
-    bool           is_raw; // Temporary implementation while I sort out how to do elemental calculations.
+    const bool           is_raw; // Temporary implementation while I sort out how to do elemental calculations.
 
-    std::vector<unsigned int> deco_slots;
+    const std::vector<unsigned int> deco_slots;
 
-    std::string    skill_tmp;
+    const Skill*         skill; // nullptr if no skill.
 
-    std::string    augmentation_scheme;
-    std::string    upgrade_scheme;
+    const std::string    augmentation_scheme;
+    const std::string    upgrade_scheme;
 
-    SharpnessGauge maximum_sharpness;
-    bool           is_constant_sharpness;
+    const SharpnessGauge maximum_sharpness;
+    const bool           is_constant_sharpness;
 };
 
 
-struct WeaponsDatabase {
-    // Field
+class WeaponsDatabase {
     std::vector<Weapon> all_weapons {};
-
+public:
     // Constructor
-    static const WeaponsDatabase read_weapon_db_file(const std::string& filename);
+    static const WeaponsDatabase read_weapon_db_file(const std::string& filename, const SkillsDatabase& skills_db);
 
     // Access
     const Weapon* at(const std::string& weapon_id) const;
@@ -133,16 +205,18 @@ private:
  * Database Manager
  ***************************************************************************************/
 
+
 struct Database {
     // Field
-    const WeaponsDatabase weapons {};
+    const SkillsDatabase skills {SkillsDatabase::read_skills_db_file(k_SKILLS_DB_FILEPATH)};
+    const WeaponsDatabase weapons {WeaponsDatabase::read_weapon_db_file(k_WEAPONS_DB_FILEPATH, skills)};
 
     // Constructor
     static const Database get_db();
 
 private:
     // Constructor
-    Database() noexcept;
+    Database() = default;
 };
 
 

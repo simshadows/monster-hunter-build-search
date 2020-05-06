@@ -16,8 +16,7 @@
                 "name": "Agitator",
                 "limit": 5,
 
-                "extended_limit": 7,
-                "states": ["not enraged", "enraged"],
+                "secret_limit": 7,
 
                 "tooltip": "((TODO))"
         },
@@ -43,7 +42,7 @@
                 "name": "Artillery",
                 "limit": 3,
 
-                "extended_limit": 5,
+                "secret_limit": 5,
 
                 "tooltip": "((TODO))"
         },
@@ -111,7 +110,7 @@
                 "name": "Bombardier",
                 "limit": 3,
 
-                "extended_limit": 5,
+                "secret_limit": 5,
 
                 "tooltip": "((TODO))"
         },
@@ -227,7 +226,7 @@
                 "name": "Divine Blessing",
                 "limit": 3,
 
-                "extended_limit": 5,
+                "secret_limit": 5,
 
                 "tooltip": "((TODO))"
         },
@@ -252,9 +251,6 @@
         "DRAGONVEIN_AWAKENING": {
                 "name": "Dragonvein Awakening",
                 "limit": 1,
-
-                "states": ["weapon sheathed", "weapon drawn"],
-                "zeroth_state_can_be_blank": true,
 
                 "tooltip": "Elem., abnormal status, & affinity up with weapon drawn. Take damage when attacking, but can be recovered by continually attacking."
         },
@@ -364,7 +360,7 @@
                 "name": "Free Meal",
                 "limit": 1,
 
-                "extended_limit": 3,
+                "secret_limit": 3,
 
                 "tooltip": "((TODO))"
         },
@@ -558,7 +554,7 @@
                 "name": "Latent Power",
                 "limit": 5,
 
-                "extended_limit": 7,
+                "secret_limit": 7,
 
                 "tooltip": "((TODO))"
         },
@@ -608,7 +604,7 @@
                 "name": "Maximum Might",
                 "limit": 3,
 
-                "extended_limit": 5,
+                "secret_limit": 5,
 
                 "tooltip": "((TODO))"
         },
@@ -693,8 +689,6 @@
         "PEAK_PERFORMANCE": {
                 "name": "Peak Performance",
                 "limit": 3,
-
-                "states": ["not full health", "full health"],
 
                 "tooltip": "((TODO))"
         },
@@ -786,8 +780,6 @@
                 "name": "Resentment",
                 "limit": 5,
 
-                "states": ["no recoverable health", "with recoverable health"],
-
                 "tooltip": "((TODO))"
         },
         "RESUSCITATE": {
@@ -848,7 +840,7 @@
                 "name": "Slinger Capacity",
                 "limit": 3,
 
-                "extended_limit": 5,
+                "secret_limit": 5,
 
                 "tooltip": "((TODO))"
         },
@@ -856,7 +848,7 @@
                 "name": "Slugger",
                 "limit": 3,
 
-                "extended_limit": 5,
+                "secret_limit": 5,
 
                 "tooltip": "((TODO))"
         },
@@ -912,7 +904,7 @@
                 "name": "Stamina Thief",
                 "limit": 3,
 
-                "extended_limit": 5,
+                "secret_limit": 5,
 
                 "tooltip": "((TODO))"
         },
@@ -964,7 +956,7 @@
                 "name": "Tool Specialist",
                 "limit": 3,
 
-                "extended_limit": 5,
+                "secret_limit": 5,
 
                 "tooltip": "((TODO))"
         },
@@ -995,9 +987,6 @@
         "TRUE_DRAGONVEIN_AWAKENING": {
                 "name": "True Dragonvein Awakening",
                 "limit": 1,
-
-                "states": ["weapon sheathed", "weapon drawn"],
-                "zeroth_state_can_be_blank": true,
 
                 "tooltip": "Enhances attacks even more with weapon drawn. Take damage when attacking, but can be recovered by continually attacking."
         },
@@ -1035,8 +1024,7 @@
                 "name": "Weakness Exploit",
                 "limit": 3,
 
-                "states": ["non-weak point", "weak point", "wounded"],
-                "zeroth_state_can_be_blank": false,
+                "states": 3,
 
                 "tooltip": "((TODO))"
         },
