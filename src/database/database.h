@@ -211,7 +211,9 @@ struct Database {
     // Pointers to skills with implemented features.
     // Used for high-performance comparisons without having to resort to reading hash tables.
     // (As a bonus, this will call out any important skills not present in the database.)
+    const Skill* critical_boost_ptr;
     const Skill* handicraft_ptr;
+    const Skill* non_elemental_boost_ptr;
 
     // Constructor
     static const Database get_db();

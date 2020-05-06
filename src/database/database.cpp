@@ -11,8 +11,6 @@ namespace Database {
 static constexpr char k_WEAPONS_DB_FILEPATH[] = "data/database_weapons.json";
 static constexpr char k_SKILLS_DB_FILEPATH[]  = "data/database_skills.json";
 
-static constexpr char k_HANDICRAFT_ID[] = "HANDICRAFT";
-
 
 // Constructor
 const Database Database::get_db() {
@@ -24,7 +22,9 @@ Database::Database()
     : skills (SkillsDatabase::read_skills_db_file(k_SKILLS_DB_FILEPATH))
     , weapons (WeaponsDatabase::read_weapon_db_file(k_WEAPONS_DB_FILEPATH, skills))
 
-    , handicraft_ptr (skills.skill_at(k_HANDICRAFT_ID))
+    , critical_boost_ptr      (skills.skill_at("CRITICAL_BOOST"     ))
+    , handicraft_ptr          (skills.skill_at("HANDICRAFT"         ))
+    , non_elemental_boost_ptr (skills.skill_at("NON_ELEMENTAL_BOOST"))
 {
 }
 

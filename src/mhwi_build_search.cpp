@@ -8,17 +8,17 @@
 #include <iostream>
 #include <cmath>
 
+#include "containers.h"
 #include "database/database.h"
+#include "skill_contributions.h"
 #include "utils.h"
 
 
-constexpr double k_RAW_BLUNDER_MULTIPLIER = 0.75;
-constexpr double k_RAW_CRIT_DMG_MULTIPLIER_CB0 = 1.25; // Critical Boost 0
-//constexpr double k_RAW_CRIT_DMG_MULTIPLIER_CB1 = 1.30; // Critical Boost 1
-//constexpr double k_RAW_CRIT_DMG_MULTIPLIER_CB2 = 1.35; // Critical Boost 2
-//constexpr double k_RAW_CRIT_DMG_MULTIPLIER_CB3 = 1.40; // Critical Boost 3
+namespace MHWIBuildSearch
+{
 
-constexpr double k_NON_ELEMENTAL_BOOST_MULTIPLIER = 1.05;
+
+constexpr double k_RAW_BLUNDER_MULTIPLIER = 0.75;
 
 constexpr unsigned int k_POWERCHARM_RAW = 6;
 constexpr unsigned int k_POWERTALON_RAW = 9;
@@ -26,14 +26,14 @@ constexpr unsigned int k_POWERTALON_RAW = 9;
 
 static double calculate_efr(unsigned int weapon_raw, // True raw, not bloated raw.
                             int          weapon_aff,
-                            double       raw_multiplier,
+                            double       neb_multiplier,
                             unsigned int added_raw,
                             int          added_aff,
                             double       raw_sharpness_modifier,
                             double       raw_crit_dmg_multiplier) {
 
     assert(weapon_raw > 0);
-    assert(raw_multiplier > 0.0);
+    assert(neb_multiplier > 0.0);
     assert(raw_sharpness_modifier > 0.0);
     assert(raw_crit_dmg_multiplier > 0.0);
 
@@ -48,7 +48,7 @@ static double calculate_efr(unsigned int weapon_raw, // True raw, not bloated ra
         raw_crit_modifier = (raw_crit_dmg_multiplier * raw_crit_chance) + (1 - raw_crit_chance);
     }
 
-    double weapon_multiplied_raw = weapon_raw * raw_multiplier;
+    double weapon_multiplied_raw = weapon_raw * neb_multiplier;
     unsigned int true_raw = std::round(weapon_multiplied_raw) + added_raw;
     
     double efr = true_raw * raw_sharpness_modifier * raw_crit_modifier;
@@ -56,21 +56,28 @@ static double calculate_efr(unsigned int weapon_raw, // True raw, not bloated ra
 }
 
 
-double calculate_efr_from_skills_lookup(const Database::Weapon& weapon) {
-    double raw_multiplier = k_NON_ELEMENTAL_BOOST_MULTIPLIER; // Arbitrary for testing
+double calculate_efr_from_skills_lookup(const Database::Database& db,
+                                        const Database::Weapon& weapon,
+                                        const SkillMap& skills) {
+
+    double neb_multiplier = calculate_non_elemental_boost_multiplier(db, skills);
+    double raw_crit_dmg_multiplier = calculate_raw_crit_dmg_multiplier(db, skills);
+    double raw_sharpness_modifier = calculate_raw_sharpness_modifier(db, skills, weapon.maximum_sharpness);
+
     unsigned int added_raw = k_POWERCHARM_RAW + k_POWERTALON_RAW;
-    unsigned int added_aff = 10; // Arbitrary for testing
-    unsigned int handicraft_lvl = 0;
-    double raw_crit_dmg_multiplier = k_RAW_CRIT_DMG_MULTIPLIER_CB0;
+    unsigned int added_aff = 0;
 
     return calculate_efr(weapon.true_raw,
                          weapon.affinity,
-                         raw_multiplier,
+                         neb_multiplier,
                          added_raw,
                          added_aff,
-                         weapon.maximum_sharpness.get_raw_sharpness_modifier(handicraft_lvl),
+                         raw_sharpness_modifier,
                          raw_crit_dmg_multiplier);
 }
+
+
+} // namespace
 
 
 int main(int argc, char** argv) {
@@ -83,14 +90,18 @@ int main(int argc, char** argv) {
      * Using values for Royal Venus Blade with only one affinity augment and Elementless Jewel 2.
      */
 
-    const Database::Weapon* weapon = db.weapons.at("WYVERN_IMPACT_SILVER");
+    const Database::Weapon* weapon = db.weapons.at("ROYAL_VENUS_BLADE");
 
-    double efr = calculate_efr_from_skills_lookup(*weapon);
+    MHWIBuildSearch::SkillMap skills;
+    skills.set_lvl(db.critical_boost_ptr, 1);
+    skills.set_lvl(db.handicraft_ptr, 1);
+    skills.set_lvl(db.non_elemental_boost_ptr, 1);
+
+    double efr = MHWIBuildSearch::calculate_efr_from_skills_lookup(db, *weapon, skills);
 
     std::clog << efr << std::endl;
 
-    // TODO: Learn why this is rounding 410.415 DOWN to 410.41. This is so weird!
-    assert(Utils::round_2decpl(efr) == 410.41); // Quick test!
+    assert(Utils::round_2decpl(efr) == 434.31); // Quick test!
 
     return 0;
 }
