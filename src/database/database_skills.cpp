@@ -157,8 +157,15 @@ const SkillsDatabase SkillsDatabase::read_skills_db_file(const std::string& file
 const Skill* SkillsDatabase::skill_at(const std::string& skill_id) const {
     assert(Utils::is_upper_snake_case(skill_id));
     //Skill* p = this->skills_map.at(skill_id).get(); // TODO: Delete this line
-    return this->skills_map.at(skill_id).get();
+    try {
+        return this->skills_map.at(skill_id).get();
+    } catch (std::out_of_range) {
+        throw std::out_of_range("Skill ID '" + skill_id + "' not found in the database.");
+    }
 }
+
+
+SkillsDatabase::SkillsDatabase() noexcept = default;
 
 
 } // namespace

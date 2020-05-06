@@ -56,7 +56,7 @@ static double calculate_efr(unsigned int weapon_raw, // True raw, not bloated ra
 }
 
 
-double calculate_efr_from_lookup(const Database::Weapon& weapon) {
+double calculate_efr_from_skills_lookup(const Database::Weapon& weapon) {
     double raw_multiplier = k_NON_ELEMENTAL_BOOST_MULTIPLIER; // Arbitrary for testing
     unsigned int added_raw = k_POWERCHARM_RAW + k_POWERTALON_RAW;
     unsigned int added_aff = 10; // Arbitrary for testing
@@ -85,7 +85,7 @@ int main(int argc, char** argv) {
 
     const Database::Weapon* weapon = db.weapons.at("WYVERN_IMPACT_SILVER");
 
-    double efr = calculate_efr_from_lookup(*weapon);
+    double efr = calculate_efr_from_skills_lookup(*weapon);
 
     std::clog << efr << std::endl;
 

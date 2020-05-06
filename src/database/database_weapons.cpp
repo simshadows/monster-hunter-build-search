@@ -273,5 +273,8 @@ const Weapon* WeaponsDatabase::at(const std::string& weapon_id) const {
 }
 
 
+WeaponsDatabase::WeaponsDatabase() noexcept = default;
+
+
 } // namespace
 

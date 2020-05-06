@@ -12,12 +12,10 @@
 #include <tuple>
 #include <unordered_map>
 
+#include "../utils.h"
+
 
 namespace Database {
-
-
-static constexpr char k_WEAPONS_DB_FILEPATH[] = "data/database_weapons.json";
-static constexpr char k_SKILLS_DB_FILEPATH[]  = "data/database_skills.json";
 
 
 /****************************************************************************************
@@ -90,7 +88,7 @@ public:
     const Skill* skill_at(const std::string& skill_id) const;
 
 private:
-    SkillsDatabase() = default;
+    SkillsDatabase() noexcept;
 };
 
 
@@ -121,7 +119,7 @@ constexpr std::size_t k_SHARPNESS_LEVELS = 7;
 
 
 class SharpnessGauge {
-    std::array<unsigned int, k_SHARPNESS_LEVELS> hits {};
+    std::array<unsigned int, k_SHARPNESS_LEVELS> hits;
 public:
 
     SharpnessGauge(unsigned int r,
@@ -188,7 +186,7 @@ struct Weapon {
 
 
 class WeaponsDatabase {
-    std::vector<Weapon> all_weapons {};
+    std::vector<Weapon> all_weapons;
 public:
     // Constructor
     static const WeaponsDatabase read_weapon_db_file(const std::string& filename, const SkillsDatabase& skills_db);
@@ -197,7 +195,7 @@ public:
     const Weapon* at(const std::string& weapon_id) const;
 
 private:
-    WeaponsDatabase() = default;
+    WeaponsDatabase() noexcept;
 };
 
 
@@ -207,16 +205,20 @@ private:
 
 
 struct Database {
-    // Field
-    const SkillsDatabase skills {SkillsDatabase::read_skills_db_file(k_SKILLS_DB_FILEPATH)};
-    const WeaponsDatabase weapons {WeaponsDatabase::read_weapon_db_file(k_WEAPONS_DB_FILEPATH, skills)};
+    const SkillsDatabase skills;
+    const WeaponsDatabase weapons;
+
+    // Pointers to skills with implemented features.
+    // Used for high-performance comparisons without having to resort to reading hash tables.
+    // (As a bonus, this will call out any important skills not present in the database.)
+    const Skill* handicraft_ptr;
 
     // Constructor
     static const Database get_db();
 
 private:
     // Constructor
-    Database() = default;
+    Database();
 };
 
 
