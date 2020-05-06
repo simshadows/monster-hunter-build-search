@@ -182,7 +182,7 @@ SharpnessGauge::SharpnessGauge() noexcept
 
 
 // static
-const WeaponsDatabase WeaponsDatabase::read_weapon_db_file(const std::string& filename, const SkillsDatabase& skills_db) {
+const WeaponsDatabase WeaponsDatabase::read_db_file(const std::string& filename, const SkillsDatabase& skills_db) {
     WeaponsDatabase new_db;
     new_db.all_weapons = std::vector<Weapon>(); // Do I need to do this?
 

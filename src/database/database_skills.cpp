@@ -33,7 +33,7 @@ Skill::Skill(std::string new_id,
 
 
 // static
-const SkillsDatabase SkillsDatabase::read_skills_db_file(const std::string& filename) {
+const SkillsDatabase SkillsDatabase::read_db_file(const std::string& filename) {
     SkillsDatabase new_db;
 
     nlohmann::json j;

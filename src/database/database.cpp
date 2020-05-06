@@ -19,8 +19,8 @@ const Database Database::get_db() {
 
 
 Database::Database()
-    : skills (SkillsDatabase::read_skills_db_file(k_SKILLS_DB_FILEPATH))
-    , weapons (WeaponsDatabase::read_weapon_db_file(k_WEAPONS_DB_FILEPATH, skills))
+    : skills (SkillsDatabase::read_db_file(k_SKILLS_DB_FILEPATH))
+    , weapons (WeaponsDatabase::read_db_file(k_WEAPONS_DB_FILEPATH, skills))
 
     , critical_boost_ptr      (skills.skill_at("CRITICAL_BOOST"     ))
     , handicraft_ptr          (skills.skill_at("HANDICRAFT"         ))

@@ -82,7 +82,7 @@ class SkillsDatabase {
     std::unordered_map<std::string, std::shared_ptr<SetBonus>> set_bonuses_map {};
 public:
     // Constructor
-    static const SkillsDatabase read_skills_db_file(const std::string& filename);
+    static const SkillsDatabase read_db_file(const std::string& filename);
 
     // Access
     const Skill* skill_at(const std::string& skill_id) const;
@@ -189,7 +189,7 @@ class WeaponsDatabase {
     std::vector<Weapon> all_weapons;
 public:
     // Constructor
-    static const WeaponsDatabase read_weapon_db_file(const std::string& filename, const SkillsDatabase& skills_db);
+    static const WeaponsDatabase read_db_file(const std::string& filename, const SkillsDatabase& skills_db);
 
     // Access
     const Weapon* at(const std::string& weapon_id) const;
