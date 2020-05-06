@@ -20,7 +20,7 @@ inline double round_2decpl(const double v) {
 
 inline bool is_upper_snake_case(const std::string& s) noexcept {
     for (const char e : s) {
-        if ((e >= 'A' && e <= 'Z') || (e == '_')) continue;
+        if ((e >= 'A' && e <= 'Z') || (e >= '0' && e <= '9') || (e == '_')) continue;
         return false;
     }
     return true;

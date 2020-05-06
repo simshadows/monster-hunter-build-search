@@ -7,6 +7,7 @@ OBJECTS=$(SRCDIR)/mhwi_build_search.o \
 		$(SRCDIR)/database/database.o \
 		$(SRCDIR)/database/database_skills.o \
 		$(SRCDIR)/database/database_weapons.o \
+		$(SRCDIR)/database/database_armour.o \
 		$(SRCDIR)/containers.o \
 		$(SRCDIR)/skill_contributions.o
 

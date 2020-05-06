@@ -8,10 +8,6 @@
 namespace Database {
 
 
-static constexpr char k_WEAPONS_DB_FILEPATH[] = "data/database_weapons.json";
-static constexpr char k_SKILLS_DB_FILEPATH[]  = "data/database_skills.json";
-
-
 // Constructor
 const Database Database::get_db() {
     return Database();
@@ -19,8 +15,9 @@ const Database Database::get_db() {
 
 
 Database::Database()
-    : skills (SkillsDatabase::read_db_file(k_SKILLS_DB_FILEPATH))
-    , weapons (WeaponsDatabase::read_db_file(k_WEAPONS_DB_FILEPATH, skills))
+    : skills  (SkillsDatabase ::read_db_file("data/database_skills.json"         ))
+    , weapons (WeaponsDatabase::read_db_file("data/database_weapons.json", skills))
+    , armour  (ArmourDatabase ::read_db_file("data/database_armour.json" , skills))
 
     , critical_boost_ptr      (skills.skill_at("CRITICAL_BOOST"     ))
     , handicraft_ptr          (skills.skill_at("HANDICRAFT"         ))

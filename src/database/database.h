@@ -200,6 +200,21 @@ private:
 
 
 /****************************************************************************************
+ * Armour Database
+ ***************************************************************************************/
+
+
+class ArmourDatabase {
+public:
+    // Constructor
+    static const ArmourDatabase read_db_file(const std::string& filename, const SkillsDatabase& skills_db);
+
+private:
+    ArmourDatabase() noexcept;
+};
+
+
+/****************************************************************************************
  * Database Manager
  ***************************************************************************************/
 
@@ -207,6 +222,7 @@ private:
 struct Database {
     const SkillsDatabase skills;
     const WeaponsDatabase weapons;
+    const ArmourDatabase armour;
 
     // Pointers to skills with implemented features.
     // Used for high-performance comparisons without having to resort to reading hash tables.

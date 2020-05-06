@@ -8,7 +8,7 @@
             "Tights"
         ],
         "BUFF_BODY_SCHEME": [
-            "(INVALID HEAD)",
+            "",
             "Chest",
             "Arms",
             "Waist",
@@ -197,60 +197,60 @@
             "Spurs"
         ],
         "BARNOS_SCHEME": [
-            "(INVALID HEAD)",
+            "",
             "Jacket",
-            "(INVALID ARMS)",
-            "(INVALID WAIST)",
-            "(INVALID LEGS)"
+            "",
+            "",
+            ""
         ],
         "CORTOS_SCHEME": [
-            "(INVALID HEAD)",
+            "",
             "Cape",
-            "(INVALID ARMS)",
-            "(INVALID WAIST)",
-            "(INVALID LEGS)"
+            "",
+            "",
+            ""
         ],
         "GAJAU_SCHEME": [
-            "(INVALID HEAD)",
-            "(INVALID CHEST)",
-            "(INVALID ARMS)",
-            "(INVALID WAIST)",
+            "",
+            "",
+            "",
+            "",
             "Boots"
         ],
         "GASTODON_SCHEME": [
             "Horn",
-            "(INVALID CHEST)",
-            "(INVALID ARMS)",
-            "(INVALID WAIST)",
-            "(INVALID LEGS)"
+            "",
+            "",
+            "",
+            ""
         ],
         "KESTODON_SCHEME": [
-            "(INVALID HEAD)",
-            "(INVALID CHEST)",
+            "",
+            "",
             "Guards",
-            "(INVALID WAIST)",
-            "(INVALID LEGS)"
+            "",
+            ""
         ],
         "SHAMOS_SCHEME": [
             "Goggles",
-            "(INVALID CHEST)",
-            "(INVALID ARMS)",
-            "(INVALID WAIST)",
-            "(INVALID LEGS)"
+            "",
+            "",
+            "",
+            ""
         ],
         "WULG_SCHEME": [
             "Scarf",
-            "(INVALID CHEST)",
-            "(INVALID ARMS)",
-            "(INVALID WAIST)",
-            "(INVALID LEGS)"
+            "",
+            "",
+            "",
+            ""
         ],
         "WYVERIAN_EARS_SCHEME": [
             "Ears",
-            "(INVALID CHEST)",
-            "(INVALID ARMS)",
-            "(INVALID WAIST)",
-            "(INVALID LEGS)"
+            "",
+            "",
+            "",
+            ""
         ]
     },
     "armour": [
