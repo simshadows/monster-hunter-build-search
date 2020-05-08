@@ -256,7 +256,7 @@
     "armour": [
         {
             "set": "Teostra",
-            "discriminator": "HIGH_RANK",
+            "tier": "HIGH_RANK",
             "rarity": 8,
             
             "prefix": "Kaiser",
@@ -288,7 +288,7 @@
         },
         {
             "set": "Drachen",
-            "discriminator": "HIGH_RANK",
+            "tier": "HIGH_RANK",
             "rarity": 8,
             
             "prefix": "Drachen",
@@ -306,7 +306,7 @@
         },
         {
             "set": "Bone",
-            "discriminator": "MASTER_RANK",
+            "tier": "MASTER_RANK",
             "rarity": 9,
             
             "prefix": "Bone",
@@ -331,7 +331,7 @@
         },
         {
             "set": "Alloy",
-            "discriminator": "MASTER_RANK",
+            "tier": "MASTER_RANK",
             "rarity": 9,
             
             "prefix": "Alloy",
@@ -356,7 +356,7 @@
         },
         {
             "set": "Vespoid",
-            "discriminator": "MASTER_RANK",
+            "tier": "MASTER_RANK",
             "rarity": 9,
             
             "prefix": "Vespoid",
@@ -381,7 +381,7 @@
         },
         {
             "set": "Hornetaur",
-            "discriminator": "MASTER_RANK",
+            "tier": "MASTER_RANK",
             "rarity": 9,
             
             "prefix": "Hornetaur",
@@ -406,7 +406,7 @@
         },
         {
             "set": "Kestodon",
-            "discriminator": "MASTER_RANK",
+            "tier": "MASTER_RANK",
             "rarity": 9,
             
             "prefix": "Kestodon",
@@ -423,7 +423,7 @@
         },
         {
             "set": "Gajau",
-            "discriminator": "MASTER_RANK",
+            "tier": "MASTER_RANK",
             "rarity": 9,
             
             "prefix": "Gajau",
@@ -440,7 +440,7 @@
         },
         {
             "set": "Shamos",
-            "discriminator": "MASTER_RANK",
+            "tier": "MASTER_RANK",
             "rarity": 9,
             
             "prefix": "Shamos",
@@ -457,7 +457,7 @@
         },
         {
             "set": "Gastodon",
-            "discriminator": "MASTER_RANK",
+            "tier": "MASTER_RANK",
             "rarity": 9,
             
             "prefix": "Gastodon",
@@ -474,7 +474,7 @@
         },
         {
             "set": "Barnos",
-            "discriminator": "MASTER_RANK",
+            "tier": "MASTER_RANK",
             "rarity": 9,
             
             "prefix": "Barnos",
@@ -491,7 +491,7 @@
         },
         {
             "set": "Wulg",
-            "discriminator": "MASTER_RANK",
+            "tier": "MASTER_RANK",
             "rarity": 9,
             
             "prefix": "Wulg",
@@ -508,7 +508,7 @@
         },
         {
             "set": "Cortos",
-            "discriminator": "MASTER_RANK",
+            "tier": "MASTER_RANK",
             "rarity": 9,
             
             "prefix": "Cortos",
@@ -525,7 +525,7 @@
         },
         {
             "set": "Jagras",
-            "discriminator": "MASTER_RANK",
+            "tier": "MASTER_RANK",
             "rarity": 9,
             
             "prefix": "Jagras",
@@ -550,7 +550,7 @@
         },
         {
             "set": "Tzitzi",
-            "discriminator": "MASTER_RANK",
+            "tier": "MASTER_RANK",
             "rarity": 9,
             
             "prefix": "Tzitzi",
@@ -575,7 +575,7 @@
         },
         {
             "set": "Girros",
-            "discriminator": "MASTER_RANK",
+            "tier": "MASTER_RANK",
             "rarity": 9,
             
             "prefix": "Girros",
@@ -600,7 +600,7 @@
         },
         {
             "set": "Dodogama",
-            "discriminator": "MASTER_RANK",
+            "tier": "MASTER_RANK",
             "rarity": 9,
             
             "prefix": "Dodogama",
@@ -625,7 +625,7 @@
         },
         {
             "set": "Kulu",
-            "discriminator": "MASTER_RANK",
+            "tier": "MASTER_RANK",
             "rarity": 9,
             
             "prefix": "Kulu",
@@ -650,7 +650,7 @@
         },
         {
             "set": "Pukei",
-            "discriminator": "MASTER_RANK",
+            "tier": "MASTER_RANK",
             "rarity": 9,
             
             "prefix": "Pukei",
@@ -675,7 +675,7 @@
         },
         {
             "set": "Coral Pukei",
-            "discriminator": "MASTER_RANK",
+            "tier": "MASTER_RANK",
             "rarity": 9,
             
             "prefix": "Pukei Lagoon",
@@ -700,7 +700,7 @@
         },
         {
             "set": "Barroth",
-            "discriminator": "MASTER_RANK",
+            "tier": "MASTER_RANK",
             "rarity": 9,
             
             "prefix": "Barroth",
@@ -725,7 +725,7 @@
         },
         {
             "set": "Jyura",
-            "discriminator": "MASTER_RANK",
+            "tier": "MASTER_RANK",
             "rarity": 9,
             
             "prefix": "Jyura",
@@ -750,7 +750,7 @@
         },
         {
             "set": "Beo",
-            "discriminator": "MASTER_RANK",
+            "tier": "MASTER_RANK",
             "rarity": 9,
             
             "prefix": "Beo",
@@ -775,7 +775,7 @@
         },
         {
             "set": "Kadachi",
-            "discriminator": "MASTER_RANK",
+            "tier": "MASTER_RANK",
             "rarity": 9,
             
             "prefix": "Kadachi",
@@ -800,7 +800,7 @@
         },
         {
             "set": "Viper Kadachi",
-            "discriminator": "MASTER_RANK",
+            "tier": "MASTER_RANK",
             "rarity": 9,
             
             "prefix": "Viper Kadachi",
@@ -825,7 +825,7 @@
         },
         {
             "set": "High Metal",
-            "discriminator": "MASTER_RANK",
+            "tier": "MASTER_RANK",
             "rarity": 9,
             
             "prefix": "High Metal",
@@ -850,7 +850,7 @@
         },
         {
             "set": "Banbaro",
-            "discriminator": "MASTER_RANK",
+            "tier": "MASTER_RANK",
             "rarity": 9,
             
             "prefix": "Banbaro",
@@ -875,7 +875,7 @@
         },
         {
             "set": "Anja",
-            "discriminator": "MASTER_RANK",
+            "tier": "MASTER_RANK",
             "rarity": 9,
             
             "prefix": "Anja",
@@ -900,7 +900,7 @@
         },
         {
             "set": "Fulgur Anja",
-            "discriminator": "MASTER_RANK",
+            "tier": "MASTER_RANK",
             "rarity": 11,
             
             "prefix": "Fulgur",
@@ -925,7 +925,7 @@
         },
         {
             "set": "Rathian",
-            "discriminator": "MASTER_RANK",
+            "tier": "MASTER_RANK",
             "rarity": 9,
             
             "prefix": "Rathian",
@@ -950,7 +950,7 @@
         },
         {
             "set": "Rath Heart",
-            "discriminator": "MASTER_RANK",
+            "tier": "MASTER_RANK",
             "rarity": 9,
             
             "prefix": "Rath Heart",
@@ -975,7 +975,7 @@
         },
         {
             "set": "Lumu",
-            "discriminator": "MASTER_RANK",
+            "tier": "MASTER_RANK",
             "rarity": 9,
             
             "prefix": "Lumu",
@@ -1000,7 +1000,7 @@
         },
         {
             "set": "Lumu Phantasm",
-            "discriminator": "MASTER_RANK",
+            "tier": "MASTER_RANK",
             "rarity": 9,
             
             "prefix": "Lumu Phantasm",
@@ -1025,7 +1025,7 @@
         },
         {
             "set": "Baan",
-            "discriminator": "MASTER_RANK",
+            "tier": "MASTER_RANK",
             "rarity": 9,
             
             "prefix": "Baan",
@@ -1050,7 +1050,7 @@
         },
         {
             "set": "Artian",
-            "discriminator": "MASTER_RANK",
+            "tier": "MASTER_RANK",
             "rarity": 10,
             
             "prefix": "Artian",
@@ -1075,7 +1075,7 @@
         },
         {
             "set": "Clockwork",
-            "discriminator": "MASTER_RANK",
+            "tier": "MASTER_RANK",
             "rarity": 10,
             
             "prefix": "Clockwork",
@@ -1100,7 +1100,7 @@
         },
         {
             "set": "Ingot",
-            "discriminator": "MASTER_RANK",
+            "tier": "MASTER_RANK",
             "rarity": 10,
             
             "prefix": "Ingot",
@@ -1125,7 +1125,7 @@
         },
         {
             "set": "Barioth",
-            "discriminator": "MASTER_RANK",
+            "tier": "MASTER_RANK",
             "rarity": 10,
             
             "prefix": "Barioth",
@@ -1150,7 +1150,7 @@
         },
         {
             "set": "Rathalos",
-            "discriminator": "MASTER_RANK",
+            "tier": "MASTER_RANK",
             "rarity": 10,
             
             "prefix": "Rathalos",
@@ -1175,7 +1175,7 @@
         },
         {
             "set": "Rath Soul",
-            "discriminator": "MASTER_RANK",
+            "tier": "MASTER_RANK",
             "rarity": 11,
             
             "prefix": "Rath Soul",
@@ -1200,7 +1200,7 @@
         },
         {
             "set": "Diablos",
-            "discriminator": "MASTER_RANK",
+            "tier": "MASTER_RANK",
             "rarity": 10,
             
             "prefix": "Diablos",
@@ -1225,7 +1225,7 @@
         },
         {
             "set": "Diablos Nero",
-            "discriminator": "MASTER_RANK",
+            "tier": "MASTER_RANK",
             "rarity": 11,
             
             "prefix": "Diablos Nero",
@@ -1250,7 +1250,7 @@
         },
         {
             "set": "Legiana",
-            "discriminator": "MASTER_RANK",
+            "tier": "MASTER_RANK",
             "rarity": 10,
             
             "prefix": "Legiana",
@@ -1275,7 +1275,7 @@
         },
         {
             "set": "Shrieking Legia",
-            "discriminator": "MASTER_RANK",
+            "tier": "MASTER_RANK",
             "rarity": 11,
             
             "prefix": "Hoarcry",
@@ -1300,7 +1300,7 @@
         },
         {
             "set": "Odogaron",
-            "discriminator": "MASTER_RANK",
+            "tier": "MASTER_RANK",
             "rarity": 10,
             
             "prefix": "Odogaron",
@@ -1325,7 +1325,7 @@
         },
         {
             "set": "Death Garon",
-            "discriminator": "MASTER_RANK",
+            "tier": "MASTER_RANK",
             "rarity": 11,
             
             "prefix": "Death Garon",
@@ -1350,7 +1350,7 @@
         },
         {
             "set": "Lavasioth",
-            "discriminator": "MASTER_RANK",
+            "tier": "MASTER_RANK",
             "rarity": 10,
             
             "prefix": "Lavasioth",
@@ -1375,7 +1375,7 @@
         },
         {
             "set": "Uragaan",
-            "discriminator": "MASTER_RANK",
+            "tier": "MASTER_RANK",
             "rarity": 10,
             
             "prefix": "Uragaan",
@@ -1400,7 +1400,7 @@
         },
         {
             "set": "Nargacuga",
-            "discriminator": "MASTER_RANK",
+            "tier": "MASTER_RANK",
             "rarity": 10,
             
             "prefix": "Nargacuga",
@@ -1425,7 +1425,7 @@
         },
         {
             "set": "Glavenus",
-            "discriminator": "MASTER_RANK",
+            "tier": "MASTER_RANK",
             "rarity": 10,
             
             "prefix": "Glavenus",
@@ -1450,7 +1450,7 @@
         },
         {
             "set": "Acidic Glavenus",
-            "discriminator": "MASTER_RANK",
+            "tier": "MASTER_RANK",
             "rarity": 11,
             
             "prefix": "Acidic Glavenus",
@@ -1475,7 +1475,7 @@
         },
         {
             "set": "Brachydios",
-            "discriminator": "MASTER_RANK",
+            "tier": "MASTER_RANK",
             "rarity": 10,
             
             "prefix": "Brachydios",
@@ -1500,7 +1500,7 @@
         },
         {
             "set": "Tigrex",
-            "discriminator": "MASTER_RANK",
+            "tier": "MASTER_RANK",
             "rarity": 10,
             
             "prefix": "Tigrex",
@@ -1525,7 +1525,7 @@
         },
         {
             "set": "Brute Tigrex",
-            "discriminator": "MASTER_RANK",
+            "tier": "MASTER_RANK",
             "rarity": 11,
             
             "prefix": "Rex Roar",
@@ -1550,7 +1550,7 @@
         },
         {
             "set": "Black Belt",
-            "discriminator": "MASTER_RANK",
+            "tier": "MASTER_RANK",
             "rarity": 11,
             
             "prefix": "Black Belt",
@@ -1575,7 +1575,7 @@
         },
         {
             "set": "Dober",
-            "discriminator": "MASTER_RANK",
+            "tier": "MASTER_RANK",
             "rarity": 11,
             
             "prefix": "Dober",
@@ -1600,7 +1600,7 @@
         },
         {
             "set": "Damascus",
-            "discriminator": "MASTER_RANK",
+            "tier": "MASTER_RANK",
             "rarity": 11,
             
             "prefix": "Damascus",
@@ -1625,7 +1625,7 @@
         },
         {
             "set": "Seething Bazel",
-            "discriminator": "MASTER_RANK",
+            "tier": "MASTER_RANK",
             "rarity": 11,
             
             "prefix": "Pride",
@@ -1650,7 +1650,7 @@
         },
         {
             "set": "Savage Jho",
-            "discriminator": "MASTER_RANK",
+            "tier": "MASTER_RANK",
             "rarity": 11,
             
             "prefix": "Esurient",
@@ -1675,7 +1675,7 @@
         },
         {
             "set": "Velkhana",
-            "discriminator": "MASTER_RANK",
+            "tier": "MASTER_RANK",
             "rarity": 12,
             
             "prefix": "Rimeguard",
@@ -1700,7 +1700,7 @@
         },
         {
             "set": "Blackveil Hazak",
-            "discriminator": "MASTER_RANK",
+            "tier": "MASTER_RANK",
             "rarity": 12,
             
             "prefix": "Fellshroud",
@@ -1725,7 +1725,7 @@
         },
         {
             "set": "Teostra",
-            "discriminator": "MASTER_RANK",
+            "tier": "MASTER_RANK",
             "rarity": 12,
             
             "prefix": "Kaiser",
@@ -1750,7 +1750,7 @@
         },
         {
             "set": "Kushala",
-            "discriminator": "MASTER_RANK",
+            "tier": "MASTER_RANK",
             "rarity": 12,
             
             "prefix": "Kushala",
@@ -1775,7 +1775,7 @@
         },
         {
             "set": "Kirin",
-            "discriminator": "MASTER_RANK",
+            "tier": "MASTER_RANK",
             "rarity": 12,
             
             "prefix": "Kirin",
@@ -1800,7 +1800,7 @@
         },
         {
             "set": "Namielle",
-            "discriminator": "MASTER_RANK",
+            "tier": "MASTER_RANK",
             "rarity": 12,
             
             "prefix": "Tentacle",
@@ -1832,7 +1832,7 @@
         },
         {
             "set": "Guild Palace",
-            "discriminator": "MASTER_RANK",
+            "tier": "MASTER_RANK",
             "rarity": 11,
             
             "prefix": "Guild Palace",
@@ -1857,7 +1857,7 @@
         },
         {
             "set": "Shara Ishvalda",
-            "discriminator": "MASTER_RANK",
+            "tier": "MASTER_RANK",
             "rarity": 12,
             
             "prefix": "Shara Ishvalda",
@@ -1882,7 +1882,7 @@
         },
         {
             "set": "Zorah",
-            "discriminator": "MASTER_RANK",
+            "tier": "MASTER_RANK",
             "rarity": 12,
             
             "prefix": "Zorah",
@@ -1907,7 +1907,7 @@
         },
         {
             "set": "Yian Garuga",
-            "discriminator": "MASTER_RANK",
+            "tier": "MASTER_RANK",
             "rarity": 11,
             
             "prefix": "Garuga",
@@ -1932,7 +1932,7 @@
         },
         {
             "set": "Zinogre",
-            "discriminator": "MASTER_RANK",
+            "tier": "MASTER_RANK",
             "rarity": 11,
             
             "prefix": "Zinogre",
@@ -1957,7 +1957,7 @@
         },
         {
             "set": "Golden Lune",
-            "discriminator": "MASTER_RANK",
+            "tier": "MASTER_RANK",
             "rarity": 12,
             
             "prefix": "Golden",
@@ -1982,7 +1982,7 @@
         },
         {
             "set": "Silver Sol",
-            "discriminator": "MASTER_RANK",
+            "tier": "MASTER_RANK",
             "rarity": 12,
             
             "prefix": "Silver",
@@ -2007,7 +2007,7 @@
         },
         {
             "set": "Lunastra",
-            "discriminator": "MASTER_RANK",
+            "tier": "MASTER_RANK",
             "rarity": 12,
             
             "prefix": "Empress",
@@ -2032,7 +2032,7 @@
         },
         {
             "set": "Ruiner Nergi",
-            "discriminator": "MASTER_RANK",
+            "tier": "MASTER_RANK",
             "rarity": 12,
             
             "prefix": "Ruinous",
@@ -2057,7 +2057,7 @@
         },
         {
             "set": "Guildwork",
-            "discriminator": "MASTER_RANK",
+            "tier": "MASTER_RANK",
             "rarity": 12,
             
             "prefix": "Guildwork",
@@ -2082,7 +2082,7 @@
         },
         {
             "set": "Rajang",
-            "discriminator": "MASTER_RANK",
+            "tier": "MASTER_RANK",
             "rarity": 11,
             
             "prefix": "Golden",
@@ -2107,7 +2107,7 @@
         },
         {
             "set": "Stygian Zin",
-            "discriminator": "MASTER_RANK",
+            "tier": "MASTER_RANK",
             "rarity": 11,
             
             "prefix": "Stygian",
@@ -2132,7 +2132,7 @@
         },
         {
             "set": "Safi'jiiva",
-            "discriminator": "MASTER_RANK",
+            "tier": "MASTER_RANK",
             "rarity": 12,
             
             "prefix": "Safi Crested",
@@ -2157,7 +2157,7 @@
         },
         {
             "set": "Raging Brachy",
-            "discriminator": "MASTER_RANK",
+            "tier": "MASTER_RANK",
             "rarity": 12,
             
             "prefix": "Brachydium",
@@ -2182,7 +2182,7 @@
         },
         {
             "set": "Furious Rajang",
-            "discriminator": "MASTER_RANK",
+            "tier": "MASTER_RANK",
             "rarity": 12,
             
             "prefix": "Grand God's Peer",
@@ -2207,7 +2207,7 @@
         },
         {
             "set": "Kulve Taroth",
-            "discriminator": "MASTER_RANK",
+            "tier": "MASTER_RANK",
             "rarity": 12,
             
             "prefix": "Kulve Taroth's",
@@ -2232,7 +2232,7 @@
         },
         {
             "set": "Oolong",
-            "discriminator": "MASTER_RANK",
+            "tier": "MASTER_RANK",
             "rarity": 9,
             
             "prefix": "Oolong",
@@ -2250,7 +2250,7 @@
         },
         {
             "set": "Astral",
-            "discriminator": "MASTER_RANK",
+            "tier": "MASTER_RANK",
             "rarity": 9,
             
             "prefix": "Astral",
@@ -2268,7 +2268,7 @@
         },
         {
             "set": "Rose",
-            "discriminator": "MASTER_RANK",
+            "tier": "MASTER_RANK",
             "rarity": 10,
             
             "prefix": "Rose",
@@ -2286,7 +2286,7 @@
         },
         {
             "set": "Buff Body",
-            "discriminator": "MASTER_RANK",
+            "tier": "MASTER_RANK",
             "rarity": 11,
             
             "prefix": "Buff",
@@ -2303,7 +2303,7 @@
         },
         {
             "set": "Wyverian Ears",
-            "discriminator": "MASTER_RANK",
+            "tier": "MASTER_RANK",
             "rarity": 9,
             
             "prefix": "Wyverian",

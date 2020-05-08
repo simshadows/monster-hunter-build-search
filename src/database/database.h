@@ -10,12 +10,20 @@
 #include <array>
 #include <vector>
 #include <tuple>
+#include <map>
 #include <unordered_map>
 
 #include "../utils.h"
 
 
 namespace Database {
+
+
+// General Constants
+constexpr unsigned int k_MIN_RARITY    = 1;
+constexpr unsigned int k_MAX_RARITY    = 12;
+constexpr unsigned int k_MIN_DECO_SIZE = 1;
+constexpr unsigned int k_MAX_DECO_SIZE = 4;
 
 
 /****************************************************************************************
@@ -86,6 +94,7 @@ public:
 
     // Access
     const Skill* skill_at(const std::string& skill_id) const;
+    const SetBonus* set_bonus_at(const std::string& set_bonus_id) const;
 
 private:
     SkillsDatabase() noexcept;
@@ -204,7 +213,89 @@ private:
  ***************************************************************************************/
 
 
+enum class ArmourSlot {
+    head,
+    chest,
+    arms,
+    waist,
+    legs,
+};
+
+
+enum class ArmourVariant {
+    low_rank,
+    high_rank_alpha,
+    high_rank_beta,
+    high_rank_gamma,
+    master_rank_alpha_plus,
+    master_rank_beta_plus,
+    master_rank_gamma_plus,
+};
+
+
+// TODO: Refactor this to somewhere more suitable.
+enum class Tier {
+    low_rank,
+    high_rank,
+    master_rank,
+};
+
+
+// Reads string representations in UPPER_SNAKE_CASE (e.g. "MASTER_RANK") into tiers.
+// Throws an exception if the string does not convert into a tier.
+
+ArmourSlot upper_case_to_armour_slot(const std::string&);
+
+ArmourVariant upper_snake_case_to_armour_variant(const std::string&);
+
+Tier upper_snake_case_to_tier(const std::string&);
+
+
+struct ArmourPiece {
+    ArmourSlot    slot;
+    ArmourVariant variant;
+
+    std::vector<unsigned int> deco_slots;
+    std::vector<std::pair<const Skill*, unsigned int>> skills; // Skills and levels.
+
+    const std::string      piece_name_postfix;
+
+    const SetBonus * const set_bonus; // Supplied for convenience. Guaranteed to be the same as ArmourSet.
+
+    ArmourPiece(ArmourSlot                  new_slot,
+                ArmourVariant               new_variant,
+                std::vector<unsigned int>&& new_deco_slots,
+                std::vector<std::pair<const Skill*, unsigned int>>&& new_skills,
+                std::string&&               new_piece_name_postfix,
+                const SetBonus*             new_set_bonus) noexcept;
+};
+
+
+struct ArmourSet {
+    // set_name and tier are required to uniquely identify an armour set.
+    const std::string set_name;
+    const Tier        tier;
+
+    const std::string piece_name_prefix;
+
+    const unsigned int     rarity;
+    const SetBonus * const set_bonus; // Can be nullptr!
+
+    const std::vector<std::shared_ptr<ArmourPiece>> pieces;
+
+    ArmourSet(std::string&&   new_set_name,
+              Tier            new_tier,
+              std::string&&   new_piece_name_prefix,
+              unsigned int    new_rarity,
+              const SetBonus* new_set_bonus,
+              std::vector<std::shared_ptr<ArmourPiece>>&& new_pieces) noexcept;
+};
+
+
 class ArmourDatabase {
+    // Using a map to avoid having to implement a specialized hash function for unordered_map.
+    // (Unlikely to need performance here anyway.)
+    std::map<std::pair<std::string, Tier>, std::shared_ptr<ArmourSet>> armour_sets;
 public:
     // Constructor
     static const ArmourDatabase read_db_file(const std::string& filename, const SkillsDatabase& skills_db);
@@ -227,9 +318,9 @@ struct Database {
     // Pointers to skills with implemented features.
     // Used for high-performance comparisons without having to resort to reading hash tables.
     // (As a bonus, this will call out any important skills not present in the database.)
-    const Skill* critical_boost_ptr;
-    const Skill* handicraft_ptr;
-    const Skill* non_elemental_boost_ptr;
+    const Skill* const critical_boost_ptr;
+    const Skill* const handicraft_ptr;
+    const Skill* const non_elemental_boost_ptr;
 
     // Constructor
     static const Database get_db();
