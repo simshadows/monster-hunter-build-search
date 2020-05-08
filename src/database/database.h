@@ -22,8 +22,6 @@ namespace Database {
 // General Constants
 constexpr unsigned int k_MIN_RARITY    = 1;
 constexpr unsigned int k_MAX_RARITY    = 12;
-constexpr unsigned int k_MIN_DECO_SIZE = 1;
-constexpr unsigned int k_MAX_DECO_SIZE = 4;
 
 
 /****************************************************************************************
@@ -98,6 +96,42 @@ public:
 
 private:
     SkillsDatabase() noexcept;
+};
+
+
+/****************************************************************************************
+ * Decorations Database
+ ***************************************************************************************/
+
+
+constexpr unsigned int k_MIN_DECO_SIZE = 1;
+constexpr unsigned int k_MAX_DECO_SIZE = 4;
+
+
+struct Decoration {
+    const std::string id;
+    const std::string name;
+    const unsigned int slot_size;
+    const std::vector<std::pair<const Skill*, unsigned int>> skills; // Skill and level
+
+    Decoration(std::string&& new_id,
+               std::string&& new_name,
+               unsigned int new_slot_size,
+               std::vector<std::pair<const Skill*, unsigned int>>&& new_skills) noexcept;
+};
+
+
+class DecorationsDatabase {
+    // TODO: Make this std::unique_ptr<...> somehow. I don't see why the compilers keep
+    //       complaining about a call to an implicitly deleted copy constructor because
+    //       I don't see why a copy constructor is even needed.
+    std::unordered_map<std::string, std::shared_ptr<Decoration>> decorations_store;
+public:
+    // Constructor
+    static const DecorationsDatabase read_db_file(const std::string& filename, const SkillsDatabase& skills_db);
+
+private:
+    DecorationsDatabase() noexcept;
 };
 
 
@@ -354,10 +388,11 @@ private:
 
 
 struct Database {
-    const SkillsDatabase  skills;
-    const WeaponsDatabase weapons;
-    const ArmourDatabase  armour;
-    const CharmsDatabase  charms;
+    const SkillsDatabase      skills;
+    const DecorationsDatabase decos;
+    const WeaponsDatabase     weapons;
+    const ArmourDatabase      armour;
+    const CharmsDatabase      charms;
 
     // Pointers to skills with implemented features.
     // Used for high-performance comparisons without having to resort to reading hash tables.

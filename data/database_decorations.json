@@ -511,8 +511,8 @@
             "skill": "WATER_RESISTANCE"
         }
     },
-    "4slot_compound_decorations_batch_definitions": {
-        "DECORATION_COMBINATIONS_1": {
+    "4slot_compound_decorations_batch_definitions": [
+        {
             "left_side": [
                 "BOMBER",
                 "CRISIS",
@@ -543,7 +543,7 @@
                 "RELEASE"
             ]
         },
-        "DECORATION_COMBINATIONS_2": {
+        {
             "left_side": [
                 "BRACE",
                 "CHALLENGER",
@@ -575,7 +575,7 @@
                 "VITALITY"
             ]
         }
-    },
+    ],
     "4slot_single_skill_decorations": {
         "FIRE_RES"       : [2,3],
         "WATER_RES"      : [2,3],

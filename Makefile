@@ -6,6 +6,7 @@ SRCDIR=src
 OBJECTS=$(SRCDIR)/mhwi_build_search.o \
 		$(SRCDIR)/database/database.o \
 		$(SRCDIR)/database/database_skills.o \
+		$(SRCDIR)/database/database_decorations.o \
 		$(SRCDIR)/database/database_weapons.o \
 		$(SRCDIR)/database/database_armour.o \
 		$(SRCDIR)/database/database_charms.o \
