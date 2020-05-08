@@ -640,7 +640,7 @@
         },
         "NORMAL_SHOTS": {
                 "name": "Normal Shots",
-                "limit": 1,
+                "limit": 2,
 
                 "tooltip": "((TODO))"
         },
@@ -694,7 +694,7 @@
         },
         "PIERCING_SHOTS": {
                 "name": "Piercing Shots",
-                "limit": 1,
+                "limit": 2,
 
                 "tooltip": "((TODO))"
         },
@@ -884,7 +884,7 @@
         },
         "SPREAD_POWER_SHOTS": {
                 "name": "Spread/Power Shots",
-                "limit": 1,
+                "limit": 2,
 
                 "tooltip": "((TODO))"
         },

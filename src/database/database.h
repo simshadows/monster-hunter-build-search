@@ -306,6 +306,37 @@ private:
 
 
 /****************************************************************************************
+ * Charms Database
+ ***************************************************************************************/
+
+
+struct Charm {
+    const std::string id;
+    const std::string name;
+    const unsigned int max_charm_lvl;
+    // All skills will have levels equalling max_charm_level.
+    // E.g. if max_charm_level is 3, then all skills in the vector will be level 3.
+    const std::vector<const Skill*> skills;
+
+    Charm(std::string&&               new_id,
+          std::string&&               new_name,
+          unsigned int                new_max_charm_lvl,
+          std::vector<const Skill*>&& new_skills) noexcept;
+};
+
+
+class CharmsDatabase {
+    std::unordered_map<std::string, std::shared_ptr<Charm>> charms_map;
+public:
+    // Constructor
+    static const CharmsDatabase read_db_file(const std::string& filename, const SkillsDatabase& skills_db);
+
+private:
+    CharmsDatabase() noexcept;
+};
+
+
+/****************************************************************************************
  * Database Manager
  ***************************************************************************************/
 
@@ -314,6 +345,7 @@ struct Database {
     const SkillsDatabase skills;
     const WeaponsDatabase weapons;
     const ArmourDatabase armour;
+    const CharmsDatabase charms;
 
     // Pointers to skills with implemented features.
     // Used for high-performance comparisons without having to resort to reading hash tables.
