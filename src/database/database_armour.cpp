@@ -75,7 +75,7 @@ static const std::unordered_map<std::string, Tier> upper_snake_case_to_tier_map 
 };
 
 
-std::string armour_variant_to_name(const ArmourVariant& v) {
+std::string armour_variant_to_name(const ArmourVariant v) {
     switch (v) {
         case ArmourVariant::low_rank:               return "";
         case ArmourVariant::high_rank_alpha:        return "\u03b1";
@@ -326,10 +326,10 @@ const ArmourDatabase ArmourDatabase::read_db_file(const std::string& filename, c
 }
 
 
-const ArmourPiece* ArmourDatabase::at(const std::string&   set_name,
-                                      const Tier&          tier,
-                                      const ArmourVariant& variant,
-                                      const ArmourSlot&    slot) const {
+const ArmourPiece* ArmourDatabase::at(const std::string&  set_name,
+                                      const Tier          tier,
+                                      const ArmourVariant variant,
+                                      const ArmourSlot    slot) const {
     const ArmourSet* const armour_set = this->armour_sets.at(std::pair<std::string, Tier>(set_name, tier)).get();
     for (const std::shared_ptr<ArmourPiece>& e : armour_set->pieces) {
         const ArmourPiece* const armour_piece = e.get();

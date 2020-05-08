@@ -100,7 +100,7 @@ ArmourEquips::ArmourEquips() noexcept {
 }
 
 
-void ArmourEquips::add(const Database::ArmourPiece * const & piece) {
+void ArmourEquips::add(const Database::ArmourPiece* piece) {
     this->data[slot_to_index(piece->slot)] = piece;
 }
 
@@ -142,7 +142,7 @@ std::size_t ArmourEquips::slot_to_index(const Database::ArmourSlot& slot) {
 }
 
 
-std::string ArmourEquips::fetch_piece_name(const std::size_t& index) const {
+std::string ArmourEquips::fetch_piece_name(const std::size_t index) const {
     const Database::ArmourPiece * const & piece = this->data[index];
     if (piece) {
         return piece->get_full_name();

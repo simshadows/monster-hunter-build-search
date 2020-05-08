@@ -49,7 +49,7 @@ public:
     ArmourEquips() noexcept;
     ArmourEquips(const std::initializer_list<const Database::ArmourPiece>&) noexcept;
 
-    void add(const Database::ArmourPiece * const&);
+    void add(const Database::ArmourPiece*);
 
     bool slot_is_filled(const Database::ArmourSlot&) const;
     SkillMap get_skills_without_set_bonuses() const;
@@ -60,7 +60,7 @@ private:
     // TODO: This helper function is probably unnecessary. Try to get rid of it.
     static std::size_t slot_to_index(const Database::ArmourSlot&);
 
-    std::string fetch_piece_name(const std::size_t&) const;
+    std::string fetch_piece_name(std::size_t) const;
 };
 
 
