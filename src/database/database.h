@@ -231,6 +231,7 @@ enum class ArmourVariant {
     master_rank_beta_plus,
     master_rank_gamma_plus,
 };
+std::string armour_variant_to_name(const ArmourVariant&);
 
 
 // TODO: Refactor this to somewhere more suitable.
@@ -271,6 +272,8 @@ struct ArmourPiece {
                 std::string&&               new_piece_name_postfix,
                 const ArmourSet*            new_set,
                 const SetBonus*             new_set_bonus) noexcept;
+
+    std::string get_full_name() const;
 };
 
 
@@ -302,6 +305,12 @@ class ArmourDatabase {
 public:
     // Constructor
     static const ArmourDatabase read_db_file(const std::string& filename, const SkillsDatabase& skills_db);
+
+    // Access
+    const ArmourPiece* at(const std::string&   set_name,
+                          const Tier&          tier,
+                          const ArmourVariant& variant,
+                          const ArmourSlot&    slot) const;
 
 private:
     ArmourDatabase() noexcept;

@@ -75,6 +75,21 @@ static const std::unordered_map<std::string, Tier> upper_snake_case_to_tier_map 
 };
 
 
+std::string armour_variant_to_name(const ArmourVariant& v) {
+    switch (v) {
+        case ArmourVariant::low_rank:               return "";
+        case ArmourVariant::high_rank_alpha:        return "\u03b1";
+        case ArmourVariant::high_rank_beta:         return "\u03b2";
+        case ArmourVariant::high_rank_gamma:        return "\u03b3";
+        case ArmourVariant::master_rank_alpha_plus: return "\u03b1+";
+        case ArmourVariant::master_rank_beta_plus:  return "\u03b2+";
+        case ArmourVariant::master_rank_gamma_plus: return "\u03b3+";
+        default:
+            throw std::runtime_error("Invalid armour variant.");
+    }
+}
+
+
 ArmourSlot upper_case_to_armour_slot(const std::string& s) {
     return upper_case_to_as_map.at(s);
 }
@@ -105,6 +120,18 @@ ArmourPiece::ArmourPiece(ArmourSlot                  new_slot,
     , set                (std::move(new_set               ))
     , set_bonus          (std::move(new_set_bonus         ))
 {
+}
+
+
+std::string ArmourPiece::get_full_name() const {
+    const std::string& prefix = this->set->piece_name_prefix;
+    const std::string& postfix = this->piece_name_postfix;
+    const std::string variant_str = armour_variant_to_name(this->variant);
+    if (variant_str.size() == 0) {
+        return prefix + " " + postfix;
+    } else {
+        return prefix + " " + postfix + " " + variant_str;
+    }
 }
 
 
@@ -296,6 +323,19 @@ const ArmourDatabase ArmourDatabase::read_db_file(const std::string& filename, c
     }
 
     return new_db;
+}
+
+
+const ArmourPiece* ArmourDatabase::at(const std::string&   set_name,
+                                      const Tier&          tier,
+                                      const ArmourVariant& variant,
+                                      const ArmourSlot&    slot) const {
+    const ArmourSet* const armour_set = this->armour_sets.at(std::pair<std::string, Tier>(set_name, tier)).get();
+    for (const std::shared_ptr<ArmourPiece>& e : armour_set->pieces) {
+        const ArmourPiece* const armour_piece = e.get();
+        if ((armour_piece->variant == variant) && (armour_piece->slot == slot)) return armour_piece;
+    }
+    throw std::runtime_error("Armour set was identified, but particular armour piece was not found.");
 }
 
 

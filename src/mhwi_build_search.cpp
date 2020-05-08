@@ -91,6 +91,14 @@ int main(int argc, char** argv) {
      */
 
     const Database::Weapon* weapon = db.weapons.at("ROYAL_VENUS_BLADE");
+    
+    MHWIBuildSearch::ArmourEquips armour;
+    const Database::ArmourPiece* const tmp_arms = db.armour.at("Teostra",
+                                                               Database::Tier::master_rank,
+                                                               Database::ArmourVariant::master_rank_beta_plus,
+                                                               Database::ArmourSlot::arms);
+    armour.add(tmp_arms);
+    std::clog << armour.get_humanreadable() << std::endl;
 
     MHWIBuildSearch::SkillMap skills;
     skills.set_lvl(db.critical_boost_ptr, 1);
