@@ -60,7 +60,7 @@ double calculate_efr_from_skills_lookup(const Database::Database& db,
                                         const Database::Weapon& weapon,
                                         const SkillMap& skills) {
 
-    double neb_multiplier = calculate_non_elemental_boost_multiplier(db, skills);
+    double neb_multiplier = calculate_non_elemental_boost_multiplier(db, skills, weapon);
     double raw_crit_dmg_multiplier = calculate_raw_crit_dmg_multiplier(db, skills);
     double raw_sharpness_modifier = calculate_raw_sharpness_modifier(db, skills, weapon.maximum_sharpness);
 
@@ -114,10 +114,21 @@ int main(int argc, char** argv) {
     std::clog << armour.get_skills_without_set_bonuses().get_humanreadable() << std::endl << std::endl;
 
     double efr = MHWIBuildSearch::calculate_efr_from_gear_lookup(db, *weapon, armour);
-
     std::clog << efr << std::endl;
-
     assert(Utils::round_2decpl(efr) == 390.31); // Quick test!
+
+    /*
+     * For testing purposes, we'll also do a by-skill lookup.
+     */
+
+    weapon = db.weapons.at("GREAT_DEMON_ROD");
+
+    MHWIBuildSearch::SkillMap skills;
+    skills.set_lvl(db.non_elemental_boost_ptr, 1);
+
+    efr = MHWIBuildSearch::calculate_efr_from_skills_lookup(db, *weapon, skills);
+    std::clog << efr << std::endl;
+    assert(Utils::round_2decpl(efr) == 375.38); // Quick test!
 
     return 0;
 }

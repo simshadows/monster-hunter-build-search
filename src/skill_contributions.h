@@ -14,7 +14,8 @@ namespace MHWIBuildSearch
 
 
 double calculate_non_elemental_boost_multiplier(const Database::Database&,
-                                                const SkillMap&);
+                                                const SkillMap&,
+                                                const Database::Weapon&);
 
 double calculate_raw_crit_dmg_multiplier(const Database::Database&,
                                          const SkillMap&);
