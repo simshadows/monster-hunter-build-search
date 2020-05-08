@@ -44,6 +44,13 @@ void SkillMap::increment_lvl(const Database::Skill* skill, const unsigned int le
 }
 
 
+void SkillMap::add_skills(const Database::ArmourPiece& piece) {
+    for (const std::pair<const Database::Skill*, unsigned int>& e : piece.skills) {
+        this->increment_lvl(e.first, e.second);
+    }
+}
+
+
 unsigned int SkillMap::get_lvl(const Database::Skill* skill) const {
     if (this->data.count(skill) == 1) {
         return this->data.at(skill);
@@ -100,6 +107,16 @@ void ArmourEquips::add(const Database::ArmourPiece * const & piece) {
 
 bool ArmourEquips::slot_is_filled(const Database::ArmourSlot& slot) const {
     return this->data[slot_to_index(slot)];
+}
+
+
+SkillMap ArmourEquips::get_skills_without_set_bonuses() const {
+    SkillMap ret;
+    for (const Database::ArmourPiece * const & armour_piece : this->data) {
+        if (!armour_piece) continue;
+        ret.add_skills(*armour_piece);
+    }
+    return ret;
 }
 
 

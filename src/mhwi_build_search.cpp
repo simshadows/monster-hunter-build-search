@@ -77,6 +77,14 @@ double calculate_efr_from_skills_lookup(const Database::Database& db,
 }
 
 
+double calculate_efr_from_gear_lookup(const Database::Database& db,
+                                      const Database::Weapon& weapon,
+                                      const ArmourEquips& armour) {
+    SkillMap skills = armour.get_skills_without_set_bonuses();
+    return calculate_efr_from_skills_lookup(db, weapon, skills);
+}
+
+
 } // namespace
 
 
@@ -93,23 +101,23 @@ int main(int argc, char** argv) {
     const Database::Weapon* weapon = db.weapons.at("ROYAL_VENUS_BLADE");
     
     MHWIBuildSearch::ArmourEquips armour;
-    const Database::ArmourPiece* const tmp_arms = db.armour.at("Teostra",
-                                                               Database::Tier::master_rank,
-                                                               Database::ArmourVariant::master_rank_beta_plus,
-                                                               Database::ArmourSlot::arms);
-    armour.add(tmp_arms);
-    std::clog << armour.get_humanreadable() << std::endl;
+    armour.add(db.armour.at("Raging Brachy",
+                            Database::Tier::master_rank,
+                            Database::ArmourVariant::master_rank_beta_plus,
+                            Database::ArmourSlot::head));
+    armour.add(db.armour.at("Teostra",
+                            Database::Tier::master_rank,
+                            Database::ArmourVariant::master_rank_beta_plus,
+                            Database::ArmourSlot::arms));
+    
+    std::clog << armour.get_humanreadable() << std::endl << std::endl;
+    std::clog << armour.get_skills_without_set_bonuses().get_humanreadable() << std::endl << std::endl;
 
-    MHWIBuildSearch::SkillMap skills;
-    skills.set_lvl(db.critical_boost_ptr, 1);
-    skills.set_lvl(db.handicraft_ptr, 1);
-    skills.set_lvl(db.non_elemental_boost_ptr, 1);
-
-    double efr = MHWIBuildSearch::calculate_efr_from_skills_lookup(db, *weapon, skills);
+    double efr = MHWIBuildSearch::calculate_efr_from_gear_lookup(db, *weapon, armour);
 
     std::clog << efr << std::endl;
 
-    assert(Utils::round_2decpl(efr) == 434.31); // Quick test!
+    assert(Utils::round_2decpl(efr) == 390.31); // Quick test!
 
     return 0;
 }

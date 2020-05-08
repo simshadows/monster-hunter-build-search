@@ -27,6 +27,7 @@ public:
 
     void set_lvl(const Database::Skill* skill, unsigned int level);
     void increment_lvl(const Database::Skill* skill, unsigned int level_to_add);
+    void add_skills(const Database::ArmourPiece&);
 
     // Gets a skill's level. Skills that aren't in the container return zero.
     unsigned int get_lvl(const Database::Skill*) const;
@@ -51,6 +52,7 @@ public:
     void add(const Database::ArmourPiece * const&);
 
     bool slot_is_filled(const Database::ArmourSlot&) const;
+    SkillMap get_skills_without_set_bonuses() const;
 
     std::string get_humanreadable() const;
 
