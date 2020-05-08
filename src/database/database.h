@@ -177,6 +177,7 @@ public:
     // Throws an exception if the vector is of the wrong size.
     static SharpnessGauge from_vector(const std::vector<unsigned int>&);
 
+    double get_raw_sharpness_modifier() const; // Uses the full sharpness gauge.
     double get_raw_sharpness_modifier(unsigned int handicraft_lvl) const;
 
     std::string get_humanreadable() const;
@@ -188,9 +189,6 @@ protected:
     //
     // MOVE TO PUBLIC AS NEEDED.
     SharpnessGauge apply_handicraft(unsigned int handicraft_lvl) const noexcept;
-
-    // MOVE TO PUBLIC AS NEEDED.
-    double get_raw_sharpness_modifier() const;
 
     // Minimal constructor.
     // Doesn't do more work than is necessary.

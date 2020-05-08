@@ -22,6 +22,7 @@ double calculate_raw_crit_dmg_multiplier(const Database::Database&,
 
 double calculate_raw_sharpness_modifier(const Database::Database&,
                                         const SkillMap&,
+                                        const Database::Weapon&,
                                         const Database::SharpnessGauge&);
 
 

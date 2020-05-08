@@ -62,7 +62,7 @@ double calculate_efr_from_skills_lookup(const Database::Database& db,
 
     double neb_multiplier = calculate_non_elemental_boost_multiplier(db, skills, weapon);
     double raw_crit_dmg_multiplier = calculate_raw_crit_dmg_multiplier(db, skills);
-    double raw_sharpness_modifier = calculate_raw_sharpness_modifier(db, skills, weapon.maximum_sharpness);
+    double raw_sharpness_modifier = calculate_raw_sharpness_modifier(db, skills, weapon, weapon.maximum_sharpness);
 
     unsigned int added_raw = k_POWERCHARM_RAW + k_POWERTALON_RAW;
     unsigned int added_aff = 0;
@@ -121,14 +121,14 @@ int main(int argc, char** argv) {
      * For testing purposes, we'll also do a by-skill lookup.
      */
 
-    weapon = db.weapons.at("GREAT_DEMON_ROD");
+    weapon = db.weapons.at("LIGHTBREAK_BLADE");
 
     MHWIBuildSearch::SkillMap skills;
     skills.set_lvl(db.non_elemental_boost_ptr, 1);
 
     efr = MHWIBuildSearch::calculate_efr_from_skills_lookup(db, *weapon, skills);
     std::clog << efr << std::endl;
-    assert(Utils::round_2decpl(efr) == 375.38); // Quick test!
+    assert(Utils::round_2decpl(efr) == 437.85); // Quick test!
 
     return 0;
 }

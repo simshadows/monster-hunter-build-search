@@ -46,9 +46,14 @@ double calculate_raw_crit_dmg_multiplier(const Database::Database& db, const Ski
 
 double calculate_raw_sharpness_modifier(const Database::Database& db,
                                         const SkillMap& skills,
+                                        const Database::Weapon& weapon,
                                         const Database::SharpnessGauge& maximum_sharpness) {
-    const unsigned int handicraft_lvl = skills.get_lvl(db.handicraft_ptr);
-    return maximum_sharpness.get_raw_sharpness_modifier(handicraft_lvl);
+    if (weapon.is_constant_sharpness) {
+        return maximum_sharpness.get_raw_sharpness_modifier();
+    } else {
+        const unsigned int handicraft_lvl = skills.get_lvl(db.handicraft_ptr);
+        return maximum_sharpness.get_raw_sharpness_modifier(handicraft_lvl);
+    }
 };
 
 
