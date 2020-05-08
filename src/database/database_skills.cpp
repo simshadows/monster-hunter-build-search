@@ -142,7 +142,8 @@ const SkillsDatabase SkillsDatabase::read_db_file(const std::string& filename) {
             stages.emplace_back(parts, sb_skill);
         }
 
-        new_db.set_bonuses_map.insert({sb_id, std::make_shared<SetBonus>(std::move(sb_id),
+        std::string sb_id_copy = sb_id;
+        new_db.set_bonuses_map.insert({sb_id, std::make_shared<SetBonus>(std::move(sb_id_copy),
                                                                          std::move(name),
                                                                          std::move(stages)) });
     }

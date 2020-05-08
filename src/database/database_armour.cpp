@@ -95,12 +95,14 @@ ArmourPiece::ArmourPiece(ArmourSlot                  new_slot,
                          std::vector<unsigned int>&& new_deco_slots,
                          std::vector<std::pair<const Skill*, unsigned int>>&& new_skills,
                          std::string&&               new_piece_name_postfix,
+                         const ArmourSet*            new_set,
                          const SetBonus*             new_set_bonus) noexcept
     : slot               (std::move(new_slot              ))
     , variant            (std::move(new_variant           ))
     , deco_slots         (std::move(new_deco_slots        ))
     , skills             (std::move(new_skills            ))
     , piece_name_postfix (std::move(new_piece_name_postfix))
+    , set                (std::move(new_set               ))
     , set_bonus          (std::move(new_set_bonus         ))
 {
 }
@@ -268,6 +270,7 @@ const ArmourDatabase ArmourDatabase::read_db_file(const std::string& filename, c
 
                                                                   std::move(piece_name_postfix),
 
+                                                                  nullptr, // We adjust this later!
                                                                   set_bonus ));
             }
         }
@@ -282,6 +285,14 @@ const ArmourDatabase ArmourDatabase::read_db_file(const std::string& filename, c
                                                                                     
                                                                                     std::move(pieces)) });
 
+    }
+
+    // One final step of setting remaining pointers.
+    for (auto& e : new_db.armour_sets) {
+        ArmourSet* armour_set = e.second.get();
+        for (std::shared_ptr<ArmourPiece>& ee : armour_set->pieces) {
+            ee->set = armour_set;
+        }
     }
 
     return new_db;

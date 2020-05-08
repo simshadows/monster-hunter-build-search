@@ -86,8 +86,8 @@ class SkillsDatabase {
     // TODO: Make these std::unique_ptr<...> somehow. I don't see why the compilers keep
     //       complaining about a call to an implicitly deleted copy constructor because
     //       I don't see why a copy constructor is even needed.
-    std::unordered_map<std::string, std::shared_ptr<Skill   >> skills_map      {};
-    std::unordered_map<std::string, std::shared_ptr<SetBonus>> set_bonuses_map {};
+    std::unordered_map<std::string, std::shared_ptr<Skill   >> skills_map;
+    std::unordered_map<std::string, std::shared_ptr<SetBonus>> set_bonuses_map;
 public:
     // Constructor
     static const SkillsDatabase read_db_file(const std::string& filename);
@@ -184,7 +184,7 @@ struct Weapon {
 
     const std::vector<unsigned int> deco_slots;
 
-    const Skill*         skill; // nullptr if no skill.
+    const Skill* const   skill; // nullptr if no skill.
 
     const std::string    augmentation_scheme;
     const std::string    upgrade_scheme;
@@ -251,15 +251,17 @@ ArmourVariant upper_snake_case_to_armour_variant(const std::string&);
 Tier upper_snake_case_to_tier(const std::string&);
 
 
+struct ArmourSet; // Quick declaration so we can use it in ArmourPiece.
 struct ArmourPiece {
-    ArmourSlot    slot;
-    ArmourVariant variant;
+    const ArmourSlot    slot;
+    const ArmourVariant variant;
 
-    std::vector<unsigned int> deco_slots;
-    std::vector<std::pair<const Skill*, unsigned int>> skills; // Skills and levels.
+    const std::vector<unsigned int> deco_slots;
+    const std::vector<std::pair<const Skill*, unsigned int>> skills; // Skills and levels.
 
     const std::string      piece_name_postfix;
 
+    const ArmourSet*       set;       // A pointer back to the armour set.
     const SetBonus * const set_bonus; // Supplied for convenience. Guaranteed to be the same as ArmourSet.
 
     ArmourPiece(ArmourSlot                  new_slot,
@@ -267,6 +269,7 @@ struct ArmourPiece {
                 std::vector<unsigned int>&& new_deco_slots,
                 std::vector<std::pair<const Skill*, unsigned int>>&& new_skills,
                 std::string&&               new_piece_name_postfix,
+                const ArmourSet*            new_set,
                 const SetBonus*             new_set_bonus) noexcept;
 };
 
@@ -281,7 +284,7 @@ struct ArmourSet {
     const unsigned int     rarity;
     const SetBonus * const set_bonus; // Can be nullptr!
 
-    const std::vector<std::shared_ptr<ArmourPiece>> pieces;
+    std::vector<std::shared_ptr<ArmourPiece>> pieces; // CAN'T BE CONST
 
     ArmourSet(std::string&&   new_set_name,
               Tier            new_tier,
@@ -342,10 +345,10 @@ private:
 
 
 struct Database {
-    const SkillsDatabase skills;
+    const SkillsDatabase  skills;
     const WeaponsDatabase weapons;
-    const ArmourDatabase armour;
-    const CharmsDatabase charms;
+    const ArmourDatabase  armour;
+    const CharmsDatabase  charms;
 
     // Pointers to skills with implemented features.
     // Used for high-performance comparisons without having to resort to reading hash tables.
