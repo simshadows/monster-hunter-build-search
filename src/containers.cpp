@@ -51,11 +51,25 @@ void SkillMap::add_skills(const Database::ArmourPiece& piece) {
 }
 
 
-unsigned int SkillMap::get_lvl(const Database::Skill* skill) const {
-    if (this->data.count(skill) == 1) {
-        return this->data.at(skill);
+unsigned int SkillMap::get_lvl(const Database::Skill * const skill) const {
+    assert(this->data.count(skill) <= 1); // count must return either 1 or 0.
+    return this->data.count(skill) ? this->data.at(skill) : 0;
+}
+
+
+unsigned int SkillMap::get_lvl(const Database::Skill * const skill,
+                               const Database::Skill * const associated_secret) const {
+    // count must return either 1 or 0.
+    assert(this->data.count(skill) <= 1);
+    assert(this->data.count(associated_secret) <= 1);
+    // We expect secret skills to only have one level.
+    assert(associated_secret->secret_limit == 1);
+
+    if (this->data.count(skill)) {
+        const unsigned int level = this->data.at(skill);
+        const unsigned int normal_limit = skill->normal_limit;
+        return (this->data.count(associated_secret) || (level <= normal_limit)) ? this->data.at(skill) : normal_limit;
     } else {
-        assert(this->data.count(skill) == 0); // count shouldn't ever have any other value.
         return 0;
     }
 }

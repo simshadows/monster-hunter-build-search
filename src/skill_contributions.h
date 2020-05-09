@@ -13,17 +13,18 @@ namespace MHWIBuildSearch
 {
 
 
-double calculate_non_elemental_boost_multiplier(const Database::Database&,
-                                                const SkillMap&,
-                                                const Database::Weapon&);
+struct SkillContribution {
+    unsigned int added_raw;
+    int          added_aff;
+    double       neb_multiplier;
+    double       raw_crit_dmg_multiplier;
+    double       raw_sharpness_modifier;
 
-double calculate_raw_crit_dmg_multiplier(const Database::Database&,
-                                         const SkillMap&);
-
-double calculate_raw_sharpness_modifier(const Database::Database&,
-                                        const SkillMap&,
-                                        const Database::Weapon&,
-                                        const Database::SharpnessGauge&);
+    SkillContribution(const Database::Database&,
+                      const SkillMap&,
+                      const Database::Weapon&,
+                      const Database::SharpnessGauge&) noexcept;
+};
 
 
 } // namespace

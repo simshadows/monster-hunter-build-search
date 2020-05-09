@@ -21,6 +21,8 @@ Database::Database()
     , armour  (ArmourDatabase     ::read_db_file("data/database_armour.json"     , skills))
     , charms  (CharmsDatabase     ::read_db_file("data/database_charms.json"     , skills))
 
+    , agitator_ptr            (skills.skill_at("AGITATOR"           ))
+    , agitator_secret_ptr     (skills.skill_at("AGITATOR_SECRET"    ))
     , critical_boost_ptr      (skills.skill_at("CRITICAL_BOOST"     ))
     , handicraft_ptr          (skills.skill_at("HANDICRAFT"         ))
     , non_elemental_boost_ptr (skills.skill_at("NON_ELEMENTAL_BOOST"))

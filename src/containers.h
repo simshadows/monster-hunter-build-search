@@ -30,7 +30,8 @@ public:
     void add_skills(const Database::ArmourPiece&);
 
     // Gets a skill's level. Skills that aren't in the container return zero.
-    unsigned int get_lvl(const Database::Skill*) const;
+    unsigned int get_lvl(const Database::Skill* skill) const;
+    unsigned int get_lvl(const Database::Skill* skill, const Database::Skill* associated_secret) const;
 
     std::string get_humanreadable() const;
 };
