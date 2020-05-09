@@ -1,5 +1,5 @@
 CXX=g++
-CXXFLAGS=-Wall -Werror -Wextra
+CXXFLAGS=-Wall -Werror -Wextra -fsanitize=address
 
 EXEC=mhwibs
 SRCDIR=src

@@ -23,7 +23,9 @@ Database::Database()
 
     , agitator_ptr            (skills.skill_at("AGITATOR"           ))
     , agitator_secret_ptr     (skills.skill_at("AGITATOR_SECRET"    ))
+    , attack_boost_ptr        (skills.skill_at("ATTACK_BOOST"       ))
     , critical_boost_ptr      (skills.skill_at("CRITICAL_BOOST"     ))
+    , critical_eye_ptr        (skills.skill_at("CRITICAL_EYE"       ))
     , handicraft_ptr          (skills.skill_at("HANDICRAFT"         ))
     , non_elemental_boost_ptr (skills.skill_at("NON_ELEMENTAL_BOOST"))
 {

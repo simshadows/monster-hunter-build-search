@@ -119,6 +119,10 @@ int main(int argc, char** argv) {
 
     MHWIBuildSearch::SkillMap skills;
     skills.set_lvl(db.non_elemental_boost_ptr, 1);
+    skills.set_lvl(db.agitator_ptr, 8);
+    skills.set_lvl(db.agitator_secret_ptr, 1);
+    skills.set_lvl(db.attack_boost_ptr, 7);
+    skills.set_lvl(db.critical_eye_ptr, 2);
 
     efr = MHWIBuildSearch::calculate_efr_from_skills_lookup(db, *weapon, skills);
     std::clog << efr << std::endl;

@@ -397,7 +397,9 @@ struct Database {
     // (As a bonus, this will call out any important skills not present in the database.)
     const Skill* const agitator_ptr;
     const Skill* const agitator_secret_ptr;
+    const Skill* const attack_boost_ptr;
     const Skill* const critical_boost_ptr;
+    const Skill* const critical_eye_ptr;
     const Skill* const handicraft_ptr;
     const Skill* const non_elemental_boost_ptr;
 
