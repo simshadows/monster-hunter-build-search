@@ -91,9 +91,13 @@ int main(int argc, char** argv) {
     const Database::Database db = Database::Database::get_db();
 
     std::unordered_map<const Database::Skill*, unsigned int> min_levels = {
-        {db.agitator_ptr, 0},
+        {db.weakness_exploit_ptr, 0},
+        {db.element_acceleration_ptr, 0},
     };
     std::unordered_map<const Database::Skill*, unsigned int> forced_states;
+    //std::unordered_map<const Database::Skill*, unsigned int> forced_states = {
+    //    {db.coalescence_ptr, 0},
+    //};
     MHWIBuildSearch::SkillSpec skill_spec(std::move(min_levels), std::move(forced_states));
     std::clog << std::endl << skill_spec.get_humanreadable() << std::endl << std::endl;
 
@@ -118,20 +122,17 @@ int main(int argc, char** argv) {
 
     double efr = MHWIBuildSearch::calculate_efr_from_gear_lookup(db, *weapon, armour, skill_spec);
     std::clog << efr << std::endl;
-    assert(Utils::round_2decpl(efr) == 390.31); // Quick test!
 
     /*
      * For testing purposes, we'll also do a by-skill lookup.
      */
 
-    weapon = db.weapons.at("LIGHTBREAK_BLADE");
+    weapon = db.weapons.at("ROYAL_VENUS_BLADE");
 
     MHWIBuildSearch::SkillMap skills;
+    skills.set_lvl(db.critical_boost_ptr, 3);
     skills.set_lvl(db.non_elemental_boost_ptr, 1);
-    skills.set_lvl(db.agitator_ptr, 8);
-    skills.set_lvl(db.agitator_secret_ptr, 1);
-    skills.set_lvl(db.attack_boost_ptr, 7);
-    skills.set_lvl(db.critical_eye_ptr, 2);
+    //skills.set_lvl(db.true_element_acceleration_ptr, 1);
 
     efr = MHWIBuildSearch::calculate_efr_from_skills_lookup(db, *weapon, skills, skill_spec);
     std::clog << efr << std::endl;

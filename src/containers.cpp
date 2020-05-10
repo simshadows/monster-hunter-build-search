@@ -176,6 +176,15 @@ unsigned int SkillMap::get_lvl(const Database::Skill * const skill,
 }
 
 
+bool SkillMap::binary_skill_is_lvl1(const Database::Skill* skill) const {
+    assert(skill->normal_limit == 1); // Must be a binary skill
+    assert(skill->secret_limit == 1); // Must not have a secret skill (for now)
+    const bool ret = Utils::map_has_key(this->data, skill);
+    assert((!ret) || (this->data.at(skill) == 1)); // If skill is present, its level is 1.
+    return ret;
+}
+
+
 //unsigned int SkillMap::get_lvl(const std::string& skill_id) const {
 //    for (const auto& e : this->data) {
 //        if (e.first->id == skill_id) return e.second;

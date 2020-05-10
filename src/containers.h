@@ -30,7 +30,7 @@ public:
     bool is_in_subset(const Database::Skill*) const;
     unsigned int get_min_lvl(const Database::Skill*) const;
     unsigned int get_state(const Database::Skill*) const;
-    bool get_state_for_binary_skill(const Database::Skill*) const; // Adds an assertion
+    bool get_state_for_binary_skill(const Database::Skill*) const; // Adds an assertion for skills with only two states
 
     std::string get_humanreadable() const;
 
@@ -58,6 +58,7 @@ public:
     unsigned int get_lvl(const Database::Skill* skill) const;
     //unsigned int get_lvl_no_secret(const Database::Skill* skill) const;
     unsigned int get_lvl(const Database::Skill* skill, const Database::Skill* associated_secret) const;
+    bool binary_skill_is_lvl1(const Database::Skill* skill) const; // Adds an assertion for skills with only two levels.
 
     std::string get_humanreadable() const;
 };
