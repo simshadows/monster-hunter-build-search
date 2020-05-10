@@ -71,6 +71,7 @@ static double calculate_raw_sharpness_modifier(const Database::Database& db,
 
 SkillContribution::SkillContribution(const Database::Database&       db,
                                      const SkillMap&                 skills,
+                                     const SkillSpec&                skills_spec,
                                      const Database::Weapon&         weapon,
                                      const Database::SharpnessGauge& maximum_sharpness) noexcept
     : added_raw               (0)
@@ -81,9 +82,11 @@ SkillContribution::SkillContribution(const Database::Database&       db,
 {
     // We calculate the remaining fields.
 
-    unsigned int agitator_lvl = skills.get_lvl(db.agitator_ptr, db.agitator_secret_ptr);
-    this->added_raw += agitator_added_raw[agitator_lvl];
-    this->added_aff += agitator_added_aff[agitator_lvl];
+    if (skills_spec.get_state_for_binary_skill(db.agitator_ptr)) {
+        unsigned int agitator_lvl = skills.get_lvl(db.agitator_ptr, db.agitator_secret_ptr);
+        this->added_raw += agitator_added_raw[agitator_lvl];
+        this->added_aff += agitator_added_aff[agitator_lvl];
+    }
 
     unsigned int attack_boost_lvl = skills.get_lvl(db.attack_boost_ptr);
     this->added_raw += attack_boost_added_raw[attack_boost_lvl];

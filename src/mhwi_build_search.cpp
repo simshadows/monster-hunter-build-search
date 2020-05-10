@@ -57,10 +57,11 @@ static double calculate_efr(unsigned int weapon_raw, // True raw, not bloated ra
 
 
 double calculate_efr_from_skills_lookup(const Database::Database& db,
-                                        const Database::Weapon& weapon,
-                                        const SkillMap& skills) {
+                                        const Database::Weapon&   weapon,
+                                        const SkillMap&           skills,
+                                        const SkillSpec&          skill_spec) {
 
-    SkillContribution sc(db, skills, weapon, weapon.maximum_sharpness);
+    SkillContribution sc(db, skills, skill_spec, weapon, weapon.maximum_sharpness);
     return calculate_efr(weapon.true_raw,
                          weapon.affinity,
                          sc.neb_multiplier,
@@ -72,10 +73,11 @@ double calculate_efr_from_skills_lookup(const Database::Database& db,
 
 
 double calculate_efr_from_gear_lookup(const Database::Database& db,
-                                      const Database::Weapon& weapon,
-                                      const ArmourEquips& armour) {
+                                      const Database::Weapon&   weapon,
+                                      const ArmourEquips&       armour,
+                                      const SkillSpec&          skill_spec) {
     SkillMap skills = armour.get_skills_without_set_bonuses();
-    return calculate_efr_from_skills_lookup(db, weapon, skills);
+    return calculate_efr_from_skills_lookup(db, weapon, skills, skill_spec);
 }
 
 
@@ -87,6 +89,13 @@ int main(int argc, char** argv) {
     (void)argv;
 
     const Database::Database db = Database::Database::get_db();
+
+    std::unordered_map<const Database::Skill*, unsigned int> min_levels = {
+        {db.agitator_ptr, 0},
+    };
+    std::unordered_map<const Database::Skill*, unsigned int> forced_states;
+    MHWIBuildSearch::SkillSpec skill_spec(std::move(min_levels), std::move(forced_states));
+    std::clog << std::endl << skill_spec.get_humanreadable() << std::endl << std::endl;
 
     /*
      * Using values for Royal Venus Blade with only one affinity augment and Elementless Jewel 2.
@@ -107,7 +116,7 @@ int main(int argc, char** argv) {
     std::clog << armour.get_humanreadable() << std::endl << std::endl;
     std::clog << armour.get_skills_without_set_bonuses().get_humanreadable() << std::endl << std::endl;
 
-    double efr = MHWIBuildSearch::calculate_efr_from_gear_lookup(db, *weapon, armour);
+    double efr = MHWIBuildSearch::calculate_efr_from_gear_lookup(db, *weapon, armour, skill_spec);
     std::clog << efr << std::endl;
     assert(Utils::round_2decpl(efr) == 390.31); // Quick test!
 
@@ -124,7 +133,7 @@ int main(int argc, char** argv) {
     skills.set_lvl(db.attack_boost_ptr, 7);
     skills.set_lvl(db.critical_eye_ptr, 2);
 
-    efr = MHWIBuildSearch::calculate_efr_from_skills_lookup(db, *weapon, skills);
+    efr = MHWIBuildSearch::calculate_efr_from_skills_lookup(db, *weapon, skills, skill_spec);
     std::clog << efr << std::endl;
     //assert(Utils::round_2decpl(efr) == 437.85); // Quick test!
 

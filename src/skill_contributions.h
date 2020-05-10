@@ -22,6 +22,7 @@ struct SkillContribution {
 
     SkillContribution(const Database::Database&,
                       const SkillMap&,
+                      const SkillSpec&,
                       const Database::Weapon&,
                       const Database::SharpnessGauge&) noexcept;
 };

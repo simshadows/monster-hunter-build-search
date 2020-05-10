@@ -15,6 +15,31 @@ namespace MHWIBuildSearch
 
 
 /****************************************************************************************
+ * SkillSpec
+ ***************************************************************************************/
+
+
+class SkillSpec {
+    std::unordered_map<const Database::Skill*, unsigned int> min_levels;
+    std::unordered_map<const Database::Skill*, unsigned int> states;
+public:
+    typedef std::unordered_map<const Database::Skill*, unsigned int> InputContainer;
+
+    SkillSpec(InputContainer&& new_min_levels, InputContainer&& forced_states) noexcept;
+
+    bool is_in_subset(const Database::Skill*) const;
+    unsigned int get_min_lvl(const Database::Skill*) const;
+    unsigned int get_state(const Database::Skill*) const;
+    bool get_state_for_binary_skill(const Database::Skill*) const; // Adds an assertion
+
+    std::string get_humanreadable() const;
+
+private:
+    bool data_is_valid() const;
+};
+
+
+/****************************************************************************************
  * SkillMap
  ***************************************************************************************/
 
@@ -31,6 +56,7 @@ public:
 
     // Gets a skill's level. Skills that aren't in the container return zero.
     unsigned int get_lvl(const Database::Skill* skill) const;
+    //unsigned int get_lvl_no_secret(const Database::Skill* skill) const;
     unsigned int get_lvl(const Database::Skill* skill, const Database::Skill* associated_secret) const;
 
     std::string get_humanreadable() const;

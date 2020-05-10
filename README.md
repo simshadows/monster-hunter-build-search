@@ -4,9 +4,15 @@
 
 As of the time of writing, a significantly more functional version is available at <https://github.com/simshadows/mhwi-build-search-prototype>. However, the goal is to bring everything into this C++ implementation, and continue work from here!
 
+## How do I use this?
+
+This doesn't really have a user interface yet as I'm merely assertion-testing to build the basic components for now.
+
+I'll write a detailed guide on how to use this thing later.
+
 ## Issues
 
-- There is a separation between the skills data in the database JSON file `data/database_skills.json` and the implemented skill calculations done by `src/skill_contributions.cpp`. If the JSON data changes, the implemented skill calculations can break. Please figure out a solution to this!
+- There is a separation between the skills data in the database JSON file `data/database_skills.json` and the implemented skill calculations done by `src/skill_contributions.cpp`. If the JSON data changes, the implemented skill calculations can break and cause array overflows. Please figure out a solution to this!
 
 ## License
 
