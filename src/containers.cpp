@@ -217,15 +217,20 @@ static constexpr std::size_t k_WAIST_INDEX = 3;
 static constexpr std::size_t k_LEGS_INDEX  = 4;
 
 
-ArmourEquips::ArmourEquips() noexcept {
-    for (const Database::ArmourPiece*& e : this->data) {
-        e = nullptr;
-    }
+ArmourEquips::ArmourEquips() noexcept
+    : data  {}
+    , charm {}
+{
 }
 
 
 void ArmourEquips::add(const Database::ArmourPiece* piece) {
     this->data[slot_to_index(piece->slot)] = piece;
+}
+
+
+void ArmourEquips::add(const Database::Charm* new_charm) {
+    this->charm = new_charm;
 }
 
 
@@ -240,6 +245,12 @@ SkillMap ArmourEquips::get_skills_without_set_bonuses() const {
         if (!armour_piece) continue;
         ret.add_skills(*armour_piece);
     }
+    if (this->charm) {
+        unsigned int charm_lvl = this->charm->max_charm_lvl;
+        for (const Database::Skill* const& skill : this->charm->skills) {
+            ret.increment_lvl(skill, charm_lvl);
+        }
+    }
     return ret;
 }
 
@@ -249,7 +260,8 @@ std::string ArmourEquips::get_humanreadable() const {
            + "\nChest: " + this->fetch_piece_name(k_CHEST_INDEX)
            + "\nArms:  " + this->fetch_piece_name(k_ARMS_INDEX)
            + "\nWaist: " + this->fetch_piece_name(k_WAIST_INDEX)
-           + "\nLegs:  " + this->fetch_piece_name(k_LEGS_INDEX);
+           + "\nLegs:  " + this->fetch_piece_name(k_LEGS_INDEX)
+           + "\nCharm: " + this->fetch_charm_name();
 }
 
 
@@ -270,6 +282,15 @@ std::string ArmourEquips::fetch_piece_name(const std::size_t index) const {
     const Database::ArmourPiece * const & piece = this->data[index];
     if (piece) {
         return piece->get_full_name();
+    } else {
+        return "[empty]";
+    }
+}
+
+
+std::string ArmourEquips::fetch_charm_name() const {
+    if (this->charm) {
+        return this->charm->name + " " + Utils::to_capital_roman_numerals(this->charm->max_charm_lvl);
     } else {
         return "[empty]";
     }

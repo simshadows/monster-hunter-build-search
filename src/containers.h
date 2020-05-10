@@ -69,15 +69,22 @@ public:
  ***************************************************************************************/
 
 
+// Charms will be considered an armour piece here, for algorithmic convenience.
+
+
 class ArmourEquips {
     static constexpr std::size_t k_NUM_ARMOUR_SLOTS = 5;
 
     std::array<const Database::ArmourPiece*, k_NUM_ARMOUR_SLOTS> data;
+
+    const Database::Charm* charm;
+    //unsigned int charm_lvl; // For now, we will only allow constructing max-level charms.
 public:
     ArmourEquips() noexcept;
-    ArmourEquips(const std::initializer_list<const Database::ArmourPiece>&) noexcept;
+    //ArmourEquips(const std::initializer_list<const Database::ArmourPiece>&) noexcept;
 
     void add(const Database::ArmourPiece*);
+    void add(const Database::Charm*);
 
     bool slot_is_filled(const Database::ArmourSlot&) const;
     SkillMap get_skills_without_set_bonuses() const;
@@ -89,6 +96,7 @@ private:
     static std::size_t slot_to_index(const Database::ArmourSlot&);
 
     std::string fetch_piece_name(std::size_t) const;
+    std::string fetch_charm_name() const;
 };
 
 

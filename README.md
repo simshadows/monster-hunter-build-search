@@ -13,6 +13,7 @@ I'll write a detailed guide on how to use this thing later.
 ## Issues
 
 - There is a separation between the skills data in the database JSON file `data/database_skills.json` and the implemented skill calculations done by `src/skill_contributions.cpp`. If the JSON data changes, the implemented skill calculations can break and cause array overflows. Please figure out a solution to this!
+- Will I need to change to different string types to properly use unicode?
 
 ## License
 

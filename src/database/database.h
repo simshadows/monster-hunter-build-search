@@ -375,6 +375,9 @@ public:
     // Constructor
     static const CharmsDatabase read_db_file(const std::string& filename, const SkillsDatabase& skills_db);
 
+    // Access
+    const Charm* at(const std::string& charm_id) const;
+
 private:
     CharmsDatabase() noexcept;
 };

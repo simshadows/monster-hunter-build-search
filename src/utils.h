@@ -35,6 +35,22 @@ inline bool has_ascii_letters(const std::string& s) noexcept {
     return false; // Reached the end of the string without seeing an ASCII letter.
 }
 
+// TODO: Implement a general solution if I happen to need more numerals.
+inline std::string to_capital_roman_numerals(unsigned int v) {
+    switch (v) {
+        case 0:
+            throw std::logic_error("Zero cannot be represented as a roman numeral.");
+        case 1: return "I";
+        case 2: return "II";
+        case 3: return "III";
+        case 4: return "IV";
+        case 5: return "V";
+        case 6: return "VI";
+        default:
+            throw std::logic_error("Roman numerals above VI (6) have not been implemented yet.");
+    }
+}
+
 // TODO: Eventually replace this with the C++20 std::unordered_map::contains method.
 template<class K,
          class M = std::unordered_map<K, class V>>

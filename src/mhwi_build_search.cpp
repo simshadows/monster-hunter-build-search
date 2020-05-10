@@ -92,12 +92,9 @@ int main(int argc, char** argv) {
 
     std::unordered_map<const Database::Skill*, unsigned int> min_levels = {
         {db.weakness_exploit_ptr, 0},
-        {db.element_acceleration_ptr, 0},
+        {db.agitator_ptr, 0},
     };
     std::unordered_map<const Database::Skill*, unsigned int> forced_states;
-    //std::unordered_map<const Database::Skill*, unsigned int> forced_states = {
-    //    {db.coalescence_ptr, 0},
-    //};
     MHWIBuildSearch::SkillSpec skill_spec(std::move(min_levels), std::move(forced_states));
     std::clog << std::endl << skill_spec.get_humanreadable() << std::endl << std::endl;
 
@@ -106,7 +103,7 @@ int main(int argc, char** argv) {
      */
 
     const Database::Weapon* weapon = db.weapons.at("ROYAL_VENUS_BLADE");
-    
+
     MHWIBuildSearch::ArmourEquips armour;
     armour.add(db.armour.at("Raging Brachy",
                             Database::Tier::master_rank,
@@ -116,6 +113,7 @@ int main(int argc, char** argv) {
                             Database::Tier::master_rank,
                             Database::ArmourVariant::master_rank_beta_plus,
                             Database::ArmourSlot::arms));
+    armour.add(db.charms.at("CHALLENGER_CHARM"));
     
     std::clog << armour.get_humanreadable() << std::endl << std::endl;
     std::clog << armour.get_skills_without_set_bonuses().get_humanreadable() << std::endl << std::endl;

@@ -86,7 +86,17 @@ const CharmsDatabase CharmsDatabase::read_db_file(const std::string& filename, c
                                                                     std::move(skills)) });
     }
 
-    return CharmsDatabase();
+    return new_db;
+}
+
+
+const Charm* CharmsDatabase::at(const std::string& charm_id) const {
+    assert(Utils::is_upper_snake_case(charm_id));
+    try {
+        return this->charms_map.at(charm_id).get();
+    } catch (std::out_of_range) {
+        throw std::out_of_range("Charm ID '" + charm_id + "' not found in the database.");
+    }
 }
 
 
