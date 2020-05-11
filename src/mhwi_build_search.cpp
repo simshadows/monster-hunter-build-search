@@ -7,6 +7,7 @@
 
 #include <iostream>
 #include <cmath>
+#include <vector>
 
 #include "core/core.h"
 #include "database/database.h"
@@ -56,8 +57,8 @@ static double calculate_efr(unsigned int weapon_raw, // True raw, not bloated ra
 }
 
 
-double calculate_efr_from_skills_lookup(const Database::Database&     db,
-                                        const Database::Weapon&       weapon,
+double calculate_efr_from_skills_lookup(const Database&               db,
+                                        const Weapon&                 weapon,
                                         const WeaponAugmentsInstance& weapon_augs,
                                         const SkillMap&               skills,
                                         const SkillSpec&              skill_spec) {
@@ -74,8 +75,8 @@ double calculate_efr_from_skills_lookup(const Database::Database&     db,
 }
 
 
-double calculate_efr_from_gear_lookup(const Database::Database&     db,
-                                      const Database::Weapon&       weapon,
+double calculate_efr_from_gear_lookup(const Database&               db,
+                                      const Weapon&                 weapon,
                                       const WeaponAugmentsInstance& weapon_augs,
                                       const ArmourEquips&           armour,
                                       const SkillSpec&              skill_spec) {
@@ -85,13 +86,13 @@ double calculate_efr_from_gear_lookup(const Database::Database&     db,
 
 
 void run() {
-    const Database::Database db = Database::Database::get_db();
+    const Database db = Database::get_db();
 
-    std::unordered_map<const Database::Skill*, unsigned int> min_levels = {
+    std::unordered_map<const Skill*, unsigned int> min_levels = {
         {db.weakness_exploit_ptr, 0},
         {db.agitator_ptr, 0},
     };
-    std::unordered_map<const Database::Skill*, unsigned int> forced_states;
+    std::unordered_map<const Skill*, unsigned int> forced_states;
     SkillSpec skill_spec(std::move(min_levels), std::move(forced_states));
     std::clog << std::endl << skill_spec.get_humanreadable() << std::endl << std::endl;
 
@@ -99,18 +100,18 @@ void run() {
      * Using values for Royal Venus Blade with only one affinity augment and Elementless Jewel 2.
      */
 
-    const Database::Weapon* weapon = db.weapons.at("ROYAL_VENUS_BLADE");
+    const Weapon* weapon = db.weapons.at("ROYAL_VENUS_BLADE");
     std::unique_ptr<WeaponAugmentsInstance> wa = WeaponAugmentsInstance::get_instance(*weapon);
 
     ArmourEquips armour;
     armour.add(db.armour.at("Raging Brachy",
-                            Database::Tier::master_rank,
-                            Database::ArmourVariant::master_rank_beta_plus,
-                            Database::ArmourSlot::head));
+                            Tier::master_rank,
+                            ArmourVariant::master_rank_beta_plus,
+                            ArmourSlot::head));
     armour.add(db.armour.at("Teostra",
-                            Database::Tier::master_rank,
-                            Database::ArmourVariant::master_rank_beta_plus,
-                            Database::ArmourSlot::arms));
+                            Tier::master_rank,
+                            ArmourVariant::master_rank_beta_plus,
+                            ArmourSlot::arms));
     armour.add(db.charms.at("CHALLENGER_CHARM"));
     
     std::clog << wa->get_humanreadable() << std::endl << std::endl;

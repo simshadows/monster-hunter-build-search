@@ -3,7 +3,6 @@
  * Author: <contact@simshadows.com>
  */
 
-#include <iostream>
 #include <fstream>
 #include <unordered_set>
 
@@ -12,24 +11,10 @@
 #include "database.h"
 
 
-namespace Database {
+namespace MHWIBuildSearch {
 
 
 constexpr unsigned int k_MINIMUM_SKILL_STATES = 2;
-
-
-Skill::Skill(std::string new_id,
-             std::string new_name,
-             unsigned int new_normal_limit,
-             unsigned int new_secret_limit,
-             unsigned int new_states) noexcept
-    : id           (new_id)
-    , name         (new_name)
-    , normal_limit (new_normal_limit)
-    , secret_limit (new_secret_limit)
-    , states       (new_states)
-{
-}
 
 
 // static

@@ -5,7 +5,7 @@
 
 #include "database.h"
 
-namespace Database {
+namespace MHWIBuildSearch {
 
 
 // Constructor

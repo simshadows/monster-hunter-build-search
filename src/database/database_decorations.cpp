@@ -11,23 +11,11 @@
 #include "database.h"
 
 
-namespace Database {
+namespace MHWIBuildSearch {
 
 
 static constexpr unsigned int k_SIMPLE_DECO_SKILL_LVL = 1;
 static constexpr unsigned int k_COMPLEX_DECO_SIZE = 4;
-
-
-Decoration::Decoration(std::string&& new_id,
-                       std::string&& new_name,
-                       unsigned int new_slot_size,
-                       std::vector<std::pair<const Skill*, unsigned int>>&& new_skills) noexcept
-    : id        (std::move(new_id       ))
-    , name      (std::move(new_name     ))
-    , slot_size (std::move(new_slot_size))
-    , skills    (std::move(new_skills   ))
-{
-}
 
 
 const DecorationsDatabase DecorationsDatabase::read_db_file(const std::string& filename,

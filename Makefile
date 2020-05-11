@@ -4,6 +4,8 @@ CXXFLAGS=-Wall -Werror -Wextra -fsanitize=address
 EXEC=mhwibs
 SRCDIR=src
 OBJECTS=$(SRCDIR)/mhwi_build_search.o \
+		$(SRCDIR)/core/build_components.o \
+		$(SRCDIR)/core/sharpness_gauge.o \
 		$(SRCDIR)/core/weapon_augments.o \
 		$(SRCDIR)/database/database.o \
 		$(SRCDIR)/database/database_skills.o \

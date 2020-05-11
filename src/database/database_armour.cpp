@@ -11,7 +11,7 @@
 #include "database.h"
 
 
-namespace Database {
+namespace MHWIBuildSearch {
 
 
 static constexpr std::size_t k_MAX_DECO_SLOTS_PER_PIECE = 3;
@@ -102,52 +102,6 @@ ArmourVariant upper_snake_case_to_armour_variant(const std::string& s) {
 
 Tier upper_snake_case_to_tier(const std::string& s) {
     return upper_snake_case_to_tier_map.at(s);
-}
-
-
-ArmourPiece::ArmourPiece(ArmourSlot                  new_slot,
-                         ArmourVariant               new_variant,
-                         std::vector<unsigned int>&& new_deco_slots,
-                         std::vector<std::pair<const Skill*, unsigned int>>&& new_skills,
-                         std::string&&               new_piece_name_postfix,
-                         const ArmourSet*            new_set,
-                         const SetBonus*             new_set_bonus) noexcept
-    : slot               (std::move(new_slot              ))
-    , variant            (std::move(new_variant           ))
-    , deco_slots         (std::move(new_deco_slots        ))
-    , skills             (std::move(new_skills            ))
-    , piece_name_postfix (std::move(new_piece_name_postfix))
-    , set                (std::move(new_set               ))
-    , set_bonus          (std::move(new_set_bonus         ))
-{
-}
-
-
-std::string ArmourPiece::get_full_name() const {
-    const std::string& prefix = this->set->piece_name_prefix;
-    const std::string& postfix = this->piece_name_postfix;
-    const std::string variant_str = armour_variant_to_name(this->variant);
-    if (variant_str.size() == 0) {
-        return prefix + " " + postfix;
-    } else {
-        return prefix + " " + postfix + " " + variant_str;
-    }
-}
-
-
-ArmourSet::ArmourSet(std::string&&   new_set_name,
-                     Tier            new_tier,
-                     std::string&&   new_piece_name_prefix,
-                     unsigned int    new_rarity,
-                     const SetBonus* new_set_bonus,
-                     std::vector<std::shared_ptr<ArmourPiece>>&& new_pieces) noexcept
-    : set_name          (std::move(new_set_name         ))
-    , tier              (std::move(new_tier             ))
-    , piece_name_prefix (std::move(new_piece_name_prefix))
-    , rarity            (std::move(new_rarity           ))
-    , set_bonus         (std::move(new_set_bonus        ))
-    , pieces            (std::move(new_pieces           ))
-{
 }
 
 

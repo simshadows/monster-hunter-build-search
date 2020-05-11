@@ -11,19 +11,7 @@
 #include "database.h"
 
 
-namespace Database {
-
-
-Charm::Charm(std::string&&               new_id,
-             std::string&&               new_name,
-             unsigned int                new_max_charm_lvl,
-             std::vector<const Skill*>&& new_skills) noexcept
-    : id            (std::move(new_id           ))
-    , name          (std::move(new_name         ))
-    , max_charm_lvl (std::move(new_max_charm_lvl))
-    , skills        (std::move(new_skills       ))
-{
-}
+namespace MHWIBuildSearch {
 
 
 const CharmsDatabase CharmsDatabase::read_db_file(const std::string& filename, const SkillsDatabase& skills_db) {

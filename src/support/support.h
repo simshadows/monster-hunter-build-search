@@ -8,6 +8,7 @@
 
 #include <unordered_map>
 
+#include "../core/core.h"
 #include "../database/database.h"
 
 namespace MHWIBuildSearch
@@ -20,17 +21,17 @@ namespace MHWIBuildSearch
 
 
 class SkillSpec {
-    std::unordered_map<const Database::Skill*, unsigned int> min_levels;
-    std::unordered_map<const Database::Skill*, unsigned int> states;
+    std::unordered_map<const Skill*, unsigned int> min_levels;
+    std::unordered_map<const Skill*, unsigned int> states;
 public:
-    typedef std::unordered_map<const Database::Skill*, unsigned int> InputContainer;
+    typedef std::unordered_map<const Skill*, unsigned int> InputContainer;
 
     SkillSpec(InputContainer&& new_min_levels, InputContainer&& forced_states) noexcept;
 
-    bool is_in_subset(const Database::Skill*) const;
-    unsigned int get_min_lvl(const Database::Skill*) const;
-    unsigned int get_state(const Database::Skill*) const;
-    bool get_state_for_binary_skill(const Database::Skill*) const; // Adds an assertion for skills with only two states
+    bool is_in_subset(const Skill*) const;
+    unsigned int get_min_lvl(const Skill*) const;
+    unsigned int get_state(const Skill*) const;
+    bool get_state_for_binary_skill(const Skill*) const; // Adds an assertion for skills with only two states
 
     std::string get_humanreadable() const;
 
@@ -46,19 +47,19 @@ private:
 
 // Note that this container automatically clips levels to secret_limit.
 class SkillMap {
-    std::unordered_map<const Database::Skill*, unsigned int> data;
+    std::unordered_map<const Skill*, unsigned int> data;
 public:
     SkillMap() noexcept;
 
-    void set_lvl(const Database::Skill* skill, unsigned int level);
-    void increment_lvl(const Database::Skill* skill, unsigned int level_to_add);
-    void add_skills(const Database::ArmourPiece&);
+    void set_lvl(const Skill* skill, unsigned int level);
+    void increment_lvl(const Skill* skill, unsigned int level_to_add);
+    void add_skills(const ArmourPiece&);
 
     // Gets a skill's level. Skills that aren't in the container return zero.
-    unsigned int get_lvl(const Database::Skill* skill) const;
-    //unsigned int get_lvl_no_secret(const Database::Skill* skill) const;
-    unsigned int get_lvl(const Database::Skill* skill, const Database::Skill* associated_secret) const;
-    bool binary_skill_is_lvl1(const Database::Skill* skill) const; // Adds an assertion for skills with only two levels.
+    unsigned int get_lvl(const Skill* skill) const;
+    //unsigned int get_lvl_no_secret(const Skill* skill) const;
+    unsigned int get_lvl(const Skill* skill, const Skill* associated_secret) const;
+    bool binary_skill_is_lvl1(const Skill* skill) const; // Adds an assertion for skills with only two levels.
 
     std::string get_humanreadable() const;
 };
@@ -75,25 +76,25 @@ public:
 class ArmourEquips {
     static constexpr std::size_t k_NUM_ARMOUR_SLOTS = 5;
 
-    std::array<const Database::ArmourPiece*, k_NUM_ARMOUR_SLOTS> data;
+    std::array<const ArmourPiece*, k_NUM_ARMOUR_SLOTS> data;
 
-    const Database::Charm* charm;
+    const Charm* charm;
     //unsigned int charm_lvl; // For now, we will only allow constructing max-level charms.
 public:
     ArmourEquips() noexcept;
-    //ArmourEquips(const std::initializer_list<const Database::ArmourPiece>&) noexcept;
+    //ArmourEquips(const std::initializer_list<const ArmourPiece>&) noexcept;
 
-    void add(const Database::ArmourPiece*);
-    void add(const Database::Charm*);
+    void add(const ArmourPiece*);
+    void add(const Charm*);
 
-    bool slot_is_filled(const Database::ArmourSlot&) const;
+    bool slot_is_filled(const ArmourSlot&) const;
     SkillMap get_skills_without_set_bonuses() const;
 
     std::string get_humanreadable() const;
 
 private:
     // TODO: This helper function is probably unnecessary. Try to get rid of it.
-    static std::size_t slot_to_index(const Database::ArmourSlot&);
+    static std::size_t slot_to_index(const ArmourSlot&);
 
     std::string fetch_piece_name(std::size_t) const;
     std::string fetch_charm_name() const;
@@ -112,11 +113,11 @@ struct SkillContribution {
     double       raw_crit_dmg_multiplier;
     double       raw_sharpness_modifier;
 
-    SkillContribution(const Database::Database&,
+    SkillContribution(const Database&,
                       const SkillMap&,
                       const SkillSpec&,
-                      const Database::Weapon&,
-                      const Database::SharpnessGauge&) noexcept;
+                      const Weapon&,
+                      const SharpnessGauge&) noexcept;
 };
 
 
