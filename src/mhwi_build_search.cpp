@@ -11,6 +11,7 @@
 #include "containers.h"
 #include "database/database.h"
 #include "skill_contributions.h"
+#include "weapon_customization.h"
 #include "utils.h"
 
 
@@ -56,38 +57,35 @@ static double calculate_efr(unsigned int weapon_raw, // True raw, not bloated ra
 }
 
 
-double calculate_efr_from_skills_lookup(const Database::Database& db,
-                                        const Database::Weapon&   weapon,
-                                        const SkillMap&           skills,
-                                        const SkillSpec&          skill_spec) {
+double calculate_efr_from_skills_lookup(const Database::Database&     db,
+                                        const Database::Weapon&       weapon,
+                                        const WeaponAugmentsInstance& weapon_augs,
+                                        const SkillMap&               skills,
+                                        const SkillSpec&              skill_spec) {
 
     SkillContribution sc(db, skills, skill_spec, weapon, weapon.maximum_sharpness);
+    WeaponAugmentsContribution wac = weapon_augs.calculate_contribution();
     return calculate_efr(weapon.true_raw,
                          weapon.affinity,
                          sc.neb_multiplier,
-                         sc.added_raw + k_POWERCHARM_RAW + k_POWERTALON_RAW,
-                         sc.added_aff,
+                         sc.added_raw + wac.added_raw + k_POWERCHARM_RAW + k_POWERTALON_RAW,
+                         sc.added_aff + wac.added_aff,
                          sc.raw_crit_dmg_multiplier,
                          sc.raw_sharpness_modifier);
 }
 
 
-double calculate_efr_from_gear_lookup(const Database::Database& db,
-                                      const Database::Weapon&   weapon,
-                                      const ArmourEquips&       armour,
-                                      const SkillSpec&          skill_spec) {
+double calculate_efr_from_gear_lookup(const Database::Database&     db,
+                                      const Database::Weapon&       weapon,
+                                      const WeaponAugmentsInstance& weapon_augs,
+                                      const ArmourEquips&           armour,
+                                      const SkillSpec&              skill_spec) {
     SkillMap skills = armour.get_skills_without_set_bonuses();
-    return calculate_efr_from_skills_lookup(db, weapon, skills, skill_spec);
+    return calculate_efr_from_skills_lookup(db, weapon, weapon_augs, skills, skill_spec);
 }
 
 
-} // namespace
-
-
-int main(int argc, char** argv) {
-    (void)argc;
-    (void)argv;
-
+void run() {
     const Database::Database db = Database::Database::get_db();
 
     std::unordered_map<const Database::Skill*, unsigned int> min_levels = {
@@ -95,7 +93,7 @@ int main(int argc, char** argv) {
         {db.agitator_ptr, 0},
     };
     std::unordered_map<const Database::Skill*, unsigned int> forced_states;
-    MHWIBuildSearch::SkillSpec skill_spec(std::move(min_levels), std::move(forced_states));
+    SkillSpec skill_spec(std::move(min_levels), std::move(forced_states));
     std::clog << std::endl << skill_spec.get_humanreadable() << std::endl << std::endl;
 
     /*
@@ -103,8 +101,9 @@ int main(int argc, char** argv) {
      */
 
     const Database::Weapon* weapon = db.weapons.at("ROYAL_VENUS_BLADE");
+    std::unique_ptr<WeaponAugmentsInstance> wa = WeaponAugmentsInstance::get_instance(*weapon);
 
-    MHWIBuildSearch::ArmourEquips armour;
+    ArmourEquips armour;
     armour.add(db.armour.at("Raging Brachy",
                             Database::Tier::master_rank,
                             Database::ArmourVariant::master_rank_beta_plus,
@@ -115,10 +114,11 @@ int main(int argc, char** argv) {
                             Database::ArmourSlot::arms));
     armour.add(db.charms.at("CHALLENGER_CHARM"));
     
+    std::clog << wa->get_humanreadable() << std::endl << std::endl;
     std::clog << armour.get_humanreadable() << std::endl << std::endl;
     std::clog << armour.get_skills_without_set_bonuses().get_humanreadable() << std::endl << std::endl;
 
-    double efr = MHWIBuildSearch::calculate_efr_from_gear_lookup(db, *weapon, armour, skill_spec);
+    double efr = calculate_efr_from_gear_lookup(db, *weapon, *wa, armour, skill_spec);
     std::clog << efr << std::endl;
 
     /*
@@ -126,15 +126,27 @@ int main(int argc, char** argv) {
      */
 
     weapon = db.weapons.at("ROYAL_VENUS_BLADE");
+    wa = WeaponAugmentsInstance::get_instance(*weapon);
 
-    MHWIBuildSearch::SkillMap skills;
+    SkillMap skills;
     skills.set_lvl(db.critical_boost_ptr, 3);
     skills.set_lvl(db.non_elemental_boost_ptr, 1);
     //skills.set_lvl(db.true_element_acceleration_ptr, 1);
 
-    efr = MHWIBuildSearch::calculate_efr_from_skills_lookup(db, *weapon, skills, skill_spec);
+    efr = calculate_efr_from_skills_lookup(db, *weapon, *wa, skills, skill_spec);
     std::clog << efr << std::endl;
     //assert(Utils::round_2decpl(efr) == 437.85); // Quick test!
+}
+
+
+} // namespace
+
+
+int main(int argc, char** argv) {
+    (void)argc;
+    (void)argv;
+
+    MHWIBuildSearch::run();
 
     return 0;
 }

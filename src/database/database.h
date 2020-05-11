@@ -158,6 +158,13 @@ enum class WeaponClass {
 };
 
 
+enum class WeaponAugmentationScheme {
+    none,
+    //base_game, // Currently unused.
+    iceborne,
+};
+
+
 constexpr std::size_t k_SHARPNESS_LEVELS = 7;
 
 
@@ -218,8 +225,8 @@ struct Weapon {
 
     const Skill* const   skill; // nullptr if no skill.
 
-    const std::string    augmentation_scheme;
-    const std::string    upgrade_scheme;
+    const WeaponAugmentationScheme augmentation_scheme;
+    const std::string              upgrade_scheme;
 
     const SharpnessGauge maximum_sharpness;
     const bool           is_constant_sharpness;

@@ -11,7 +11,8 @@ OBJECTS=$(SRCDIR)/mhwi_build_search.o \
 		$(SRCDIR)/database/database_armour.o \
 		$(SRCDIR)/database/database_charms.o \
 		$(SRCDIR)/containers.o \
-		$(SRCDIR)/skill_contributions.o
+		$(SRCDIR)/skill_contributions.o \
+		$(SRCDIR)/weapon_customization.o
 
 .PHONY : all
 all :

@@ -36,41 +36,32 @@ static const std::unordered_map<std::string, WeaponClass> str_to_weaponclass = {
     {"LIGHT_BOWGUN"    , WeaponClass::light_bowgun    },
 };
 
-static constexpr double k_GREATSWORD_BLOAT       = 4.8;
-static constexpr double k_LONGSWORD_BLOAT        = 3.3;
-static constexpr double k_SWORD_AND_SHIELD_BLOAT = 1.4;
-static constexpr double k_DUAL_BLADES_BLOAT      = 1.4;
-static constexpr double k_HAMMER_BLOAT           = 5.2;
-static constexpr double k_HUNTING_HORN_BLOAT     = 4.2;
-static constexpr double k_LANCE_BLOAT            = 2.3;
-static constexpr double k_GUNLANCE_BLOAT         = 2.3;
-static constexpr double k_SWITCHAXE_BLOAT        = 3.5;
-static constexpr double k_CHARGE_BLADE_BLOAT     = 3.6;
-static constexpr double k_INSECT_GLAIVE_BLOAT    = 4.1;
-static constexpr double k_BOW_BLOAT              = 1.2;
-static constexpr double k_HEAVY_BOWGUN_BLOAT     = 1.5;
-static constexpr double k_LIGHT_BOWGUN_BLOAT     = 1.3;
-
 static double weaponclass_to_bloat_value(const WeaponClass wt) {
     switch (wt) {
-        case WeaponClass::greatsword:       return k_GREATSWORD_BLOAT;
-        case WeaponClass::longsword:        return k_LONGSWORD_BLOAT;
-        case WeaponClass::sword_and_shield: return k_SWORD_AND_SHIELD_BLOAT;
-        case WeaponClass::dual_blades:      return k_DUAL_BLADES_BLOAT;
-        case WeaponClass::hammer:           return k_HAMMER_BLOAT;
-        case WeaponClass::hunting_horn:     return k_HUNTING_HORN_BLOAT;
-        case WeaponClass::lance:            return k_LANCE_BLOAT;
-        case WeaponClass::gunlance:         return k_GUNLANCE_BLOAT;
-        case WeaponClass::switchaxe:        return k_SWITCHAXE_BLOAT;
-        case WeaponClass::charge_blade:     return k_CHARGE_BLADE_BLOAT;
-        case WeaponClass::insect_glaive:    return k_INSECT_GLAIVE_BLOAT;
-        case WeaponClass::bow:              return k_BOW_BLOAT;
-        case WeaponClass::heavy_bowgun:     return k_HEAVY_BOWGUN_BLOAT;
-        case WeaponClass::light_bowgun:     return k_LIGHT_BOWGUN_BLOAT;
+        case WeaponClass::greatsword:       return 4.8;
+        case WeaponClass::longsword:        return 3.3;
+        case WeaponClass::sword_and_shield: return 1.4;
+        case WeaponClass::dual_blades:      return 1.4;
+        case WeaponClass::hammer:           return 5.2;
+        case WeaponClass::hunting_horn:     return 4.2;
+        case WeaponClass::lance:            return 2.3;
+        case WeaponClass::gunlance:         return 2.3;
+        case WeaponClass::switchaxe:        return 3.5;
+        case WeaponClass::charge_blade:     return 3.6;
+        case WeaponClass::insect_glaive:    return 4.1;
+        case WeaponClass::bow:              return 1.2;
+        case WeaponClass::heavy_bowgun:     return 1.5;
+        case WeaponClass::light_bowgun:     return 1.3;
         default:
             throw "invalid weapon class";
     }
 }
+
+static const std::unordered_map<std::string, WeaponAugmentationScheme> str_to_augmentation_scheme = {
+    {"NONE"     , WeaponAugmentationScheme::none},
+    //{"BASE_GAME", WeaponAugmentationScheme::base_game}, // Currently unused.
+    {"ICEBORNE" , WeaponAugmentationScheme::iceborne},
+};
 
 static constexpr double k_RAW_SHARPNESS_MODIFIER_RED    = 0.50;
 static constexpr double k_RAW_SHARPNESS_MODIFIER_ORANGE = 0.75;
@@ -225,7 +216,7 @@ const WeaponsDatabase WeaponsDatabase::read_db_file(const std::string& filename,
             skill = skills_db.skill_at(skill_id);
         }
 
-        std::string augmentation_scheme = jj["augmentation_scheme"];
+        WeaponAugmentationScheme augmentation_scheme = str_to_augmentation_scheme.at(jj["augmentation_scheme"]);
         std::string upgrade_scheme = jj["upgrade_scheme"];
 
         SharpnessGauge maximum_sharpness = SharpnessGauge::from_vector(jj["maximum_sharpness"]);
