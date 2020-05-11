@@ -16,9 +16,6 @@ namespace MHWIBuildSearch
 constexpr unsigned int k_MIN_RARITY = 1;
 constexpr unsigned int k_MAX_RARITY = 12;
 
-constexpr unsigned int k_MIN_DECO_SIZE = 1;
-constexpr unsigned int k_MAX_DECO_SIZE = 4;
-
 enum class Tier {
     low_rank,
     high_rank,
@@ -126,6 +123,10 @@ struct SetBonus {
 /****************************************************************************************
  * Basic Build Components: Decoration
  ***************************************************************************************/
+
+
+constexpr unsigned int k_MIN_DECO_SIZE = 1;
+constexpr unsigned int k_MAX_DECO_SIZE = 4;
 
 
 struct Decoration {
@@ -292,11 +293,36 @@ struct Charm {
  ***************************************************************************************/
 
 
+enum class WeaponAugment {
+    augment_lvl, // Technically not an augment.
+
+    attack_increase,
+    affinity_increase,
+    //defense_increase, // Not yet supported.
+    slot_upgrade,
+    health_regen,
+    //element_status_effect_up, // Not yet supported.
+};
+
+
 struct WeaponAugmentsContribution {
-    unsigned int added_raw;
-    int          added_aff;
-    unsigned int extra_deco_slot_size;
-    bool         health_regen_active;
+    unsigned int added_raw            {0};
+    int          added_aff            {0};
+    unsigned int extra_deco_slot_size {0};
+    bool         health_regen_active  {false};
+};
+
+
+class InvalidChange : public std::exception {
+    const char * const msg;
+public:
+    InvalidChange(const char * const new_msg) noexcept
+        : msg (new_msg)
+    {
+    }
+    const char* what() const noexcept {
+        return msg;
+    }
 };
 
 
@@ -304,9 +330,12 @@ class WeaponAugmentsInstance {
 public:
     static std::unique_ptr<WeaponAugmentsInstance> get_instance(const Weapon&);
 
+    // Access
     virtual WeaponAugmentsContribution calculate_contribution() const = 0;
-    
     virtual std::string get_humanreadable() const = 0;
+
+    // Modification
+    virtual void set_augment(WeaponAugment augment, unsigned int lvl) = 0;
 
     virtual ~WeaponAugmentsInstance() {}
 };

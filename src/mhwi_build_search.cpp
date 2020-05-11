@@ -100,8 +100,11 @@ void run() {
      * Using values for Royal Venus Blade with only one affinity augment and Elementless Jewel 2.
      */
 
-    const Weapon* weapon = db.weapons.at("ROYAL_VENUS_BLADE");
+    const Weapon* weapon = db.weapons.at("JAGRAS_DEATHCLAW_II");
     std::unique_ptr<WeaponAugmentsInstance> wa = WeaponAugmentsInstance::get_instance(*weapon);
+    wa->set_augment(WeaponAugment::affinity_increase, 1);
+    wa->set_augment(WeaponAugment::augment_lvl, 3);
+    wa->set_augment(WeaponAugment::attack_increase, 3);
 
     ArmourEquips armour;
     armour.add(db.armour.at("Raging Brachy",

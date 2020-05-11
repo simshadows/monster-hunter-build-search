@@ -116,26 +116,26 @@ const WeaponsDatabase WeaponsDatabase::read_db_file(const std::string& filename,
 
         // TODO: Ensure efficient construction of the Weapon object?
         //       I mean, inefficiency isn't so bad here, but let's try to do it right anyway lol
-        new_db.all_weapons.push_back(Weapon {weapon_id,
+        new_db.all_weapons.push_back(Weapon {std::move(weapon_id),
 
-                                             weapon_class,
+                                             std::move(weapon_class),
 
-                                             name,
-                                             rarity,
-                                             true_raw,
-                                             affinity,
+                                             std::move(name),
+                                             std::move(rarity),
+                                             std::move(true_raw),
+                                             std::move(affinity),
 
-                                             is_raw,
+                                             std::move(is_raw),
 
-                                             deco_slots,
+                                             std::move(deco_slots),
 
-                                             skill,
+                                             std::move(skill),
 
-                                             augmentation_scheme,
-                                             upgrade_scheme,
+                                             std::move(augmentation_scheme),
+                                             std::move(upgrade_scheme),
 
-                                             maximum_sharpness,
-                                             is_constant_sharpness});
+                                             std::move(maximum_sharpness),
+                                             std::move(is_constant_sharpness) });
 
     }
 
