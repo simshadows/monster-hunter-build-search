@@ -10,6 +10,7 @@
 
 #include "core/core.h"
 #include "database/database.h"
+#include "support/support.h"
 #include "utils.h"
 
 
