@@ -5,7 +5,7 @@
 
 #include <assert.h>
 
-#include "skill_contributions.h"
+#include "core.h"
 
 namespace MHWIBuildSearch
 {

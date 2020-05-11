@@ -8,10 +8,8 @@
 #include <iostream>
 #include <cmath>
 
-#include "containers.h"
+#include "core/core.h"
 #include "database/database.h"
-#include "skill_contributions.h"
-#include "weapon_customization.h"
 #include "utils.h"
 
 

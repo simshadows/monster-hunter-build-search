@@ -1,14 +1,14 @@
 /*
- * File: containers.h
+ * File: core.h
  * Author: <contact@simshadows.com>
  */
 
-#ifndef CONTAINERS_H
-#define CONTAINERS_H
+#ifndef MHWIBS_CORE_H
+#define MHWIBS_CORE_H
 
 #include <unordered_map>
 
-#include "database/database.h"
+#include "../database/database.h"
 
 namespace MHWIBuildSearch
 {
@@ -100,7 +100,52 @@ private:
 };
 
 
+/****************************************************************************************
+ * SkillContribution
+ ***************************************************************************************/
+
+
+struct SkillContribution {
+    unsigned int added_raw;
+    int          added_aff;
+    double       neb_multiplier;
+    double       raw_crit_dmg_multiplier;
+    double       raw_sharpness_modifier;
+
+    SkillContribution(const Database::Database&,
+                      const SkillMap&,
+                      const SkillSpec&,
+                      const Database::Weapon&,
+                      const Database::SharpnessGauge&) noexcept;
+};
+
+
+/****************************************************************************************
+ * WeaponAugmentsInstance
+ ***************************************************************************************/
+
+
+struct WeaponAugmentsContribution {
+    unsigned int added_raw;
+    int          added_aff;
+    unsigned int extra_deco_slot_size;
+    bool         health_regen_active;
+};
+
+
+class WeaponAugmentsInstance {
+public:
+    static std::unique_ptr<WeaponAugmentsInstance> get_instance(const Database::Weapon&);
+
+    virtual WeaponAugmentsContribution calculate_contribution() const = 0;
+    
+    virtual std::string get_humanreadable() const = 0;
+
+    virtual ~WeaponAugmentsInstance() {}
+};
+
+
 } // namespace
 
-#endif // CONTAINERS_H
+#endif // MHWIBS_CORE_H
 

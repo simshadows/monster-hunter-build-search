@@ -1,17 +1,12 @@
 /*
- * File: weapon_customization.cpp
+ * File: weapon_augments.cpp
  * Author: <contact@simshadows.com>
  */
 
-#include "weapon_customization.h"
+#include "core.h"
 
 namespace MHWIBuildSearch
 {
-
-
-/****************************************************************************************
- * WeaponAugmentsInstance
- ***************************************************************************************/
 
 
 class NoWeaponAugments : public WeaponAugmentsInstance {
