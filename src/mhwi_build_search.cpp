@@ -58,30 +58,28 @@ static double calculate_efr(unsigned int weapon_raw, // True raw, not bloated ra
 
 
 double calculate_efr_from_skills_lookup(const Database&               db,
-                                        const Weapon&                 weapon,
-                                        const WeaponAugmentsInstance& weapon_augs,
+                                        const WeaponInstance&         weapon,
                                         const SkillMap&               skills,
                                         const SkillSpec&              skill_spec) {
+    WeaponContribution wc = weapon.calculate_contribution();
 
-    SkillContribution sc(db, skills, skill_spec, weapon, weapon.maximum_sharpness);
-    WeaponAugmentsContribution wac = weapon_augs.calculate_contribution();
-    return calculate_efr(weapon.true_raw,
-                         weapon.affinity,
+    SkillContribution sc(db, skills, skill_spec, *weapon.weapon, wc.maximum_sharpness);
+    return calculate_efr(wc.weapon_raw,
+                         wc.weapon_aff,
                          sc.neb_multiplier,
-                         sc.added_raw + wac.added_raw + k_POWERCHARM_RAW + k_POWERTALON_RAW,
-                         sc.added_aff + wac.added_aff,
+                         sc.added_raw + k_POWERCHARM_RAW + k_POWERTALON_RAW,
+                         sc.added_aff,
                          sc.raw_crit_dmg_multiplier,
                          sc.raw_sharpness_modifier);
 }
 
 
 double calculate_efr_from_gear_lookup(const Database&               db,
-                                      const Weapon&                 weapon,
-                                      const WeaponAugmentsInstance& weapon_augs,
+                                      const WeaponInstance&         weapon,
                                       const ArmourEquips&           armour,
                                       const SkillSpec&              skill_spec) {
     SkillMap skills = armour.get_skills_without_set_bonuses();
-    return calculate_efr_from_skills_lookup(db, weapon, weapon_augs, skills, skill_spec);
+    return calculate_efr_from_skills_lookup(db, weapon, skills, skill_spec);
 }
 
 
@@ -100,11 +98,10 @@ void run() {
      * Using values for Royal Venus Blade with only one affinity augment and Elementless Jewel 2.
      */
 
-    const Weapon* weapon = db.weapons.at("JAGRAS_DEATHCLAW_II");
-    std::unique_ptr<WeaponAugmentsInstance> wa = WeaponAugmentsInstance::get_instance(*weapon);
-    wa->set_augment(WeaponAugment::affinity_increase, 1);
-    wa->set_augment(WeaponAugment::augment_lvl, 3);
-    wa->set_augment(WeaponAugment::attack_increase, 3);
+    WeaponInstance weapon(db.weapons.at("JAGRAS_DEATHCLAW_II"));
+    weapon.augments->set_augment(WeaponAugment::affinity_increase, 1);
+    weapon.augments->set_augment(WeaponAugment::augment_lvl, 3);
+    weapon.augments->set_augment(WeaponAugment::attack_increase, 3);
 
     ArmourEquips armour;
     armour.add(db.armour.at("Raging Brachy",
@@ -117,26 +114,25 @@ void run() {
                             ArmourSlot::arms));
     armour.add(db.charms.at("CHALLENGER_CHARM"));
     
-    std::clog << wa->get_humanreadable() << std::endl << std::endl;
+    std::clog << weapon.get_humanreadable() << std::endl << std::endl;
     std::clog << armour.get_humanreadable() << std::endl << std::endl;
     std::clog << armour.get_skills_without_set_bonuses().get_humanreadable() << std::endl << std::endl;
 
-    double efr = calculate_efr_from_gear_lookup(db, *weapon, *wa, armour, skill_spec);
+    double efr = calculate_efr_from_gear_lookup(db, weapon, armour, skill_spec);
     std::clog << efr << std::endl;
 
     /*
      * For testing purposes, we'll also do a by-skill lookup.
      */
 
-    weapon = db.weapons.at("ROYAL_VENUS_BLADE");
-    wa = WeaponAugmentsInstance::get_instance(*weapon);
+    weapon = WeaponInstance(db.weapons.at("ROYAL_VENUS_BLADE"));
 
     SkillMap skills;
     skills.set_lvl(db.critical_boost_ptr, 3);
     skills.set_lvl(db.non_elemental_boost_ptr, 1);
     //skills.set_lvl(db.true_element_acceleration_ptr, 1);
 
-    efr = calculate_efr_from_skills_lookup(db, *weapon, *wa, skills, skill_spec);
+    efr = calculate_efr_from_skills_lookup(db, weapon, skills, skill_spec);
     std::clog << efr << std::endl;
     //assert(Utils::round_2decpl(efr) == 437.85); // Quick test!
 }

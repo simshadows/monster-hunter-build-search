@@ -102,6 +102,42 @@ private:
 
 
 /****************************************************************************************
+ * WeaponInstance
+ ***************************************************************************************/
+
+
+struct WeaponContribution {
+    unsigned int              weapon_raw;
+    int                       weapon_aff;
+
+    bool                      is_raw;
+
+    std::vector<unsigned int> deco_slots;
+    const Skill*              skill;
+    const SetBonus*           set_bonus;
+
+    SharpnessGauge            maximum_sharpness;
+    bool                      is_constant_sharpness;
+
+    bool                      health_regen_active;
+};
+
+
+struct WeaponInstance {
+    const Weapon* weapon;
+
+    // It is assumed that this field is constructed 
+    std::unique_ptr<WeaponAugmentsInstance> augments;
+    std::unique_ptr<WeaponUpgradesInstance> upgrades;
+
+    WeaponInstance(const Weapon*) noexcept; // Generates a fresh weapon instance with no augments/upgrades.
+
+    WeaponContribution calculate_contribution() const;
+    std::string get_humanreadable() const;
+};
+
+
+/****************************************************************************************
  * SkillContribution
  ***************************************************************************************/
 

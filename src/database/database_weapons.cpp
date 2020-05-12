@@ -63,6 +63,12 @@ static const std::unordered_map<std::string, WeaponAugmentationScheme> str_to_au
     {"ICEBORNE" , WeaponAugmentationScheme::iceborne},
 };
 
+static const std::unordered_map<std::string, WeaponUpgradeScheme> str_to_upgrade_scheme = {
+    {"NONE"           , WeaponUpgradeScheme::none},
+    {"ICEBORNE_CUSTOM", WeaponUpgradeScheme::iceborne_custom},
+    {"ICEBORNE_SAFI"  , WeaponUpgradeScheme::iceborne_safi},
+};
+
 
 // static
 const WeaponsDatabase WeaponsDatabase::read_db_file(const std::string& filename, const SkillsDatabase& skills_db) {
@@ -109,7 +115,7 @@ const WeaponsDatabase WeaponsDatabase::read_db_file(const std::string& filename,
         }
 
         WeaponAugmentationScheme augmentation_scheme = str_to_augmentation_scheme.at(jj["augmentation_scheme"]);
-        std::string upgrade_scheme = jj["upgrade_scheme"];
+        WeaponUpgradeScheme upgrade_scheme = str_to_upgrade_scheme.at(jj["upgrade_scheme"]);
 
         SharpnessGauge maximum_sharpness = SharpnessGauge::from_vector(jj["maximum_sharpness"]);
         bool is_constant_sharpness = jj["constant_sharpness"];

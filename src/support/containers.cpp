@@ -297,5 +297,57 @@ std::string ArmourEquips::fetch_charm_name() const {
 }
 
 
+/****************************************************************************************
+ * WeaponInstance
+ ***************************************************************************************/
+
+
+WeaponInstance::WeaponInstance(const Weapon * const new_weapon) noexcept
+    : weapon   (new_weapon)
+    , augments (WeaponAugmentsInstance::get_instance(weapon))
+    , upgrades (WeaponUpgradesInstance::get_instance(weapon))
+{
+}
+
+
+WeaponContribution WeaponInstance::calculate_contribution() const {
+    WeaponAugmentsContribution ac = this->augments->calculate_contribution();
+    WeaponUpgradesContribution uc = this->upgrades->calculate_contribution();
+
+    WeaponContribution ret = {
+        this->weapon->true_raw + ac.added_raw + uc.added_raw,
+        this->weapon->affinity + ac.added_aff + uc.added_aff,
+
+        this->weapon->is_raw,
+
+        this->weapon->deco_slots,
+        this->weapon->skill,
+        uc.set_bonus,
+
+        uc.sharpness_gauge_override,
+        this->weapon->is_constant_sharpness,
+
+        ac.health_regen_active,
+    };
+
+    // Now, we finish off any bits we have remaining.
+    if (ac.extra_deco_slot_size != 0) {
+        ret.deco_slots.emplace_back(ac.extra_deco_slot_size);
+    }
+    if (uc.extra_deco_slot_size != 0) {
+        ret.deco_slots.emplace_back(uc.extra_deco_slot_size);
+    }
+
+    return ret;
+}
+
+
+std::string WeaponInstance::get_humanreadable() const {
+    return this->weapon->name
+           + "\n\n" + this->upgrades->get_humanreadable()
+           + "\n\n" + this->augments->get_humanreadable();
+}
+
+
 } // namespace
 

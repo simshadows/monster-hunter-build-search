@@ -7,6 +7,7 @@ OBJECTS=$(SRCDIR)/mhwi_build_search.o \
 		$(SRCDIR)/core/build_components.o \
 		$(SRCDIR)/core/sharpness_gauge.o \
 		$(SRCDIR)/core/weapon_augments.o \
+		$(SRCDIR)/core/weapon_upgrades.o \
 		$(SRCDIR)/database/database.o \
 		$(SRCDIR)/database/database_skills.o \
 		$(SRCDIR)/database/database_decorations.o \

@@ -16,7 +16,7 @@
         "skill" : null,
 
         "augmentation_scheme": "ICEBORNE",
-        "upgrade_scheme"     : "ICEBORNE_COMMON"
+        "upgrade_scheme"     : "ICEBORNE_CUSTOM"
     },
     "RUINOUS_ATROCITY": {
         "class" : "GREATSWORD",
@@ -54,7 +54,7 @@
         "skill" : null,
 
         "augmentation_scheme": "ICEBORNE",
-        "upgrade_scheme"     : "ICEBORNE_COMMON"
+        "upgrade_scheme"     : "ICEBORNE_CUSTOM"
     },
     "PALADIRE": {
         "class" : "GREATSWORD",
@@ -92,7 +92,7 @@
         "skill" : null,
 
         "augmentation_scheme": "ICEBORNE",
-        "upgrade_scheme"     : "ICEBORNE_COMMON"
+        "upgrade_scheme"     : "ICEBORNE_CUSTOM"
     },
     "MAMMOTH_GREATAXE_II": {
         "class" : "GREATSWORD",
@@ -111,7 +111,7 @@
         "skill" : null,
 
         "augmentation_scheme": "ICEBORNE",
-        "upgrade_scheme"     : "ICEBORNE_COMMON"
+        "upgrade_scheme"     : "ICEBORNE_CUSTOM"
     },
     "NAAGA_GUILLOTINE_II": {
         "class" : "GREATSWORD",
@@ -130,7 +130,7 @@
         "skill" : null,
 
         "augmentation_scheme": "ICEBORNE",
-        "upgrade_scheme"     : "ICEBORNE_COMMON"
+        "upgrade_scheme"     : "ICEBORNE_CUSTOM"
     },
     "HIDDEN_BLADE_II": {
         "class" : "GREATSWORD",
@@ -149,7 +149,7 @@
         "skill" : null,
 
         "augmentation_scheme": "ICEBORNE",
-        "upgrade_scheme"     : "ICEBORNE_COMMON"
+        "upgrade_scheme"     : "ICEBORNE_CUSTOM"
     },
     "PYRE_CLEAVER_II": {
         "class" : "GREATSWORD",
@@ -168,7 +168,7 @@
         "skill" : null,
 
         "augmentation_scheme": "ICEBORNE",
-        "upgrade_scheme"     : "ICEBORNE_COMMON"
+        "upgrade_scheme"     : "ICEBORNE_CUSTOM"
     },
     "GLAVENUS_BLAZE_II": {
         "class" : "GREATSWORD",
@@ -187,7 +187,7 @@
         "skill" : null,
 
         "augmentation_scheme": "ICEBORNE",
-        "upgrade_scheme"     : "ICEBORNE_COMMON"
+        "upgrade_scheme"     : "ICEBORNE_CUSTOM"
     },
     "DATURA_HELLSPINE_II": {
         "class" : "GREATSWORD",
@@ -206,7 +206,7 @@
         "skill" : null,
 
         "augmentation_scheme": "ICEBORNE",
-        "upgrade_scheme"     : "ICEBORNE_COMMON"
+        "upgrade_scheme"     : "ICEBORNE_CUSTOM"
     },
     "NYX_RAZOR_II": {
         "class" : "GREATSWORD",
@@ -225,7 +225,7 @@
         "skill" : null,
 
         "augmentation_scheme": "ICEBORNE",
-        "upgrade_scheme"     : "ICEBORNE_COMMON"
+        "upgrade_scheme"     : "ICEBORNE_CUSTOM"
     },
     "RATHALOS_GLEAMSWORD": {
         "class" : "GREATSWORD",
@@ -263,7 +263,7 @@
         "skill" : null,
 
         "augmentation_scheme": "ICEBORNE",
-        "upgrade_scheme"     : "ICEBORNE_COMMON"
+        "upgrade_scheme"     : "ICEBORNE_CUSTOM"
     },
     "WINGED_SERAPHYD": {
         "class" : "GREATSWORD",
@@ -396,7 +396,7 @@
         "skill" : null,
 
         "augmentation_scheme": "ICEBORNE",
-        "upgrade_scheme"     : "ICEBORNE_COMMON"
+        "upgrade_scheme"     : "ICEBORNE_CUSTOM"
     },
     "BEO_SLASHER_II": {
         "class" : "GREATSWORD",
@@ -415,7 +415,7 @@
         "skill" : null,
 
         "augmentation_scheme": "ICEBORNE",
-        "upgrade_scheme"     : "ICEBORNE_COMMON"
+        "upgrade_scheme"     : "ICEBORNE_CUSTOM"
     },
     "BARROTH_GREATEDGE_II": {
         "class" : "GREATSWORD",
@@ -434,7 +434,7 @@
         "skill" : null,
 
         "augmentation_scheme": "ICEBORNE",
-        "upgrade_scheme"     : "ICEBORNE_COMMON"
+        "upgrade_scheme"     : "ICEBORNE_CUSTOM"
     },
     "ACID_SHREDDER_II": {
         "class" : "GREATSWORD",
@@ -453,7 +453,7 @@
         "skill" : null,
 
         "augmentation_scheme": "ICEBORNE",
-        "upgrade_scheme"     : "ICEBORNE_COMMON"
+        "upgrade_scheme"     : "ICEBORNE_CUSTOM"
     },
     "RADOBAAN_GRINDBLADE_II": {
         "class" : "GREATSWORD",
@@ -472,7 +472,7 @@
         "skill" : null,
 
         "augmentation_scheme": "ICEBORNE",
-        "upgrade_scheme"     : "ICEBORNE_COMMON"
+        "upgrade_scheme"     : "ICEBORNE_CUSTOM"
     },
     "BRACH_ATTACK": {
         "class" : "GREATSWORD",
@@ -510,7 +510,7 @@
         "skill" : null,
 
         "augmentation_scheme": "ICEBORNE",
-        "upgrade_scheme"     : "ICEBORNE_COMMON"
+        "upgrade_scheme"     : "ICEBORNE_CUSTOM"
     },
     "IMMOVABLE_DHARMA": {
         "class" : "GREATSWORD",
@@ -567,7 +567,7 @@
         "skill" : null,
 
         "augmentation_scheme": "ICEBORNE",
-        "upgrade_scheme"     : "ICEBORNE_COMMON"
+        "upgrade_scheme"     : "ICEBORNE_CUSTOM"
     },
     "DAORAS_TUGHRIL_BEG": {
         "class" : "GREATSWORD",
@@ -852,7 +852,7 @@
         "skill" : null,
 
         "augmentation_scheme": "ICEBORNE",
-        "upgrade_scheme"     : "SAFI_STANDARD"
+        "upgrade_scheme"     : "ICEBORNE_SAFI"
     },
     "DECAY_GOLD_FELLSWORD_MRVERSION": {
         "class" : "GREATSWORD",
@@ -871,7 +871,7 @@
         "skill" : null,
 
         "augmentation_scheme": "ICEBORNE",
-        "upgrade_scheme"     : "ICEBORNE_COMMON"
+        "upgrade_scheme"     : "ICEBORNE_CUSTOM"
     },
     "ERUPTER_GOLD_FELLSWORD_MRVERSION": {
         "class" : "GREATSWORD",
@@ -890,7 +890,7 @@
         "skill" : null,
 
         "augmentation_scheme": "ICEBORNE",
-        "upgrade_scheme"     : "ICEBORNE_COMMON"
+        "upgrade_scheme"     : "ICEBORNE_CUSTOM"
     },
     "GLUTTON_GOLD_FELLSWORD_MRVERSION": {
         "class" : "GREATSWORD",
@@ -909,7 +909,7 @@
         "skill" : null,
 
         "augmentation_scheme": "ICEBORNE",
-        "upgrade_scheme"     : "ICEBORNE_COMMON"
+        "upgrade_scheme"     : "ICEBORNE_CUSTOM"
     },
     "GOLD_ICE_FELLSWORD_MRVERSION": {
         "class" : "GREATSWORD",
@@ -928,7 +928,7 @@
         "skill" : null,
 
         "augmentation_scheme": "ICEBORNE",
-        "upgrade_scheme"     : "ICEBORNE_COMMON"
+        "upgrade_scheme"     : "ICEBORNE_CUSTOM"
     },
     "KING_GOLD_FELLSWORD_MRVERSION": {
         "class" : "GREATSWORD",
@@ -947,7 +947,7 @@
         "skill" : null,
 
         "augmentation_scheme": "ICEBORNE",
-        "upgrade_scheme"     : "ICEBORNE_COMMON"
+        "upgrade_scheme"     : "ICEBORNE_CUSTOM"
     },
     "MAGMA_GOLD_FELLSWORD_MRVERSION": {
         "class" : "GREATSWORD",
@@ -966,7 +966,7 @@
         "skill" : null,
 
         "augmentation_scheme": "ICEBORNE",
-        "upgrade_scheme"     : "ICEBORNE_COMMON"
+        "upgrade_scheme"     : "ICEBORNE_CUSTOM"
     },
     "MUD_GOLD_FELLSWORD_MRVERSION": {
         "class" : "GREATSWORD",
@@ -985,7 +985,7 @@
         "skill" : null,
 
         "augmentation_scheme": "ICEBORNE",
-        "upgrade_scheme"     : "ICEBORNE_COMMON"
+        "upgrade_scheme"     : "ICEBORNE_CUSTOM"
     },
     "NUMB_GOLD_FELLSWORD_MRVERSION": {
         "class" : "GREATSWORD",
@@ -1004,7 +1004,7 @@
         "skill" : null,
 
         "augmentation_scheme": "ICEBORNE",
-        "upgrade_scheme"     : "ICEBORNE_COMMON"
+        "upgrade_scheme"     : "ICEBORNE_CUSTOM"
     },
     "GOLD_SLEEP_FELLSWORD_MRVERSION": {
         "class" : "GREATSWORD",
@@ -1023,7 +1023,7 @@
         "skill" : null,
 
         "augmentation_scheme": "ICEBORNE",
-        "upgrade_scheme"     : "ICEBORNE_COMMON"
+        "upgrade_scheme"     : "ICEBORNE_CUSTOM"
     },
     "SPEW_GOLD_FELLSWORD_MRVERSION": {
         "class" : "GREATSWORD",
@@ -1042,7 +1042,7 @@
         "skill" : null,
 
         "augmentation_scheme": "ICEBORNE",
-        "upgrade_scheme"     : "ICEBORNE_COMMON"
+        "upgrade_scheme"     : "ICEBORNE_CUSTOM"
     },
     "TAR_GOLD_FELLSWORD_MRVERSION": {
         "class" : "GREATSWORD",
@@ -1061,7 +1061,7 @@
         "skill" : null,
 
         "augmentation_scheme": "ICEBORNE",
-        "upgrade_scheme"     : "ICEBORNE_COMMON"
+        "upgrade_scheme"     : "ICEBORNE_CUSTOM"
     },
     "GOLD_WATER_FELLSWORD_MRVERSION": {
         "class" : "GREATSWORD",
@@ -1080,7 +1080,7 @@
         "skill" : null,
 
         "augmentation_scheme": "ICEBORNE",
-        "upgrade_scheme"     : "ICEBORNE_COMMON"
+        "upgrade_scheme"     : "ICEBORNE_CUSTOM"
     },
     "TAROTH_BLAZE_DECAY_MRVERSION": {
         "class" : "GREATSWORD",
@@ -1099,7 +1099,7 @@
         "skill" : null,
 
         "augmentation_scheme": "ICEBORNE",
-        "upgrade_scheme"     : "ICEBORNE_COMMON"
+        "upgrade_scheme"     : "ICEBORNE_CUSTOM"
     },
     "TAROTH_BLAZE_ERUPTER_MRVERSION": {
         "class" : "GREATSWORD",
@@ -1118,7 +1118,7 @@
         "skill" : null,
 
         "augmentation_scheme": "ICEBORNE",
-        "upgrade_scheme"     : "ICEBORNE_COMMON"
+        "upgrade_scheme"     : "ICEBORNE_CUSTOM"
     },
     "TAROTH_BLAZE_GLUTTON_MRVERSION": {
         "class" : "GREATSWORD",
@@ -1137,7 +1137,7 @@
         "skill" : null,
 
         "augmentation_scheme": "ICEBORNE",
-        "upgrade_scheme"     : "ICEBORNE_COMMON"
+        "upgrade_scheme"     : "ICEBORNE_CUSTOM"
     },
     "TAROTH_BLAZE_KING_MRVERSION": {
         "class" : "GREATSWORD",
@@ -1156,7 +1156,7 @@
         "skill" : null,
 
         "augmentation_scheme": "ICEBORNE",
-        "upgrade_scheme"     : "ICEBORNE_COMMON"
+        "upgrade_scheme"     : "ICEBORNE_CUSTOM"
     },
     "TAROTH_BLAZE_MAGMA_MRVERSION": {
         "class" : "GREATSWORD",
@@ -1175,7 +1175,7 @@
         "skill" : null,
 
         "augmentation_scheme": "ICEBORNE",
-        "upgrade_scheme"     : "ICEBORNE_COMMON"
+        "upgrade_scheme"     : "ICEBORNE_CUSTOM"
     },
     "TAROTH_BLAZE_MUD_MRVERSION": {
         "class" : "GREATSWORD",
@@ -1194,7 +1194,7 @@
         "skill" : null,
 
         "augmentation_scheme": "ICEBORNE",
-        "upgrade_scheme"     : "ICEBORNE_COMMON"
+        "upgrade_scheme"     : "ICEBORNE_CUSTOM"
     },
     "TAROTH_BLAZE_NUMB_MRVERSION": {
         "class" : "GREATSWORD",
@@ -1213,7 +1213,7 @@
         "skill" : null,
 
         "augmentation_scheme": "ICEBORNE",
-        "upgrade_scheme"     : "ICEBORNE_COMMON"
+        "upgrade_scheme"     : "ICEBORNE_CUSTOM"
     },
     "TAROTH_BLAZE_SPEW_MRVERSION": {
         "class" : "GREATSWORD",
@@ -1232,7 +1232,7 @@
         "skill" : null,
 
         "augmentation_scheme": "ICEBORNE",
-        "upgrade_scheme"     : "ICEBORNE_COMMON"
+        "upgrade_scheme"     : "ICEBORNE_CUSTOM"
     },
     "TAROTH_BLAZE_TAR_MRVERSION": {
         "class" : "GREATSWORD",
@@ -1251,7 +1251,7 @@
         "skill" : null,
 
         "augmentation_scheme": "ICEBORNE",
-        "upgrade_scheme"     : "ICEBORNE_COMMON"
+        "upgrade_scheme"     : "ICEBORNE_CUSTOM"
     },
     "TAROTH_BLAZE_ICE_MRVERSION": {
         "class" : "GREATSWORD",
@@ -1270,7 +1270,7 @@
         "skill" : null,
 
         "augmentation_scheme": "ICEBORNE",
-        "upgrade_scheme"     : "ICEBORNE_COMMON"
+        "upgrade_scheme"     : "ICEBORNE_CUSTOM"
     },
     "TAROTH_BLAZE_SLEEP_MRVERSION": {
         "class" : "GREATSWORD",
@@ -1289,7 +1289,7 @@
         "skill" : null,
 
         "augmentation_scheme": "ICEBORNE",
-        "upgrade_scheme"     : "ICEBORNE_COMMON"
+        "upgrade_scheme"     : "ICEBORNE_CUSTOM"
     },
     "TAROTH_BLAZE_WATER_MRVERSION": {
         "class" : "GREATSWORD",
@@ -1308,7 +1308,7 @@
         "skill" : null,
 
         "augmentation_scheme": "ICEBORNE",
-        "upgrade_scheme"     : "ICEBORNE_COMMON"
+        "upgrade_scheme"     : "ICEBORNE_CUSTOM"
     },
     "TAROTH_BLAZE_THUNDER_MRVERSION": {
         "class" : "GREATSWORD",
@@ -1327,7 +1327,7 @@
         "skill" : null,
 
         "augmentation_scheme": "ICEBORNE",
-        "upgrade_scheme"     : "ICEBORNE_COMMON"
+        "upgrade_scheme"     : "ICEBORNE_CUSTOM"
     },
     "KJARR_FELLSWORD_DECAY_MRVERSION": {
         "class" : "GREATSWORD",
@@ -1346,7 +1346,7 @@
         "skill" : "CRITICAL_ELEMENT",
 
         "augmentation_scheme": "ICEBORNE",
-        "upgrade_scheme"     : "ICEBORNE_COMMON"
+        "upgrade_scheme"     : "ICEBORNE_CUSTOM"
     },
     "KJARR_FELLSWORD_THUNDER_MRVERSION": {
         "class" : "GREATSWORD",
@@ -1365,7 +1365,7 @@
         "skill" : "CRITICAL_ELEMENT",
 
         "augmentation_scheme": "ICEBORNE",
-        "upgrade_scheme"     : "ICEBORNE_COMMON"
+        "upgrade_scheme"     : "ICEBORNE_CUSTOM"
     },
     "KJARR_FELLSWORD_WATER_MRVERSION": {
         "class" : "GREATSWORD",
@@ -1384,7 +1384,7 @@
         "skill" : "CRITICAL_ELEMENT",
 
         "augmentation_scheme": "ICEBORNE",
-        "upgrade_scheme"     : "ICEBORNE_COMMON"
+        "upgrade_scheme"     : "ICEBORNE_CUSTOM"
     },
     "KJARR_FELLSWORD_MAGMA_MRVERSION": {
         "class" : "GREATSWORD",
@@ -1403,7 +1403,7 @@
         "skill" : "CRITICAL_STATUS",
 
         "augmentation_scheme": "ICEBORNE",
-        "upgrade_scheme"     : "ICEBORNE_COMMON"
+        "upgrade_scheme"     : "ICEBORNE_CUSTOM"
     },
     "KJARR_FELLSWORD_ICE_MRVERSION": {
         "class" : "GREATSWORD",
@@ -1422,7 +1422,7 @@
         "skill" : "CRITICAL_ELEMENT",
 
         "augmentation_scheme": "ICEBORNE",
-        "upgrade_scheme"     : "ICEBORNE_COMMON"
+        "upgrade_scheme"     : "ICEBORNE_CUSTOM"
     },
     "KJARR_FELLSWORD_NUMB_MRVERSION": {
         "class" : "GREATSWORD",
@@ -1441,7 +1441,7 @@
         "skill" : "CRITICAL_STATUS",
 
         "augmentation_scheme": "ICEBORNE",
-        "upgrade_scheme"     : "ICEBORNE_COMMON"
+        "upgrade_scheme"     : "ICEBORNE_CUSTOM"
     },
     "KJARR_FELLSWORD_KING_MRVERSION": {
         "class" : "GREATSWORD",
@@ -1460,7 +1460,7 @@
         "skill" : "CRITICAL_ELEMENT",
 
         "augmentation_scheme": "ICEBORNE",
-        "upgrade_scheme"     : "ICEBORNE_COMMON"
+        "upgrade_scheme"     : "ICEBORNE_CUSTOM"
     },
     "LUNATIC_ROSE": {
         "class" : "SWORD_AND_SHIELD",

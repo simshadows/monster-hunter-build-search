@@ -61,8 +61,8 @@ class IBWeaponAugments : public WeaponAugmentsInstance {
     unsigned int augment_lvl;
     AugmentLvlMap augments; // Augment levels
 public:
-    IBWeaponAugments(const Weapon& weapon) noexcept
-        : rarity      (weapon.rarity)
+    IBWeaponAugments(const Weapon * const weapon) noexcept
+        : rarity      (weapon->rarity)
         , augment_lvl (0)
         , augments    ()
     {
@@ -263,8 +263,8 @@ private:
 };
 
 
-std::unique_ptr<WeaponAugmentsInstance> WeaponAugmentsInstance::get_instance(const Weapon& weapon) {
-    switch (weapon.augmentation_scheme) {
+std::unique_ptr<WeaponAugmentsInstance> WeaponAugmentsInstance::get_instance(const Weapon * const weapon) {
+    switch (weapon->augmentation_scheme) {
         case WeaponAugmentationScheme::none:     return std::make_unique<NoWeaponAugments>();
         case WeaponAugmentationScheme::iceborne: return std::make_unique<IBWeaponAugments>(weapon);
         default:

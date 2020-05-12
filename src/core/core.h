@@ -23,6 +23,19 @@ enum class Tier {
 };
 
 
+class InvalidChange : public std::exception {
+    const char * const msg;
+public:
+    InvalidChange(const char * const new_msg) noexcept
+        : msg (new_msg)
+    {
+    }
+    const char* what() const noexcept {
+        return msg;
+    }
+};
+
+
 /****************************************************************************************
  * SharpnessGauge
  ***************************************************************************************/
@@ -171,6 +184,12 @@ enum class WeaponAugmentationScheme {
     iceborne,
 };
 
+enum class WeaponUpgradeScheme {
+    none,
+    iceborne_custom,
+    iceborne_safi,
+};
+
 
 struct Weapon {
     const std::string    id; // The "UPPER_SNAKE_CASE" identifier of the weapon.
@@ -189,7 +208,7 @@ struct Weapon {
     const Skill* const   skill; // nullptr if no skill.
 
     const WeaponAugmentationScheme augmentation_scheme;
-    const std::string              upgrade_scheme;
+    const WeaponUpgradeScheme      upgrade_scheme;
 
     const SharpnessGauge maximum_sharpness;
     const bool           is_constant_sharpness;
@@ -313,31 +332,76 @@ struct WeaponAugmentsContribution {
 };
 
 
-class InvalidChange : public std::exception {
-    const char * const msg;
-public:
-    InvalidChange(const char * const new_msg) noexcept
-        : msg (new_msg)
-    {
-    }
-    const char* what() const noexcept {
-        return msg;
-    }
-};
-
-
 class WeaponAugmentsInstance {
 public:
-    static std::unique_ptr<WeaponAugmentsInstance> get_instance(const Weapon&);
+    static std::unique_ptr<WeaponAugmentsInstance> get_instance(const Weapon*);
 
     // Access
     virtual WeaponAugmentsContribution calculate_contribution() const = 0;
     virtual std::string get_humanreadable() const = 0;
 
     // Modification
+    // (These methods will throw InvalidChange if the requested change is rejected.
+    // If InvalidChange is throw, then the class state will be unchanged.)
     virtual void set_augment(WeaponAugment augment, unsigned int lvl) = 0;
 
     virtual ~WeaponAugmentsInstance() {}
+};
+
+
+/****************************************************************************************
+ * WeaponUpgradesInstance
+ ***************************************************************************************/
+
+
+enum class WeaponUpgrade {
+    // IB Custom Augments
+    ib_cust_attack,
+    ib_cust_affinity,
+    ib_cust_element_status,
+    ib_cust_defense,
+    ib_cust_sharpness,
+
+    // IB Safi
+    ib_safi_attack_4,
+    ib_safi_attack_5,
+    ib_safi_attack_6,
+    ib_safi_affinity_4,
+    ib_safi_affinity_5,
+    ib_safi_affinity_6,
+    ib_safi_sharpness_4,
+    ib_safi_sharpness_5,
+    ib_safi_sharpness_6,
+    ib_safi_deco_slot_3,
+    ib_safi_deco_slot_4,
+    ib_safi_deco_slot_5,
+    ib_safi_deco_slot_6,
+};
+
+
+struct WeaponUpgradesContribution {
+    unsigned int    added_raw;
+    int             added_aff;
+    unsigned int    extra_deco_slot_size;
+    SharpnessGauge  sharpness_gauge_override;
+    const SetBonus* set_bonus;
+};
+
+
+class WeaponUpgradesInstance {
+public:
+    static std::unique_ptr<WeaponUpgradesInstance> get_instance(const Weapon*);
+
+    // Access
+    virtual WeaponUpgradesContribution calculate_contribution() const = 0;
+    virtual std::string get_humanreadable() const = 0;
+
+    // Modification
+    // (These methods will throw InvalidChange if the requested change is rejected.
+    // If InvalidChange is throw, then the class state will be unchanged.)
+    virtual void add_upgrade(WeaponUpgrade upgrade) = 0;
+
+    virtual ~WeaponUpgradesInstance() {}
 };
 
 
