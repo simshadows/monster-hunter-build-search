@@ -372,10 +372,42 @@ enum class WeaponUpgrade {
     ib_safi_sharpness_4,
     ib_safi_sharpness_5,
     ib_safi_sharpness_6,
+    //ib_safi_deco_slot_1, // This upgrade doesn't exist.
+    //ib_safi_deco_slot_2, // This upgrade doesn't exist.
     ib_safi_deco_slot_3,
     ib_safi_deco_slot_4,
     ib_safi_deco_slot_5,
     ib_safi_deco_slot_6,
+    ib_safi_sb_ancient_divinity,
+    ib_safi_sb_anjanath_dominance,
+    ib_safi_sb_barioth_hidden_art,
+    ib_safi_sb_bazelgeuse_ambition,
+    ib_safi_sb_brachydios_essence,
+    ib_safi_sb_deviljho_essence,
+    ib_safi_sb_diablos_ambition,
+    ib_safi_sb_glavenus_essence,
+    ib_safi_sb_gold_rathian_essence,
+    ib_safi_sb_kirin_divinity,
+    ib_safi_sb_kushala_daora_flight,
+    ib_safi_sb_legiana_ambition,
+    ib_safi_sb_lunastra_essence,
+    ib_safi_sb_namielle_divinity,
+    ib_safi_sb_nargacuga_essence,
+    ib_safi_sb_nergigante_ambition,
+    ib_safi_sb_odogaron_essence,
+    ib_safi_sb_rajangs_rage,
+    ib_safi_sb_rathalos_essence,
+    ib_safi_sb_rathian_essence,
+    ib_safi_sb_shara_ishvalda_divinity,
+    ib_safi_sb_silver_rathalos_essence,
+    ib_safi_sb_teostra_technique,
+    ib_safi_sb_tigrex_essence,
+    ib_safi_sb_uragaan_ambition,
+    ib_safi_sb_vaal_soulvein,
+    ib_safi_sb_velkhana_divinity,
+    ib_safi_sb_zinogre_essence,
+    ib_safi_sb_zorah_magdaros_essence,
+    // Many other Safi awakenings are not yet supported.
 };
 
 
@@ -384,7 +416,7 @@ struct WeaponUpgradesContribution {
     int             added_aff;
     unsigned int    extra_deco_slot_size;
     SharpnessGauge  sharpness_gauge_override;
-    const SetBonus* set_bonus;
+    std::string     set_bonus_id; // USING IDS IS SO FUCKING UNSAFE. PLEASE FIX. TODO: FIIIIIIIX THIIIIIIIIS
 };
 
 

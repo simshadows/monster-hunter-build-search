@@ -310,9 +310,13 @@ WeaponInstance::WeaponInstance(const Weapon * const new_weapon) noexcept
 }
 
 
-WeaponContribution WeaponInstance::calculate_contribution() const {
+WeaponContribution WeaponInstance::calculate_contribution(const Database& db) const {
     WeaponAugmentsContribution ac = this->augments->calculate_contribution();
     WeaponUpgradesContribution uc = this->upgrades->calculate_contribution();
+
+    // OH MY GOD THIS IS SO UNSAFE.
+    // TODO: FIX THIS OH GOD
+    const SetBonus * const set_bonus = (uc.set_bonus_id == "") ? nullptr : db.skills.set_bonus_at(uc.set_bonus_id);
 
     WeaponContribution ret = {
         this->weapon->true_raw + ac.added_raw + uc.added_raw,
@@ -322,7 +326,7 @@ WeaponContribution WeaponInstance::calculate_contribution() const {
 
         this->weapon->deco_slots,
         this->weapon->skill,
-        uc.set_bonus,
+        set_bonus,
 
         uc.sharpness_gauge_override,
         this->weapon->is_constant_sharpness,

@@ -57,11 +57,11 @@ static double calculate_efr(unsigned int weapon_raw, // True raw, not bloated ra
 }
 
 
-double calculate_efr_from_skills_lookup(const Database&               db,
-                                        const WeaponInstance&         weapon,
-                                        const SkillMap&               skills,
-                                        const SkillSpec&              skill_spec) {
-    WeaponContribution wc = weapon.calculate_contribution();
+double calculate_efr_from_skills_lookup(const Database&       db,
+                                        const WeaponInstance& weapon,
+                                        const SkillMap&       skills,
+                                        const SkillSpec&      skill_spec) {
+    WeaponContribution wc = weapon.calculate_contribution(db);
 
     SkillContribution sc(db, skills, skill_spec, *weapon.weapon, wc.maximum_sharpness);
     return calculate_efr(wc.weapon_raw,
@@ -74,10 +74,10 @@ double calculate_efr_from_skills_lookup(const Database&               db,
 }
 
 
-double calculate_efr_from_gear_lookup(const Database&               db,
-                                      const WeaponInstance&         weapon,
-                                      const ArmourEquips&           armour,
-                                      const SkillSpec&              skill_spec) {
+double calculate_efr_from_gear_lookup(const Database&       db,
+                                      const WeaponInstance& weapon,
+                                      const ArmourEquips&   armour,
+                                      const SkillSpec&      skill_spec) {
     SkillMap skills = armour.get_skills_without_set_bonuses();
     return calculate_efr_from_skills_lookup(db, weapon, skills, skill_spec);
 }
@@ -98,17 +98,12 @@ void run() {
      * Using values for Royal Venus Blade with only one affinity augment and Elementless Jewel 2.
      */
 
-    WeaponInstance weapon(db.weapons.at("JAGRAS_DEATHCLAW_II"));
-    weapon.augments->set_augment(WeaponAugment::affinity_increase, 1);
+    WeaponInstance weapon(db.weapons.at("SAFI_SHATTERSPLITTER"));
     weapon.augments->set_augment(WeaponAugment::augment_lvl, 3);
-    weapon.augments->set_augment(WeaponAugment::attack_increase, 3);
-    weapon.upgrades->add_upgrade(WeaponUpgrade::ib_cust_attack);
-    weapon.upgrades->add_upgrade(WeaponUpgrade::ib_cust_attack);
-    weapon.upgrades->add_upgrade(WeaponUpgrade::ib_cust_affinity);
-    weapon.upgrades->add_upgrade(WeaponUpgrade::ib_cust_affinity);
-    weapon.upgrades->add_upgrade(WeaponUpgrade::ib_cust_attack);
-    weapon.upgrades->add_upgrade(WeaponUpgrade::ib_cust_attack);
-    weapon.upgrades->add_upgrade(WeaponUpgrade::ib_cust_affinity);
+    weapon.augments->set_augment(WeaponAugment::attack_increase, 1);
+    weapon.upgrades->add_upgrade(WeaponUpgrade::ib_safi_sharpness_6);
+    weapon.upgrades->add_upgrade(WeaponUpgrade::ib_safi_sharpness_5);
+    weapon.upgrades->add_upgrade(WeaponUpgrade::ib_safi_sharpness_5);
 
     ArmourEquips armour;
     armour.add(db.armour.at("Raging Brachy",

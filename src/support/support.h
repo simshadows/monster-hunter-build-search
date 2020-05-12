@@ -132,7 +132,7 @@ struct WeaponInstance {
 
     WeaponInstance(const Weapon*) noexcept; // Generates a fresh weapon instance with no augments/upgrades.
 
-    WeaponContribution calculate_contribution() const;
+    WeaponContribution calculate_contribution(const Database&) const;
     std::string get_humanreadable() const;
 };
 

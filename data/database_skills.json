@@ -1299,15 +1299,6 @@
                 }
             ]
         },
-        "RATHALOS_ESSENCE": {
-            "name": "Rathalos Essence",
-            "stages": [
-                {
-                    "parts": 3,
-                    "skill": "MINDS_EYE_BALLISTICS"
-                }
-            ]
-        },
         "RAJANGS_RAGE": {
             "name": "Rajang's Rage",
             "stages": [
@@ -1331,6 +1322,15 @@
                 {
                     "parts": 4,
                     "skill": "HEROICS_SECRET"
+                }
+            ]
+        },
+        "RATHALOS_ESSENCE": {
+            "name": "Rathalos Essence",
+            "stages": [
+                {
+                    "parts": 3,
+                    "skill": "MINDS_EYE_BALLISTICS"
                 }
             ]
         },
