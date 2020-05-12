@@ -358,9 +358,9 @@ enum class WeaponUpgrade {
     // IB Custom Augments
     ib_cust_attack,
     ib_cust_affinity,
-    ib_cust_element_status,
-    ib_cust_defense,
-    ib_cust_sharpness,
+    //ib_cust_element_status, // Not yet supported.
+    //ib_cust_defense,        // Not yet supported.
+    //ib_cust_sharpness,      // Not yet supported.
 
     // IB Safi
     ib_safi_attack_4,

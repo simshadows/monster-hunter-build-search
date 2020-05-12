@@ -46,8 +46,9 @@ inline std::string to_capital_roman_numerals(unsigned int v) {
         case 4: return "IV";
         case 5: return "V";
         case 6: return "VI";
+        case 7: return "VII";
         default:
-            throw std::logic_error("Roman numerals above VI (6) have not been implemented yet.");
+            throw std::logic_error("Roman numerals above VII (7) have not been implemented yet.");
     }
 }
 

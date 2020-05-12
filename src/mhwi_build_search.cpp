@@ -102,6 +102,13 @@ void run() {
     weapon.augments->set_augment(WeaponAugment::affinity_increase, 1);
     weapon.augments->set_augment(WeaponAugment::augment_lvl, 3);
     weapon.augments->set_augment(WeaponAugment::attack_increase, 3);
+    weapon.upgrades->add_upgrade(WeaponUpgrade::ib_cust_attack);
+    weapon.upgrades->add_upgrade(WeaponUpgrade::ib_cust_attack);
+    weapon.upgrades->add_upgrade(WeaponUpgrade::ib_cust_affinity);
+    weapon.upgrades->add_upgrade(WeaponUpgrade::ib_cust_affinity);
+    weapon.upgrades->add_upgrade(WeaponUpgrade::ib_cust_attack);
+    weapon.upgrades->add_upgrade(WeaponUpgrade::ib_cust_attack);
+    weapon.upgrades->add_upgrade(WeaponUpgrade::ib_cust_affinity);
 
     ArmourEquips armour;
     armour.add(db.armour.at("Raging Brachy",

@@ -117,7 +117,9 @@ public:
     }
 
     void set_augment(const WeaponAugment augment, const unsigned int lvl) {
-        assert(Utils::set_has_key(ib_supported_augments, augment));
+        if (!Utils::set_has_key(ib_supported_augments, augment)) {
+            throw InvalidChange("Attempted to apply an unsupported weapon augment.");
+        }
 
         if (augment == WeaponAugment::augment_lvl) {
             const unsigned int old_consumption = calculate_slot_consumption_from_map(this->augments);
