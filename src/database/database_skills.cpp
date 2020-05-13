@@ -117,7 +117,7 @@ const SkillsDatabase SkillsDatabase::read_db_file(const std::string& filename) {
         }
         sb_name_check.insert(name);
 
-        std::vector<std::tuple<unsigned int, const Skill*>> stages;
+        std::vector<std::pair<unsigned int, const Skill*>> stages;
         for (auto& stage : jj["stages"]) {
             nlohmann::json jjj(stage);
 

@@ -18,6 +18,10 @@ inline double round_2decpl(const double v) {
     return std::round(v * 100) / 100;
 }
 
+//inline bool equal_within_2decpl(const double a, const double b) {
+//    return std::round(a * 100) == std::round(b * 100);
+//}
+
 inline bool is_upper_snake_case(const std::string& s) noexcept {
     for (const char e : s) {
         if ((e >= 'A' && e <= 'Z') || (e >= '0' && e <= '9') || (e == '_')) continue;

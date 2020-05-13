@@ -75,21 +75,6 @@ static const std::unordered_map<std::string, Tier> upper_snake_case_to_tier_map 
 };
 
 
-std::string armour_variant_to_name(const ArmourVariant v) {
-    switch (v) {
-        case ArmourVariant::low_rank:               return "";
-        case ArmourVariant::high_rank_alpha:        return "\u03b1";
-        case ArmourVariant::high_rank_beta:         return "\u03b2";
-        case ArmourVariant::high_rank_gamma:        return "\u03b3";
-        case ArmourVariant::master_rank_alpha_plus: return "\u03b1+";
-        case ArmourVariant::master_rank_beta_plus:  return "\u03b2+";
-        case ArmourVariant::master_rank_gamma_plus: return "\u03b3+";
-        default:
-            throw std::runtime_error("Invalid armour variant.");
-    }
-}
-
-
 ArmourSlot upper_case_to_armour_slot(const std::string& s) {
     return upper_case_to_as_map.at(s);
 }

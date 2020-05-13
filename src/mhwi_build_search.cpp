@@ -70,7 +70,8 @@ void run() {
     skills.set_lvl(db.non_elemental_boost_ptr, 1);
     //skills.set_lvl(db.true_element_acceleration_ptr, 1);
 
-    efr = calculate_efr_from_skills_lookup(db, weapon, skills, skill_spec);
+    WeaponContribution wc = weapon.calculate_contribution(db);
+    efr = calculate_efr_from_skills_lookup(db, wc, skills, skill_spec);
     std::clog << efr << std::endl;
     //assert(Utils::round_2decpl(efr) == 437.85); // Quick test!
 }

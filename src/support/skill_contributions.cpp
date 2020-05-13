@@ -65,9 +65,9 @@ static constexpr std::array<int, 4> weakness_exploit_s2_aff = {0, 15, 30, 50};
 static double calculate_non_elemental_boost_multiplier(const Database& db,
                                                        const SkillMap& skills,
                                                        const SkillSpec& skills_spec,
-                                                       const Weapon& weapon) {
+                                                       const WeaponContribution& wc) {
     // TODO: Oh my god this if-statement is so messy in order to account for element acceleration. Please fix.
-    if (weapon.is_raw
+    if (wc.is_raw
             && skills.binary_skill_is_lvl1(db.non_elemental_boost_ptr)
             && (skills.get_lvl(db.free_elem_ammo_up_ptr) == 0)
             &&
@@ -104,27 +104,25 @@ static double calculate_raw_crit_dmg_multiplier(const Database& db, const SkillM
 
 static double calculate_raw_sharpness_modifier(const Database& db,
                                                const SkillMap& skills,
-                                               const Weapon& weapon,
-                                               const SharpnessGauge& maximum_sharpness) {
-    if (weapon.is_constant_sharpness) {
-        return maximum_sharpness.get_raw_sharpness_modifier();
+                                               const WeaponContribution& wc) {
+    if (wc.is_constant_sharpness) {
+        return wc.maximum_sharpness.get_raw_sharpness_modifier();
     } else {
         const unsigned int handicraft_lvl = skills.get_lvl(db.handicraft_ptr);
-        return maximum_sharpness.get_raw_sharpness_modifier(handicraft_lvl);
+        return wc.maximum_sharpness.get_raw_sharpness_modifier(handicraft_lvl);
     }
 };
 
 
-SkillContribution::SkillContribution(const Database&       db,
-                                     const SkillMap&       skills,
-                                     const SkillSpec&      skills_spec,
-                                     const Weapon&         weapon,
-                                     const SharpnessGauge& maximum_sharpness) noexcept
+SkillContribution::SkillContribution(const Database&           db,
+                                     const SkillMap&           skills,
+                                     const SkillSpec&          skills_spec,
+                                     const WeaponContribution& wc) noexcept
     : added_raw               (0)
     , added_aff               (0)
-    , neb_multiplier          (calculate_non_elemental_boost_multiplier(db, skills, skills_spec, weapon))
+    , neb_multiplier          (calculate_non_elemental_boost_multiplier(db, skills, skills_spec, wc))
     , raw_crit_dmg_multiplier (calculate_raw_crit_dmg_multiplier(db, skills))
-    , raw_sharpness_modifier  (calculate_raw_sharpness_modifier(db, skills, weapon, maximum_sharpness))
+    , raw_sharpness_modifier  (calculate_raw_sharpness_modifier(db, skills, wc))
 {
     // We calculate the remaining fields.
 

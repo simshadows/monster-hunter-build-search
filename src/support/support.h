@@ -54,6 +54,7 @@ public:
     void set_lvl(const Skill* skill, unsigned int level);
     void increment_lvl(const Skill* skill, unsigned int level_to_add);
     void add_skills(const ArmourPiece&);
+    void add_set_bonuses(const std::unordered_map<const SetBonus*, unsigned int>&);
 
     // Gets a skill's level. Skills that aren't in the container return zero.
     unsigned int get_lvl(const Skill* skill) const;
@@ -89,6 +90,7 @@ public:
 
     bool slot_is_filled(const ArmourSlot&) const;
     SkillMap get_skills_without_set_bonuses() const;
+    std::unordered_map<const SetBonus*, unsigned int> get_set_bonuses() const;
 
     std::string get_humanreadable() const;
 
@@ -152,8 +154,7 @@ struct SkillContribution {
     SkillContribution(const Database&,
                       const SkillMap&,
                       const SkillSpec&,
-                      const Weapon&,
-                      const SharpnessGauge&) noexcept;
+                      const WeaponContribution&) noexcept;
 };
 
 
@@ -163,7 +164,7 @@ struct SkillContribution {
 
 
 double calculate_efr_from_skills_lookup(const Database&,
-                                        const WeaponInstance&,
+                                        const WeaponContribution&,
                                         const SkillMap&,
                                         const SkillSpec&);
 

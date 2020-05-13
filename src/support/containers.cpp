@@ -140,6 +140,19 @@ void SkillMap::add_skills(const ArmourPiece& piece) {
 }
 
 
+void SkillMap::add_set_bonuses(const std::unordered_map<const SetBonus*, unsigned int>& set_bonuses) {
+    for (const auto& e : set_bonuses) {
+        const SetBonus * const set_bonus = e.first;
+        const unsigned int present_pieces = e.second;
+        for (const auto& ee : set_bonus->stages) {
+            const unsigned int required_pieces = ee.first;
+            const Skill * const skill = ee.second;
+            if (present_pieces >= required_pieces) this->increment_lvl(skill, 1);
+        }
+    }
+}
+
+
 unsigned int SkillMap::get_lvl(const Skill * const skill) const {
     assert(this->data.count(skill) <= 1); // count must return either 1 or 0.
     return this->data.count(skill) ? this->data.at(skill) : 0;
@@ -250,6 +263,15 @@ SkillMap ArmourEquips::get_skills_without_set_bonuses() const {
         for (const Skill* const& skill : this->charm->skills) {
             ret.increment_lvl(skill, charm_lvl);
         }
+    }
+    return ret;
+}
+
+
+std::unordered_map<const SetBonus*, unsigned int> ArmourEquips::get_set_bonuses() const {
+    std::unordered_map<const SetBonus*, unsigned int> ret;
+    for (const ArmourPiece * const e : this->data) {
+        if (e && e->set_bonus) ret[e->set_bonus] += 1;
     }
     return ret;
 }

@@ -125,11 +125,11 @@ struct Skill {
 struct SetBonus {
     const std::string id;
     const std::string name;
-    const std::vector<std::tuple<unsigned int, const Skill*>> stages; // tuple format: (number of stages, skill)
+    const std::vector<std::pair<unsigned int, const Skill*>> stages; // tuple format: (number of stages, skill)
 
     SetBonus(const std::string&&,
              const std::string&&,
-             const std::vector<std::tuple<unsigned int, const Skill*>>&&) noexcept;
+             const std::vector<std::pair<unsigned int, const Skill*>>&&) noexcept;
 };
 
 
@@ -239,6 +239,7 @@ enum class ArmourVariant {
     master_rank_gamma_plus,
 };
 std::string armour_variant_to_name(ArmourVariant);
+Tier armour_variant_to_tier(ArmourVariant);
 
 
 struct ArmourSet; // Quick declaration so we can use it in ArmourPiece.

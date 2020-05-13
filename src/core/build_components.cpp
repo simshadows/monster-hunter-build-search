@@ -29,7 +29,7 @@ Skill::Skill(std::string new_id,
 
 SetBonus::SetBonus(const std::string&& new_id,
                    const std::string&& new_name,
-                   const std::vector<std::tuple<unsigned int, const Skill*>>&& new_stages) noexcept
+                   const std::vector<std::pair<unsigned int, const Skill*>>&& new_stages) noexcept
     : id     (std::move(new_id    ))
     , name   (std::move(new_name  ))
     , stages (std::move(new_stages))
@@ -64,6 +64,36 @@ Decoration::Decoration(std::string&& new_id,
 /****************************************************************************************
  * Basic Build Components: Armour
  ***************************************************************************************/
+
+
+std::string armour_variant_to_name(const ArmourVariant v) {
+    switch (v) {
+        case ArmourVariant::low_rank:               return "";
+        case ArmourVariant::high_rank_alpha:        return "\u03b1";
+        case ArmourVariant::high_rank_beta:         return "\u03b2";
+        case ArmourVariant::high_rank_gamma:        return "\u03b3";
+        case ArmourVariant::master_rank_alpha_plus: return "\u03b1+";
+        case ArmourVariant::master_rank_beta_plus:  return "\u03b2+";
+        case ArmourVariant::master_rank_gamma_plus: return "\u03b3+";
+        default:
+            throw std::runtime_error("Invalid armour variant.");
+    }
+}
+
+
+Tier armour_variant_to_tier(const ArmourVariant v) {
+    switch (v) {
+        case ArmourVariant::low_rank:               return Tier::low_rank;
+        case ArmourVariant::high_rank_alpha:        return Tier::high_rank;
+        case ArmourVariant::high_rank_beta:         return Tier::high_rank;
+        case ArmourVariant::high_rank_gamma:        return Tier::high_rank;
+        case ArmourVariant::master_rank_alpha_plus: return Tier::master_rank;
+        case ArmourVariant::master_rank_beta_plus:  return Tier::master_rank;
+        case ArmourVariant::master_rank_gamma_plus: return Tier::master_rank;
+        default:
+            throw std::runtime_error("Invalid armour variant.");
+    }
+}
 
 
 ArmourPiece::ArmourPiece(ArmourSlot                  new_slot,

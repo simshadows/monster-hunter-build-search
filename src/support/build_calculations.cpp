@@ -52,13 +52,12 @@ static double calculate_efr(unsigned int weapon_raw, // True raw, not bloated ra
 }
 
 
-double calculate_efr_from_skills_lookup(const Database&       db,
-                                        const WeaponInstance& weapon,
-                                        const SkillMap&       skills,
-                                        const SkillSpec&      skill_spec) {
-    WeaponContribution wc = weapon.calculate_contribution(db);
+double calculate_efr_from_skills_lookup(const Database&           db,
+                                        const WeaponContribution& wc,
+                                        const SkillMap&           full_skills,
+                                        const SkillSpec&          skill_spec) {
 
-    SkillContribution sc(db, skills, skill_spec, *weapon.weapon, wc.maximum_sharpness);
+    SkillContribution sc(db, full_skills, skill_spec, wc);
     return calculate_efr(wc.weapon_raw,
                          wc.weapon_aff,
                          sc.neb_multiplier,
@@ -73,8 +72,14 @@ double calculate_efr_from_gear_lookup(const Database&       db,
                                       const WeaponInstance& weapon,
                                       const ArmourEquips&   armour,
                                       const SkillSpec&      skill_spec) {
+    WeaponContribution wc = weapon.calculate_contribution(db);
+
     SkillMap skills = armour.get_skills_without_set_bonuses();
-    return calculate_efr_from_skills_lookup(db, weapon, skills, skill_spec);
+    std::unordered_map<const SetBonus*, unsigned int> set_bonuses = armour.get_set_bonuses();
+    if (wc.set_bonus) set_bonuses[wc.set_bonus] += 1;
+    skills.add_set_bonuses(set_bonuses);
+
+    return calculate_efr_from_skills_lookup(db, wc, skills, skill_spec);
 }
 
 

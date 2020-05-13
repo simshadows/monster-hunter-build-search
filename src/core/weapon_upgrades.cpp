@@ -251,13 +251,14 @@ static constexpr unsigned int k_MAX_WHITE_SHARPNESS_BEFORE_PURPLE = 120;
 
 
 class IBSafiAwakenings : public WeaponUpgradesInstance {
-    const Weapon * const weapon;
+    //const Weapon * const weapon;
     std::vector<WeaponUpgrade> awakenings;
 public:
     IBSafiAwakenings(const Weapon * const new_weapon) noexcept
-        : weapon     (new_weapon)
-        , awakenings {}
+        //: weapon     (new_weapon)
+        : awakenings {}
     {
+        (void)new_weapon;
     }
 
     WeaponUpgradesContribution calculate_contribution() const {
@@ -343,7 +344,7 @@ public:
     }
 private:
     static bool awakenings_is_valid(const std::vector<WeaponUpgrade>& test_awakenings) {
-        if (test_awakenings.size() > 5) return false;
+        if (test_awakenings.size() > k_MAX_AWAKENINGS) return false;
 
         bool has_lvl6      = false;
         bool has_slot      = false;

@@ -1,6 +1,7 @@
 CXX=g++
 CXXFLAGS=-Wall -Werror -Wextra -fsanitize=address
 
+EXEC=mhwibs
 MAINOBJECTS=src/mhwi_build_search.o
 OBJECTS=src/core/build_components.o \
 		src/core/sharpness_gauge.o \
@@ -16,24 +17,27 @@ OBJECTS=src/core/build_components.o \
 		src/support/skill_contributions.o \
 		src/support/build_calculations.o
 
+TESTEXEC=mhwibs-test
 TESTOBJECTS=tests/run_tests.o
 
 .PHONY : all
-all : mhwibs test
+all : $(EXEC) test
 
 .PHONY : test
-test : mhwibs-test
+test : $(TESTEXEC)
 	./mhwibs-test
 
 .PHONY : clean
 clean :
 	rm -f $(EXEC)
+	rm -f $(TESTEXEC)
 	rm -f $(OBJECTS)
+	rm -f $(MAINOBJECTS)
 	rm -f $(TESTOBJECTS)
 
-mhwibs : $(OBJECTS) $(MAINOBJECTS)
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -o mhwibs $(OBJECTS) $(MAINOBJECTS)
+$(EXEC) : $(OBJECTS) $(MAINOBJECTS)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -o $(EXEC) $(OBJECTS) $(MAINOBJECTS)
 
-mhwibs-test : $(OBJECTS) $(TESTOBJECTS)
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -o mhwibs-test $(OBJECTS) $(TESTOBJECTS)
+$(TESTEXEC) : $(OBJECTS) $(TESTOBJECTS)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -o $(TESTEXEC) $(OBJECTS) $(TESTOBJECTS)
 
