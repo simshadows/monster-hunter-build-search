@@ -89,11 +89,10 @@ static ArmourEquips get_armour(std::string head_set,
 static const Database db = Database::get_db();
 
 
-TEST_CASE("Greatsword build EFR calculations, basic testing.") {
+TEST_CASE("Incrementally building up a greatsword Safi Shattersplitter build.") {
 
     std::unordered_map<const Skill*, unsigned int> min_levels = {
         {db.agitator_ptr, 0},
-        {db.critical_eye_ptr, 0},
         {db.weakness_exploit_ptr, 0},
     };
     std::unordered_map<const Skill*, unsigned int> forced_states = {
@@ -111,8 +110,9 @@ TEST_CASE("Greatsword build EFR calculations, basic testing.") {
                                          "", "",
                                          "",
                                          db);
+        DecoEquips decos;
 
-        double efr = calculate_efr_from_gear_lookup(db, weapon, armour, skill_spec);
+        double efr = calculate_efr_from_gear_lookup(db, weapon, armour, decos, skill_spec);
         REQUIRE(Utils::round_2decpl(efr) == 390.31);
     }
 
@@ -126,8 +126,9 @@ TEST_CASE("Greatsword build EFR calculations, basic testing.") {
                                          "", "",
                                          "",
                                          db);
+        DecoEquips decos;
 
-        double efr = calculate_efr_from_gear_lookup(db, weapon, armour, skill_spec);
+        double efr = calculate_efr_from_gear_lookup(db, weapon, armour, decos, skill_spec);
         REQUIRE(Utils::round_2decpl(efr) == 415.77);
     }
 
@@ -140,8 +141,9 @@ TEST_CASE("Greatsword build EFR calculations, basic testing.") {
                                          "Raging Brachy", "MB",
                                          "",
                                          db);
+        DecoEquips decos;
 
-        double efr = calculate_efr_from_gear_lookup(db, weapon, armour, skill_spec);
+        double efr = calculate_efr_from_gear_lookup(db, weapon, armour, decos, skill_spec);
         REQUIRE(Utils::round_2decpl(efr) == 435.11);
     }
 
@@ -154,8 +156,9 @@ TEST_CASE("Greatsword build EFR calculations, basic testing.") {
                                          "Raging Brachy", "MB",
                                          "CHALLENGER_CHARM",
                                          db);
+        DecoEquips decos;
 
-        double efr = calculate_efr_from_gear_lookup(db, weapon, armour, skill_spec);
+        double efr = calculate_efr_from_gear_lookup(db, weapon, armour, decos, skill_spec);
         REQUIRE(Utils::round_2decpl(efr) == 480.30);
     }
 
@@ -171,8 +174,9 @@ TEST_CASE("Greatsword build EFR calculations, basic testing.") {
                                          "Raging Brachy", "MB",
                                          "CHALLENGER_CHARM",
                                          db);
+        DecoEquips decos;
 
-        double efr = calculate_efr_from_gear_lookup(db, weapon, armour, skill_spec);
+        double efr = calculate_efr_from_gear_lookup(db, weapon, armour, decos, skill_spec);
         REQUIRE(Utils::round_2decpl(efr) == 490.63);
     }
 
@@ -193,25 +197,64 @@ TEST_CASE("Greatsword build EFR calculations, basic testing.") {
                                          "Raging Brachy", "MB",
                                          "CHALLENGER_CHARM",
                                          db);
+        DecoEquips decos;
 
-        double efr = calculate_efr_from_gear_lookup(db, weapon, armour, skill_spec);
+        double efr = calculate_efr_from_gear_lookup(db, weapon, armour, decos, skill_spec);
         REQUIRE(Utils::round_2decpl(efr) == 554.90);
     }
 
-    SECTION("Acid Shredder II + 1 Armour") {
-
-        WeaponInstance weapon(db.weapons.at("ACID_SHREDDER_II"));
-        ArmourEquips armour = get_armour("Teostra", "MB",
-                                         "", "",
-                                         "", "",
-                                         "", "",
-                                         "", "",
-                                         "",
+    SECTION("Safi Shattersplitter + Augments + Upgrades + 5 Armour + Charm + Decorations") {
+        WeaponInstance weapon(db.weapons.at("SAFI_SHATTERSPLITTER"));
+        weapon.augments->set_augment(WeaponAugment::augment_lvl, 3);
+        weapon.augments->set_augment(WeaponAugment::affinity_increase, 1);
+        weapon.augments->set_augment(WeaponAugment::health_regen, 1);
+        weapon.upgrades->add_upgrade(WeaponUpgrade::ib_safi_attack_6);
+        weapon.upgrades->add_upgrade(WeaponUpgrade::ib_safi_attack_5);
+        weapon.upgrades->add_upgrade(WeaponUpgrade::ib_safi_attack_5);
+        weapon.upgrades->add_upgrade(WeaponUpgrade::ib_safi_attack_5);
+        weapon.upgrades->add_upgrade(WeaponUpgrade::ib_safi_sharpness_5);
+        ArmourEquips armour = get_armour("Teostra",       "MB",
+                                         "Raging Brachy", "MB",
+                                         "Teostra",       "MB",
+                                         "Teostra",       "MB",
+                                         "Raging Brachy", "MB",
+                                         "CHALLENGER_CHARM",
                                          db);
+        DecoEquips decos;
+        decos.add(db.decos.at("CHARGER_VITALITY_COMPOUND"));
+        decos.add(db.decos.at("CHARGER_VITALITY_COMPOUND"));
+        decos.add(db.decos.at("CHARGER_VITALITY_COMPOUND"));
+        decos.add(db.decos.at("CRITICAL"));
+        decos.add(db.decos.at("ATTACK"));
+        decos.add(db.decos.at("ATTACK_2X"));
+        decos.add(db.decos.at("CRITICAL"));
+        decos.add(db.decos.at("HANDICRAFT_2X"));
+        decos.add(db.decos.at("CRITICAL"));
+        decos.add(db.decos.at("ATTACK"));
+        decos.add(db.decos.at("HANDICRAFT_2X"));
+        decos.add(db.decos.at("ATTACK"));
+        decos.add(db.decos.at("ATTACK"));
 
-        double efr = calculate_efr_from_gear_lookup(db, weapon, armour, skill_spec);
-        REQUIRE(Utils::round_2decpl(efr) == 375.15);
+        double efr = calculate_efr_from_gear_lookup(db, weapon, armour, decos, skill_spec);
+        REQUIRE(Utils::round_2decpl(efr) == 682.55);
     }
+
+}
+
+
+TEST_CASE("Incrementally building up a greatsword Acid Shredder II build.") {
+
+    std::unordered_map<const Skill*, unsigned int> min_levels = {
+        {db.agitator_ptr, 0},
+        {db.critical_eye_ptr, 0},
+        {db.weakness_exploit_ptr, 0},
+    };
+    std::unordered_map<const Skill*, unsigned int> forced_states = {
+        {db.weakness_exploit_ptr, 1},
+    };
+    SkillSpec skill_spec(std::move(min_levels), std::move(forced_states));
+
+    DecoEquips decos;
 
     SECTION("Acid Shredder II + 1 Armour + Charm") {
 
@@ -223,8 +266,9 @@ TEST_CASE("Greatsword build EFR calculations, basic testing.") {
                                          "", "",
                                          "ADAMANTINE_CHARM",
                                          db);
+        DecoEquips decos;
 
-        double efr = calculate_efr_from_gear_lookup(db, weapon, armour, skill_spec);
+        double efr = calculate_efr_from_gear_lookup(db, weapon, armour, decos, skill_spec);
         REQUIRE(Utils::round_2decpl(efr) == 393.60);
     }
 
@@ -245,8 +289,9 @@ TEST_CASE("Greatsword build EFR calculations, basic testing.") {
                                          "Yian Garuga",   "MB",
                                          "ADAMANTINE_CHARM",
                                          db);
+        DecoEquips decos;
 
-        double efr = calculate_efr_from_gear_lookup(db, weapon, armour, skill_spec);
+        double efr = calculate_efr_from_gear_lookup(db, weapon, armour, decos, skill_spec);
         REQUIRE(Utils::round_2decpl(efr) == 469.64);
     }
 
@@ -270,8 +315,9 @@ TEST_CASE("Greatsword build EFR calculations, basic testing.") {
                                          "Yian Garuga",   "MB",
                                          "ADAMANTINE_CHARM",
                                          db);
+        DecoEquips decos;
 
-        double efr = calculate_efr_from_gear_lookup(db, weapon, armour, skill_spec);
+        double efr = calculate_efr_from_gear_lookup(db, weapon, armour, decos, skill_spec);
         REQUIRE(Utils::round_2decpl(efr) == 492.35);
     }
 

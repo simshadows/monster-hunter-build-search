@@ -71,10 +71,12 @@ double calculate_efr_from_skills_lookup(const Database&           db,
 double calculate_efr_from_gear_lookup(const Database&       db,
                                       const WeaponInstance& weapon,
                                       const ArmourEquips&   armour,
+                                      const DecoEquips&     decos,
                                       const SkillSpec&      skill_spec) {
     WeaponContribution wc = weapon.calculate_contribution(db);
 
     SkillMap skills = armour.get_skills_without_set_bonuses();
+    skills.add_skills(decos);
     std::unordered_map<const SetBonus*, unsigned int> set_bonuses = armour.get_set_bonuses();
     if (wc.set_bonus) set_bonuses[wc.set_bonus] += 1;
     skills.add_set_bonuses(set_bonuses);

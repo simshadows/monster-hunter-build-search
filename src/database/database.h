@@ -54,6 +54,9 @@ public:
     // Constructor
     static const DecorationsDatabase read_db_file(const std::string& filename, const SkillsDatabase& skills_db);
 
+    // Access
+    const Decoration* at(const std::string& deco_id) const;
+
 private:
     DecorationsDatabase() noexcept;
 };

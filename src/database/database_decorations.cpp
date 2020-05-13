@@ -20,7 +20,6 @@ static constexpr unsigned int k_COMPLEX_DECO_SIZE = 4;
 
 const DecorationsDatabase DecorationsDatabase::read_db_file(const std::string& filename,
                                                             const SkillsDatabase& skills_db) {
-    (void)skills_db;
     DecorationsDatabase new_db;
 
     nlohmann::json j;
@@ -157,6 +156,11 @@ const DecorationsDatabase DecorationsDatabase::read_db_file(const std::string& f
     }
 
     return new_db;
+}
+
+
+const Decoration* DecorationsDatabase::at(const std::string& deco_id) const {
+    return this->decorations_store.at(deco_id).get();
 }
 
 

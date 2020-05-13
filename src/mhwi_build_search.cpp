@@ -51,12 +51,14 @@ void run() {
                             ArmourVariant::master_rank_beta_plus,
                             ArmourSlot::arms));
     armour.add(db.charms.at("CHALLENGER_CHARM"));
+
+    DecoEquips decos;
     
     std::clog << weapon.get_humanreadable() << std::endl << std::endl;
     std::clog << armour.get_humanreadable() << std::endl << std::endl;
     std::clog << armour.get_skills_without_set_bonuses().get_humanreadable() << std::endl << std::endl;
 
-    double efr = calculate_efr_from_gear_lookup(db, weapon, armour, skill_spec);
+    double efr = calculate_efr_from_gear_lookup(db, weapon, armour, decos, skill_spec);
     std::clog << efr << std::endl;
 
     /*

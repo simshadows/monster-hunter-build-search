@@ -140,6 +140,17 @@ void SkillMap::add_skills(const ArmourPiece& piece) {
 }
 
 
+void SkillMap::add_skills(const DecoEquips& decos) {
+    for (const Decoration* const& deco : decos) {
+        for (const auto& e : deco->skills) {
+            this->increment_lvl(e.first, e.second);
+        }
+    }
+}
+
+
+
+
 void SkillMap::add_set_bonuses(const std::unordered_map<const SetBonus*, unsigned int>& set_bonuses) {
     for (const auto& e : set_bonuses) {
         const SetBonus * const set_bonus = e.first;
@@ -372,6 +383,30 @@ std::string WeaponInstance::get_humanreadable() const {
     return this->weapon->name
            + "\n\n" + this->upgrades->get_humanreadable()
            + "\n\n" + this->augments->get_humanreadable();
+}
+
+
+/****************************************************************************************
+ * DecoEquips
+ ***************************************************************************************/
+
+
+DecoEquips::DecoEquips() noexcept = default;
+
+void DecoEquips::add(const Decoration * const deco) {
+    this->data.emplace_back(deco);
+}
+
+DecoEquips::IteratorType DecoEquips::begin() const {
+    return this->data.begin();
+}
+
+DecoEquips::IteratorType DecoEquips::end() const {
+    return this->data.end();
+}
+
+std::string DecoEquips::get_humanreadable() const {
+    return "TODO DECOS";
 }
 
 

@@ -15,6 +15,9 @@ namespace MHWIBuildSearch
 {
 
 
+class DecoEquips; // Declaring early since this will be needed.
+
+
 /****************************************************************************************
  * SkillSpec
  ***************************************************************************************/
@@ -32,6 +35,8 @@ public:
     unsigned int get_min_lvl(const Skill*) const;
     unsigned int get_state(const Skill*) const;
     bool get_state_for_binary_skill(const Skill*) const; // Adds an assertion for skills with only two states
+
+    void add_from_decos(const DecoEquips&);
 
     std::string get_humanreadable() const;
 
@@ -54,6 +59,7 @@ public:
     void set_lvl(const Skill* skill, unsigned int level);
     void increment_lvl(const Skill* skill, unsigned int level_to_add);
     void add_skills(const ArmourPiece&);
+    void add_skills(const DecoEquips&);
     void add_set_bonuses(const std::unordered_map<const SetBonus*, unsigned int>&);
 
     // Gets a skill's level. Skills that aren't in the container return zero.
@@ -140,6 +146,28 @@ struct WeaponInstance {
 
 
 /****************************************************************************************
+ * DecoEquips
+ ***************************************************************************************/
+
+
+class DecoEquips {
+    typedef std::vector<const Decoration*> ContainerType;
+    typedef ContainerType::const_iterator  IteratorType;
+
+    ContainerType data;
+public:
+    DecoEquips() noexcept;
+
+    void add(const Decoration*);
+
+    IteratorType begin() const;
+    IteratorType end() const;
+
+    std::string get_humanreadable() const;
+};
+
+
+/****************************************************************************************
  * SkillContribution
  ***************************************************************************************/
 
@@ -171,6 +199,7 @@ double calculate_efr_from_skills_lookup(const Database&,
 double calculate_efr_from_gear_lookup(const Database&,
                                       const WeaponInstance&,
                                       const ArmourEquips&,
+                                      const DecoEquips&,
                                       const SkillSpec&);
 
 
