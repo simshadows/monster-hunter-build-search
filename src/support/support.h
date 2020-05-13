@@ -157,6 +157,22 @@ struct SkillContribution {
 };
 
 
+/****************************************************************************************
+ * Build Calculations
+ ***************************************************************************************/
+
+
+double calculate_efr_from_skills_lookup(const Database&,
+                                        const WeaponInstance&,
+                                        const SkillMap&,
+                                        const SkillSpec&);
+
+double calculate_efr_from_gear_lookup(const Database&,
+                                      const WeaponInstance&,
+                                      const ArmourEquips&,
+                                      const SkillSpec&);
+
+
 } // namespace
 
 #endif // MHWIBS_SUPPORT_H

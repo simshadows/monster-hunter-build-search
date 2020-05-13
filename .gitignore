@@ -1,5 +1,6 @@
-# Executable
+# Executables
 mhwibs
+mhwibs-test
 
 # Prerequisites
 *.d
