@@ -4,11 +4,12 @@
  */
 
 #include <assert.h>
-
+#include <cstring>
 #include <iostream>
 #include <cmath>
 #include <vector>
 
+#include "mhwi_build_search.h"
 #include "core/core.h"
 #include "database/database.h"
 #include "support/support.h"
@@ -19,7 +20,7 @@ namespace MHWIBuildSearch
 {
 
 
-void run() {
+void no_args_cmd() {
     const Database db = Database::get_db();
 
     std::unordered_map<const Skill*, unsigned int> min_levels = {
@@ -83,11 +84,14 @@ void run() {
 
 
 int main(int argc, char** argv) {
-    (void)argc;
-    (void)argv;
-
-    MHWIBuildSearch::run();
-
+    if ((argc == 3) && (std::strcmp(argv[1], "search") == 0)) {
+        MHWIBuildSearch::search_cmd(std::string(argv[2]));
+    } else if (argc == 1) {
+        MHWIBuildSearch::no_args_cmd();
+    } else {
+        std::cerr << "Invalid command arguments." << std::endl;
+        return 1;
+    }
     return 0;
 }
 

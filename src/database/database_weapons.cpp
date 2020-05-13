@@ -18,24 +18,6 @@ namespace MHWIBuildSearch {
  * Static Stuff
  */
 
-
-static const std::unordered_map<std::string, WeaponClass> str_to_weaponclass = {
-    {"GREATSWORD"      , WeaponClass::greatsword      },
-    {"LONGSWORD"       , WeaponClass::longsword       },
-    {"SWORD_AND_SHIELD", WeaponClass::sword_and_shield},
-    {"DUAL_BLADES"     , WeaponClass::dual_blades     },
-    {"HAMMER"          , WeaponClass::hammer          },
-    {"HUNTING_HORN"    , WeaponClass::hunting_horn    },
-    {"LANCE"           , WeaponClass::lance           },
-    {"GUNLANCE"        , WeaponClass::gunlance        },
-    {"SWITCHAXE"       , WeaponClass::switchaxe       },
-    {"CHARGE_BLADE"    , WeaponClass::charge_blade    },
-    {"INSECT_GLAIVE"   , WeaponClass::insect_glaive   },
-    {"BOW"             , WeaponClass::bow             },
-    {"HEAVY_BOWGUN"    , WeaponClass::heavy_bowgun    },
-    {"LIGHT_BOWGUN"    , WeaponClass::light_bowgun    },
-};
-
 static double weaponclass_to_bloat_value(const WeaponClass wt) {
     switch (wt) {
         case WeaponClass::greatsword:       return 4.8;
@@ -93,7 +75,7 @@ const WeaponsDatabase WeaponsDatabase::read_db_file(const std::string& filename,
             throw std::runtime_error("Weapon IDs in the weapon database must be in UPPER_SNAKE_CASE.");
         }
 
-        WeaponClass weapon_class = str_to_weaponclass.at(jj["class"]);
+        WeaponClass weapon_class = upper_snake_case_to_weaponclass(jj["class"]);
 
         std::string name = jj["name"];
         unsigned int rarity = jj["rarity"];

@@ -5,6 +5,8 @@
 
 #include "core.h"
 
+#include "unordered_map"
+
 namespace MHWIBuildSearch
 {
 
@@ -58,7 +60,27 @@ Decoration::Decoration(std::string&& new_id,
  ***************************************************************************************/
 
 
-// Nothing necessary...
+static const std::unordered_map<std::string, WeaponClass> upper_snake_case_to_weaponclass_map = {
+    {"GREATSWORD"      , WeaponClass::greatsword      },
+    {"LONGSWORD"       , WeaponClass::longsword       },
+    {"SWORD_AND_SHIELD", WeaponClass::sword_and_shield},
+    {"DUAL_BLADES"     , WeaponClass::dual_blades     },
+    {"HAMMER"          , WeaponClass::hammer          },
+    {"HUNTING_HORN"    , WeaponClass::hunting_horn    },
+    {"LANCE"           , WeaponClass::lance           },
+    {"GUNLANCE"        , WeaponClass::gunlance        },
+    {"SWITCHAXE"       , WeaponClass::switchaxe       },
+    {"CHARGE_BLADE"    , WeaponClass::charge_blade    },
+    {"INSECT_GLAIVE"   , WeaponClass::insect_glaive   },
+    {"BOW"             , WeaponClass::bow             },
+    {"HEAVY_BOWGUN"    , WeaponClass::heavy_bowgun    },
+    {"LIGHT_BOWGUN"    , WeaponClass::light_bowgun    },
+};
+
+WeaponClass upper_snake_case_to_weaponclass(std::string s) {
+    return upper_snake_case_to_weaponclass_map.at(s);
+}
+
 
 
 /****************************************************************************************

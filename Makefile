@@ -15,7 +15,9 @@ OBJECTS=src/core/build_components.o \
 		src/database/database_charms.o \
 		src/support/containers.o \
 		src/support/skill_contributions.o \
-		src/support/build_calculations.o
+		src/support/build_calculations.o \
+		src/search.o \
+		src/search_jsonparse.o
 
 TESTEXEC=mhwibs-test
 TESTOBJECTS=tests/run_tests.o

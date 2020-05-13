@@ -177,7 +177,6 @@ enum class WeaponClass {
     light_bowgun,
 };
 
-
 enum class WeaponAugmentationScheme {
     none,
     //base_game, // Currently unused.
@@ -189,6 +188,8 @@ enum class WeaponUpgradeScheme {
     iceborne_custom,
     iceborne_safi,
 };
+
+WeaponClass upper_snake_case_to_weaponclass(std::string s);
 
 
 struct Weapon {

@@ -1,0 +1,24 @@
+{
+    "allow_low_rank":        false,
+    "allow_high_rank":       false,
+    "allow_master_rank":     true,
+    "health_regen_required": true,
+
+    "selected_weapon_class": "GREATSWORD",
+    "selected_skills": {
+        "AGITATOR": 0,
+        "ATTACK_BOOST": 0,
+        "CRITICAL_BOOST": 3,
+        "CRITICAL_EYE": 0,
+        "FOCUS": 3,
+        "HANDICRAFT": 0,
+        "NON_ELEMENTAL_BOOST": 0,
+        "PEAK_PERFORMANCE": 0,
+        "WEAKNESS_EXPLOIT": 1,
+        "MASTERS_TOUCH": 1,
+        "AGITATOR_SECRET": 0
+    },
+    "forced_skill_states": {
+        "WEAKNESS_EXPLOIT": 2
+    }
+}
