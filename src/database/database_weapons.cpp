@@ -144,8 +144,17 @@ const Weapon* WeaponsDatabase::at(const std::string& weapon_id) const {
 
 std::vector<const Weapon*> WeaponsDatabase::get_all() const {
     std::vector<const Weapon*> ret;
-    for (const Weapon& e : this->all_weapons) {
-        ret.emplace_back(&e);
+    for (const Weapon& weapon : this->all_weapons) {
+        ret.emplace_back(&weapon);
+    }
+    return ret;
+}
+
+
+std::vector<const Weapon*> WeaponsDatabase::get_all_of_weaponclass(WeaponClass weapon_class) const {
+    std::vector<const Weapon*> ret;
+    for (const Weapon& weapon : this->all_weapons) {
+        if (weapon.weapon_class == weapon_class) ret.emplace_back(&weapon);
     }
     return ret;
 }

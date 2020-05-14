@@ -82,12 +82,54 @@ namespace MHWIBuildSearch
  */
 
 
+std::vector<const Charm*> get_pruned_charms(const Database& db, const SkillSpec& skill_spec) {
+    std::vector<const Charm*> ret = db.charms.get_all();
+
+    const std::size_t stat_pre = ret.size();
+
+    const auto pred = [&](const Charm* x){for (const Skill* s : x->skills)
+                                              if (skill_spec.is_in_subset(s))
+                                                  return false;
+                                          return true; };
+    ret.erase(std::remove_if(ret.begin(), ret.end(), pred), ret.end());
+
+    const std::size_t stat_post = ret.size();
+
+    Utils::log_stat_reduction("Charms pruning: ", stat_pre, stat_post);
+    Utils::log_stat();
+
+    return ret;
+}
+
+
+std::vector<const Decoration*> get_pruned_decos(const Database& db, const SkillSpec& skill_spec) {
+    std::vector<const Decoration*> ret = db.decos.get_all();
+
+    const std::size_t stat_pre = ret.size();
+
+    const auto pred = [&](const Decoration* x){for (const auto& e : x->skills)
+                                                   if (skill_spec.is_in_subset(e.first)) {
+                                                       assert(e.second > 0);
+                                                       return false;
+                                                   }
+                                               return true; };
+    ret.erase(std::remove_if(ret.begin(), ret.end(), pred), ret.end());
+
+    const std::size_t stat_post = ret.size();
+
+    Utils::log_stat_reduction("Decorations pruning: ", stat_pre, stat_post);
+    Utils::log_stat();
+
+    return ret;
+}
+
+
 static void do_search(const Database& db, const SearchParameters& params) {
 
-    (void)params;
-
     // Determine what skills absolutely have to be served by set bonus.
+
     std::unordered_set<const SetBonus*> set_bonus_subset;
+
     {
         const std::vector<const SetBonus*> all_set_bonuses = db.skills.get_all_set_bonuses();
 
@@ -132,6 +174,32 @@ static void do_search(const Database& db, const SearchParameters& params) {
             std::clog << std::endl << std::endl;
         }
     }
+
+    std::vector<const Weapon*> weapons = db.weapons.get_all_of_weaponclass(params.weapon_class);
+    std::map<ArmourSlot, std::vector<const ArmourPiece*>> armour = db.armour.get_all_pieces_by_slot();
+
+    assert(armour.size() == 5);
+    assert(armour.at(ArmourSlot::head).size());
+    assert(armour.at(ArmourSlot::chest).size());
+    assert(armour.at(ArmourSlot::arms).size());
+    assert(armour.at(ArmourSlot::waist).size());
+    assert(armour.at(ArmourSlot::legs).size());
+    assert(weapons.size());
+    Utils::log_stat("Total weapons: ", weapons.size());
+    Utils::log_stat();
+    Utils::log_stat("Total head pieces:  ", armour.at(ArmourSlot::head).size());
+    Utils::log_stat("Total chest pieces: ", armour.at(ArmourSlot::chest).size());
+    Utils::log_stat("Total arm pieces:   ", armour.at(ArmourSlot::arms).size());
+    Utils::log_stat("Total waist pieces: ", armour.at(ArmourSlot::waist).size());
+    Utils::log_stat("Total leg pieces:   ", armour.at(ArmourSlot::legs).size());
+    Utils::log_stat();
+
+    //std::vector<const Charm*> charms = db.charms.get_all();
+    std::vector<const Charm*> charms = get_pruned_charms(db, params.skill_spec);
+    std::vector<const Decoration*> decos = get_pruned_decos(db, params.skill_spec);
+
+    assert(charms.size());
+    assert(decos.size());
 
     // TODO: Continue!
 }

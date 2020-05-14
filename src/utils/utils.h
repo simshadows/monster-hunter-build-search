@@ -22,6 +22,7 @@ namespace Utils {
 
 void log_stat(const std::string& s="");
 void log_stat(const std::string& s, int v);
+void log_stat_reduction(const std::string& s, const int v_before, const int v_after);
 
 
 /*

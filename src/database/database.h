@@ -79,6 +79,7 @@ public:
     // Access
     const Weapon* at(const std::string& weapon_id) const;
     std::vector<const Weapon*> get_all() const;
+    std::vector<const Weapon*> get_all_of_weaponclass(WeaponClass) const;
 
 private:
     WeaponsDatabase() noexcept;
@@ -114,6 +115,7 @@ public:
                           ArmourVariant      variant,
                           ArmourSlot         slot) const;
     std::vector<const ArmourPiece*> get_all_pieces() const;
+    std::map<ArmourSlot, std::vector<const ArmourPiece*>> get_all_pieces_by_slot() const;
 
 private:
     ArmourDatabase() noexcept;

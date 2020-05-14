@@ -289,6 +289,17 @@ std::vector<const ArmourPiece*> ArmourDatabase::get_all_pieces() const {
 }
 
 
+std::map<ArmourSlot, std::vector<const ArmourPiece*>> ArmourDatabase::get_all_pieces_by_slot() const {
+    std::map<ArmourSlot, std::vector<const ArmourPiece*>> ret;
+    for (const auto& e : this->armour_sets) {
+        for (const std::shared_ptr<ArmourPiece>& ee : e.second->pieces) {
+            ret[ee->slot].emplace_back(ee.get());
+        }
+    }
+    return ret;
+}
+
+
 ArmourDatabase::ArmourDatabase() noexcept = default;
 
 
