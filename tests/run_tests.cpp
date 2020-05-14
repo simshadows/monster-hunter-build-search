@@ -324,5 +324,80 @@ TEST_CASE("Incrementally building up a greatsword Acid Shredder II build.") {
 }
 
 
+TEST_CASE("DecoEquips::fits()") {
+
+    std::unordered_map<const Skill*, unsigned int> min_levels = {
+        {db.agitator_ptr, 0},
+        {db.coalescence_ptr, 0},
+        {db.peak_performance_ptr, 0},
+        {db.weakness_exploit_ptr, 0},
+    };
+    std::unordered_map<const Skill*, unsigned int> forced_states;
+    SkillSpec skill_spec(std::move(min_levels), std::move(forced_states));
+
+    SECTION("Mixed Test, Exact Fit") {
+
+        WeaponInstance weapon(db.weapons.at("SAFI_SHATTERSPLITTER"));
+        weapon.augments->set_augment(WeaponAugment::augment_lvl, 3);
+        weapon.augments->set_augment(WeaponAugment::attack_increase, 1);
+        weapon.augments->set_augment(WeaponAugment::slot_upgrade, 1);
+        weapon.upgrades->add_upgrade(WeaponUpgrade::ib_safi_attack_6);
+        weapon.upgrades->add_upgrade(WeaponUpgrade::ib_safi_deco_slot_3);
+        weapon.upgrades->add_upgrade(WeaponUpgrade::ib_safi_affinity_5);
+        weapon.upgrades->add_upgrade(WeaponUpgrade::ib_safi_sharpness_5);
+        weapon.upgrades->add_upgrade(WeaponUpgrade::ib_safi_sharpness_4);
+        ArmourEquips armour = get_armour("", "", // EMPTY HEAD
+                                         "Teostra",     "MB",
+                                         "Teostra",     "MB",
+                                         "Teostra",     "MA",
+                                         "Yian Garuga", "MB",
+                                         "UNSCATHED_CHARM",
+                                         db);
+        DecoEquips decos;
+
+        double efr = calculate_efr_from_gear_lookup(db, weapon, armour, decos, skill_spec);
+        REQUIRE(decos.fits_in(armour, weapon.calculate_contribution(db)));
+        REQUIRE(Utils::round_2decpl(efr) == 512.28);
+
+        decos.add(db.decos.at("CHALLENGER_2X"));
+        decos.add(db.decos.at("ATTACK"));
+        decos.add(db.decos.at("PHOENIX"));
+        decos.add(db.decos.at("ATTACK_2X"));
+        decos.add(db.decos.at("ATTACK"));
+        decos.add(db.decos.at("EXPERT"));
+        decos.add(db.decos.at("EXPERT_2X"));
+        decos.add(db.decos.at("EARPLUG"));
+        decos.add(db.decos.at("PHOENIX"));
+        decos.add(db.decos.at("CHALLENGER_VITALITY_COMPOUND"));
+        decos.add(db.decos.at("CRITICAL"));
+        decos.add(db.decos.at("CRITICAL"));
+
+        efr = calculate_efr_from_gear_lookup(db, weapon, armour, decos, skill_spec);
+        REQUIRE(decos.fits_in(armour, weapon.calculate_contribution(db)));
+        REQUIRE(Utils::round_2decpl(efr) == 649.38);
+
+        // Now, we attempt to overflow the deco capacity.
+
+        DecoEquips new_decos = decos;
+        new_decos.add(db.decos.at("ATTACK"));
+        REQUIRE(!new_decos.fits_in(armour, weapon.calculate_contribution(db)));
+
+        new_decos = decos;
+        new_decos.add(db.decos.at("ELEMENTLESS"));
+        REQUIRE(!new_decos.fits_in(armour, weapon.calculate_contribution(db)));
+
+        new_decos = decos;
+        new_decos.add(db.decos.at("HANDICRAFT"));
+        REQUIRE(!new_decos.fits_in(armour, weapon.calculate_contribution(db)));
+
+        new_decos = decos;
+        new_decos.add(db.decos.at("TENDERIZER_VITALITY_COMPOUND"));
+        REQUIRE(!new_decos.fits_in(armour, weapon.calculate_contribution(db)));
+
+    }
+
+}
+
+
 } // namespace
 

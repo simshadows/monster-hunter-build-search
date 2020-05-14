@@ -4,6 +4,7 @@
  */
 
 #include <assert.h>
+#include <algorithm>
 
 #include "support.h"
 #include "../utils/utils.h"
@@ -297,6 +298,16 @@ std::unordered_map<const SetBonus*, unsigned int> ArmourEquips::get_set_bonuses(
 }
 
 
+std::vector<unsigned int> ArmourEquips::get_deco_slots() const {
+    std::vector<unsigned int> ret;
+    for (const ArmourPiece * const & armour_piece : this->data) {
+        if (!armour_piece) continue;
+        ret.insert(ret.end(), armour_piece->deco_slots.begin(), armour_piece->deco_slots.end());
+    }
+    return ret;
+}
+
+
 std::string ArmourEquips::get_humanreadable() const {
     return "Head:  " + this->fetch_piece_name(k_HEAD_INDEX)
            + "\nChest: " + this->fetch_piece_name(k_CHEST_INDEX)
@@ -377,10 +388,10 @@ WeaponContribution WeaponInstance::calculate_contribution(const Database& db) co
     };
 
     // Now, we finish off any bits we have remaining.
-    if (ac.extra_deco_slot_size != 0) {
+    if (ac.extra_deco_slot_size) {
         ret.deco_slots.emplace_back(ac.extra_deco_slot_size);
     }
-    if (uc.extra_deco_slot_size != 0) {
+    if (uc.extra_deco_slot_size) {
         ret.deco_slots.emplace_back(uc.extra_deco_slot_size);
     }
 
@@ -401,6 +412,25 @@ std::string WeaponInstance::get_humanreadable() const {
 
 
 DecoEquips::DecoEquips() noexcept = default;
+
+bool DecoEquips::fits_in(const ArmourEquips& armour, const WeaponContribution& wc) const {
+    // Get deco slots, sorted in descending order
+    std::vector<unsigned int> deco_slots = armour.get_deco_slots();
+    deco_slots.insert(deco_slots.end(), wc.deco_slots.begin(), wc.deco_slots.end());
+    std::sort(deco_slots.begin(), deco_slots.end(), std::greater<unsigned int>());
+
+    // Get decos, sorted by size in descending order
+    std::vector<const Decoration*> decos = this->data;
+    const auto cmp = [](const Decoration * const a, const Decoration * const b){return a->slot_size > b->slot_size;};
+    std::sort(decos.begin(), decos.end(), cmp);
+
+    auto p = deco_slots.begin();
+    for (const Decoration* deco : decos) {
+        if ((p == deco_slots.end()) || (*p < deco->slot_size)) return false;
+        ++p;
+    }
+    return true;
+}
 
 void DecoEquips::add(const Decoration * const deco) {
     this->data.emplace_back(deco);

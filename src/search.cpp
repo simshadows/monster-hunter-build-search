@@ -82,7 +82,7 @@ namespace MHWIBuildSearch
  */
 
 
-std::vector<const Charm*> get_pruned_charms(const Database& db, const SkillSpec& skill_spec) {
+static std::vector<const Charm*> get_pruned_charms(const Database& db, const SkillSpec& skill_spec) {
     std::vector<const Charm*> ret = db.charms.get_all();
 
     const std::size_t stat_pre = ret.size();
@@ -102,7 +102,7 @@ std::vector<const Charm*> get_pruned_charms(const Database& db, const SkillSpec&
 }
 
 
-std::vector<const Decoration*> get_pruned_decos(const Database& db, const SkillSpec& skill_spec) {
+static std::vector<const Decoration*> get_pruned_decos(const Database& db, const SkillSpec& skill_spec) {
     std::vector<const Decoration*> ret = db.decos.get_all();
 
     const std::size_t stat_pre = ret.size();
@@ -125,6 +125,8 @@ std::vector<const Decoration*> get_pruned_decos(const Database& db, const SkillS
 
 
 static void do_search(const Database& db, const SearchParameters& params) {
+
+    std::clog << params.skill_spec.get_humanreadable() << std::endl << std::endl;
 
     // Determine what skills absolutely have to be served by set bonus.
 
@@ -200,6 +202,7 @@ static void do_search(const Database& db, const SearchParameters& params) {
 
     assert(charms.size());
     assert(decos.size());
+
 
     // TODO: Continue!
 }

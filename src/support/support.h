@@ -104,6 +104,7 @@ public:
     bool slot_is_filled(const ArmourSlot&) const;
     SkillMap get_skills_without_set_bonuses() const;
     std::unordered_map<const SetBonus*, unsigned int> get_set_bonuses() const;
+    std::vector<unsigned int> get_deco_slots() const;
 
     std::string get_humanreadable() const;
 
@@ -164,6 +165,8 @@ class DecoEquips {
     ContainerType data;
 public:
     DecoEquips() noexcept;
+
+    bool fits_in(const ArmourEquips&, const WeaponContribution&) const;
 
     void add(const Decoration*);
 

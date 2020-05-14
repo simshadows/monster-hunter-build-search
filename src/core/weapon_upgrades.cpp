@@ -153,9 +153,9 @@ static const std::unordered_set<WeaponUpgrade> ib_safi_lvl6_awakenings = {
 };
 
 static const std::unordered_set<WeaponUpgrade> ib_safi_deco_slot_awakenings = {
+    WeaponUpgrade::ib_safi_deco_slot_1,
+    WeaponUpgrade::ib_safi_deco_slot_2,
     WeaponUpgrade::ib_safi_deco_slot_3,
-    WeaponUpgrade::ib_safi_deco_slot_4,
-    WeaponUpgrade::ib_safi_deco_slot_5,
     WeaponUpgrade::ib_safi_deco_slot_6,
 };
 
@@ -201,9 +201,9 @@ static const std::unordered_map<WeaponUpgrade, std::string> ib_safi_supported_up
     {WeaponUpgrade::ib_safi_sharpness_4, "Sharpness Increase IV"},
     {WeaponUpgrade::ib_safi_sharpness_5, "Sharpness Increase V"},
     {WeaponUpgrade::ib_safi_sharpness_6, "Sharpness Increase VI"},
+    {WeaponUpgrade::ib_safi_deco_slot_1, "Slot Upgrade I"},
+    {WeaponUpgrade::ib_safi_deco_slot_2, "Slot Upgrade II"},
     {WeaponUpgrade::ib_safi_deco_slot_3, "Slot Upgrade III"},
-    {WeaponUpgrade::ib_safi_deco_slot_4, "Slot Upgrade IV"},
-    {WeaponUpgrade::ib_safi_deco_slot_5, "Slot Upgrade V"},
     {WeaponUpgrade::ib_safi_deco_slot_6, "Slot Upgrade VI"},
 
     {WeaponUpgrade::ib_safi_sb_ancient_divinity       , "Ancient Divinity"       },
@@ -284,9 +284,9 @@ public:
                     case WeaponUpgrade::ib_safi_sharpness_4: white_sharpness += 40;    break;
                     case WeaponUpgrade::ib_safi_sharpness_5: white_sharpness += 50;    break;
                     case WeaponUpgrade::ib_safi_sharpness_6: white_sharpness += 70;    break;
-                    case WeaponUpgrade::ib_safi_deco_slot_3: extra_deco_slot_size = 1; break;
-                    case WeaponUpgrade::ib_safi_deco_slot_4: extra_deco_slot_size = 2; break;
-                    case WeaponUpgrade::ib_safi_deco_slot_5: extra_deco_slot_size = 3; break;
+                    case WeaponUpgrade::ib_safi_deco_slot_1: extra_deco_slot_size = 1; break;
+                    case WeaponUpgrade::ib_safi_deco_slot_2: extra_deco_slot_size = 2; break;
+                    case WeaponUpgrade::ib_safi_deco_slot_3: extra_deco_slot_size = 3; break;
                     case WeaponUpgrade::ib_safi_deco_slot_6: extra_deco_slot_size = 4; break;
                     default:
                         throw std::logic_error("Attempted to use an unsupported upgrade.");

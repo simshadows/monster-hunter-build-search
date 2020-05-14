@@ -376,9 +376,9 @@ enum class WeaponUpgrade {
     ib_safi_sharpness_6,
     //ib_safi_deco_slot_1, // This upgrade doesn't exist.
     //ib_safi_deco_slot_2, // This upgrade doesn't exist.
+    ib_safi_deco_slot_1,
+    ib_safi_deco_slot_2,
     ib_safi_deco_slot_3,
-    ib_safi_deco_slot_4,
-    ib_safi_deco_slot_5,
     ib_safi_deco_slot_6,
     ib_safi_sb_ancient_divinity,
     ib_safi_sb_anjanath_dominance,
