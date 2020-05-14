@@ -1,5 +1,5 @@
 /*
- * File: mhwi_build_search.cpp
+ * File: build_calculations.cpp
  * Author: <contact@simshadows.com>
  */
 
@@ -7,7 +7,7 @@
 #include <cmath>
 
 #include "support.h"
-#include "../utils.h"
+#include "../utils/utils.h"
 
 
 namespace MHWIBuildSearch

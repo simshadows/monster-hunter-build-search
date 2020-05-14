@@ -157,6 +157,16 @@ const SetBonus* SkillsDatabase::set_bonus_at(const std::string& set_bonus_id) co
 }
 
 
+std::vector<const SetBonus*> SkillsDatabase::get_all_set_bonuses() const {
+    std::vector<const SetBonus*> ret;
+    for (const auto& e : this->set_bonuses_map) {
+        const SetBonus* set_bonus = e.second.get();
+        ret.emplace_back(set_bonus);
+    }
+    return ret;
+}
+
+
 SkillsDatabase::SkillsDatabase() noexcept = default;
 
 

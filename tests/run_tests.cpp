@@ -13,7 +13,7 @@
 #include "../src/core/core.h"
 #include "../src/database/database.h"
 #include "../src/support/support.h"
-#include "../src/utils.h"
+#include "../src/utils/utils.h"
 
 namespace TestMHWIBuildSearch
 {

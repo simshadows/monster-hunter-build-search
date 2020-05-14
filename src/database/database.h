@@ -10,7 +10,7 @@
 #include <unordered_map>
 
 #include "../core/core.h"
-#include "../utils.h"
+#include "../utils/utils.h"
 
 
 namespace MHWIBuildSearch {
@@ -35,6 +35,8 @@ public:
     const Skill* skill_at(const std::string& skill_id) const;
     const SetBonus* set_bonus_at(const std::string& set_bonus_id) const;
 
+    std::vector<const SetBonus*> get_all_set_bonuses() const;
+
 private:
     SkillsDatabase() noexcept;
 };
@@ -56,6 +58,7 @@ public:
 
     // Access
     const Decoration* at(const std::string& deco_id) const;
+    std::vector<const Decoration*> get_all() const;
 
 private:
     DecorationsDatabase() noexcept;
@@ -75,6 +78,7 @@ public:
 
     // Access
     const Weapon* at(const std::string& weapon_id) const;
+    std::vector<const Weapon*> get_all() const;
 
 private:
     WeaponsDatabase() noexcept;
@@ -109,6 +113,7 @@ public:
                           Tier               tier,
                           ArmourVariant      variant,
                           ArmourSlot         slot) const;
+    std::vector<const ArmourPiece*> get_all_pieces() const;
 
 private:
     ArmourDatabase() noexcept;
@@ -128,6 +133,7 @@ public:
 
     // Access
     const Charm* at(const std::string& charm_id) const;
+    std::vector<const Charm*> get_all() const;
 
 private:
     CharmsDatabase() noexcept;

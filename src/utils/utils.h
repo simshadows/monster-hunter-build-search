@@ -8,10 +8,25 @@
 
 #include <iostream>
 #include <cmath>
+#include <vector>
 #include <unordered_map>
 #include <unordered_set>
 
 namespace Utils {
+
+
+/*
+ * Logging
+ */
+
+
+void log_stat(const std::string& s="");
+void log_stat(const std::string& s, int v);
+
+
+/*
+ * Inlines
+ */
 
 
 inline double round_2decpl(const double v) {
@@ -70,6 +85,17 @@ template<class K,
 inline bool set_has_key(const S& s, const K& k) {
     auto search = s.find(k);
     return search != s.end();
+}
+
+
+// TODO: Figure out how the actual set diff function works.
+template<class S = std::unordered_set<class K>>
+inline S set_diff(const S& s1, const S& s2) {
+    S ret;
+    for (const auto& e : s1) {
+        if (!set_has_key(s2, e)) ret.insert(e);
+    }
+    return ret;
 }
 
 

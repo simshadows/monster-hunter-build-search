@@ -6,7 +6,7 @@
 #include <assert.h>
 
 #include "core.h"
-#include "../utils.h"
+#include "../utils/utils.h"
 
 namespace MHWIBuildSearch
 {

@@ -16,6 +16,7 @@ OBJECTS=src/core/build_components.o \
 		src/support/containers.o \
 		src/support/skill_contributions.o \
 		src/support/build_calculations.o \
+		src/utils/logging.o \
 		src/search.o \
 		src/search_jsonparse.o
 

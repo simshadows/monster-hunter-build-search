@@ -8,7 +8,7 @@
 #include <iostream>
 
 #include "mhwi_build_search.h"
-#include "utils.h"
+#include "utils/utils.h"
 
 #include "../dependencies/json-3-7-3/json.hpp"
 

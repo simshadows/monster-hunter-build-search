@@ -88,6 +88,15 @@ const Charm* CharmsDatabase::at(const std::string& charm_id) const {
 }
 
 
+std::vector<const Charm*> CharmsDatabase::get_all() const {
+    std::vector<const Charm*> ret;
+    for (const auto& e : this->charms_map) {
+        ret.emplace_back(e.second.get());
+    }
+    return ret;
+}
+
+
 CharmsDatabase::CharmsDatabase() noexcept = default;
 
 

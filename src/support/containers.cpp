@@ -6,7 +6,7 @@
 #include <assert.h>
 
 #include "support.h"
-#include "../utils.h"
+#include "../utils/utils.h"
 
 
 namespace MHWIBuildSearch
@@ -57,6 +57,15 @@ bool SkillSpec::get_state_for_binary_skill(const Skill * const skill) const {
     assert(skill->states == 2);
     const auto& result = this->states.find(skill);
     return result != this->states.end();
+}
+
+
+SkillSpec::MinLevelsIterator SkillSpec::begin() const {
+    return this->min_levels.begin();
+}
+
+SkillSpec::MinLevelsIterator SkillSpec::end() const {
+    return this->min_levels.end();
 }
 
 

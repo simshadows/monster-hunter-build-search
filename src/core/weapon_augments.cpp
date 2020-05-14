@@ -8,7 +8,7 @@
 #include <unordered_map>
 
 #include "core.h"
-#include "../utils.h"
+#include "../utils/utils.h"
 
 namespace MHWIBuildSearch
 {

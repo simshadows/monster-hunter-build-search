@@ -164,6 +164,16 @@ const Decoration* DecorationsDatabase::at(const std::string& deco_id) const {
 }
 
 
+std::vector<const Decoration*> DecorationsDatabase::get_all() const {
+    std::vector<const Decoration*> ret;
+
+    for (const auto& e : this->decorations_store) {
+        ret.emplace_back(e.second.get());
+    }
+    return ret;
+}
+
+
 DecorationsDatabase::DecorationsDatabase() noexcept = default;
 
 

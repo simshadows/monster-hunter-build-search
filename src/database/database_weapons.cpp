@@ -142,6 +142,15 @@ const Weapon* WeaponsDatabase::at(const std::string& weapon_id) const {
 }
 
 
+std::vector<const Weapon*> WeaponsDatabase::get_all() const {
+    std::vector<const Weapon*> ret;
+    for (const Weapon& e : this->all_weapons) {
+        ret.emplace_back(&e);
+    }
+    return ret;
+}
+
+
 WeaponsDatabase::WeaponsDatabase() noexcept = default;
 
 
