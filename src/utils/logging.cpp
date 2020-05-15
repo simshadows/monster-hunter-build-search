@@ -10,7 +10,6 @@
 #include "utils.h"
 
 
-
 namespace Utils
 {
 
@@ -30,6 +29,7 @@ void log_stat(const std::string& s, const int v) {
 }
 
 void log_stat_reduction(const std::string& s, const int v_before, const int v_after) {
+    assert(v_before >= v_after);
     const double kept = (((double)v_after) / v_before) * 100;
     std::string msg = s
                       + std::to_string(v_before)

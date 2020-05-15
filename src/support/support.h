@@ -62,6 +62,7 @@ class SkillMap {
     std::unordered_map<const Skill*, unsigned int> data;
 public:
     SkillMap() noexcept;
+    SkillMap(const ArmourPiece&) noexcept;
 
     void set_lvl(const Skill* skill, unsigned int level);
     void increment_lvl(const Skill* skill, unsigned int level_to_add);
@@ -96,6 +97,7 @@ class ArmourEquips {
     //unsigned int charm_lvl; // For now, we will only allow constructing max-level charms.
 public:
     ArmourEquips() noexcept;
+    ArmourEquips(const Charm*) noexcept;
     //ArmourEquips(const std::initializer_list<const ArmourPiece>&) noexcept;
 
     void add(const ArmourPiece*);
@@ -165,6 +167,7 @@ class DecoEquips {
     ContainerType data;
 public:
     DecoEquips() noexcept;
+    DecoEquips(ContainerType&&) noexcept;
 
     bool fits_in(const ArmourEquips&, const WeaponContribution&) const;
 

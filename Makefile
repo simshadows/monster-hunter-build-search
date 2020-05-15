@@ -3,7 +3,12 @@ CXXFLAGS=-Wall -Werror -Wextra -fsanitize=address
 
 EXEC=mhwibs
 MAINOBJECTS=src/mhwi_build_search.o
-OBJECTS=src/core/build_components.o \
+OBJECTS=src/search.o \
+		src/search_jsonparse.o \
+		src/support/containers.o \
+		src/support/skill_contributions.o \
+		src/support/build_calculations.o \
+		src/core/build_components.o \
 		src/core/sharpness_gauge.o \
 		src/core/weapon_augments.o \
 		src/core/weapon_upgrades.o \
@@ -13,12 +18,7 @@ OBJECTS=src/core/build_components.o \
 		src/database/database_weapons.o \
 		src/database/database_armour.o \
 		src/database/database_charms.o \
-		src/support/containers.o \
-		src/support/skill_contributions.o \
-		src/support/build_calculations.o \
-		src/utils/logging.o \
-		src/search.o \
-		src/search_jsonparse.o
+		src/utils/logging.o
 
 TESTEXEC=mhwibs-test
 TESTOBJECTS=tests/run_tests.o

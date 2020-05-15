@@ -119,6 +119,15 @@ bool SkillSpec::data_is_valid() const {
 SkillMap::SkillMap() noexcept = default;
 
 
+SkillMap::SkillMap(const ArmourPiece& armour_piece) noexcept
+    : data {}
+{
+    for (const auto& e : armour_piece.skills) {
+        this->data.insert(e);
+    }
+}
+
+
 void SkillMap::set_lvl(const Skill* skill, unsigned int level) {
     assert(level != 0); // For now, I won't intend to ever use this for removing skills.
     if (level > skill->secret_limit) {
@@ -254,6 +263,13 @@ static constexpr std::size_t k_LEGS_INDEX  = 4;
 ArmourEquips::ArmourEquips() noexcept
     : data  {}
     , charm {}
+{
+}
+
+
+ArmourEquips::ArmourEquips(const Charm* new_charm) noexcept
+    : data  {}
+    , charm (new_charm)
 {
 }
 
@@ -412,6 +428,13 @@ std::string WeaponInstance::get_humanreadable() const {
 
 
 DecoEquips::DecoEquips() noexcept = default;
+
+
+DecoEquips::DecoEquips(ContainerType&& new_data) noexcept
+    : data (std::move(new_data))
+{
+}
+
 
 bool DecoEquips::fits_in(const ArmourEquips& armour, const WeaponContribution& wc) const {
     // Get deco slots, sorted in descending order

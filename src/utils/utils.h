@@ -6,8 +6,10 @@
 #ifndef MHWIBS_UTILS_H
 #define MHWIBS_UTILS_H
 
+#include <assert.h>
 #include <iostream>
 #include <cmath>
+#include <limits>
 #include <vector>
 #include <unordered_map>
 #include <unordered_set>
@@ -32,6 +34,11 @@ void log_stat_reduction(const std::string& s, const int v_before, const int v_af
 
 inline double round_2decpl(const double v) {
     return std::round(v * 100) / 100;
+}
+
+inline unsigned int ceil_div(const unsigned int n, const unsigned int d) {
+    assert(n <= (std::numeric_limits<unsigned int>::max() - d)); // Addition overflow check
+    return (n + d - 1) / d;
 }
 
 //inline bool equal_within_2decpl(const double a, const double b) {
