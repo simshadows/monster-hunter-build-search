@@ -42,6 +42,7 @@ SharpnessGauge SharpnessGauge::from_vector(const std::vector<unsigned int>& vec)
     }
     auto hits_end = std::copy(vec.begin(), vec.end(), ret.hits.begin());
     assert(hits_end == ret.hits.end()); // Sanity check
+    (void)hits_end;
     return ret;
 }
 

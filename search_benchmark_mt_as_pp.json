@@ -14,8 +14,9 @@
         "HANDICRAFT": 0,
         "NON_ELEMENTAL_BOOST": 0,
         "PEAK_PERFORMANCE": 0,
-        "WEAKNESS_EXPLOIT": 1,
-        "MASTERS_TOUCH": 1
+        "WEAKNESS_EXPLOIT": 0,
+        "MASTERS_TOUCH": 1,
+        "AGITATOR_SECRET": 0
     },
     "forced_skill_states": {
         "WEAKNESS_EXPLOIT": 2

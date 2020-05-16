@@ -12,74 +12,12 @@
 #include "core/core.h"
 #include "database/database.h"
 #include "support/support.h"
+#include "support_headeronly/skills_seen_set.h"
 #include "utils/utils.h"
 
 
 namespace MHWIBuildSearch
 {
-
-
-/*
- * extract_all_skills implementations
- */
-
-
-//static std::unordered_set<const Skill*> extract_all_skills(const std::vector<const SetBonus*>& v) {
-//    std::unordered_set<const Skill*> ret;
-//    for (const SetBonus* set_bonus : v) {
-//        for (const auto& e : set_bonus->stages) {
-//            assert(e.first > 0);
-//            ret.emplace(e.second);
-//        }
-//    }
-//    return ret;
-//}
-//
-//static std::unordered_set<const Skill*> extract_all_skills(const std::vector<const Decoration*>& v) {
-//    std::unordered_set<const Skill*> ret;
-//    for (const Decoration* deco : v) {
-//        for (const auto& e : deco->skills) {
-//            assert(e.second > 0);
-//            ret.emplace(e.first);
-//        }
-//    }
-//    return ret;
-//}
-//
-//static std::unordered_set<const Skill*> extract_all_skills(const std::vector<const Weapon*>& v) {
-//    std::unordered_set<const Skill*> ret;
-//    for (const Weapon* weapon : v) {
-//        if (weapon->skill) {
-//            ret.emplace(weapon->skill);
-//        }
-//    }
-//    return ret;
-//}
-//
-//static std::unordered_set<const Skill*> extract_all_skills(const std::vector<const ArmourPiece*>& v) {
-//    std::unordered_set<const Skill*> ret;
-//    for (const ArmourPiece* piece : v) {
-//        for (const auto& e : piece->skills) {
-//            ret.emplace(e.first);
-//        }
-//    }
-//    return ret;
-//}
-//
-//static std::unordered_set<const Skill*> extract_all_skills(const std::vector<const Charm*>& v) {
-//    std::unordered_set<const Skill*> ret;
-//    for (const Charm* charm : v) {
-//        for (const Skill* skill : charm->skills) {
-//            ret.emplace(skill);
-//        }
-//    }
-//    return ret;
-//}
-
-
-/*
- * Search implementation
- */
 
 
 struct ArmourPieceCombo {
@@ -105,15 +43,60 @@ struct ArmourSetCombo {
 };
 
 
+static std::map<ArmourSlot, std::vector<const ArmourPiece*>> get_pruned_armour(const Database& db,
+                                                                               const SearchParameters& params) {
+    std::map<ArmourSlot, std::vector<const ArmourPiece*>> ret = db.armour.get_all_pieces_by_slot();
+
+    std::size_t head_pre  = ret.at(ArmourSlot::head).size();
+    std::size_t chest_pre = ret.at(ArmourSlot::chest).size();
+    std::size_t arms_pre  = ret.at(ArmourSlot::arms).size();
+    std::size_t waist_pre = ret.at(ArmourSlot::waist).size();
+    std::size_t legs_pre  = ret.at(ArmourSlot::legs).size();
+
+    assert(ret.size() == 5);
+    assert(head_pre);
+    assert(chest_pre);
+    assert(arms_pre);
+    assert(arms_pre);
+    assert(legs_pre);
+
+    const auto pred = [&](const ArmourPiece* x){
+        switch (armour_variant_to_tier(x->variant)) {
+            case Tier::low_rank:    return !params.allow_low_rank;
+            case Tier::high_rank:   return !params.allow_high_rank;
+            case Tier::master_rank: return !params.allow_master_rank;
+            default:
+                throw std::runtime_error("Invalid tier.");
+        }
+    };
+
+    for (auto& e : ret) {
+        auto& a = e.second;
+        a.erase(std::remove_if(a.begin(), a.end(), pred), a.end());
+    }
+
+    Utils::log_stat_reduction("Head pieces filtering by tier:  ", head_pre,  ret.at(ArmourSlot::head).size());
+    Utils::log_stat_reduction("Chest pieces filtering by tier: ", chest_pre, ret.at(ArmourSlot::chest).size());
+    Utils::log_stat_reduction("Arm pieces filtering by tier:   ", arms_pre,  ret.at(ArmourSlot::arms).size());
+    Utils::log_stat_reduction("Waist pieces filtering by tier: ", waist_pre, ret.at(ArmourSlot::waist).size());
+    Utils::log_stat_reduction("Leg pieces filtering by tier:   ", legs_pre,  ret.at(ArmourSlot::legs).size());
+    Utils::log_stat();
+
+    return ret;
+}
+
+
 static std::vector<const Charm*> get_pruned_charms(const Database& db, const SkillSpec& skill_spec) {
     std::vector<const Charm*> ret = db.charms.get_all();
 
     const std::size_t stat_pre = ret.size();
 
-    const auto pred = [&](const Charm* x){for (const Skill* s : x->skills)
-                                              if (skill_spec.is_in_subset(s))
-                                                  return false;
-                                          return true; };
+    const auto pred = [&](const Charm* x){
+        for (const Skill* s : x->skills) {
+            if (skill_spec.is_in_subset(s)) return false;
+        }
+        return true;
+    };
     ret.erase(std::remove_if(ret.begin(), ret.end(), pred), ret.end());
 
     const std::size_t stat_post = ret.size();
@@ -162,15 +145,6 @@ static std::array<std::vector<const Decoration*>, k_MAX_DECO_SIZE> prepare_decos
 }
 
 
-//static std::vector<std::vector<const Decoration*>> get_deco_combos(const std::vector<unsigned int>& sorted_slots,
-//                                                                   const std::vector<const Decoration*>& sorted_decos) {
-//    assert(std::is_sorted(sorted_slots.begin(), sorted_slots.end(), std::greater<unsigned int>()));
-//    (void)sorted_decos;
-//    std::vector<std::vector<const Decoration*>> ret;
-//    return ret;
-//}
-
-
 //static std::vector<ArmourSetCombo> merge_in_armour_list(const std::vector<ArmourSetCombo>& prev_combos,
 //                                                         const std::vector<ArmourPieceCombo>& pieces,
 //                                                         const SkillSpec& skill_spec) {
@@ -187,6 +161,8 @@ static std::vector<std::vector<const Decoration*>> generate_deco_combos(const st
                                                                         const std::array<std::vector<const Decoration*>,
                                                                                          k_MAX_DECO_SIZE>& sorted_decos,
                                                                         const SkillSpec skill_spec) {
+    assert(std::is_sorted(deco_slots.begin(), deco_slots.end(), std::greater<unsigned int>()));
+
     if (!deco_slots.size()) return {};
     // The rest of the algorithm will assume the presence of decoration slots.
 
@@ -203,7 +179,7 @@ static std::vector<std::vector<const Decoration*>> generate_deco_combos(const st
 
     const std::size_t sublist_index = deco_slots.front() - 1;
     assert(sublist_index < sorted_decos.size());
-    std::vector<const Decoration*> deco_sublist = sorted_decos[sublist_index];
+    const std::vector<const Decoration*>& deco_sublist = sorted_decos[sublist_index];
 
     for (const Decoration* deco : deco_sublist) {
 
@@ -255,28 +231,42 @@ static std::vector<std::vector<const Decoration*>> generate_deco_combos(const st
 static std::vector<ArmourPieceCombo> generate_slot_combos(const std::vector<const ArmourPiece*>& pieces,
                                                           const std::array<std::vector<const Decoration*>,
                                                                            k_MAX_DECO_SIZE>& sorted_decos,
-                                                          const SkillSpec& skill_spec) {
+                                                          const SkillSpec& skill_spec,
+                                                          const std::unordered_set<const SetBonus*>& set_bonus_subset,
+                                                          const std::string& debug_msg) {
     // We will assume it's sorted.
     // TODO: Add a runtime assert.
 
-    std::vector<ArmourPieceCombo> ret;
+    unsigned long long stat_pre = 0;
+
+    SkillsSeenSet<ArmourPieceCombo> seen_set;
 
     for (const ArmourPiece* piece : pieces) {
         std::vector<std::vector<const Decoration*>> deco_combos = generate_deco_combos(piece->deco_slots,
                                                                                        sorted_decos,
                                                                                        skill_spec);
+        SkillMap armour_skills;
+        armour_skills.add_skills_filtered(*piece, skill_spec);
+
+        stat_pre += deco_combos.size(); // TODO: How do I know this won't overflow?
+
         for (std::vector<const Decoration*>& decos : deco_combos) {
-            SkillMap skills (*piece);
-            // TODO: Use DecoEquips here?
-            for (const Decoration * const deco : decos) {
-                for (const auto& e : deco->skills) {
-                    skills.increment_lvl(e.first, e.second);
-                }
+            SkillMap skills = armour_skills;
+            skills.add_skills_filtered(decos, skill_spec);
+
+            SkillsAndSetBonuses h = {skills, {}};
+            if (Utils::set_has_key(set_bonus_subset, piece->set_bonus)) {
+                h.set_bonuses[piece->set_bonus] = 1;
             }
 
-            ret.push_back({piece, std::move(decos), std::move(skills)});
+            assert(h.skills == skills);
+            seen_set.add(std::move(h), {piece, std::move(decos), std::move(skills)});
         }
     }
+
+    std::vector<ArmourPieceCombo> ret = seen_set.get_data_as_vector();
+
+    Utils::log_stat_reduction(debug_msg, stat_pre, ret.size());
 
     return ret;
 }
@@ -286,36 +276,10 @@ static void do_search(const Database& db, const SearchParameters& params) {
 
     std::clog << params.skill_spec.get_humanreadable() << std::endl << std::endl;
 
-    // Determine what skills absolutely have to be served by set bonus.
-
     std::unordered_set<const SetBonus*> set_bonus_subset;
 
     {
         const std::vector<const SetBonus*> all_set_bonuses = db.skills.get_all_set_bonuses();
-
-        //const std::unordered_set<const Skill*> sb_skills     = extract_all_skills(all_set_bonuses);
-
-        //const std::unordered_set<const Skill*> deco_skills   = extract_all_skills(db.decos.get_all());
-        //const std::unordered_set<const Skill*> weapon_skills = extract_all_skills(db.weapons.get_all());
-        //const std::unordered_set<const Skill*> armour_skills = extract_all_skills(db.armour.get_all_pieces());
-        //const std::unordered_set<const Skill*> charm_skills  = extract_all_skills(db.charms.get_all());
-
-        //std::unordered_set<const Skill*> non_sb_skills = deco_skills;     // Set union
-        //non_sb_skills.insert(weapon_skills.begin(), weapon_skills.end()); // Set union
-        //non_sb_skills.insert(armour_skills.begin(), armour_skills.end()); // Set union
-        //non_sb_skills.insert(charm_skills.begin(),  charm_skills.end());  // Set union
-
-        //std::unordered_set<const Skill*> only_possible_with_sb = Utils::set_diff(sb_skills, non_sb_skills);
-
-        //Utils::log_stat("Total skills serveable by decorations: ", deco_skills.size()  );
-        //Utils::log_stat("Total skills serveable by weapons:     ", weapon_skills.size());
-        //Utils::log_stat("Total skills serveable by armour:      ", armour_skills.size());
-        //Utils::log_stat("Total skills serveable by charms:      ", charm_skills.size() );
-        //Utils::log_stat();
-        //Utils::log_stat("Total skills serveable by set bonuses:      ", sb_skills.size()    );
-        //Utils::log_stat("Total skills serveable without set bonuses: ", non_sb_skills.size());
-        //Utils::log_stat();
-        //Utils::log_stat("Total skills that can only be served by set bonuses: ", only_possible_with_sb.size());
 
         for (const SetBonus * const set_bonus : all_set_bonuses) {
             for (const auto& e : set_bonus->stages) {
@@ -336,7 +300,11 @@ static void do_search(const Database& db, const SearchParameters& params) {
     }
 
     std::vector<const Weapon*> weapons = db.weapons.get_all_of_weaponclass(params.weapon_class);
-    std::map<ArmourSlot, std::vector<const ArmourPiece*>> armour = db.armour.get_all_pieces_by_slot();
+    assert(weapons.size());
+    Utils::log_stat("Total weapons: ", weapons.size());
+    Utils::log_stat();
+
+    std::map<ArmourSlot, std::vector<const ArmourPiece*>> armour = get_pruned_armour(db, params);
 
     assert(armour.size() == 5);
     assert(armour.at(ArmourSlot::head).size());
@@ -344,15 +312,6 @@ static void do_search(const Database& db, const SearchParameters& params) {
     assert(armour.at(ArmourSlot::arms).size());
     assert(armour.at(ArmourSlot::waist).size());
     assert(armour.at(ArmourSlot::legs).size());
-    assert(weapons.size());
-    Utils::log_stat("Total weapons: ", weapons.size());
-    Utils::log_stat();
-    Utils::log_stat("Total head pieces:  ", armour.at(ArmourSlot::head).size());
-    Utils::log_stat("Total chest pieces: ", armour.at(ArmourSlot::chest).size());
-    Utils::log_stat("Total arm pieces:   ", armour.at(ArmourSlot::arms).size());
-    Utils::log_stat("Total waist pieces: ", armour.at(ArmourSlot::waist).size());
-    Utils::log_stat("Total leg pieces:   ", armour.at(ArmourSlot::legs).size());
-    Utils::log_stat();
 
     std::array<std::vector<const Decoration*>, k_MAX_DECO_SIZE> grouped_sorted_decos = prepare_decos(db, params.skill_spec);
 
@@ -371,24 +330,37 @@ static void do_search(const Database& db, const SearchParameters& params) {
 
     std::vector<ArmourPieceCombo> head_combos = generate_slot_combos(armour.at(ArmourSlot::head),
                                                                      grouped_sorted_decos,
-                                                                     params.skill_spec);
+                                                                     params.skill_spec,
+                                                                     set_bonus_subset,
+                                                                     "Generated head+deco combinations:  ");
     std::vector<ArmourPieceCombo> chest_combos = generate_slot_combos(armour.at(ArmourSlot::chest),
                                                                       grouped_sorted_decos,
-                                                                      params.skill_spec);
+                                                                      params.skill_spec,
+                                                                      set_bonus_subset,
+                                                                      "Generated chest+deco combinations: ");
     std::vector<ArmourPieceCombo> arms_combos = generate_slot_combos(armour.at(ArmourSlot::arms),
                                                                      grouped_sorted_decos,
-                                                                     params.skill_spec);
+                                                                     params.skill_spec,
+                                                                     set_bonus_subset,
+                                                                     "Generated arms+deco combinations:  ");
     std::vector<ArmourPieceCombo> waist_combos = generate_slot_combos(armour.at(ArmourSlot::waist),
                                                                       grouped_sorted_decos,
-                                                                      params.skill_spec);
+                                                                      params.skill_spec,
+                                                                      set_bonus_subset,
+                                                                     "Generated waist+deco combinations: ");
     std::vector<ArmourPieceCombo> legs_combos = generate_slot_combos(armour.at(ArmourSlot::legs),
                                                                      grouped_sorted_decos,
-                                                                     params.skill_spec);
-    Utils::log_stat("Generated head combinations:  ", head_combos.size());
-    Utils::log_stat("Generated chest combinations: ", chest_combos.size());
-    Utils::log_stat("Generated arms combinations:  ", arms_combos.size());
-    Utils::log_stat("Generated waist combinations: ", waist_combos.size());
-    Utils::log_stat("Generated legs combinations:  ", legs_combos.size());
+                                                                     params.skill_spec,
+                                                                     set_bonus_subset,
+                                                                     "Generated legs+deco combinations:  ");
+
+    for (const ArmourPieceCombo& e : head_combos) {
+        for (const auto& ee : e.skills) {
+            if (!params.skill_spec.is_in_subset(ee.first)) {
+                std::clog << ee.first->name << std::endl;
+            }
+        }
+    }
 
     // TODO: Continue!
 }

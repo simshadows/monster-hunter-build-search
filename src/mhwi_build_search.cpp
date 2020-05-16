@@ -84,6 +84,9 @@ void no_args_cmd() {
 
 
 int main(int argc, char** argv) {
+    assert(fprintf(stderr, "[WARNING] Assertions are enabled. "
+                   "Program performance may be impacted.\n\n") > 0);
+
     if ((argc == 3) && (std::strcmp(argv[1], "search") == 0)) {
         MHWIBuildSearch::search_cmd(std::string(argv[2]));
     } else if (argc == 1) {

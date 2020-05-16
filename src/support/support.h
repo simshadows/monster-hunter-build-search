@@ -59,24 +59,46 @@ private:
 
 // Note that this container automatically clips levels to secret_limit.
 class SkillMap {
-    std::unordered_map<const Skill*, unsigned int> data;
+    typedef std::unordered_map<const Skill*, unsigned int> ContainerType;
+    typedef ContainerType::const_iterator IteratorType;
+
+    ContainerType data;
 public:
     SkillMap() noexcept;
     SkillMap(const ArmourPiece&) noexcept;
 
     void set_lvl(const Skill* skill, unsigned int level);
     void increment_lvl(const Skill* skill, unsigned int level_to_add);
+    void decrement_lvl(const Skill* skill, unsigned int level_to_remove);
     void add_skills(const ArmourPiece&);
     void add_skills(const DecoEquips&);
     void add_set_bonuses(const std::unordered_map<const SetBonus*, unsigned int>&);
+    void remove_skill(const Skill* skill);
+
+    // Only adds skills from the skill spec
+    // Also adds an assertion to check that the skill map only contains skills from the skill spec
+    void add_skills_filtered(const ArmourPiece&, const SkillSpec&);
+    void add_skills_filtered(const std::vector<const Decoration*>&, const SkillSpec&);
 
     // Gets a skill's level. Skills that aren't in the container return zero.
     unsigned int get_lvl(const Skill* skill) const;
     //unsigned int get_lvl_no_secret(const Skill* skill) const;
     unsigned int get_lvl(const Skill* skill, const Skill* associated_secret) const;
+    bool is_at_least_lvl1(const Skill* skill) const;
     bool binary_skill_is_lvl1(const Skill* skill) const; // Adds an assertion for skills with only two levels.
 
+    std::size_t calculate_hash() const noexcept;
+
+    IteratorType begin() const;
+    IteratorType end() const;
+
     std::string get_humanreadable() const;
+
+    bool operator==(const SkillMap& x) const noexcept {
+        return this->data == x.data;
+    }
+private:
+    bool only_contains_skills_in_spec(const SkillSpec&) const noexcept;
 };
 
 

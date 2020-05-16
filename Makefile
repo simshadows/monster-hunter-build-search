@@ -1,5 +1,5 @@
-CXX=g++
-CXXFLAGS=-Wall -Werror -Wextra -fsanitize=address
+#CXX=g++
+CXXFLAGS=-Wall -Werror -Wextra -O3 -DNDEBUG
 
 EXEC=mhwibs
 MAINOBJECTS=src/mhwi_build_search.o
@@ -26,6 +26,10 @@ TESTOBJECTS=tests/run_tests.o
 .PHONY : all
 all : $(EXEC) test
 
+.PHONY : debug
+debug : CXXFLAGS=-Wall -Werror -Wextra -fsanitize=address -O3
+debug : all
+
 .PHONY : test
 test : $(TESTEXEC)
 	./mhwibs-test
@@ -43,4 +47,16 @@ $(EXEC) : $(OBJECTS) $(MAINOBJECTS)
 
 $(TESTEXEC) : $(OBJECTS) $(TESTOBJECTS)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -o $(TESTEXEC) $(OBJECTS) $(TESTOBJECTS)
+
+##################################################################################
+# I use this specific compiler a lot on my local machine for additional testing. #
+##################################################################################
+
+.PHONY : all2
+all2 : CXX=clang++-9
+all2 : all
+
+.PHONY : debug2
+debug2 : CXX=clang++-9
+debug2 : debug
 

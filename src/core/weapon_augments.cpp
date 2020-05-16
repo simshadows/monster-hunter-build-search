@@ -68,6 +68,8 @@ public:
     {
         assert(this->rarity >= k_IB_MIN_RARITY); // Not allowed any other rarity.
         assert(this->rarity <= k_IB_MAX_RARITY);
+        (void)k_IB_MIN_RARITY;
+        (void)k_IB_MAX_RARITY;
     }
 
     WeaponAugmentsContribution calculate_contribution() const {
