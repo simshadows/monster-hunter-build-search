@@ -24,13 +24,13 @@ class DecoEquips; // Declaring early since this will be needed.
 
 
 class SkillSpec {
-    typedef std::unordered_map<const Skill*, unsigned int> ContainerType;
+    using ContainerType = std::unordered_map<const Skill*, unsigned int>;
 
     ContainerType min_levels;
     ContainerType states;
 public:
-    typedef ContainerType                 InputContainer;
-    typedef ContainerType::const_iterator MinLevelsIterator;
+    using InputContainer    = ContainerType;
+    using MinLevelsIterator = ContainerType::const_iterator;
 
     SkillSpec(InputContainer&& new_min_levels, InputContainer&& forced_states) noexcept;
 
@@ -59,8 +59,8 @@ private:
 
 // Note that this container automatically clips levels to secret_limit.
 class SkillMap {
-    typedef std::unordered_map<const Skill*, unsigned int> ContainerType;
-    typedef ContainerType::const_iterator IteratorType;
+    using ContainerType = std::unordered_map<const Skill*, unsigned int>;
+    using IteratorType  = ContainerType::const_iterator;
 
     ContainerType data;
 public:
@@ -183,8 +183,8 @@ struct WeaponInstance {
 
 
 class DecoEquips {
-    typedef std::vector<const Decoration*> ContainerType;
-    typedef ContainerType::const_iterator  IteratorType;
+    using ContainerType = std::vector<const Decoration*>;
+    using IteratorType  = ContainerType::const_iterator;
 
     ContainerType data;
 public:

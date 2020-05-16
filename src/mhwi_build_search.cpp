@@ -7,6 +7,7 @@
 #include <cstring>
 #include <iostream>
 #include <cmath>
+#include <chrono>
 #include <vector>
 
 #include "mhwi_build_search.h"
@@ -87,6 +88,8 @@ int main(int argc, char** argv) {
     assert(fprintf(stderr, "[WARNING] Assertions are enabled. "
                    "Program performance may be impacted.\n\n") > 0);
 
+    auto start_t = std::chrono::steady_clock::now();
+
     if ((argc == 3) && (std::strcmp(argv[1], "search") == 0)) {
         MHWIBuildSearch::search_cmd(std::string(argv[2]));
     } else if (argc == 1) {
@@ -95,6 +98,14 @@ int main(int argc, char** argv) {
         std::cerr << "Invalid command arguments." << std::endl;
         return 1;
     }
+
+    auto end_t = std::chrono::steady_clock::now();
+    std::clog << std::endl
+              << "Total execution time: "
+              << std::chrono::duration<double>(end_t - start_t).count()
+              << " s"
+              << std::endl;
+
     return 0;
 }
 

@@ -55,7 +55,7 @@ public:
 
 class IBWeaponAugments : public WeaponAugmentsInstance {
 
-    typedef std::unordered_map<WeaponAugment, unsigned int> AugmentLvlMap;
+    using AugmentLvlMap = std::unordered_map<WeaponAugment, unsigned int>;
 
     const unsigned int rarity;
     unsigned int augment_lvl;
