@@ -3,9 +3,9 @@
  * Author: <contact@simshadows.com>
  */
 
-#include "core.h"
-
 #include "unordered_map"
+
+#include "../core.h"
 
 namespace MHWIBuildSearch
 {

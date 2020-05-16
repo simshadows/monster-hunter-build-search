@@ -6,8 +6,8 @@
 #include <assert.h>
 #include <cmath>
 
-#include "support.h"
-#include "../utils/utils.h"
+#include "../support.h"
+#include "../../utils/utils.h"
 
 
 namespace MHWIBuildSearch

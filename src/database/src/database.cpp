@@ -3,7 +3,7 @@
  * Author: <contact@simshadows.com>
  */
 
-#include "database.h"
+#include "../database.h"
 
 namespace MHWIBuildSearch {
 

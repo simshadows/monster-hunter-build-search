@@ -7,8 +7,8 @@
 #include <unordered_set>
 #include <unordered_map>
 
-#include "core.h"
-#include "../utils/utils.h"
+#include "../core.h"
+#include "../../utils/utils.h"
 
 namespace MHWIBuildSearch
 {

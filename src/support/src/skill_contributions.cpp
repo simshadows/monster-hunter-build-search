@@ -5,7 +5,7 @@
 
 #include <assert.h>
 
-#include "support.h"
+#include "../support.h"
 
 namespace MHWIBuildSearch
 {

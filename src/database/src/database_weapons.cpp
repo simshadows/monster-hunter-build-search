@@ -6,9 +6,9 @@
 #include <assert.h>
 #include <fstream>
 
-#include "../../dependencies/json-3-7-3/json.hpp"
+#include "../../../dependencies/json-3-7-3/json.hpp"
 
-#include "database.h"
+#include "../database.h"
 
 
 namespace MHWIBuildSearch {
