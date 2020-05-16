@@ -78,7 +78,10 @@ public:
     // Only adds skills from the skill spec
     // Also adds an assertion to check that the skill map only contains skills from the skill spec
     void add_skills_filtered(const ArmourPiece&, const SkillSpec&);
+    void add_skills_filtered(const Charm&, const unsigned int charm_lvl, const SkillSpec&);
     void add_skills_filtered(const std::vector<const Decoration*>&, const SkillSpec&);
+
+    void merge_in(const SkillMap&);
 
     // Gets a skill's level. Skills that aren't in the container return zero.
     unsigned int get_lvl(const Skill* skill) const;
@@ -97,7 +100,7 @@ public:
     bool operator==(const SkillMap& x) const noexcept {
         return this->data == x.data;
     }
-private:
+
     bool only_contains_skills_in_spec(const SkillSpec&) const noexcept;
 };
 
@@ -127,6 +130,7 @@ public:
 
     bool slot_is_filled(const ArmourSlot&) const;
     SkillMap get_skills_without_set_bonuses() const;
+    SkillMap get_skills_without_set_bonuses_filtered(const SkillSpec&) const;
     std::unordered_map<const SetBonus*, unsigned int> get_set_bonuses() const;
     std::vector<unsigned int> get_deco_slots() const;
 
@@ -194,6 +198,7 @@ public:
     bool fits_in(const ArmourEquips&, const WeaponContribution&) const;
 
     void add(const Decoration*);
+    void merge_in(const DecoEquips&);
 
     IteratorType begin() const;
     IteratorType end() const;

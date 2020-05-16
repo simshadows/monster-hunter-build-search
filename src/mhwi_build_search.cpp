@@ -99,12 +99,8 @@ int main(int argc, char** argv) {
         return 1;
     }
 
-    auto end_t = std::chrono::steady_clock::now();
-    std::clog << std::endl
-              << "Total execution time: "
-              << std::chrono::duration<double>(end_t - start_t).count()
-              << " s"
-              << std::endl;
+    std::clog << std::endl;
+    Utils::log_stat_duration("Total execution time: ", start_t);
 
     return 0;
 }

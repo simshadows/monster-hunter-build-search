@@ -212,6 +212,17 @@ void SkillMap::add_skills_filtered(const ArmourPiece& piece, const SkillSpec& sk
 }
 
 
+void SkillMap::add_skills_filtered(const Charm& charm, const unsigned int charm_lvl, const SkillSpec& skill_spec) {
+    assert(charm_lvl);
+    for (const Skill * const skill : charm.skills) {
+        if (skill_spec.is_in_subset(skill)) {
+            this->increment_lvl(skill, charm_lvl);
+        }
+    }
+    assert(this->only_contains_skills_in_spec(skill_spec));
+}
+
+
 void SkillMap::add_skills_filtered(const std::vector<const Decoration*>& decos, const SkillSpec& skill_spec) {
     for (const Decoration * const deco : decos) {
         for (const auto& e : deco->skills) {
@@ -221,6 +232,13 @@ void SkillMap::add_skills_filtered(const std::vector<const Decoration*>& decos, 
         }
     }
     assert(this->only_contains_skills_in_spec(skill_spec));
+}
+
+
+void SkillMap::merge_in(const SkillMap& obj) {
+    for (const auto& e : obj.data) {
+        this->increment_lvl(e.first, e.second);
+    }
 }
 
 
@@ -369,13 +387,27 @@ bool ArmourEquips::slot_is_filled(const ArmourSlot& slot) const {
 SkillMap ArmourEquips::get_skills_without_set_bonuses() const {
     SkillMap ret;
     for (const ArmourPiece * const & armour_piece : this->data) {
-        if (!armour_piece) continue;
-        ret.add_skills(*armour_piece);
+        if (armour_piece) ret.add_skills(*armour_piece);
     }
     if (this->charm) {
         unsigned int charm_lvl = this->charm->max_charm_lvl;
         for (const Skill* const& skill : this->charm->skills) {
             ret.increment_lvl(skill, charm_lvl);
+        }
+    }
+    return ret;
+}
+
+
+SkillMap ArmourEquips::get_skills_without_set_bonuses_filtered(const SkillSpec& skill_spec) const {
+    SkillMap ret;
+    for (const ArmourPiece * const & armour_piece : this->data) {
+        if (armour_piece) ret.add_skills_filtered(*armour_piece, skill_spec);
+    }
+    if (this->charm) {
+        unsigned int charm_lvl = this->charm->max_charm_lvl;
+        for (const Skill* const& skill : this->charm->skills) {
+            if (skill_spec.is_in_subset(skill)) ret.increment_lvl(skill, charm_lvl);
         }
     }
     return ret;
@@ -534,6 +566,10 @@ bool DecoEquips::fits_in(const ArmourEquips& armour, const WeaponContribution& w
 
 void DecoEquips::add(const Decoration * const deco) {
     this->data.emplace_back(deco);
+}
+
+void DecoEquips::merge_in(const DecoEquips& obj) {
+    this->data.insert(this->data.end(), obj.data.begin(), obj.data.end());
 }
 
 DecoEquips::IteratorType DecoEquips::begin() const {

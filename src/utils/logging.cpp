@@ -43,5 +43,17 @@ void log_stat_reduction(const std::string& s, const int v_before, const int v_af
 }
 
 
+void log_stat_duration(const std::string& s, const std::chrono::steady_clock::time_point& time_start) {
+    const std::chrono::steady_clock::time_point time_end = std::chrono::steady_clock::now();
+    
+    std::clog << s
+              << std::chrono::duration<double>(time_end - time_start).count()
+              << " s"
+              << std::endl;
+
+    //stats_to_reprint.emplace_back(std::move(msg));
+}
+
+
 } // namespace
 

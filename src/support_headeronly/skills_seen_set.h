@@ -39,7 +39,11 @@ public:
     SkillsSeenSet() noexcept = default;
 
     void add(SkillsAndSetBonuses& k, AssociatedData& v) {
-        this->add_power_set(k, v);
+        if (Utils::set_has_key(this->seen_set, k)) {
+            return;
+        }
+
+        this->add_power_set(k);
         this->data[k] = v;
     }
 
@@ -50,7 +54,7 @@ public:
 
         // TODO: Move k?
         this->add_power_set(k);
-        this->data[k] = std::move(v);
+        this->data.emplace(std::make_pair(std::move(k), std::forward<AssociatedData>(v)));
     }
 
     std::vector<AssociatedData> get_data_as_vector() const {
@@ -59,6 +63,10 @@ public:
             ret.emplace_back(e.second);
         }
         return ret;
+    }
+
+    std::size_t size() const noexcept {
+        return this->data.size();
     }
 
 private:
