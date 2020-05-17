@@ -25,6 +25,10 @@ public:
     {
     }
 
+    static std::vector<std::shared_ptr<WeaponUpgradesInstance>> generate_maximized_instances(const Weapon * const new_weapon) {
+        return {std::make_shared<NoWeaponUpgrades>(new_weapon)};
+    }
+
     WeaponUpgradesContribution calculate_contribution() const {
         return {0, 0, 0, weapon->maximum_sharpness, ""};
     }
@@ -43,6 +47,8 @@ public:
  * IBCustomWeaponUpgrades
  ***************************************************************************************/
 
+
+static constexpr unsigned int k_IBC_MAX_UPGRADES = 7;
 
 static const std::unordered_map<unsigned int, unsigned int> ib_custom_attack = {
     {0, 1},
@@ -64,6 +70,11 @@ static const std::unordered_map<unsigned int, int> ib_custom_affinity = {
     {6, 3},
 };
 
+static const std::array<WeaponUpgrade, 2> ibc_supported_upgrades_v = {
+    WeaponUpgrade::ib_cust_attack,
+    WeaponUpgrade::ib_cust_affinity,
+};
+
 
 class IBCustomWeaponUpgrades : public WeaponUpgradesInstance {
     const Weapon * const weapon;
@@ -73,6 +84,39 @@ public:
         : weapon (new_weapon)
         , upgrades {}
     {
+    }
+
+    static std::vector<std::shared_ptr<WeaponUpgradesInstance>> generate_maximized_instances(const Weapon * const new_weapon) {
+
+        std::vector<std::shared_ptr<IBCustomWeaponUpgrades>> ret = {
+            std::make_shared<IBCustomWeaponUpgrades>(new_weapon) // Seeded with an empty upgrade instance
+        };
+
+        // ughhhh
+        for (std::size_t i = 0; i < k_IBC_MAX_UPGRADES; ++i) {
+            std::vector<std::shared_ptr<IBCustomWeaponUpgrades>> new_ret;
+            for (const WeaponUpgrade u : ibc_supported_upgrades_v) {
+                for (const std::shared_ptr<IBCustomWeaponUpgrades>& old_inst : ret) {
+                    IBCustomWeaponUpgrades new_inst = *old_inst;
+                    bool valid_new_inst = true;
+                    try {
+                        new_inst.add_upgrade(u);
+                    } catch (InvalidChange& e) {
+                        valid_new_inst = false;
+                    }
+                    if (valid_new_inst) new_ret.push_back(std::make_shared<IBCustomWeaponUpgrades>(std::move(new_inst)));
+                }
+            }
+            ret = std::move(new_ret);
+        }
+
+        // This is absolutely disgusting.
+        std::vector<std::shared_ptr<WeaponUpgradesInstance>> final_ret;
+        for (std::shared_ptr<IBCustomWeaponUpgrades>& e : ret) {
+            final_ret.push_back(std::make_shared<IBCustomWeaponUpgrades>(std::move(*e)));
+        }
+
+        return final_ret;
     }
 
     WeaponUpgradesContribution calculate_contribution() const {
@@ -144,6 +188,12 @@ public:
  * IBSafiAwakenings
  ***************************************************************************************/
 
+
+static const std::vector<WeaponUpgrade> ib_safi_nondeco_lvl5_awakenings = {
+    WeaponUpgrade::ib_safi_attack_5,
+    WeaponUpgrade::ib_safi_affinity_5,
+    WeaponUpgrade::ib_safi_sharpness_5,
+};
 
 static const std::unordered_set<WeaponUpgrade> ib_safi_lvl6_awakenings = {
     WeaponUpgrade::ib_safi_attack_6,
@@ -261,6 +311,58 @@ public:
         (void)new_weapon;
     }
 
+    static std::vector<std::shared_ptr<WeaponUpgradesInstance>> generate_maximized_instances(const Weapon * const new_weapon) {
+        std::vector<WeaponUpgrade> only_lvl6;
+        only_lvl6.insert(only_lvl6.end(), ib_safi_lvl6_awakenings.begin(), ib_safi_lvl6_awakenings.end());
+
+        std::vector<WeaponUpgrade> lvl5_or_deco = ib_safi_nondeco_lvl5_awakenings;
+        lvl5_or_deco.insert(lvl5_or_deco.end(), ib_safi_deco_slot_awakenings.begin(), ib_safi_deco_slot_awakenings.end());
+
+        std::vector<WeaponUpgrade> lvl5_or_sb = ib_safi_nondeco_lvl5_awakenings;
+        for (const auto& e : ib_safi_set_bonus_id_map) {
+            lvl5_or_sb.push_back(e.first);
+        }
+
+        // so inefficient
+        std::array<std::vector<WeaponUpgrade>, k_MAX_AWAKENINGS> choices = {
+            only_lvl6,
+            lvl5_or_deco,
+            lvl5_or_sb,
+            ib_safi_nondeco_lvl5_awakenings,
+            ib_safi_nondeco_lvl5_awakenings,
+        };
+
+        std::vector<std::shared_ptr<IBSafiAwakenings>> ret = {
+            std::make_shared<IBSafiAwakenings>(new_weapon) // Seeded with an empty upgrade instance
+        };
+
+        // so bad
+        for (const auto& choice : choices) {
+            std::vector<std::shared_ptr<IBSafiAwakenings>> new_ret;
+            for (const WeaponUpgrade u : choice) {
+                for (const std::shared_ptr<IBSafiAwakenings>& old_inst : ret) {
+                    IBSafiAwakenings new_inst = *old_inst;
+                    bool valid_new_inst = true;
+                    try {
+                        new_inst.add_upgrade(u);
+                    } catch (InvalidChange& e) {
+                        valid_new_inst = false;
+                    }
+                    if (valid_new_inst) new_ret.push_back(std::make_shared<IBSafiAwakenings>(std::move(new_inst)));
+                }
+            }
+            ret = std::move(new_ret);
+        }
+
+        // This is absolutely disgusting.
+        std::vector<std::shared_ptr<WeaponUpgradesInstance>> final_ret;
+        for (std::shared_ptr<IBSafiAwakenings>& e : ret) {
+            final_ret.push_back(std::make_shared<IBSafiAwakenings>(std::move(*e)));
+        }
+
+        return final_ret;
+    }
+
     WeaponUpgradesContribution calculate_contribution() const {
         unsigned int added_raw = 0;
         int          added_aff = 0;
@@ -372,7 +474,18 @@ std::unique_ptr<WeaponUpgradesInstance> WeaponUpgradesInstance::get_instance(con
         case WeaponUpgradeScheme::iceborne_custom: return std::make_unique<IBCustomWeaponUpgrades>(weapon);
         case WeaponUpgradeScheme::iceborne_safi:   return std::make_unique<IBSafiAwakenings>(weapon);
         default:
-            throw std::runtime_error("This weapon's augmentation type is unsupported.");
+            throw std::runtime_error("This weapon's upgrade type is unsupported.");
+    }
+}
+
+
+std::vector<std::shared_ptr<WeaponUpgradesInstance>> WeaponUpgradesInstance::generate_maximized_instances(const Weapon * const weapon) {
+    switch (weapon->upgrade_scheme) {
+        case WeaponUpgradeScheme::none:            return NoWeaponUpgrades::generate_maximized_instances(weapon);
+        case WeaponUpgradeScheme::iceborne_custom: return IBCustomWeaponUpgrades::generate_maximized_instances(weapon);
+        case WeaponUpgradeScheme::iceborne_safi:   return IBSafiAwakenings::generate_maximized_instances(weapon);
+        default:
+            throw std::runtime_error("This weapon's upgrade type is unsupported.");
     }
 }
 

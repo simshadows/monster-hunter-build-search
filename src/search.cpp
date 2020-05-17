@@ -44,12 +44,16 @@ static std::vector<const Weapon*> prepare_weapons(const Database& db,
     std::vector<const Weapon*> ret = db.weapons.get_all_of_weaponclass(params.weapon_class);
     assert(ret.size());
 
-    std::vector<std::shared_ptr<WeaponAugmentsInstance>> tmp;
+    std::size_t tot = 0;
     for (const Weapon * const weapon : ret) {
-        const auto v = WeaponAugmentsInstance::generate_maximized_instances(weapon);
-        tmp.insert(tmp.begin(), v.begin(), v.end());
+        const auto u = WeaponAugmentsInstance::generate_maximized_instances(weapon);
+        const auto v = WeaponUpgradesInstance::generate_maximized_instances(weapon);
+        std::size_t prod = u.size() * v.size();
+        //std::cerr << prod << "\n";
+        tot += prod;
     }
-    std::cerr << tmp.size() << std::endl;
+    (void)tot;
+    //std::cerr << "TOTAL COMBINATIONS: " << tot << "\n";
 
     Utils::log_stat("Weapons:             ", ret.size());
 
