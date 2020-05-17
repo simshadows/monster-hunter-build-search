@@ -3,36 +3,18 @@
  * Author: <contact@simshadows.com>
  */
 
-#ifndef MHWIBS_UTILS_H
-#define MHWIBS_UTILS_H
+#ifndef UTILS_H
+#define UTILS_H
 
 #include <assert.h>
 #include <iostream>
 #include <cmath>
-#include <chrono>
 #include <limits>
 #include <vector>
 #include <unordered_map>
 #include <unordered_set>
 
 namespace Utils {
-
-
-/*
- * Logging
- */
-
-
-void log_stat(const std::string& s="");
-void log_stat(const std::string& s, int v);
-void log_stat_reduction(const std::string& s, const int v_before, const int v_after);
-
-void log_stat_duration(const std::string& s, const std::chrono::steady_clock::time_point& time_start);
-
-
-/*
- * Inlines
- */
 
 
 inline double round_2decpl(const double v) {
@@ -112,5 +94,5 @@ inline S set_diff(const S& s1, const S& s2) {
 
 } // namespace
 
-#endif // MHWIBS_UTILS_H
+#endif // UTILS_H
 

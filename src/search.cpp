@@ -15,6 +15,7 @@
 #include "support/support.h"
 #include "support/skills_seen_set.h"
 #include "utils/utils.h"
+#include "utils/logging.h"
 
 
 namespace MHWIBuildSearch

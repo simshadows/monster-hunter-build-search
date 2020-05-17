@@ -15,6 +15,7 @@
 #include "database/database.h"
 #include "support/support.h"
 #include "utils/utils.h"
+#include "utils/logging.h"
 
 
 namespace MHWIBuildSearch

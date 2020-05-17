@@ -12,7 +12,7 @@ OBJECTS=src/search.o \
 		src/support/src/containers_weapon_instance.o \
 		src/support/src/skill_contributions.o \
 		src/support/src/build_calculations.o \
-		src/utils/logging.o \
+		src/utils/src/logging.o \
 		src/core/src/build_components.o \
 		src/core/src/sharpness_gauge.o \
 		src/core/src/weapon_augments.o \
