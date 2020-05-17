@@ -5,6 +5,10 @@ EXEC=mhwibs
 MAINOBJECTS=src/mhwi_build_search.o
 OBJECTS=src/search.o \
 		src/search_jsonparse.o \
+		src/core/src/build_components.o \
+		src/core/src/sharpness_gauge.o \
+		src/core/src/weapon_augments.o \
+		src/core/src/weapon_upgrades.o \
 		src/support/src/containers_armour_equips.o \
 		src/support/src/containers_deco_equips.o \
 		src/support/src/containers_skill_map.o \
@@ -13,10 +17,6 @@ OBJECTS=src/search.o \
 		src/support/src/skill_contributions.o \
 		src/support/src/build_calculations.o \
 		src/utils/src/logging.o \
-		src/core/src/build_components.o \
-		src/core/src/sharpness_gauge.o \
-		src/core/src/weapon_augments.o \
-		src/core/src/weapon_upgrades.o \
 		src/database/src/database.o \
 		src/database/src/database_skills.o \
 		src/database/src/database_decorations.o \

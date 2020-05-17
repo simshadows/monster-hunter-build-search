@@ -9,6 +9,7 @@
 
 #include "../core.h"
 #include "../../utils/utils.h"
+#include "../../utils/counter.h"
 
 namespace MHWIBuildSearch
 {
@@ -17,10 +18,13 @@ namespace MHWIBuildSearch
 static constexpr unsigned int k_IB_MIN_RARITY = 10;
 static constexpr unsigned int k_IB_MAX_RARITY = 12;
 
-//static constexpr unsigned int k_IB_MAX_AUGMENT_LVL = 3;
+static constexpr unsigned int k_IB_MAX_AUGMENT_LVL = 3; // The maximum augment level of the entire weapon
+static constexpr unsigned int k_IB_AUGMENT_MAX_LVL = 4; // The maximum level of each individual augment
+// TODO: Let's make this a less ambiguous. Let's use different terminology?
 
 static const std::unordered_set<WeaponAugment> ib_supported_augments = {
-    WeaponAugment::augment_lvl,
+
+    //WeaponAugment::augment_lvl, // Supported, but not really an augment, so we're not including it here.
 
     WeaponAugment::attack_increase,
     WeaponAugment::affinity_increase,
@@ -29,6 +33,8 @@ static const std::unordered_set<WeaponAugment> ib_supported_augments = {
     WeaponAugment::health_regen,
     //WeaponAugment::element_status_effect_up, // Not yet supported.
 };
+static const std::vector<WeaponAugment> ib_supported_augments_v (ib_supported_augments.begin(),
+                                                                 ib_supported_augments.end() );
 
 //                                                             level: 0,  1,  2,  3,  4
 static const std::array<unsigned int, 5> ib_attack_aug_added_raw   = {0,  5, 10, 15, 20};
@@ -38,6 +44,10 @@ static const std::array<unsigned int, 5> ib_affinity_aug_added_aff = {0, 10, 15,
 class NoWeaponAugments : public WeaponAugmentsInstance {
 public:
     NoWeaponAugments() noexcept = default;
+
+    static std::vector<std::shared_ptr<WeaponAugmentsInstance>> generate_maximized_instances() {
+        return {std::make_shared<NoWeaponAugments>()};
+    }
 
     WeaponAugmentsContribution calculate_contribution() const {
         return {0, 0, 0, false};
@@ -70,6 +80,29 @@ public:
         assert(this->rarity <= k_IB_MAX_RARITY);
         (void)k_IB_MIN_RARITY;
         (void)k_IB_MAX_RARITY;
+    }
+
+    static std::vector<std::shared_ptr<WeaponAugmentsInstance>> generate_maximized_instances(const Weapon * const weapon) {
+        IBWeaponAugments base (weapon);
+        base.set_augment(WeaponAugment::augment_lvl, k_IB_MAX_AUGMENT_LVL);
+
+        std::vector<AugmentLvlMap> maps = Utils::generate_cartesian_product(ib_supported_augments_v, k_IB_AUGMENT_MAX_LVL);
+
+        std::vector<std::shared_ptr<WeaponAugmentsInstance>> ret;
+        for (const AugmentLvlMap& map : maps) {
+            IBWeaponAugments new_augs = base;
+            bool valid_new_augs = true;
+            try {
+                for (const auto& x : map) {
+                    new_augs.set_augment(x.first, x.second);
+                }
+            } catch (InvalidChange& e) {
+                valid_new_augs = false;
+            }
+            if (valid_new_augs) ret.push_back(std::make_shared<IBWeaponAugments>(std::move(new_augs)));
+        }
+
+        return ret;
     }
 
     WeaponAugmentsContribution calculate_contribution() const {
@@ -119,16 +152,16 @@ public:
     }
 
     void set_augment(const WeaponAugment augment, const unsigned int lvl) {
-        if (!Utils::set_has_key(ib_supported_augments, augment)) {
-            throw InvalidChange("Attempted to apply an unsupported weapon augment.");
-        }
-
         if (augment == WeaponAugment::augment_lvl) {
             const unsigned int old_consumption = calculate_slot_consumption_from_map(this->augments);
             const unsigned int new_limit = calculate_slot_limit(this->rarity, lvl);
             if (new_limit < old_consumption) throw InvalidChange("New slot level cannot support existing augments.");
             this->augment_lvl = lvl;
         } else {
+            if (!Utils::set_has_key(ib_supported_augments, augment)) {
+                throw InvalidChange("Attempted to apply an unsupported weapon augment.");
+            }
+
             AugmentLvlMap new_augments = this->augments;
             new_augments[augment] = lvl;
             const unsigned int old_limit = calculate_slot_limit(this->rarity, this->augment_lvl);
@@ -271,6 +304,16 @@ std::unique_ptr<WeaponAugmentsInstance> WeaponAugmentsInstance::get_instance(con
     switch (weapon->augmentation_scheme) {
         case WeaponAugmentationScheme::none:     return std::make_unique<NoWeaponAugments>();
         case WeaponAugmentationScheme::iceborne: return std::make_unique<IBWeaponAugments>(weapon);
+        default:
+            throw std::runtime_error("This weapon's augmentation type is unsupported.");
+    }
+}
+
+
+std::vector<std::shared_ptr<WeaponAugmentsInstance>> WeaponAugmentsInstance::generate_maximized_instances(const Weapon* weapon) {
+    switch (weapon->augmentation_scheme) {
+        case WeaponAugmentationScheme::none:     return NoWeaponAugments::generate_maximized_instances();
+        case WeaponAugmentationScheme::iceborne: return IBWeaponAugments::generate_maximized_instances(weapon);
         default:
             throw std::runtime_error("This weapon's augmentation type is unsupported.");
     }

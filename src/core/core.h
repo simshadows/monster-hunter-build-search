@@ -337,6 +337,7 @@ struct WeaponAugmentsContribution {
 class WeaponAugmentsInstance {
 public:
     static std::unique_ptr<WeaponAugmentsInstance> get_instance(const Weapon*);
+    static std::vector<std::shared_ptr<WeaponAugmentsInstance>> generate_maximized_instances(const Weapon*);
 
     // Access
     virtual WeaponAugmentsContribution calculate_contribution() const = 0;
