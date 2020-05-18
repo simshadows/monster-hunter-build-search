@@ -112,6 +112,15 @@ std::string SharpnessGauge::get_humanreadable() const {
 }
 
 
+bool SharpnessGauge::left_has_eq_or_more_hits(const SharpnessGauge& lhs, const SharpnessGauge& rhs) noexcept {
+    assert(lhs.hits.size() == rhs.hits.size()); // TODO: Static assert?
+    for (std::size_t i = 0; i < lhs.hits.size(); ++i) {
+        if (lhs.hits[i] < rhs.hits[i]) return false;
+    }
+    return true;
+}
+
+
 SharpnessGauge::SharpnessGauge() noexcept
     : hits (std::array<unsigned int, k_SHARPNESS_LEVELS>())
 {

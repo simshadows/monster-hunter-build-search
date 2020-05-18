@@ -31,7 +31,7 @@ TESTOBJECTS=tests/run_tests.o
 all : $(EXEC) test
 
 .PHONY : debug
-debug : CXXFLAGS=-Wall -Werror -Wextra -fsanitize=address -O3
+debug : CXXFLAGS=-Wall -Werror -Wextra -fsanitize=address -g -Og
 debug : all
 
 .PHONY : test

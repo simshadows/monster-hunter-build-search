@@ -468,11 +468,11 @@ private:
 };
 
 
-std::unique_ptr<WeaponUpgradesInstance> WeaponUpgradesInstance::get_instance(const Weapon * const weapon) {
+std::shared_ptr<WeaponUpgradesInstance> WeaponUpgradesInstance::get_instance(const Weapon * const weapon) {
     switch (weapon->upgrade_scheme) {
-        case WeaponUpgradeScheme::none:            return std::make_unique<NoWeaponUpgrades>(weapon);
-        case WeaponUpgradeScheme::iceborne_custom: return std::make_unique<IBCustomWeaponUpgrades>(weapon);
-        case WeaponUpgradeScheme::iceborne_safi:   return std::make_unique<IBSafiAwakenings>(weapon);
+        case WeaponUpgradeScheme::none:            return std::make_shared<NoWeaponUpgrades>(weapon);
+        case WeaponUpgradeScheme::iceborne_custom: return std::make_shared<IBCustomWeaponUpgrades>(weapon);
+        case WeaponUpgradeScheme::iceborne_safi:   return std::make_shared<IBSafiAwakenings>(weapon);
         default:
             throw std::runtime_error("This weapon's upgrade type is unsupported.");
     }

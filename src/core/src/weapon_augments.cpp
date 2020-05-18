@@ -300,10 +300,10 @@ private:
 };
 
 
-std::unique_ptr<WeaponAugmentsInstance> WeaponAugmentsInstance::get_instance(const Weapon * const weapon) {
+std::shared_ptr<WeaponAugmentsInstance> WeaponAugmentsInstance::get_instance(const Weapon * const weapon) {
     switch (weapon->augmentation_scheme) {
-        case WeaponAugmentationScheme::none:     return std::make_unique<NoWeaponAugments>();
-        case WeaponAugmentationScheme::iceborne: return std::make_unique<IBWeaponAugments>(weapon);
+        case WeaponAugmentationScheme::none:     return std::make_shared<NoWeaponAugments>();
+        case WeaponAugmentationScheme::iceborne: return std::make_shared<IBWeaponAugments>(weapon);
         default:
             throw std::runtime_error("This weapon's augmentation type is unsupported.");
     }

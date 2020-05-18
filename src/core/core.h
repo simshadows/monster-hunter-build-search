@@ -65,6 +65,8 @@ public:
 
     std::string get_humanreadable() const;
 
+    static bool left_has_eq_or_more_hits(const SharpnessGauge& lhs, const SharpnessGauge& rhs) noexcept;
+
 protected:
 
     // Constructs a new SharpnessGauge that is the result of applying handicraft to
@@ -336,7 +338,7 @@ struct WeaponAugmentsContribution {
 
 class WeaponAugmentsInstance {
 public:
-    static std::unique_ptr<WeaponAugmentsInstance> get_instance(const Weapon*);
+    static std::shared_ptr<WeaponAugmentsInstance> get_instance(const Weapon*);
     static std::vector<std::shared_ptr<WeaponAugmentsInstance>> generate_maximized_instances(const Weapon*);
 
     // Access
@@ -425,7 +427,7 @@ struct WeaponUpgradesContribution {
 
 class WeaponUpgradesInstance {
 public:
-    static std::unique_ptr<WeaponUpgradesInstance> get_instance(const Weapon*);
+    static std::shared_ptr<WeaponUpgradesInstance> get_instance(const Weapon*);
     static std::vector<std::shared_ptr<WeaponUpgradesInstance>> generate_maximized_instances(const Weapon*);
 
     // Access

@@ -22,6 +22,16 @@ WeaponInstance::WeaponInstance(const Weapon * const new_weapon) noexcept
 }
 
 
+WeaponInstance::WeaponInstance(const Weapon * const new_weapon,
+                               const std::shared_ptr<WeaponAugmentsInstance>& new_augs,
+                               const std::shared_ptr<WeaponUpgradesInstance>& new_upgs) noexcept
+    : weapon   (new_weapon)
+    , augments (new_augs)
+    , upgrades (new_upgs)
+{
+}
+
+
 WeaponContribution WeaponInstance::calculate_contribution(const Database& db) const {
     WeaponAugmentsContribution ac = this->augments->calculate_contribution();
     WeaponUpgradesContribution uc = this->upgrades->calculate_contribution();
@@ -53,6 +63,9 @@ WeaponContribution WeaponInstance::calculate_contribution(const Database& db) co
     if (uc.extra_deco_slot_size) {
         ret.deco_slots.emplace_back(uc.extra_deco_slot_size);
     }
+
+    // And we have to sort it.
+    std::sort(ret.deco_slots.begin(), ret.deco_slots.end(), std::greater<unsigned int>());
 
     return ret;
 }

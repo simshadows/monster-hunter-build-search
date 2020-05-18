@@ -16,6 +16,7 @@
 #include "support/skills_seen_set.h"
 #include "utils/utils.h"
 #include "utils/logging.h"
+#include "utils/pruning_vector.h"
 
 
 namespace MHWIBuildSearch
@@ -39,25 +40,113 @@ struct ArmourSetCombo {
 };
 
 
-static std::vector<const Weapon*> prepare_weapons(const Database& db,
-                                                  const SearchParameters& params) {
-    std::vector<const Weapon*> ret = db.weapons.get_all_of_weaponclass(params.weapon_class);
-    assert(ret.size());
 
-    std::size_t tot = 0;
-    for (const Weapon * const weapon : ret) {
-        const auto u = WeaponAugmentsInstance::generate_maximized_instances(weapon);
-        const auto v = WeaponUpgradesInstance::generate_maximized_instances(weapon);
-        std::size_t prod = u.size() * v.size();
-        //std::cerr << prod << "\n";
-        tot += prod;
+struct WeaponInstancePruneFn {
+    // Return true if left can prune away right.
+    // Left equalling right can also prune away right.
+    bool operator()(const std::pair<WeaponInstance, WeaponContribution>& left,
+                    const std::pair<WeaponInstance, WeaponContribution>& right ) const noexcept {
+        const WeaponContribution& lc = left.second;
+        const WeaponContribution& rc = right.second;
+
+        if ((lc.weapon_raw < rc.weapon_raw) || (lc.weapon_aff < rc.weapon_aff)) {
+            return false;
+        }
+
+        {
+            assert(std::is_sorted(lc.deco_slots.begin(), lc.deco_slots.end(), std::greater<unsigned int>()));
+            assert(std::is_sorted(rc.deco_slots.begin(), rc.deco_slots.end(), std::greater<unsigned int>()));
+
+            // Left cannot replace right if left has less deco slots.
+            if (lc.deco_slots.size() < rc.deco_slots.size()){
+                return false;
+            }
+
+            // We now know left has at least the same number of deco slots as right.
+            // Now, left cannot replace right if some some set of decos that fit in right
+            // cannot fit in left.
+            auto l_head = lc.deco_slots.begin();
+            for (const unsigned int rv : rc.deco_slots) {
+                const unsigned int lv = *l_head;
+                if (lv < rv) {
+                    return false;
+                }
+                ++l_head; // TODO: Increase safety?
+            }
+        }
+
+        /*
+         * We prune skills and set bonuses by this truth table:
+         *
+         *                | rc=None  | rc=setbonusA | rc=setbonusB
+         *   -------------|----------|--------------|--------------
+         *   lc=None      | continue | return False | return False
+         *   lc=setbonusA | continue | continue     | return False
+         *   lc=setbonusB | continue | return False | continue
+         *   -------------|----------|--------------|--------------
+         */
+        if ((rc.set_bonus && (lc.set_bonus != rc.set_bonus)) || (rc.skill && (lc.skill != rc.skill))) {
+            return false;
+        }
+
+        if (rc.health_regen_active && !lc.health_regen_active) {
+            return false;
+        }
+
+        if ((!lc.is_constant_sharpness) && rc.is_constant_sharpness) {
+            // TODO: Returning constant false is conservative. Try apply 0 handicraft?
+            return false;
+        } else {
+            return SharpnessGauge::left_has_eq_or_more_hits(lc.maximum_sharpness, rc.maximum_sharpness);
+        }
     }
-    (void)tot;
-    //std::cerr << "TOTAL COMBINATIONS: " << tot << "\n";
+};
 
-    Utils::log_stat("Weapons:             ", ret.size());
 
-    return ret;
+static std::vector<std::pair<WeaponInstance, WeaponContribution>> prepare_weapons(const Database& db,
+                                                                                  const SearchParameters& params,
+                                                                                  std::unordered_set<const SetBonus*>& set_bonus_subset) {
+
+    auto start_t = std::chrono::steady_clock::now();
+
+    std::vector<const Weapon*> weapons = db.weapons.get_all_of_weaponclass(params.weapon_class);
+    Utils::log_stat("Weapons: ", weapons.size());
+    assert(weapons.size());
+
+    std::vector<std::pair<WeaponInstance, WeaponContribution>> unpruned;
+
+    for (const Weapon * const weapon : weapons) {
+        const auto augment_instances = WeaponAugmentsInstance::generate_maximized_instances(weapon);
+        const auto upgrade_instances = WeaponUpgradesInstance::generate_maximized_instances(weapon);
+        for (const std::shared_ptr<WeaponAugmentsInstance>& a : augment_instances) {
+            for (const std::shared_ptr<WeaponUpgradesInstance>& u : upgrade_instances) {
+                WeaponInstance new_inst = {weapon, a, u};
+                WeaponContribution new_cont = new_inst.calculate_contribution(db);
+                if (!Utils::set_has_key(set_bonus_subset, new_cont.set_bonus)) {
+                    new_cont.set_bonus = nullptr;
+                }
+                if (!params.skill_spec.is_in_subset(new_cont.skill)) {
+                    new_cont.skill = nullptr;
+                }
+                unpruned.emplace_back(std::move(new_inst), std::move(new_cont));
+            }
+        }
+    }
+    const std::size_t stat_pre = unpruned.size();
+
+    Utils::PruningVector<std::pair<WeaponInstance, WeaponContribution>, WeaponInstancePruneFn> ret;
+
+    //std::size_t i = 0;
+    for (auto& e : unpruned) {
+        //std::clog << i++ << "/" << std::to_string(stat_pre) << "\n";
+        ret.try_push_back(std::move(e));
+    }
+
+    Utils::log_stat_reduction("Generated weapon augment+upgrade instances: ", stat_pre, ret.size());
+    Utils::log_stat_duration("  >>> weapon augment+upgrade instances: ", start_t);
+    Utils::log_stat();
+
+    return ret.underlying();
 }
 
 
@@ -77,7 +166,9 @@ static std::array<std::vector<const Decoration*>, k_MAX_DECO_SIZE> prepare_decos
     sorted_decos.erase(std::remove_if(sorted_decos.begin(), sorted_decos.end(), pred), sorted_decos.end());
 
     // Sort
-    const auto cmp = [](const Decoration * const a, const Decoration * const b){return a->slot_size > b->slot_size;};
+    const auto cmp = [](const Decoration * const a, const Decoration * const b){
+        return a->slot_size > b->slot_size;
+    };
     std::sort(sorted_decos.begin(), sorted_decos.end(), cmp);
 
     const std::size_t stat_post = sorted_decos.size();
@@ -155,7 +246,6 @@ static std::map<ArmourSlot, std::vector<const ArmourPiece*>> get_pruned_armour(c
     Utils::log_stat_reduction("Arm piece   - filtering by tier: ", arms_pre,  ret.at(ArmourSlot::arms).size());
     Utils::log_stat_reduction("Waist piece - filtering by tier: ", waist_pre, ret.at(ArmourSlot::waist).size());
     Utils::log_stat_reduction("Leg piece   - filtering by tier: ", legs_pre,  ret.at(ArmourSlot::legs).size());
-    Utils::log_stat();
 
     return ret;
 }
@@ -335,8 +425,10 @@ static void do_search(const Database& db, const SearchParameters& params) {
         }
     }
 
-    std::vector<const Weapon*> weapons = prepare_weapons(db, params);
+    std::vector<std::pair<WeaponInstance, WeaponContribution>> weapons = prepare_weapons(db, params, set_bonus_subset);
     assert(weapons.size());
+
+    auto start_t = std::chrono::steady_clock::now();
 
     std::array<std::vector<const Decoration*>, k_MAX_DECO_SIZE> grouped_sorted_decos = prepare_decos(db, params.skill_spec);
     assert(grouped_sorted_decos.size() == 4);
@@ -382,6 +474,7 @@ static void do_search(const Database& db, const SearchParameters& params) {
                                                                      params.skill_spec,
                                                                      set_bonus_subset,
                                                                      "Generated legs+deco  combinations: ");
+    Utils::log_stat_duration("  >>> decos, charms, and armour slot combos: ", start_t);
     Utils::log_stat();
 
     // We build the initial build list.
@@ -399,13 +492,13 @@ static void do_search(const Database& db, const SearchParameters& params) {
 
     // And now, we merge in our slot combinations!
 
-    auto start_t = std::chrono::steady_clock::now();
+    start_t = std::chrono::steady_clock::now();
     unsigned long long stat_pre = armour_combos.size() * head_combos.size();
     //
     merge_in_armour_list(armour_combos, head_combos, params.skill_spec);
     //
     Utils::log_stat_reduction("Merged in head+deco  combinations: ", stat_pre, armour_combos.size());
-    Utils::log_stat_duration("Merged in head+deco  combinations, duration: ", start_t);
+    Utils::log_stat_duration("  >>> head combo merge: ", start_t);
 
     start_t = std::chrono::steady_clock::now();
     stat_pre = armour_combos.size() * chest_combos.size();
@@ -413,7 +506,7 @@ static void do_search(const Database& db, const SearchParameters& params) {
     merge_in_armour_list(armour_combos, chest_combos, params.skill_spec);
     //
     Utils::log_stat_reduction("Merged in chest+deco combinations: ", stat_pre, armour_combos.size());
-    Utils::log_stat_duration("Merged in chest+deco combinations, duration: ", start_t);
+    Utils::log_stat_duration("  >>> chest combo merge: ", start_t);
 
     start_t = std::chrono::steady_clock::now();
     stat_pre = armour_combos.size() * arms_combos.size();
@@ -421,7 +514,7 @@ static void do_search(const Database& db, const SearchParameters& params) {
     merge_in_armour_list(armour_combos, arms_combos, params.skill_spec);
     //
     Utils::log_stat_reduction("Merged in arms+deco  combinations: ", stat_pre, armour_combos.size());
-    Utils::log_stat_duration("Merged in arms+deco  combinations, duration: ", start_t);
+    Utils::log_stat_duration("  >>> arms combo merge: ", start_t);
 
     start_t = std::chrono::steady_clock::now();
     stat_pre = armour_combos.size() * waist_combos.size();
@@ -429,7 +522,7 @@ static void do_search(const Database& db, const SearchParameters& params) {
     merge_in_armour_list(armour_combos, waist_combos, params.skill_spec);
     //
     Utils::log_stat_reduction("Merged in waist+deco combinations: ", stat_pre, armour_combos.size());
-    Utils::log_stat_duration("Merged in waist+deco combinations, duration: ", start_t);
+    Utils::log_stat_duration("  >>> waist combo merge: ", start_t);
 
     start_t = std::chrono::steady_clock::now();
     stat_pre = armour_combos.size() * legs_combos.size();
@@ -437,7 +530,7 @@ static void do_search(const Database& db, const SearchParameters& params) {
     merge_in_armour_list(armour_combos, legs_combos, params.skill_spec);
     //
     Utils::log_stat_reduction("Merged in legs+deco  combinations: ", stat_pre, armour_combos.size());
-    Utils::log_stat_duration("Merged in legs+deco  combinations, duration: ", start_t);
+    Utils::log_stat_duration("  >>> legs combo merge: ", start_t);
 
     const std::vector<ArmourSetCombo> final_armour_combos = armour_combos.get_data_as_vector();
 

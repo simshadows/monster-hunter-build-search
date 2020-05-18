@@ -171,10 +171,13 @@ struct WeaponInstance {
     const Weapon* weapon;
 
     // It is assumed that this field is constructed 
-    std::unique_ptr<WeaponAugmentsInstance> augments;
-    std::unique_ptr<WeaponUpgradesInstance> upgrades;
+    std::shared_ptr<WeaponAugmentsInstance> augments;
+    std::shared_ptr<WeaponUpgradesInstance> upgrades;
 
     WeaponInstance(const Weapon*) noexcept; // Generates a fresh weapon instance with no augments/upgrades.
+    WeaponInstance(const Weapon*,
+                   const std::shared_ptr<WeaponAugmentsInstance>&,
+                   const std::shared_ptr<WeaponUpgradesInstance>&) noexcept; // Copies in augments and upgrades.
 
     WeaponContribution calculate_contribution(const Database&) const;
     std::string get_humanreadable() const;
