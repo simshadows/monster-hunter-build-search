@@ -16,6 +16,7 @@ I'll write a detailed guide on how to use this thing later.
 - Will I need to change to different string types to properly use unicode?
 - There's a lot of gnarly code in here, though I tried to keep the issues as localized as possible, such as having all relevant issues be localized into a single `.cpp` file. Particularly problematic areas though include:
     - `core/weapon_augments.cpp`: So many case statements, magic numbers, unsafe state validation, and a generally CPU-inefficient way of doing things.
+- I will need to figure out how to handle weird cases where improving skills will actually reduce EFR.
 
 ## License
 

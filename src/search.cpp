@@ -40,6 +40,13 @@ struct ArmourSetCombo {
 };
 
 
+struct WeaponInstanceExtended {
+    WeaponInstance     instance;
+    WeaponContribution contributions;
+    double             ceiling_efr;
+};
+
+
 
 struct WeaponInstancePruneFn {
     // Return true if left can prune away right.
@@ -103,9 +110,9 @@ struct WeaponInstancePruneFn {
 };
 
 
-static std::vector<std::pair<WeaponInstance, WeaponContribution>> prepare_weapons(const Database& db,
-                                                                                  const SearchParameters& params,
-                                                                                  std::unordered_set<const SetBonus*>& set_bonus_subset) {
+static std::vector<WeaponInstanceExtended> prepare_weapons(const Database& db,
+                                                           const SearchParameters& params,
+                                                           std::unordered_set<const SetBonus*>& set_bonus_subset) {
 
     auto start_t = std::chrono::steady_clock::now();
 
@@ -134,19 +141,30 @@ static std::vector<std::pair<WeaponInstance, WeaponContribution>> prepare_weapon
     }
     const std::size_t stat_pre = unpruned.size();
 
-    Utils::PruningVector<std::pair<WeaponInstance, WeaponContribution>, WeaponInstancePruneFn> ret;
+    Utils::PruningVector<std::pair<WeaponInstance, WeaponContribution>, WeaponInstancePruneFn> pruned;
 
     //std::size_t i = 0;
     for (auto& e : unpruned) {
         //std::clog << i++ << "/" << std::to_string(stat_pre) << "\n";
-        ret.try_push_back(std::move(e));
+        pruned.try_push_back(std::move(e));
+    }
+
+    SkillMap maximized_skills;
+    for (const auto& e : params.skill_spec) {
+        maximized_skills.set_lvl(e.first, e.first->secret_limit);
+    }
+
+    std::vector<WeaponInstanceExtended> ret;
+    for (const auto& original : pruned.underlying()) {
+        const double ceiling_efr = calculate_efr_from_skills_lookup(db, original.second, maximized_skills, params.skill_spec);
+        ret.push_back({std::move(original.first), std::move(original.second), ceiling_efr});
     }
 
     Utils::log_stat_reduction("Generated weapon augment+upgrade instances: ", stat_pre, ret.size());
     Utils::log_stat_duration("  >>> weapon augment+upgrade instances: ", start_t);
     Utils::log_stat();
 
-    return ret.underlying();
+    return ret;
 }
 
 
@@ -398,6 +416,18 @@ static void merge_in_armour_list(SkillsSeenSet<ArmourSetCombo>& armour_combos,
 }
 
 
+static void refilter_weapons(std::vector<WeaponInstanceExtended>& weapons, const double max_efr) {
+    const std::size_t stat_pre = weapons.size();
+
+    const auto pred = [&](const WeaponInstanceExtended& x){
+        return x.ceiling_efr <= max_efr;
+    };
+    weapons.erase(std::remove_if(weapons.begin(), weapons.end(), pred), weapons.end());
+
+    Utils::log_stat_reduction("Repruned weapons with EFR " + std::to_string(max_efr) + ": ", stat_pre, weapons.size());
+}
+
+
 static void do_search(const Database& db, const SearchParameters& params) {
 
     std::clog << params.skill_spec.get_humanreadable() << std::endl << std::endl;
@@ -425,7 +455,7 @@ static void do_search(const Database& db, const SearchParameters& params) {
         }
     }
 
-    std::vector<std::pair<WeaponInstance, WeaponContribution>> weapons = prepare_weapons(db, params, set_bonus_subset);
+    std::vector<WeaponInstanceExtended> weapons = prepare_weapons(db, params, set_bonus_subset);
     assert(weapons.size());
 
     auto start_t = std::chrono::steady_clock::now();
@@ -534,7 +564,38 @@ static void do_search(const Database& db, const SearchParameters& params) {
 
     const std::vector<ArmourSetCombo> final_armour_combos = armour_combos.get_data_as_vector();
 
-    // TODO: Continue developing the algorithm!
+    double best_efr = 0;
+
+    const std::size_t stat_pre2 = final_armour_combos.size();
+    std::size_t stat_progress2 = 0;
+
+    for (const ArmourSetCombo& ac : final_armour_combos) {
+        bool reprune_weapons = false;
+        for (const WeaponInstanceExtended& wc : weapons) {
+
+            std::vector<std::vector<const Decoration*>> w_decos = generate_deco_combos(wc.contributions.deco_slots,
+                                                                                       grouped_sorted_decos,
+                                                                                       params.skill_spec);
+            for (std::vector<const Decoration*>& dc : w_decos) {
+
+                DecoEquips curr_decos (std::move(dc));
+
+                const double efr = calculate_efr_from_gear_lookup(db, wc.instance, ac.armour, curr_decos, params.skill_spec);
+
+                if (efr > best_efr) {
+                    best_efr = efr;
+                    std::clog << "Found EFR: " + std::to_string(best_efr) << "\n";
+                    reprune_weapons = true;
+                }
+
+            }
+
+        }
+        if (reprune_weapons) refilter_weapons(weapons, best_efr);
+
+        std::clog << std::to_string(stat_progress2) + "/" + std::to_string(stat_pre2) + "\n";
+        ++stat_progress2;
+    }
 }
 
 
