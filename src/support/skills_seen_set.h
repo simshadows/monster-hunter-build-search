@@ -12,7 +12,7 @@ namespace MHWIBuildSearch
 
 struct SkillsAndSetBonuses {
     SkillMap skills;
-    std::unordered_map<const SetBonus*, unsigned int> set_bonuses;
+    Utils::Counter<const SetBonus*> set_bonuses;
 
     bool operator==(const SkillsAndSetBonuses& x) const noexcept {
         return (this->skills == x.skills) && (this->set_bonuses == x.set_bonuses);
@@ -77,19 +77,23 @@ private:
         }
         this->seen_set.emplace(k);
 
+        SkillsAndSetBonuses new_k = k;
+
         for (const auto& e : k.skills) {
             const Skill * const skill = e.first;
             const unsigned int lvl = e.second;
             assert(lvl); // Skill is level 1 or greater
 
-            SkillsAndSetBonuses new_k = k;
             if (lvl == 1) {
                 new_k.skills.remove(skill);
             } else {
+                assert(lvl > 1);
                 new_k.skills.set(skill, lvl - 1);
             }
 
             this->add_power_set(new_k);
+
+            new_k.skills.set(skill, lvl); // Reset
         }
 
         for (const auto& e : k.set_bonuses) {
@@ -97,14 +101,16 @@ private:
             const unsigned int num_pieces = e.second;
             assert(num_pieces);
 
-            SkillsAndSetBonuses new_k = k;
             if (num_pieces == 1) {
-                new_k.set_bonuses.erase(set_bonus);
+                new_k.set_bonuses.remove(set_bonus);
             } else {
-                new_k.set_bonuses.at(set_bonus) = num_pieces - 1;
+                assert(num_pieces > 1);
+                new_k.set_bonuses.set(set_bonus, num_pieces - 1);
             }
 
             this->add_power_set(new_k);
+
+            new_k.set_bonuses.set(set_bonus, num_pieces); // Reset
         }
     }
 };

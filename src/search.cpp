@@ -396,7 +396,7 @@ static std::vector<ArmourPieceCombo> generate_slot_combos(const std::vector<cons
             const SetBonus* set_bonus;
             if (Utils::set_has_key(set_bonus_subset, piece->set_bonus)) {
                 set_bonus = piece->set_bonus;
-                h.set_bonuses[set_bonus] = 1;
+                h.set_bonuses.set(set_bonus, 1);
             } else {
                 set_bonus = nullptr;
             }
@@ -431,7 +431,7 @@ static void merge_in_armour_list(SkillsSeenSet<ArmourSetCombo>& armour_combos,
             new_armour_combo.decos.merge_in(piece_combo.decos);
             new_armour_combo.ssb.skills.merge_in(piece_combo.skills);
             if (piece_combo.set_bonus) {
-                new_armour_combo.ssb.set_bonuses[piece_combo.set_bonus] += 1;
+                new_armour_combo.ssb.set_bonuses.increment(piece_combo.set_bonus, 1);
             }
 
             SkillsAndSetBonuses ssb_copy = new_armour_combo.ssb;
