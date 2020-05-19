@@ -323,8 +323,8 @@ static std::vector<std::vector<const Decoration*>> generate_deco_combos(const st
         unsigned int max_to_add = 0;
         for (const auto& e : deco->skills) {
             if (skill_spec.is_in_subset(e.first)) {
-                assert(e.first->secret_limit >= existing_skills.get_lvl(e.first));
-                const unsigned int v = Utils::ceil_div(e.first->secret_limit - existing_skills.get_lvl(e.first), e.second);
+                assert(e.first->secret_limit >= existing_skills.get(e.first));
+                const unsigned int v = Utils::ceil_div(e.first->secret_limit - existing_skills.get(e.first), e.second);
                 if (v > max_to_add) max_to_add = v;
             }
         }
@@ -604,7 +604,7 @@ static void do_search(const Database& db, const SearchParameters& params) {
         for (const WeaponInstanceExtended& wc : weapons) {
 
             SkillMap tmp_skills = ac.ssb.skills;
-            if (wc.contributions.skill) tmp_skills.increment_lvl(wc.contributions.skill, 1);
+            if (wc.contributions.skill) tmp_skills.increment(wc.contributions.skill, 1);
 
             std::vector<std::vector<const Decoration*>> w_decos = generate_deco_combos(wc.contributions.deco_slots,
                                                                                        grouped_sorted_decos,
@@ -619,7 +619,7 @@ static void do_search(const Database& db, const SearchParameters& params) {
                 // TODO: Make this better lol
                 SkillMap skills = ac.armour.get_skills_without_set_bonuses();
                 skills.add_skills(curr_decos);
-                if (wc.contributions.skill) skills.increment_lvl(wc.contributions.skill, 1);
+                if (wc.contributions.skill) skills.increment(wc.contributions.skill, 1);
                 std::unordered_map<const SetBonus*, unsigned int> set_bonuses = ac.armour.get_set_bonuses();
                 if (wc.contributions.set_bonus) set_bonuses[wc.contributions.set_bonus] += 1;
                 skills.add_set_bonuses(set_bonuses);

@@ -79,7 +79,7 @@ double calculate_efr_from_gear_lookup(const Database&       db,
 
     SkillMap skills = armour.get_skills_without_set_bonuses();
     skills.add_skills(decos);
-    if (wc.skill) skills.increment_lvl(wc.skill, 1);
+    if (wc.skill) skills.increment(wc.skill, 1);
     std::unordered_map<const SetBonus*, unsigned int> set_bonuses = armour.get_set_bonuses();
     if (wc.set_bonus) set_bonuses[wc.set_bonus] += 1;
     skills.add_set_bonuses(set_bonuses);

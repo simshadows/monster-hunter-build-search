@@ -84,7 +84,7 @@ private:
 
             SkillsAndSetBonuses new_k = k;
             if (lvl == 1) {
-                new_k.skills.remove_skill(skill);
+                new_k.skills.remove(skill);
             } else {
                 new_k.skills.set(skill, lvl - 1);
             }

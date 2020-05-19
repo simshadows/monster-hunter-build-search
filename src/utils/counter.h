@@ -58,6 +58,35 @@ public:
         this->data.erase(k);
     }
 
+    void merge_in(const Counter<T, ValueClipFn>& other) noexcept {
+        for (const auto& e : other.data) {
+            this->increment(e.first, e.second);
+        }
+    }
+
+    // Do not use this with v_to_add=0.
+    void increment(const T& k, const N& v_to_add) noexcept {
+        assert(v_to_add != 0);
+        if (this->data.count(k)) {
+            this->data[k] = ValueClipFn()(k, this->data.at(k) + v_to_add);
+        } else {
+            this->data[k] = ValueClipFn()(k, v_to_add);
+        }
+    }
+
+    // Do not use this with v_to_subtract=0.
+    // Do not use this with keys that aren't in the counter.
+    void decrement(const T& k, const N& v_to_subtract) noexcept {
+        assert(v_to_subtract != 0);
+        assert(this->data.count(k));
+        const unsigned int curr_v = this->data.at(k);
+        if (v_to_subtract < curr_v) {
+            this->data.at(k) = curr_v - v_to_subtract;
+        } else {
+            this->data.erase(k);
+        }
+    }
+
     /*
      * Accessors
      */
@@ -96,14 +125,16 @@ public:
      * others
      */
 
-    //std::size_t calculate_hash() const noexcept {
-    //    std::size_t ret = 0;
-    //    for (const auto& e : this->data) {
-    //        //ret += std::hash<T>()(e.first) * std::hash<N>()(e.second);
-    //        ret += ((std::size_t)e.first) * e.second;
-    //    }
-    //    return ret;
-    //}
+    std::size_t calculate_hash() const noexcept {
+        std::size_t ret = 0;
+        for (const auto& e : this->data) {
+            ret += std::hash<T>()(e.first) * std::hash<N>()(e.second);
+            // TODO: Maybe try playing around a bit more with this hash function.
+            //ret += ((std::size_t)e.first) * e.second;
+            //ret += ((std::size_t)e.first) * std::hash<N>()(e.second);
+        }
+        return ret;
+    }
 
     //// I don't think I should ever need this.
     //const C& underlying() const noexcept {

@@ -69,7 +69,7 @@ static double calculate_non_elemental_boost_multiplier(const Database& db,
     // TODO: Oh my god this if-statement is so messy in order to account for element acceleration. Please fix.
     if (wc.is_raw
             && skills.binary_skill_is_lvl1(db.non_elemental_boost_ptr)
-            && (skills.get_lvl(db.free_elem_ammo_up_ptr) == 0)
+            && (skills.get(db.free_elem_ammo_up_ptr) == 0)
             &&
                 (
                     (
@@ -91,12 +91,12 @@ static double calculate_non_elemental_boost_multiplier(const Database& db,
 
 
 static double calculate_raw_crit_dmg_multiplier(const Database& db, const SkillMap& skills) {
-    switch (skills.get_lvl(db.critical_boost_ptr)) {
+    switch (skills.get(db.critical_boost_ptr)) {
         case 0: return k_RAW_CRIT_DMG_MULTIPLIER_CB0;
         case 1: return k_RAW_CRIT_DMG_MULTIPLIER_CB1;
         case 2: return k_RAW_CRIT_DMG_MULTIPLIER_CB2;
         default:
-            assert(skills.get_lvl(db.critical_boost_ptr) == 3);
+            assert(skills.get(db.critical_boost_ptr) == 3);
             return k_RAW_CRIT_DMG_MULTIPLIER_CB3;
     }
 }
@@ -108,7 +108,7 @@ static double calculate_raw_sharpness_modifier(const Database& db,
     if (wc.is_constant_sharpness) {
         return wc.maximum_sharpness.get_raw_sharpness_modifier();
     } else {
-        const unsigned int handicraft_lvl = skills.get_lvl(db.handicraft_ptr);
+        const unsigned int handicraft_lvl = skills.get(db.handicraft_ptr);
         return wc.maximum_sharpness.get_raw_sharpness_modifier(handicraft_lvl);
     }
 };
@@ -132,26 +132,26 @@ SkillContribution::SkillContribution(const Database&           db,
     }
 
     if (skills_spec.get_state_for_binary_skill(db.agitator_ptr)) {
-        const unsigned int agitator_lvl = skills.get_lvl(db.agitator_ptr, db.agitator_secret_ptr);
+        const unsigned int agitator_lvl = skills.get_non_secret(db.agitator_ptr, db.agitator_secret_ptr);
         this->added_raw += agitator_added_raw[agitator_lvl];
         this->added_aff += agitator_added_aff[agitator_lvl];
     }
 
-    const unsigned int attack_boost_lvl = skills.get_lvl(db.attack_boost_ptr);
+    const unsigned int attack_boost_lvl = skills.get(db.attack_boost_ptr);
     this->added_raw += attack_boost_added_raw[attack_boost_lvl];
     this->added_aff += attack_boost_added_aff[attack_boost_lvl];
 
     if (skills_spec.get_state_for_binary_skill(db.coalescence_ptr)) {
-        const unsigned int coalescence_lvl = skills.get_lvl(db.coalescence_ptr);
+        const unsigned int coalescence_lvl = skills.get(db.coalescence_ptr);
         this->added_raw += coalescence_added_raw[coalescence_lvl];
     }
 
     if (skills_spec.get_state_for_binary_skill(db.critical_draw_ptr)) {
-        const unsigned int critical_draw_lvl = skills.get_lvl(db.critical_draw_ptr);
+        const unsigned int critical_draw_lvl = skills.get(db.critical_draw_ptr);
         this->added_aff += critical_draw_added_aff[critical_draw_lvl];
     }
 
-    const unsigned int critical_eye_lvl = skills.get_lvl(db.critical_eye_ptr);
+    const unsigned int critical_eye_lvl = skills.get(db.critical_eye_ptr);
     this->added_aff += critical_eye_added_aff[critical_eye_lvl];
 
     if (skills_spec.get_state_for_binary_skill(db.dragonvein_awakening_ptr)
@@ -164,22 +164,22 @@ SkillContribution::SkillContribution(const Database&           db,
     }
 
     if (skills_spec.get_state_for_binary_skill(db.latent_power_ptr)) {
-        const unsigned int latent_power_lvl = skills.get_lvl(db.latent_power_ptr, db.latent_power_secret_ptr);
+        const unsigned int latent_power_lvl = skills.get_non_secret(db.latent_power_ptr, db.latent_power_secret_ptr);
         this->added_aff += latent_power_added_aff[latent_power_lvl];
     }
 
     if (skills_spec.get_state_for_binary_skill(db.maximum_might_ptr)) {
-        const unsigned int maximum_might_lvl = skills.get_lvl(db.maximum_might_ptr, db.maximum_might_secret_ptr);
+        const unsigned int maximum_might_lvl = skills.get_non_secret(db.maximum_might_ptr, db.maximum_might_secret_ptr);
         this->added_aff += maximum_might_added_aff[maximum_might_lvl];
     }
 
     if (skills_spec.get_state_for_binary_skill(db.peak_performance_ptr)) {
-        const unsigned int peak_performance_lvl = skills.get_lvl(db.peak_performance_ptr);
+        const unsigned int peak_performance_lvl = skills.get(db.peak_performance_ptr);
         this->added_raw += peak_performance_added_raw[peak_performance_lvl];
     }
 
     if (skills_spec.get_state_for_binary_skill(db.resentment_ptr)) {
-        const unsigned int resentment_lvl = skills.get_lvl(db.resentment_ptr);
+        const unsigned int resentment_lvl = skills.get(db.resentment_ptr);
         this->added_raw += resentment_added_raw[resentment_lvl];
     }
 
@@ -187,10 +187,10 @@ SkillContribution::SkillContribution(const Database&           db,
     assert(db.weakness_exploit_ptr->states == 3);
     assert(wex_state <= 2);
     if (wex_state == 1) {
-        const unsigned int wex_lvl = skills.get_lvl(db.weakness_exploit_ptr);
+        const unsigned int wex_lvl = skills.get(db.weakness_exploit_ptr);
         this->added_aff += weakness_exploit_s1_aff[wex_lvl];
     } else if (wex_state == 2) {
-        const unsigned int wex_lvl = skills.get_lvl(db.weakness_exploit_ptr); // Redundant?
+        const unsigned int wex_lvl = skills.get(db.weakness_exploit_ptr); // Redundant?
         this->added_aff += weakness_exploit_s2_aff[wex_lvl];
     }
 }

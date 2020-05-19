@@ -58,7 +58,7 @@ bool SkillSpec::get_state_for_binary_skill(const Skill * const skill) const {
 
 bool SkillSpec::skills_meet_minimum_requirements(const SkillMap& skills) const {
     for (const auto& e : this->min_levels) {
-        if (skills.get_lvl(e.first) < e.second) return false;
+        if (skills.get(e.first) < e.second) return false;
     }
     return true;
 }

@@ -58,7 +58,7 @@ SkillMap ArmourEquips::get_skills_without_set_bonuses() const {
     if (this->charm) {
         unsigned int charm_lvl = this->charm->max_charm_lvl;
         for (const Skill* const& skill : this->charm->skills) {
-            ret.increment_lvl(skill, charm_lvl);
+            ret.increment(skill, charm_lvl);
         }
     }
     return ret;
@@ -73,7 +73,7 @@ SkillMap ArmourEquips::get_skills_without_set_bonuses_filtered(const SkillSpec& 
     if (this->charm) {
         unsigned int charm_lvl = this->charm->max_charm_lvl;
         for (const Skill* const& skill : this->charm->skills) {
-            if (skill_spec.is_in_subset(skill)) ret.increment_lvl(skill, charm_lvl);
+            if (skill_spec.is_in_subset(skill)) ret.increment(skill, charm_lvl);
         }
     }
     return ret;
