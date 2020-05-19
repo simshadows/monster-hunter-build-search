@@ -62,6 +62,13 @@ private:
  ***************************************************************************************/
 
 
+struct CounterNoValueClip {
+    unsigned int operator()(const Skill * const skill, const unsigned int lvl) const noexcept {
+        return (lvl > skill->secret_limit) ? skill->secret_limit : lvl;
+    }
+};
+
+
 // Note that this container automatically clips levels to secret_limit.
 class SkillMap : public Utils::Counter<const Skill*> {
 public:
@@ -69,7 +76,6 @@ public:
 
     SkillMap(const ArmourPiece&) noexcept;
 
-    void set_lvl(const Skill* skill, unsigned int level);
     void increment_lvl(const Skill* skill, unsigned int level_to_add);
     void decrement_lvl(const Skill* skill, unsigned int level_to_remove);
     void add_skills(const ArmourPiece&);

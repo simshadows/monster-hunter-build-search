@@ -154,7 +154,7 @@ static std::vector<WeaponInstanceExtended> prepare_weapons(const Database& db,
 
     SkillMap maximized_skills;
     for (const auto& e : params.skill_spec) {
-        maximized_skills.set_lvl(e.first, e.first->secret_limit);
+        maximized_skills.set(e.first, e.first->secret_limit);
     }
 
     std::vector<WeaponInstanceExtended> ret;

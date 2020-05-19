@@ -71,9 +71,9 @@ void no_args_cmd() {
     weapon = WeaponInstance(db.weapons.at("ROYAL_VENUS_BLADE"));
 
     SkillMap skills;
-    skills.set_lvl(db.critical_boost_ptr, 3);
-    skills.set_lvl(db.non_elemental_boost_ptr, 1);
-    //skills.set_lvl(db.true_element_acceleration_ptr, 1);
+    skills.set(db.critical_boost_ptr, 3);
+    skills.set(db.non_elemental_boost_ptr, 1);
+    //skills.set(db.true_element_acceleration_ptr, 1);
 
     WeaponContribution wc = weapon.calculate_contribution(db);
     efr = calculate_efr_from_skills_lookup(db, wc, skills, skill_spec);

@@ -86,7 +86,7 @@ private:
             if (lvl == 1) {
                 new_k.skills.remove_skill(skill);
             } else {
-                new_k.skills.set_lvl(skill, lvl - 1);
+                new_k.skills.set(skill, lvl - 1);
             }
 
             this->add_power_set(new_k);

@@ -15,20 +15,10 @@ namespace MHWIBuildSearch
 
 
 SkillMap::SkillMap(const ArmourPiece& armour_piece) noexcept
-    //: data {}
 {
     for (const auto& e : armour_piece.skills) {
         this->data.insert(e);
     }
-}
-
-
-void SkillMap::set_lvl(const Skill* skill, unsigned int level) {
-    assert(level != 0); // For now, I won't intend to ever use this for removing skills.
-    if (level > skill->secret_limit) {
-        level = skill->secret_limit; // Clips the level
-    }
-    this->data[skill] = level;
 }
 
 
