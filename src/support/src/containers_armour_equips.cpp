@@ -53,7 +53,7 @@ bool ArmourEquips::slot_is_filled(const ArmourSlot& slot) const {
 SkillMap ArmourEquips::get_skills_without_set_bonuses() const {
     SkillMap ret;
     for (const ArmourPiece * const & armour_piece : this->data) {
-        if (armour_piece) ret.add_skills(*armour_piece);
+        if (armour_piece) ret.merge_in(armour_piece->skills);
     }
     if (this->charm) {
         unsigned int charm_lvl = this->charm->max_charm_lvl;

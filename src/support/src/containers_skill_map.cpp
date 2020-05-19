@@ -22,22 +22,13 @@ SkillMap::SkillMap(const ArmourPiece& armour_piece) noexcept
 }
 
 
-void SkillMap::add_skills(const ArmourPiece& piece) {
-    for (const std::pair<const Skill*, unsigned int>& e : piece.skills) {
-        this->increment(e.first, e.second);
-    }
-}
-
-
-void SkillMap::add_skills(const DecoEquips& decos) {
+void SkillMap::merge_in(const DecoEquips& decos) {
     for (const Decoration* const& deco : decos) {
         for (const auto& e : deco->skills) {
             this->increment(e.first, e.second);
         }
     }
 }
-
-
 
 
 void SkillMap::add_set_bonuses(const std::unordered_map<const SetBonus*, unsigned int>& set_bonuses) {

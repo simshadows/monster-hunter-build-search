@@ -30,6 +30,10 @@ TESTOBJECTS=tests/run_tests.o
 .PHONY : all
 all : $(EXEC) test
 
+.PHONY : asserts
+asserts : CXXFLAGS=-Wall -Werror -Wextra -O3
+asserts : all
+
 .PHONY : debug
 debug : CXXFLAGS=-Wall -Werror -Wextra -fsanitize=address -g -Og
 debug : all
@@ -59,6 +63,10 @@ $(TESTEXEC) : $(OBJECTS) $(TESTOBJECTS)
 .PHONY : all2
 all2 : CXX=clang++-9
 all2 : all
+
+.PHONY : asserts2
+asserts2 : CXX=clang++-9
+asserts2 : asserts
 
 .PHONY : debug2
 debug2 : CXX=clang++-9

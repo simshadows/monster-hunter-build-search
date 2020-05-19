@@ -76,8 +76,9 @@ public:
 
     SkillMap(const ArmourPiece&) noexcept;
 
-    void add_skills(const ArmourPiece&);
-    void add_skills(const DecoEquips&);
+    using Utils::Counter<const Skill*, HardClipSkillLevel>::merge_in;
+    void merge_in(const DecoEquips&); // Special case
+
     void add_set_bonuses(const std::unordered_map<const SetBonus*, unsigned int>&);
 
     // Only adds skills from the skill spec

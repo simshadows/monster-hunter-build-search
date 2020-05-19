@@ -618,7 +618,7 @@ static void do_search(const Database& db, const SearchParameters& params) {
                 // Do EFR calculation here
                 // TODO: Make this better lol
                 SkillMap skills = ac.armour.get_skills_without_set_bonuses();
-                skills.add_skills(curr_decos);
+                skills.merge_in(curr_decos);
                 if (wc.contributions.skill) skills.increment(wc.contributions.skill, 1);
                 std::unordered_map<const SetBonus*, unsigned int> set_bonuses = ac.armour.get_set_bonuses();
                 if (wc.contributions.set_bonus) set_bonuses[wc.contributions.set_bonus] += 1;

@@ -38,7 +38,7 @@ public:
      * Modifiers
      */
 
-    // Do not use this with v=0. Behaviour will be undefined.
+    // Do not use this with v=0.
     void set(const T& k, const N& v) noexcept {
         assert(v != 0);
         this->data[k] = ValueClipFn()(k, v);
@@ -60,6 +60,14 @@ public:
 
     void merge_in(const Counter<T, ValueClipFn>& other) noexcept {
         for (const auto& e : other.data) {
+            this->increment(e.first, e.second);
+        }
+    }
+
+    // Do not have zeroes on the right side.
+    void merge_in(const std::vector<std::pair<T, N>>& obj) noexcept {
+        for (const std::pair<T, N>& e : obj) {
+            assert(e.second);
             this->increment(e.first, e.second);
         }
     }
