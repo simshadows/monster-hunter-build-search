@@ -129,6 +129,9 @@ static std::vector<WeaponInstanceExtended> prepare_weapons(const Database& db,
             for (const std::shared_ptr<WeaponUpgradesInstance>& u : upgrade_instances) {
                 WeaponInstance new_inst = {weapon, a, u};
                 WeaponContribution new_cont = new_inst.calculate_contribution(db);
+                if (params.health_regen_required && !new_cont.health_regen_active) {
+                    continue;
+                }
                 if (!Utils::set_has_key(set_bonus_subset, new_cont.set_bonus)) {
                     new_cont.set_bonus = nullptr;
                 }
@@ -170,32 +173,50 @@ static std::vector<WeaponInstanceExtended> prepare_weapons(const Database& db,
 
 static std::array<std::vector<const Decoration*>, k_MAX_DECO_SIZE> prepare_decos(const Database& db,
                                                                                  const SkillSpec& skill_spec) {
-    std::vector<const Decoration*> sorted_decos = db.decos.get_all();
+    std::vector<const Decoration*> all_decos = db.decos.get_all();
 
-    const std::size_t stat_pre = sorted_decos.size();
+    std::unordered_map<const Skill*, const Decoration*> simplest_decos;
+    std::vector<const Decoration*> decos_to_keep;
 
-    // Filter
-    const auto pred = [&](const Decoration* x){for (const auto& e : x->skills)
-                                                   if (skill_spec.is_in_subset(e.first)) {
-                                                       assert(e.second > 0);
-                                                       return false;
-                                                   }
-                                               return true; };
-    sorted_decos.erase(std::remove_if(sorted_decos.begin(), sorted_decos.end(), pred), sorted_decos.end());
+    // We first put decos that only contribute one level (within the skill spec) to the build in simplest_decos,
+    // and any deco that contributes multiple levels to decos_to_keep.
+    // (This isn't perfect since this allows all size-4 single-skill decos with skill levels 2 or greater to all be included,
+    // regardless of the fact that we ideally want just the bigger deco.)
+    // TODO: Make a better algorithm!
+    for (const Decoration * const deco : all_decos) {
+        const Skill* found_skill;
+        std::size_t num_contribution = 0;
+        for (const auto& e : deco->skills) {
+            if (skill_spec.is_in_subset(e.first)) {
+                found_skill = e.first;
+                num_contribution += e.second;
+            }
+        }
+        if (num_contribution == 1) {
+            if (Utils::map_has_key(simplest_decos, found_skill)
+                    && (simplest_decos.at(found_skill)->slot_size < deco->slot_size)) {
+                continue;
+            }
+            simplest_decos[found_skill] = deco;
+        } else if (num_contribution > 1) {
+            decos_to_keep.push_back(deco);
+        }
+    }
+    // Now, we merge simplest_decos into decos_to_keep.
+    for (const auto& e : simplest_decos) {
+        decos_to_keep.push_back(e.second);
+    }
 
     // Sort
     const auto cmp = [](const Decoration * const a, const Decoration * const b){
         return a->slot_size > b->slot_size;
     };
-    std::sort(sorted_decos.begin(), sorted_decos.end(), cmp);
+    std::sort(decos_to_keep.begin(), decos_to_keep.end(), cmp);
 
-    const std::size_t stat_post = sorted_decos.size();
-
-    Utils::log_stat_reduction("Decorations pruning: ", stat_pre, stat_post);
+    Utils::log_stat_reduction("Decorations pruning: ", all_decos.size(), decos_to_keep.size());
 
     std::array<std::vector<const Decoration*>, k_MAX_DECO_SIZE> ret;
-
-    for (const Decoration* deco : sorted_decos) {
+    for (const Decoration* deco : decos_to_keep) {
         assert(deco->slot_size >= 1);
         static_assert(k_MIN_DECO_SIZE == 1, "Assumption violation.");
         for (std::size_t i = deco->slot_size - 1; i < ret.size(); ++i) {
@@ -272,7 +293,8 @@ static std::map<ArmourSlot, std::vector<const ArmourPiece*>> get_pruned_armour(c
 static std::vector<std::vector<const Decoration*>> generate_deco_combos(const std::vector<unsigned int>& deco_slots,
                                                                         const std::array<std::vector<const Decoration*>,
                                                                                          k_MAX_DECO_SIZE>& sorted_decos,
-                                                                        const SkillSpec skill_spec) {
+                                                                        const SkillSpec& skill_spec,
+                                                                        const SkillMap& existing_skills) {
     assert(std::is_sorted(deco_slots.begin(), deco_slots.end(), std::greater<unsigned int>()));
 
     if (!deco_slots.size()) return {};
@@ -301,7 +323,8 @@ static std::vector<std::vector<const Decoration*>> generate_deco_combos(const st
         unsigned int max_to_add = 0;
         for (const auto& e : deco->skills) {
             if (skill_spec.is_in_subset(e.first)) {
-                const unsigned int v = Utils::ceil_div(e.first->secret_limit, e.second);
+                assert(e.first->secret_limit >= existing_skills.get_lvl(e.first));
+                const unsigned int v = Utils::ceil_div(e.first->secret_limit - existing_skills.get_lvl(e.first), e.second);
                 if (v > max_to_add) max_to_add = v;
             }
         }
@@ -354,11 +377,14 @@ static std::vector<ArmourPieceCombo> generate_slot_combos(const std::vector<cons
     SkillsSeenSet<ArmourPieceCombo> seen_set;
 
     for (const ArmourPiece* piece : pieces) {
-        std::vector<std::vector<const Decoration*>> deco_combos = generate_deco_combos(piece->deco_slots,
-                                                                                       sorted_decos,
-                                                                                       skill_spec);
+
         SkillMap armour_skills;
         armour_skills.add_skills_filtered(*piece, skill_spec);
+
+        std::vector<std::vector<const Decoration*>> deco_combos = generate_deco_combos(piece->deco_slots,
+                                                                                       sorted_decos,
+                                                                                       skill_spec,
+                                                                                       armour_skills);
 
         stat_pre += deco_combos.size(); // TODO: How do I know this won't overflow?
 
@@ -416,15 +442,17 @@ static void merge_in_armour_list(SkillsSeenSet<ArmourSetCombo>& armour_combos,
 }
 
 
-static void refilter_weapons(std::vector<WeaponInstanceExtended>& weapons, const double max_efr) {
-    const std::size_t stat_pre = weapons.size();
-
+static void refilter_weapons(std::vector<WeaponInstanceExtended>& weapons,
+                             const double max_efr,
+                             const std::size_t original_weapon_count) {
     const auto pred = [&](const WeaponInstanceExtended& x){
         return x.ceiling_efr <= max_efr;
     };
     weapons.erase(std::remove_if(weapons.begin(), weapons.end(), pred), weapons.end());
 
-    Utils::log_stat_reduction("Repruned weapons with EFR " + std::to_string(max_efr) + ": ", stat_pre, weapons.size());
+    Utils::log_stat_reduction("Repruned weapons with EFR " + std::to_string(max_efr) + ": ",
+                              original_weapon_count,
+                              weapons.size());
 }
 
 
@@ -456,7 +484,8 @@ static void do_search(const Database& db, const SearchParameters& params) {
     }
 
     std::vector<WeaponInstanceExtended> weapons = prepare_weapons(db, params, set_bonus_subset);
-    assert(weapons.size());
+    const std::size_t weapons_initial_size = weapons.size();
+    assert(weapons_initial_size);
 
     auto start_t = std::chrono::steady_clock::now();
 
@@ -568,34 +597,61 @@ static void do_search(const Database& db, const SearchParameters& params) {
 
     const std::size_t stat_pre2 = final_armour_combos.size();
     std::size_t stat_progress2 = 0;
+    start_t = std::chrono::steady_clock::now();
 
     for (const ArmourSetCombo& ac : final_armour_combos) {
         bool reprune_weapons = false;
         for (const WeaponInstanceExtended& wc : weapons) {
 
+            SkillMap tmp_skills = ac.ssb.skills;
+            if (wc.contributions.skill) tmp_skills.increment_lvl(wc.contributions.skill, 1);
+
             std::vector<std::vector<const Decoration*>> w_decos = generate_deco_combos(wc.contributions.deco_slots,
                                                                                        grouped_sorted_decos,
-                                                                                       params.skill_spec);
+                                                                                       params.skill_spec,
+                                                                                       tmp_skills);
             for (std::vector<const Decoration*>& dc : w_decos) {
 
                 DecoEquips curr_decos (std::move(dc));
+                curr_decos.merge_in(ac.decos);
 
-                const double efr = calculate_efr_from_gear_lookup(db, wc.instance, ac.armour, curr_decos, params.skill_spec);
+                // Do EFR calculation here
+                // TODO: Make this better lol
+                SkillMap skills = ac.armour.get_skills_without_set_bonuses();
+                skills.add_skills(curr_decos);
+                if (wc.contributions.skill) skills.increment_lvl(wc.contributions.skill, 1);
+                std::unordered_map<const SetBonus*, unsigned int> set_bonuses = ac.armour.get_set_bonuses();
+                if (wc.contributions.set_bonus) set_bonuses[wc.contributions.set_bonus] += 1;
+                skills.add_set_bonuses(set_bonuses);
+
+                // Filter out anything that doesn't meet minimum requirements
+                if (!params.skill_spec.skills_meet_minimum_requirements(skills)) continue;
+                assert((!params.health_regen_required) || wc.contributions.health_regen_active);
+
+                const double efr = calculate_efr_from_skills_lookup(db, wc.contributions, skills, params.skill_spec);
 
                 if (efr > best_efr) {
                     best_efr = efr;
-                    std::clog << "Found EFR: " + std::to_string(best_efr) << "\n";
+                    std::clog << "Found EFR: " + std::to_string(best_efr) + "\n\n";
+                    std::clog << wc.instance.get_humanreadable() + "\n\n";
+                    std::clog << ac.armour.get_humanreadable() + "\n\n";
+                    std::clog << curr_decos.get_humanreadable() + "\n\n";
+                    std::clog << skills.get_humanreadable() + "\n\n";
                     reprune_weapons = true;
                 }
 
             }
 
         }
-        if (reprune_weapons) refilter_weapons(weapons, best_efr);
+        if (reprune_weapons) refilter_weapons(weapons, best_efr, weapons_initial_size);
 
-        std::clog << std::to_string(stat_progress2) + "/" + std::to_string(stat_pre2) + "\n";
+        (void)stat_progress2;
+        (void)stat_pre2;
+        //std::clog << std::to_string(stat_progress2) + "/" + std::to_string(stat_pre2) + "\n";
         ++stat_progress2;
     }
+
+    Utils::log_stat_duration("  >>> weapon combo merge: ", start_t);
 }
 
 

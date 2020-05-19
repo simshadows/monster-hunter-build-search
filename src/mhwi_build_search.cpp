@@ -102,6 +102,7 @@ int main(int argc, char** argv) {
 
     std::clog << std::endl;
     Utils::log_stat_duration("Total execution time: ", start_t);
+    Utils::log_stat();
 
     return 0;
 }

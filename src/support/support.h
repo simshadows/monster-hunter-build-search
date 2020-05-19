@@ -15,7 +15,9 @@ namespace MHWIBuildSearch
 {
 
 
-class DecoEquips; // Declaring early since this will be needed.
+// Declaring early since this will be needed.
+class SkillMap;
+class DecoEquips;
 
 
 /****************************************************************************************
@@ -38,6 +40,8 @@ public:
     unsigned int get_min_lvl(const Skill*) const;
     unsigned int get_state(const Skill*) const;
     bool get_state_for_binary_skill(const Skill*) const; // Adds an assertion for skills with only two states
+
+    bool skills_meet_minimum_requirements(const SkillMap&) const;
 
     // Iterating is over the minimum levels. (We'll probably never need to iterate over the states anyway.)
     MinLevelsIterator begin() const;
