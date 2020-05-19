@@ -31,7 +31,7 @@ protected:
     using N = unsigned int;
     using C = std::unordered_map<T, N>;
 
-    C data;
+    C data {};
 public:
 
     /*
@@ -65,7 +65,8 @@ public:
     }
 
     // Do not have zeroes on the right side.
-    void merge_in(const std::vector<std::pair<T, N>>& obj) noexcept {
+    template<class P>
+    void merge_in(const P& obj) noexcept {
         for (const std::pair<T, N>& e : obj) {
             assert(e.second);
             this->increment(e.first, e.second);
@@ -110,7 +111,7 @@ public:
     }
 
     /*
-     * direct adapted interface
+     * Direct adapted interface
      */
 
     auto begin() const noexcept {
@@ -130,7 +131,7 @@ public:
     }
 
     /*
-     * others
+     * Others
      */
 
     std::size_t calculate_hash() const noexcept {
@@ -138,16 +139,12 @@ public:
         for (const auto& e : this->data) {
             ret += std::hash<T>()(e.first) * std::hash<N>()(e.second);
             // TODO: Maybe try playing around a bit more with this hash function.
+            //       Maybe make it handle pointers in a special way or something, idk.
             //ret += ((std::size_t)e.first) * e.second;
             //ret += ((std::size_t)e.first) * std::hash<N>()(e.second);
         }
         return ret;
     }
-
-    //// I don't think I should ever need this.
-    //const C& underlying() const noexcept {
-    //    return this->data;
-    //}
 
 };
 

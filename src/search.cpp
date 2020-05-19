@@ -620,8 +620,8 @@ static void do_search(const Database& db, const SearchParameters& params) {
                 SkillMap skills = ac.armour.get_skills_without_set_bonuses();
                 skills.merge_in(curr_decos);
                 if (wc.contributions.skill) skills.increment(wc.contributions.skill, 1);
-                std::unordered_map<const SetBonus*, unsigned int> set_bonuses = ac.armour.get_set_bonuses();
-                if (wc.contributions.set_bonus) set_bonuses[wc.contributions.set_bonus] += 1;
+                Utils::Counter<const SetBonus*> set_bonuses = ac.armour.get_set_bonuses();
+                if (wc.contributions.set_bonus) set_bonuses.increment(wc.contributions.set_bonus, 1);
                 skills.add_set_bonuses(set_bonuses);
 
                 // Filter out anything that doesn't meet minimum requirements

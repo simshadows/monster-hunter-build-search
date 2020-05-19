@@ -80,10 +80,10 @@ SkillMap ArmourEquips::get_skills_without_set_bonuses_filtered(const SkillSpec& 
 }
 
 
-std::unordered_map<const SetBonus*, unsigned int> ArmourEquips::get_set_bonuses() const {
-    std::unordered_map<const SetBonus*, unsigned int> ret;
+Utils::Counter<const SetBonus*> ArmourEquips::get_set_bonuses() const {
+    Utils::Counter<const SetBonus*> ret;
     for (const ArmourPiece * const e : this->data) {
-        if (e && e->set_bonus) ret[e->set_bonus] += 1;
+        if (e && e->set_bonus) ret.increment(e->set_bonus, 1);
     }
     return ret;
 }
