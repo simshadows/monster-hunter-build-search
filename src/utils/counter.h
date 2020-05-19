@@ -2,10 +2,6 @@
  * File: counter.h
  * Author: <contact@simshadows.com>
  *
- * I'm not actually implementing a "counter" just yet.
- * For now, I'm just supplying helper functions for unordered maps used
- * as counters.
- *
  * If this turns out to be particularly useful, I might make it more
  * general somehow.
  */
@@ -17,6 +13,104 @@
 #include <unordered_map>
 
 namespace Utils {
+
+
+template<class T>
+struct CounterNoValueClip {
+    unsigned int operator()(const T& key, const unsigned int val) const noexcept {
+        (void)key;
+        return val; // We just pass back the value.
+    }
+};
+
+
+template<class T,
+         class ValueClipFn = CounterNoValueClip<T> >
+class Counter {
+protected:
+    using N = unsigned int;
+    using C = std::unordered_map<T, N>;
+
+    C data;
+public:
+
+    /*
+     * Modifiers
+     */
+
+    // Do not use this with v=0. Behaviour will be undefined.
+    void set(const T& k, const N& v) noexcept {
+        assert(v != 0);
+        this->data[k] = ValueClipFn()(k, v);
+    }
+
+    // This version will allow v=0. However, it comes with branching overhead.
+    void set_or_remove(const T& k, const N& v) noexcept {
+        if (v) {
+            this->data[k] = ValueClipFn()(k, v);
+        } else {
+            this->data.erase(k);
+        }
+    }
+
+    void remove(const T& k) noexcept {
+        assert(this->get(k));
+        this->data.erase(k);
+    }
+
+    /*
+     * Accessors
+     */
+
+    N get(const T& k) const noexcept {
+        // TODO: Is this the best way to do this?
+        if (this->data.count(k)) {
+            assert(this->data.at(k));
+            return this->data.at(k);
+        } else {
+            return 0;
+        }
+    }
+
+    /*
+     * direct adapted interface
+     */
+
+    auto begin() const noexcept {
+        return this->data.begin();
+    }
+
+    auto end() const noexcept {
+        return this->data.end();
+    }
+
+    auto size() const noexcept {
+        return this->data.size();
+    }
+
+    bool operator==(const Counter& x) const noexcept {
+        return this->data == x.data;
+    }
+
+    /*
+     * others
+     */
+
+    //std::size_t calculate_hash() const noexcept {
+    //    std::size_t ret = 0;
+    //    for (const auto& e : this->data) {
+    //        //ret += std::hash<T>()(e.first) * std::hash<N>()(e.second);
+    //        ret += ((std::size_t)e.first) * e.second;
+    //    }
+    //    return ret;
+    //}
+
+    //// I don't think I should ever need this.
+    //const C& underlying() const noexcept {
+    //    return this->data;
+    //}
+
+};
 
 
 template<class T>

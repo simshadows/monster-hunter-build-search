@@ -10,6 +10,7 @@
 
 #include "../core/core.h"
 #include "../database/database.h"
+#include "../utils/counter.h"
 
 namespace MHWIBuildSearch
 {
@@ -62,13 +63,10 @@ private:
 
 
 // Note that this container automatically clips levels to secret_limit.
-class SkillMap {
-    using ContainerType = std::unordered_map<const Skill*, unsigned int>;
-    using IteratorType  = ContainerType::const_iterator;
-
-    ContainerType data;
+class SkillMap : public Utils::Counter<const Skill*> {
 public:
-    SkillMap() noexcept;
+    using Utils::Counter<const Skill*>::Counter;
+
     SkillMap(const ArmourPiece&) noexcept;
 
     void set_lvl(const Skill* skill, unsigned int level);
@@ -96,14 +94,7 @@ public:
 
     std::size_t calculate_hash() const noexcept;
 
-    IteratorType begin() const;
-    IteratorType end() const;
-
     std::string get_humanreadable() const;
-
-    bool operator==(const SkillMap& x) const noexcept {
-        return this->data == x.data;
-    }
 
     bool only_contains_skills_in_spec(const SkillSpec&) const noexcept;
 };

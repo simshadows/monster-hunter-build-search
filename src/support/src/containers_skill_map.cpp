@@ -14,11 +14,8 @@ namespace MHWIBuildSearch
 {
 
 
-SkillMap::SkillMap() noexcept = default;
-
-
 SkillMap::SkillMap(const ArmourPiece& armour_piece) noexcept
-    : data {}
+    //: data {}
 {
     for (const auto& e : armour_piece.skills) {
         this->data.insert(e);
@@ -207,16 +204,6 @@ std::size_t SkillMap::calculate_hash() const noexcept {
         ret += v;
     }
     return ret;
-}
-
-
-SkillMap::IteratorType SkillMap::begin() const {
-    return this->data.begin();
-}
-
-
-SkillMap::IteratorType SkillMap::end() const {
-    return this->data.end();
 }
 
 
