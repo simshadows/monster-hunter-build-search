@@ -5,6 +5,9 @@
  * This is an unstable-order automatically-pruned data structure.
  * This means that the sorted order will never be guaranteed.
  *
+ * TODO: This probably doesn't deserve to be its own class. I should probably reimplement
+ *       this as a standalone function.
+ *
  * class T:
  *      Container data.
  *
@@ -76,7 +79,7 @@ public:
      * reference to the underlying STL container
      */
 
-    const C& underlying() const noexcept {
+    C underlying() const noexcept {
         return this->data;
     }
 
