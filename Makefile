@@ -1,5 +1,7 @@
+CXXFLAGSBASE=-Wall -Werror -Wextra -std=c++17
+
 #CXX=g++
-CXXFLAGS=-Wall -Werror -Wextra -O3 -DNDEBUG
+CXXFLAGS=$(CXXFLAGSBASE) -O3 -DNDEBUG
 
 EXEC=mhwibs
 MAINOBJECTS=src/mhwi_build_search.o
@@ -31,11 +33,11 @@ TESTOBJECTS=tests/run_tests.o
 all : $(EXEC) test
 
 .PHONY : asserts
-asserts : CXXFLAGS=-Wall -Werror -Wextra -O3
+asserts : CXXFLAGS=$(CXXFLAGSBASE) -O3
 asserts : all
 
 .PHONY : debug
-debug : CXXFLAGS=-Wall -Werror -Wextra -fsanitize=address -g -Og
+debug : CXXFLAGS=$(CXXFLAGSBASE) -fsanitize=address -g -Og
 debug : all
 
 .PHONY : test

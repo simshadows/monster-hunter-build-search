@@ -12,30 +12,32 @@
 namespace Utils
 {
 
+template<class Ci, class... Cv>
+std::size_t do_hash(const Ci& ci, const Cv&... cv) noexcept {
+    return ci.calculate_hash() + do_hash<Cv...>(cv...);
+}
 
-//struct SkillsAndSetBonuses {
-//    SkillMap skills;
-//    Utils::Counter<const SetBonus*> set_bonuses;
-//
-//    bool operator==(const SkillsAndSetBonuses& x) const noexcept {
-//        return (this->skills == x.skills) && (this->set_bonuses == x.set_bonuses);
-//    }
-//};
-
-//template<class AssociatedData>
-//class SkillsSeenSet : public Utils::CounterSubsetSeenMap<AssociatedData, SkillMap, Utils::Counter<const SetBonus*>> {
-//};
-
+template<class Ci>
+std::size_t do_hash(const Ci& ci) noexcept {
+    return ci.calculate_hash();
+}
 
 template<class... Cv>
 struct CounterTupleHash {
     using T = std::tuple<Cv...>;
 
-    std::size_t operator()(const T& obj) const noexcept {
-        std::size_t ret = std::get<0>(obj).calculate_hash();
-        ret += std::get<1>(obj).calculate_hash();
-        return ret;
+    std::size_t operator()(const T& t) const noexcept {
+        return std::apply(do_hash<Cv...>, t);
     }
+
+    // The short way.
+    // Also the boring way. I'm gonna try playing around with the long way for now, for fun!
+    //std::size_t operator()(const T& t) const noexcept {
+    //    const auto op = [](auto&... xv){
+    //        return (xv.calculate_hash() + ...);
+    //    };
+    //    return std::apply(op, t);
+    //}
 };
 
 
