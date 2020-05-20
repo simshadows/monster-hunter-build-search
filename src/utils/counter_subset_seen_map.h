@@ -31,7 +31,7 @@ class CounterSubsetSeenMap {
     using T = std::tuple<Cv...>;
     using H = CounterTupleHash<Cv...>;
 
-    static_assert(std::tuple_size<T>::value == 2, "Current implementation is hardcoded to exactly two counters.");
+    using T_size = std::tuple_size<T>;
 
     std::unordered_set<T, H>    seen_set {};
     std::unordered_map<T, D, H> data     {};
@@ -43,7 +43,7 @@ public:
             return;
         }
 
-        this->add_power_set(k);
+        this->add_power_set(k, std::make_index_sequence<T_size::value>{});
         this->data[k] = d;
     }
 
@@ -60,37 +60,41 @@ public:
     }
 
 private:
-    void add_power_set(const T& k) {
+
+    template<std::size_t... Iv>
+    void add_power_set(const T& k, std::index_sequence<Iv...> iv) {
         if (this->seen_set.count(k)) {
             this->data.erase(k);
             return;
         }
         this->seen_set.emplace(k);
 
-        T new_k = k;
+        // "Work key"
+        // We will be reusing this object for each stage to save us
+        // from copying and constructing entire tuples of counters.
+        T w = k;
 
-        this->add_power_set_stage<0>(k, new_k);
-        this->add_power_set_stage<1>(k, new_k);
+        (this->add_power_set_stage<Iv>(k, w, iv), ...); // Fold
     }
 
-    template<std::size_t I>
-    void add_power_set_stage(const T& k, T& new_k) {
-        for (const auto& e : std::get<I>(k)) {
-            auto& curr_new_k_counter = std::get<I>(new_k);
+    template<std::size_t J, std::size_t... Iv>
+    void add_power_set_stage(const T& k, T& w, std::index_sequence<Iv...> iv) {
+        for (const auto& e : std::get<J>(k)) {
+            auto& curr_w_counter = std::get<J>(w);
 
             const auto& kk = e.first;
             const unsigned int vv = e.second;
             assert(vv); // Make sure that Counter cannot produce zeroes.
 
             if (vv == 1) {
-                curr_new_k_counter.remove(kk);
+                curr_w_counter.remove(kk);
             } else {
-                curr_new_k_counter.set(kk, vv - 1);
+                curr_w_counter.set(kk, vv - 1);
             }
 
-            this->add_power_set(new_k);
+            this->add_power_set(w, iv);
 
-            curr_new_k_counter.set(kk, vv); // Reset
+            curr_w_counter.set(kk, vv); // Reset
         }
     }
 };
