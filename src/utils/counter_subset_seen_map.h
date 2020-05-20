@@ -12,38 +12,22 @@
 namespace Utils
 {
 
-template<class Ci, class... Cv>
-std::size_t do_hash(const Ci& ci, const Cv&... cv) noexcept {
-    return ci.calculate_hash() + do_hash<Cv...>(cv...);
-}
-
-template<class Ci>
-std::size_t do_hash(const Ci& ci) noexcept {
-    return ci.calculate_hash();
-}
 
 template<class... Cv>
 struct CounterTupleHash {
     using T = std::tuple<Cv...>;
 
     std::size_t operator()(const T& t) const noexcept {
-        return std::apply(do_hash<Cv...>, t);
+        const auto op = [](auto&... xv){
+            return (xv.calculate_hash() + ...);
+        };
+        return std::apply(op, t);
     }
-
-    // The short way.
-    // Also the boring way. I'm gonna try playing around with the long way for now, for fun!
-    //std::size_t operator()(const T& t) const noexcept {
-    //    const auto op = [](auto&... xv){
-    //        return (xv.calculate_hash() + ...);
-    //    };
-    //    return std::apply(op, t);
-    //}
 };
 
 
 template<class D, class... Cv>
 class CounterSubsetSeenMap {
-protected:
     using T = std::tuple<Cv...>;
     using H = CounterTupleHash<Cv...>;
 
@@ -85,52 +69,14 @@ private:
 
         T new_k = k;
 
-        // TODO: ughhhh how do I do this??????
-        //for (std::size_t i = 0; i < std::tuple_size<T>::value; ++i) {
+        this->add_power_set_stage<0>(k, new_k);
+        this->add_power_set_stage<1>(k, new_k);
+    }
 
-        //    const auto& curr_k_counter = std::get<i>(k);
-        //    auto& curr_new_k_counter = std::get<i>(new_k);
-
-        //    for (const auto& e : curr_k_counter) {
-        //        const auto& kk = e.first;
-        //        const unsigned int vv = e.second;
-        //        assert(vv); // Make sure that Counter cannot produce zeroes.
-
-        //        if (vv == 1) {
-        //            curr_new_k_counter.remove(kk);
-        //        } else {
-        //            curr_new_k_counter.set(kk, vv - 1);
-        //        }
-
-        //        this->add_power_set(new_k);
-
-        //        curr_new_k_counter.set(kk, vv); // Reset
-        //    }
-        //}
-
-
-        for (const auto& e : std::get<0>(k)) {
-            auto& curr_new_k_counter = std::get<0>(new_k);
-
-            const auto& kk = e.first;
-            const unsigned int vv = e.second;
-            assert(vv); // Make sure that Counter cannot produce zeroes.
-
-            if (vv == 1) {
-                curr_new_k_counter.remove(kk);
-            } else {
-                curr_new_k_counter.set(kk, vv - 1);
-            }
-
-            this->add_power_set(new_k);
-
-            curr_new_k_counter.set(kk, vv); // Reset
-        }
-
-        // ---
-
-        for (const auto& e : std::get<1>(k)) {
-            auto& curr_new_k_counter = std::get<1>(new_k);
+    template<std::size_t I>
+    void add_power_set_stage(const T& k, T& new_k) {
+        for (const auto& e : std::get<I>(k)) {
+            auto& curr_new_k_counter = std::get<I>(new_k);
 
             const auto& kk = e.first;
             const unsigned int vv = e.second;
