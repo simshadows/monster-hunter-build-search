@@ -80,7 +80,7 @@ double calculate_efr_from_gear_lookup(const Database&       db,
     SkillMap skills = armour.get_skills_without_set_bonuses();
     skills.merge_in(decos);
     if (wc.skill) skills.increment(wc.skill, 1);
-    Utils::Counter<const SetBonus*> set_bonuses = armour.get_set_bonuses();
+    SetBonusMap set_bonuses = armour.get_set_bonuses();
     if (wc.set_bonus) set_bonuses.increment(wc.set_bonus, 1);
     skills.add_set_bonuses(set_bonuses);
 

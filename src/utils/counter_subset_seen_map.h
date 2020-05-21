@@ -37,8 +37,11 @@ class CounterSubsetSeenMap {
     std::unordered_map<T, D, H> data     {};
 public:
     void add(const D& d, const Cv&... kv) {
-        T k = std::make_tuple(kv...);
+        this->add(d, std::make_tuple(kv...));
+    }
 
+    // This version is more efficient if you already bundle your counters together.
+    void add(const D& d, const T& k) {
         if (this->seen_set.count(k)) {
             return;
         }

@@ -8,19 +8,25 @@
 #include <algorithm>
 #include <iterator>
 #include <iostream>
+#include <tuple>
 
 #include "mhwi_build_search.h"
 #include "core/core.h"
 #include "database/database.h"
 #include "support/support.h"
-#include "support/skills_seen_set.h"
 #include "utils/utils.h"
 #include "utils/logging.h"
 #include "utils/pruning_vector.h"
+#include "utils/counter.h"
+#include "utils/counter_subset_seen_map.h"
 
 
 namespace MHWIBuildSearch
 {
+
+
+template<class StoredData>
+using SSBSeenMap = Utils::CounterSubsetSeenMap<StoredData, SkillMap, SetBonusMap>;
 
 
 struct ArmourPieceCombo {
@@ -36,7 +42,11 @@ struct ArmourSetCombo {
     ArmourEquips armour;
     DecoEquips decos;
 
-    SkillsAndSetBonuses ssb;
+    std::tuple<SkillMap, SetBonusMap> ssb;
+    SkillMap&          skills()            noexcept {return std::get<0>(this->ssb);};
+    const SkillMap&    skills()      const noexcept {return std::get<0>(this->ssb);};
+    SetBonusMap&       set_bonuses()       noexcept {return std::get<1>(this->ssb);};
+    const SetBonusMap& set_bonuses() const noexcept {return std::get<1>(this->ssb);};
 };
 
 
@@ -374,7 +384,7 @@ static std::vector<ArmourPieceCombo> generate_slot_combos(const std::vector<cons
 
     unsigned long long stat_pre = 0;
 
-    SkillsSeenSet<ArmourPieceCombo> seen_set;
+    SSBSeenMap<ArmourPieceCombo> seen_set;
 
     for (const ArmourPiece* piece : pieces) {
 
@@ -392,17 +402,17 @@ static std::vector<ArmourPieceCombo> generate_slot_combos(const std::vector<cons
             SkillMap skills = armour_skills;
             skills.add_skills_filtered(decos, skill_spec);
 
-            SkillsAndSetBonuses h = {skills, {}};
+            std::tuple<SkillMap, SetBonusMap> ssb = {skills, {}};
+
             const SetBonus* set_bonus;
             if (Utils::set_has_key(set_bonus_subset, piece->set_bonus)) {
                 set_bonus = piece->set_bonus;
-                h.set_bonuses.set(set_bonus, 1);
+                std::get<1>(ssb).set(set_bonus, 1);
             } else {
                 set_bonus = nullptr;
             }
 
-            assert(h.skills == skills);
-            seen_set.add(std::move(h), {piece, std::move(decos), std::move(skills), set_bonus});
+            seen_set.add({piece, std::move(decos), std::move(skills), set_bonus}, std::move(ssb));
         }
     }
 
@@ -414,7 +424,7 @@ static std::vector<ArmourPieceCombo> generate_slot_combos(const std::vector<cons
 }
 
 
-static void merge_in_armour_list(SkillsSeenSet<ArmourSetCombo>& armour_combos,
+static void merge_in_armour_list(SSBSeenMap<ArmourSetCombo>& armour_combos,
                                  const std::vector<ArmourPieceCombo>& piece_combos,
                                  const SkillSpec& skill_spec) {
 
@@ -422,21 +432,22 @@ static void merge_in_armour_list(SkillsSeenSet<ArmourSetCombo>& armour_combos,
 
     for (const ArmourSetCombo& armour_combo : prev_combos) {
 
-        assert(armour_combo.ssb.skills.only_contains_skills_in_spec(skill_spec));(void)skill_spec;
+        assert(armour_combo.skills().only_contains_skills_in_spec(skill_spec));(void)skill_spec;
 
         for (const ArmourPieceCombo& piece_combo : piece_combos) {
         
             ArmourSetCombo new_armour_combo = armour_combo;
             new_armour_combo.armour.add(piece_combo.armour_piece);
             new_armour_combo.decos.merge_in(piece_combo.decos);
-            new_armour_combo.ssb.skills.merge_in(piece_combo.skills);
+            new_armour_combo.skills().merge_in(piece_combo.skills);
             if (piece_combo.set_bonus) {
-                new_armour_combo.ssb.set_bonuses.increment(piece_combo.set_bonus, 1);
+                new_armour_combo.set_bonuses().increment(piece_combo.set_bonus, 1);
             }
 
-            SkillsAndSetBonuses ssb_copy = new_armour_combo.ssb;
-            assert(ssb_copy.skills.only_contains_skills_in_spec(skill_spec));(void)skill_spec;
-            armour_combos.add(std::move(ssb_copy), std::move(new_armour_combo));
+            assert(new_armour_combo.skills().only_contains_skills_in_spec(skill_spec));(void)skill_spec;
+
+            std::tuple<SkillMap, SetBonusMap> ssb_copy = new_armour_combo.ssb;
+            armour_combos.add(std::move(new_armour_combo), std::move(ssb_copy));
         }
     }
 }
@@ -538,15 +549,15 @@ static void do_search(const Database& db, const SearchParameters& params) {
 
     // We build the initial build list.
     
-    SkillsSeenSet<ArmourSetCombo> armour_combos;
+    SSBSeenMap<ArmourSetCombo> armour_combos;
     for (const Charm* charm : charms) {
         ArmourSetCombo combo;
         combo.armour.add(charm);
-        combo.ssb.skills.add_skills_filtered(*charm, charm->max_charm_lvl, params.skill_spec);
-        assert(combo.ssb.skills.only_contains_skills_in_spec(params.skill_spec));
+        combo.skills().add_skills_filtered(*charm, charm->max_charm_lvl, params.skill_spec);
+        assert(combo.skills().only_contains_skills_in_spec(params.skill_spec));
 
-        SkillsAndSetBonuses ssb_copy = combo.ssb;
-        armour_combos.add(std::move(ssb_copy), std::move(combo));
+        std::tuple<SkillMap, SetBonusMap> ssb_copy = combo.ssb;
+        armour_combos.add(std::move(combo), std::move(ssb_copy));
     }
 
     // And now, we merge in our slot combinations!
@@ -603,7 +614,7 @@ static void do_search(const Database& db, const SearchParameters& params) {
         bool reprune_weapons = false;
         for (const WeaponInstanceExtended& wc : weapons) {
 
-            SkillMap tmp_skills = ac.ssb.skills;
+            SkillMap tmp_skills = ac.skills();
             if (wc.contributions.skill) tmp_skills.increment(wc.contributions.skill, 1);
 
             std::vector<std::vector<const Decoration*>> w_decos = generate_deco_combos(wc.contributions.deco_slots,
@@ -620,7 +631,7 @@ static void do_search(const Database& db, const SearchParameters& params) {
                 SkillMap skills = ac.armour.get_skills_without_set_bonuses();
                 skills.merge_in(curr_decos);
                 if (wc.contributions.skill) skills.increment(wc.contributions.skill, 1);
-                Utils::Counter<const SetBonus*> set_bonuses = ac.armour.get_set_bonuses();
+                SetBonusMap set_bonuses = ac.armour.get_set_bonuses();
                 if (wc.contributions.set_bonus) set_bonuses.increment(wc.contributions.set_bonus, 1);
                 skills.add_set_bonuses(set_bonuses);
 

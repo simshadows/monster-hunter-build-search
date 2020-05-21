@@ -31,7 +31,7 @@ void SkillMap::merge_in(const DecoEquips& decos) {
 }
 
 
-void SkillMap::add_set_bonuses(const Utils::Counter<const SetBonus*>& set_bonuses) {
+void SkillMap::add_set_bonuses(const SetBonusMap& set_bonuses) {
     for (const auto& e : set_bonuses) {
         const SetBonus * const set_bonus = e.first;
         const unsigned int present_pieces = e.second;

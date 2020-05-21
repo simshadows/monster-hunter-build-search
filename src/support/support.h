@@ -58,6 +58,14 @@ private:
 
 
 /****************************************************************************************
+ * SetBonusMap
+ ***************************************************************************************/
+
+
+using SetBonusMap = Utils::Counter<const SetBonus*>;
+
+
+/****************************************************************************************
  * SkillMap
  ***************************************************************************************/
 
@@ -79,7 +87,7 @@ public:
     using Utils::Counter<const Skill*, HardClipSkillLevel>::merge_in;
     void merge_in(const DecoEquips&); // Special case
 
-    void add_set_bonuses(const Utils::Counter<const SetBonus*>&);
+    void add_set_bonuses(const SetBonusMap&);
 
     // Only adds skills from the skill spec
     // Also adds an assertion to check that the skill map only contains skills from the skill spec
@@ -124,7 +132,7 @@ public:
     bool slot_is_filled(const ArmourSlot&) const;
     SkillMap get_skills_without_set_bonuses() const;
     SkillMap get_skills_without_set_bonuses_filtered(const SkillSpec&) const;
-    Utils::Counter<const SetBonus*> get_set_bonuses() const;
+    SetBonusMap get_set_bonuses() const;
     std::vector<unsigned int> get_deco_slots() const;
 
     std::string get_humanreadable() const;
