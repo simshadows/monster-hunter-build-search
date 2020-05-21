@@ -7,12 +7,9 @@
 #define UTILS_H
 
 #include <assert.h>
-#include <iostream>
 #include <cmath>
-#include <limits>
-#include <vector>
-#include <unordered_map>
 #include <unordered_set>
+#include <unordered_map>
 
 namespace Utils {
 
@@ -29,40 +26,6 @@ inline unsigned int ceil_div(const unsigned int n, const unsigned int d) {
 //inline bool equal_within_2decpl(const double a, const double b) {
 //    return std::round(a * 100) == std::round(b * 100);
 //}
-
-inline bool is_upper_snake_case(const std::string& s) noexcept {
-    for (const char e : s) {
-        if ((e >= 'A' && e <= 'Z') || (e >= '0' && e <= '9') || (e == '_')) continue;
-        return false;
-    }
-    return true;
-}
-
-inline bool has_ascii_letters(const std::string& s) noexcept {
-    for (const char e : s) {
-        if ((e >= 'A' && e <= 'Z') || (e >= 'a' && e <= 'z')) {
-            return true;
-        }
-    }
-    return false; // Reached the end of the string without seeing an ASCII letter.
-}
-
-// TODO: Implement a general solution if I happen to need more numerals.
-inline std::string to_capital_roman_numerals(unsigned int v) {
-    switch (v) {
-        case 0:
-            throw std::logic_error("Zero cannot be represented as a roman numeral.");
-        case 1: return "I";
-        case 2: return "II";
-        case 3: return "III";
-        case 4: return "IV";
-        case 5: return "V";
-        case 6: return "VI";
-        case 7: return "VII";
-        default:
-            throw std::logic_error("Roman numerals above VII (7) have not been implemented yet.");
-    }
-}
 
 // TODO: Eventually replace this with the C++20 std::unordered_map::contains method.
 template<class K,

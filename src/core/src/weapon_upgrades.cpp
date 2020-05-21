@@ -34,7 +34,7 @@ public:
     }
 
     std::string get_humanreadable() const {
-        return "Weapon upgrades:\n  (This weapon cannot be upgraded.)";
+        return "Weapon upgrades:\n    (This weapon cannot be upgraded.)";
     }
 
     void add_upgrade(WeaponUpgrade) {
@@ -141,15 +141,15 @@ public:
     std::string get_humanreadable() const {
         std::string ret = "Weapon upgrades:";
         if (this->upgrades.size() == 0) {
-            ret += "\n  (no upgrades)";
+            ret += "\n    (no upgrades)";
         } else {
             for (std::size_t i = 0; i < this->upgrades.size(); ++i) {
                 switch (this->upgrades[i]) {
                     case WeaponUpgrade::ib_cust_attack:
-                        ret += "\n  Attack ";
+                        ret += "\n    Attack ";
                         break;
                     case WeaponUpgrade::ib_cust_affinity:
-                        ret += "\n  Affinity ";
+                        ret += "\n    Affinity ";
                         break;
                     default:
                         throw std::logic_error("Attempted to use an unsupported upgrade.");
@@ -421,10 +421,10 @@ public:
     std::string get_humanreadable() const {
         std::string ret = "Weapon Awakenings:";
         if (this->awakenings.size() == 0) {
-            ret += "\n  (no awakenings)";
+            ret += "\n    (no awakenings)";
         } else {
             for (const WeaponUpgrade& e : this->awakenings) {
-                ret += "\n  " + ib_safi_supported_upgrades.at(e);
+                ret += "\n    " + ib_safi_supported_upgrades.at(e);
             }
         }
         return ret;

@@ -9,6 +9,7 @@
 #include "../../../dependencies/json-3-7-3/json.hpp"
 
 #include "../database.h"
+#include "../../utils/utils_strings.h"
 
 
 namespace MHWIBuildSearch {

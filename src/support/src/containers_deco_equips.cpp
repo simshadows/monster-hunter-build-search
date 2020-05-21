@@ -59,15 +59,18 @@ DecoEquips::IteratorType DecoEquips::end() const {
 }
 
 std::string DecoEquips::get_humanreadable() const {
-    std::string ret = "Decorations:";
     if (this->data.size()) {
+        std::string ret;
+        bool first = true;
         for (const Decoration * const deco : this->data) {
-            ret += "\n  " + deco->name;
+            if (!first) ret += "\n";
+            ret += deco->name;
+            first = false;
         }
+        return ret;
     } else {
-        ret += "\n  (no decorations)";
+        return "(no decorations)";
     }
-    return ret;
 }
 
 

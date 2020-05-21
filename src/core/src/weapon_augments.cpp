@@ -9,6 +9,7 @@
 
 #include "../core.h"
 #include "../../utils/utils.h"
+#include "../../utils/utils_strings.h"
 #include "../../utils/counter.h"
 
 namespace MHWIBuildSearch
@@ -54,7 +55,7 @@ public:
     }
     
     std::string get_humanreadable() const {
-        return "Weapon augments:\n  (This weapon cannot be augmented.)";
+        return "Weapon augments:\n    (This weapon cannot be augmented.)";
     }
 
     void set_augment(const WeaponAugment, const unsigned int) {
@@ -136,15 +137,15 @@ public:
     std::string get_humanreadable() const {
         std::string ret = "Weapon Augments:";
         if ((this->augment_lvl == 0) && (this->augments.size() == 0)) {
-            ret += "\n  (no augments)";
+            ret += "\n    (no augments)";
         } else {
             if (this->augment_lvl > 0) {
-                ret += "\n  Extra Slots " + Utils::to_capital_roman_numerals(this->augment_lvl);
+                ret += "\n    Extra Slots " + Utils::to_capital_roman_numerals(this->augment_lvl);
             }
             for (const auto& e : this->augments) {
                 const WeaponAugment augment = e.first;
                 const unsigned int lvl = e.second;
-                ret += "\n  " + get_augment_humanreadable(augment) + " "
+                ret += "\n    " + get_augment_humanreadable(augment) + " "
                        + Utils::to_capital_roman_numerals(lvl);
             }
         }

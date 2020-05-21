@@ -5,6 +5,7 @@
 
 #include "../core/core.h"
 #include "../support/support.h"
+#include "../utils/utils.h"
 #include "../utils/counter_subset_seen_map.h"
 
 namespace MHWIBuildSearch
@@ -73,40 +74,47 @@ private:
         }
         this->seen_set.emplace(k);
 
-        T new_k = k;
+        // "Work key"
+        // We will be reusing this object for each stage to save us
+        // from copying and constructing entire tuples of counters.
+        T w = k;
 
         for (const auto& e : std::get<0>(k)) {
+            auto& w_counter = std::get<0>(w);
+
             const Skill * const skill = e.first;
             const unsigned int lvl = e.second;
             assert(lvl); // Skill is level 1 or greater
 
             if (lvl == 1) {
-                std::get<0>(new_k).remove(skill);
+                w_counter.remove(skill);
             } else {
                 assert(lvl > 1);
-                std::get<0>(new_k).set(skill, lvl - 1);
+                w_counter.set(skill, lvl - 1);
             }
 
-            this->add_power_set(new_k);
+            this->add_power_set(w);
 
-            std::get<0>(new_k).set(skill, lvl); // Reset
+            w_counter.set(skill, lvl); // Reset the work key
         }
 
         for (const auto& e : std::get<1>(k)) {
+            auto& w_counter = std::get<1>(w);
+
             const SetBonus * const set_bonus = e.first;
             const unsigned int num_pieces = e.second;
-            assert(num_pieces);
+            assert(num_pieces); // At least one piece
 
             if (num_pieces == 1) {
-                std::get<1>(new_k).remove(set_bonus);
+                w_counter.remove(set_bonus);
             } else {
                 assert(num_pieces > 1);
-                std::get<1>(new_k).set(set_bonus, num_pieces - 1);
+                w_counter.set(set_bonus, num_pieces - 1);
             }
 
-            this->add_power_set(new_k);
+            this->add_power_set(w);
 
-            std::get<1>(new_k).set(set_bonus, num_pieces); // Reset
+            w_counter.set(set_bonus, num_pieces); // Reset the work key
         }
     }
 };

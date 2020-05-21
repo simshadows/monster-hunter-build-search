@@ -3,6 +3,7 @@
  * Author: <contact@simshadows.com>
  */
 
+//#include <cstdlib>
 #include <assert.h>
 #include <chrono>
 #include <algorithm>
@@ -16,6 +17,7 @@
 #include "support/support.h"
 #include "support/ssb_seen_map.h"
 #include "utils/utils.h"
+#include "utils/utils_strings.h"
 #include "utils/logging.h"
 #include "utils/pruning_vector.h"
 #include "utils/counter.h"
@@ -419,17 +421,22 @@ static void merge_in_armour_list(SSBSeenMap<ArmourSetCombo>& armour_combos,
             const std::tuple<SkillMap, SetBonusMap>& piece_combo_ssb = e2.first;
             const ArmourPieceCombo&                  piece_combo     = e2.second;
 
-            std::tuple<SkillMap, SetBonusMap> new_set_combo_ssb = set_combo_ssb;
-            std::get<0>(new_set_combo_ssb).merge_in(std::get<0>(piece_combo_ssb));
-            std::get<1>(new_set_combo_ssb).merge_in(std::get<1>(piece_combo_ssb));
-        
-            ArmourSetCombo new_set_combo = set_combo;
-            new_set_combo.armour.add(piece_combo.armour_piece);
-            new_set_combo.decos.merge_in(piece_combo.decos);
+            const auto op1 = [&](){
+                ArmourSetCombo x = set_combo;
+                x.armour.add(piece_combo.armour_piece);
+                x.decos.merge_in(piece_combo.decos);
+                return x;
+            };
 
-            assert(std::get<0>(new_set_combo_ssb).only_contains_skills_in_spec(skill_spec));(void)skill_spec;
+            const auto op2 = [&](){
+                std::tuple<SkillMap, SetBonusMap> x = set_combo_ssb;
+                std::get<0>(x).merge_in(std::get<0>(piece_combo_ssb));
+                std::get<1>(x).merge_in(std::get<1>(piece_combo_ssb));
+                assert(std::get<0>(x).only_contains_skills_in_spec(skill_spec));(void)skill_spec;
+                return x;
+            };
 
-            armour_combos.add(std::move(new_set_combo), std::move(new_set_combo_ssb));
+            armour_combos.add(op1(), op2());
         }
     }
 }
@@ -443,7 +450,7 @@ static void refilter_weapons(std::vector<WeaponInstanceExtended>& weapons,
     };
     weapons.erase(std::remove_if(weapons.begin(), weapons.end(), pred), weapons.end());
 
-    Utils::log_stat_reduction("Repruned weapons with EFR " + std::to_string(max_efr) + ": ",
+    Utils::log_stat_reduction("\n\nRepruned weapons with EFR " + std::to_string(max_efr) + ": ",
                               original_weapon_count,
                               weapons.size());
 }
@@ -628,11 +635,18 @@ static void do_search(const Database& db, const SearchParameters& params) {
 
                 if (efr > best_efr) {
                     best_efr = efr;
-                    std::clog << "Found EFR: " + std::to_string(best_efr) + "\n\n";
-                    std::clog << wc.instance.get_humanreadable() + "\n\n";
-                    std::clog << ac.armour.get_humanreadable() + "\n\n";
-                    std::clog << curr_decos.get_humanreadable() + "\n\n";
-                    std::clog << skills.get_humanreadable() + "\n\n";
+
+                    const std::string build_info = wc.instance.weapon->name + "\n\n"
+                                                   + wc.instance.upgrades->get_humanreadable() + "\n\n"
+                                                   + wc.instance.augments->get_humanreadable() + "\n\n"
+                                                   + "Armour:\n"
+                                                   + Utils::indent(ac.armour.get_humanreadable(), 4) + "\n\n"
+                                                   + "Decorations:\n"
+                                                   + Utils::indent(curr_decos.get_humanreadable(), 4) + "\n\n"
+                                                   + "Skills:\n"
+                                                   + Utils::indent(skills.get_humanreadable(), 4);
+                    std::clog << "\n\nFound EFR: " + std::to_string(best_efr) + "\n\n"
+                              << Utils::indent(build_info, 4) + "\n";
                     reprune_weapons = true;
                 }
 
@@ -647,7 +661,12 @@ static void do_search(const Database& db, const SearchParameters& params) {
         ++stat_progress2;
     }
 
-    Utils::log_stat_duration("  >>> weapon combo merge: ", start_t);
+    Utils::log_stat_duration("\n\n  >>> weapon combo merge: ", start_t);
+
+    //// A tempting cheat for skipping all the memory cleanup, saving us time.
+    //// We could technically use it since we don't open any resources...
+    //std::clog << std::flush;
+    //std::exit(0);
 }
 
 
