@@ -53,7 +53,7 @@ public:
         }
 
         this->add_power_set(k, std::make_index_sequence<T_size::value>{});
-        this->data[k] = d;
+        this->data.emplace(std::make_pair(k, d));
     }
     void add(D&& d, T&& k) noexcept {
         if (this->seen_set.count(k)) {
@@ -61,7 +61,7 @@ public:
         }
 
         this->add_power_set(k, std::make_index_sequence<T_size::value>{});
-        this->data[std::move(k)] = std::move(d);
+        this->data.emplace(std::make_pair(std::move(k), std::move(d)));
     }
     void add(D&& d, T& k) noexcept {
         if (this->seen_set.count(k)) {
@@ -69,7 +69,7 @@ public:
         }
 
         this->add_power_set(k, std::make_index_sequence<T_size::value>{});
-        this->data[k] = std::move(d);
+        this->data.emplace(std::make_pair(k, std::move(d)));
     }
 
     std::vector<std::pair<T, D>> get_data_as_vector() const noexcept {

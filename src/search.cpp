@@ -14,19 +14,15 @@
 #include "core/core.h"
 #include "database/database.h"
 #include "support/support.h"
+#include "support/ssb_seen_map.h"
 #include "utils/utils.h"
 #include "utils/logging.h"
 #include "utils/pruning_vector.h"
 #include "utils/counter.h"
-#include "utils/counter_subset_seen_map.h"
 
 
 namespace MHWIBuildSearch
 {
-
-
-template<class StoredData>
-using SSBSeenMap = Utils::CounterSubsetSeenMap<StoredData, SkillMap, SetBonusMap>;
 
 
 struct ArmourPieceCombo {
