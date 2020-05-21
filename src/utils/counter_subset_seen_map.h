@@ -36,12 +36,15 @@ class CounterSubsetSeenMap {
     std::unordered_set<T, H>    seen_set {};
     std::unordered_map<T, D, H> data     {};
 public:
-    void add(const D& d, const Cv&... kv) {
+    void add(const D& d, const Cv&... kv) noexcept {
         this->add(d, std::make_tuple(kv...));
+    }
+    void add(D&& d, Cv&&... kv) noexcept {
+        this->add(std::move(d), std::make_tuple(std::move(kv)...));
     }
 
     // This version is more efficient if you already bundle your counters together.
-    void add(const D& d, const T& k) {
+    void add(const D& d, const T& k) noexcept {
         if (this->seen_set.count(k)) {
             return;
         }
@@ -49,8 +52,16 @@ public:
         this->add_power_set(k, std::make_index_sequence<T_size::value>{});
         this->data[k] = d;
     }
+    void add(D&& d, T&& k) noexcept {
+        if (this->seen_set.count(k)) {
+            return;
+        }
 
-    std::vector<D> get_data_as_vector() const {
+        this->add_power_set(k, std::make_index_sequence<T_size::value>{});
+        this->data[std::move(k)] = std::move(d);
+    }
+
+    std::vector<D> get_data_as_vector() const noexcept {
         std::vector<D> ret;
         for (const auto& e : this->data) {
             ret.emplace_back(e.second);
@@ -65,7 +76,7 @@ public:
 private:
 
     template<std::size_t... Iv>
-    void add_power_set(const T& k, std::index_sequence<Iv...> iv) {
+    void add_power_set(const T& k, std::index_sequence<Iv...>) noexcept {
         if (this->seen_set.count(k)) {
             this->data.erase(k);
             return;
@@ -77,27 +88,28 @@ private:
         // from copying and constructing entire tuples of counters.
         T w = k;
 
-        (this->add_power_set_stage<Iv>(k, w, iv), ...); // Fold
+        (this->add_power_set_stage<Iv>(k, w, std::make_index_sequence<T_size::value>{}), ...); // Fold
     }
 
     template<std::size_t J, std::size_t... Iv>
-    void add_power_set_stage(const T& k, T& w, std::index_sequence<Iv...> iv) {
+    void add_power_set_stage(const T& k, T& w, std::index_sequence<Iv...>) noexcept {
         for (const auto& e : std::get<J>(k)) {
-            auto& curr_w_counter = std::get<J>(w);
+            auto& w_counter = std::get<J>(w);
 
             const auto& kk = e.first;
             const unsigned int vv = e.second;
             assert(vv); // Make sure that Counter cannot produce zeroes.
 
             if (vv == 1) {
-                curr_w_counter.remove(kk);
+                w_counter.remove(kk);
             } else {
-                curr_w_counter.set(kk, vv - 1);
+                w_counter.set(kk, vv - 1);
             }
 
-            this->add_power_set(w, iv);
+            this->add_power_set(w, std::make_index_sequence<T_size::value>{});
 
-            curr_w_counter.set(kk, vv); // Reset
+            // We reset the work key
+            w_counter.set(kk, vv);
         }
     }
 };
