@@ -42,6 +42,9 @@ public:
     void add(D&& d, Cv&&... kv) noexcept {
         this->add(std::move(d), std::make_tuple(std::move(kv)...));
     }
+    void add(D&& d, Cv&... kv) noexcept {
+        this->add(std::move(d), std::make_tuple(kv...));
+    }
 
     // This version is more efficient if you already bundle your counters together.
     void add(const D& d, const T& k) noexcept {
@@ -60,16 +63,32 @@ public:
         this->add_power_set(k, std::make_index_sequence<T_size::value>{});
         this->data[std::move(k)] = std::move(d);
     }
+    void add(D&& d, T& k) noexcept {
+        if (this->seen_set.count(k)) {
+            return;
+        }
 
-    std::vector<D> get_data_as_vector() const noexcept {
-        std::vector<D> ret;
-        for (const auto& e : this->data) {
-            ret.emplace_back(e.second);
+        this->add_power_set(k, std::make_index_sequence<T_size::value>{});
+        this->data[k] = std::move(d);
+    }
+
+    std::vector<std::pair<T, D>> get_data_as_vector() const noexcept {
+        std::vector<std::pair<T, D>> ret;
+        for (const std::pair<T, D>& e : this->data) {
+            ret.emplace_back(e);
         }
         return ret;
     }
 
-    std::size_t size() const noexcept {
+    auto begin() const noexcept {
+        return this->data.begin();
+    }
+
+    auto end() const noexcept {
+        return this->data.end();
+    }
+
+    auto size() const noexcept {
         return this->data.size();
     }
 

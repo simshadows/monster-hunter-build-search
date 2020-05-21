@@ -32,21 +32,12 @@ using SSBSeenMap = Utils::CounterSubsetSeenMap<StoredData, SkillMap, SetBonusMap
 struct ArmourPieceCombo {
     const ArmourPiece* armour_piece;
     DecoEquips decos;
-
-    SkillMap skills;
-    const SetBonus* set_bonus;
 };
 
 
 struct ArmourSetCombo {
     ArmourEquips armour;
     DecoEquips decos;
-
-    std::tuple<SkillMap, SetBonusMap> ssb;
-    SkillMap&          skills()            noexcept {return std::get<0>(this->ssb);};
-    const SkillMap&    skills()      const noexcept {return std::get<0>(this->ssb);};
-    SetBonusMap&       set_bonuses()       noexcept {return std::get<1>(this->ssb);};
-    const SetBonusMap& set_bonuses() const noexcept {return std::get<1>(this->ssb);};
 };
 
 
@@ -373,18 +364,18 @@ static std::vector<std::vector<const Decoration*>> generate_deco_combos(const st
 }
 
 
-static std::vector<ArmourPieceCombo> generate_slot_combos(const std::vector<const ArmourPiece*>& pieces,
+static SSBSeenMap<ArmourPieceCombo> generate_slot_combos(const std::vector<const ArmourPiece*>& pieces,
                                                           const std::array<std::vector<const Decoration*>,
                                                                            k_MAX_DECO_SIZE>& sorted_decos,
                                                           const SkillSpec& skill_spec,
                                                           const std::unordered_set<const SetBonus*>& set_bonus_subset,
                                                           const std::string& debug_msg) {
-    // We will assume it's sorted.
+    // We will assume decorations are sorted.
     // TODO: Add a runtime assert.
 
-    unsigned long long stat_pre = 0;
-
     SSBSeenMap<ArmourPieceCombo> seen_set;
+
+    unsigned long long stat_pre = 0;
 
     for (const ArmourPiece* piece : pieces) {
 
@@ -399,55 +390,50 @@ static std::vector<ArmourPieceCombo> generate_slot_combos(const std::vector<cons
         stat_pre += deco_combos.size(); // TODO: How do I know this won't overflow?
 
         for (std::vector<const Decoration*>& decos : deco_combos) {
-            SkillMap skills = armour_skills;
-            skills.add_skills_filtered(decos, skill_spec);
 
-            std::tuple<SkillMap, SetBonusMap> ssb = {skills, {}};
+            std::tuple<SkillMap, SetBonusMap> ssb = {armour_skills, {}};
 
-            const SetBonus* set_bonus;
+            std::get<0>(ssb).add_skills_filtered(decos, skill_spec);
             if (Utils::set_has_key(set_bonus_subset, piece->set_bonus)) {
-                set_bonus = piece->set_bonus;
-                std::get<1>(ssb).set(set_bonus, 1);
-            } else {
-                set_bonus = nullptr;
+                std::get<1>(ssb).set(piece->set_bonus, 1);
             }
 
-            seen_set.add({piece, std::move(decos), std::move(skills), set_bonus}, std::move(ssb));
+            seen_set.add({piece, std::move(decos)}, std::move(ssb));
         }
     }
 
-    std::vector<ArmourPieceCombo> ret = seen_set.get_data_as_vector();
+    Utils::log_stat_reduction(debug_msg, stat_pre, seen_set.size());
 
-    Utils::log_stat_reduction(debug_msg, stat_pre, ret.size());
-
-    return ret;
+    return seen_set;
 }
 
 
 static void merge_in_armour_list(SSBSeenMap<ArmourSetCombo>& armour_combos,
-                                 const std::vector<ArmourPieceCombo>& piece_combos,
+                                 const SSBSeenMap<ArmourPieceCombo>& piece_combos,
                                  const SkillSpec& skill_spec) {
+    auto prev_armour_combos = armour_combos.get_data_as_vector();
 
-    const std::vector<ArmourSetCombo> prev_combos = armour_combos.get_data_as_vector();
+    for (const auto& e1 : prev_armour_combos) {
+        const std::tuple<SkillMap, SetBonusMap>& set_combo_ssb = e1.first;
+        const ArmourSetCombo&                    set_combo     = e1.second;
 
-    for (const ArmourSetCombo& armour_combo : prev_combos) {
+        assert(std::get<0>(set_combo_ssb).only_contains_skills_in_spec(skill_spec));(void)skill_spec;
 
-        assert(armour_combo.skills().only_contains_skills_in_spec(skill_spec));(void)skill_spec;
+        for (const auto& e2 : piece_combos) {
+            const std::tuple<SkillMap, SetBonusMap>& piece_combo_ssb = e2.first;
+            const ArmourPieceCombo&                  piece_combo     = e2.second;
 
-        for (const ArmourPieceCombo& piece_combo : piece_combos) {
+            std::tuple<SkillMap, SetBonusMap> new_set_combo_ssb = set_combo_ssb;
+            std::get<0>(new_set_combo_ssb).merge_in(std::get<0>(piece_combo_ssb));
+            std::get<1>(new_set_combo_ssb).merge_in(std::get<1>(piece_combo_ssb));
         
-            ArmourSetCombo new_armour_combo = armour_combo;
-            new_armour_combo.armour.add(piece_combo.armour_piece);
-            new_armour_combo.decos.merge_in(piece_combo.decos);
-            new_armour_combo.skills().merge_in(piece_combo.skills);
-            if (piece_combo.set_bonus) {
-                new_armour_combo.set_bonuses().increment(piece_combo.set_bonus, 1);
-            }
+            ArmourSetCombo new_set_combo = set_combo;
+            new_set_combo.armour.add(piece_combo.armour_piece);
+            new_set_combo.decos.merge_in(piece_combo.decos);
 
-            assert(new_armour_combo.skills().only_contains_skills_in_spec(skill_spec));(void)skill_spec;
+            assert(std::get<0>(new_set_combo_ssb).only_contains_skills_in_spec(skill_spec));(void)skill_spec;
 
-            std::tuple<SkillMap, SetBonusMap> ssb_copy = new_armour_combo.ssb;
-            armour_combos.add(std::move(new_armour_combo), std::move(ssb_copy));
+            armour_combos.add(std::move(new_set_combo), std::move(new_set_combo_ssb));
         }
     }
 }
@@ -519,31 +505,31 @@ static void do_search(const Database& db, const SearchParameters& params) {
     assert(armour.at(ArmourSlot::waist).size());
     assert(armour.at(ArmourSlot::legs).size());
 
-    std::vector<ArmourPieceCombo> head_combos = generate_slot_combos(armour.at(ArmourSlot::head),
+    SSBSeenMap<ArmourPieceCombo> head_combos = generate_slot_combos(armour.at(ArmourSlot::head),
+                                                                    grouped_sorted_decos,
+                                                                    params.skill_spec,
+                                                                    set_bonus_subset,
+                                                                    "Generated head+deco  combinations: ");
+    SSBSeenMap<ArmourPieceCombo> chest_combos = generate_slot_combos(armour.at(ArmourSlot::chest),
                                                                      grouped_sorted_decos,
                                                                      params.skill_spec,
                                                                      set_bonus_subset,
-                                                                     "Generated head+deco  combinations: ");
-    std::vector<ArmourPieceCombo> chest_combos = generate_slot_combos(armour.at(ArmourSlot::chest),
-                                                                      grouped_sorted_decos,
-                                                                      params.skill_spec,
-                                                                      set_bonus_subset,
-                                                                      "Generated chest+deco combinations: ");
-    std::vector<ArmourPieceCombo> arms_combos = generate_slot_combos(armour.at(ArmourSlot::arms),
+                                                                     "Generated chest+deco combinations: ");
+    SSBSeenMap<ArmourPieceCombo> arms_combos = generate_slot_combos(armour.at(ArmourSlot::arms),
+                                                                    grouped_sorted_decos,
+                                                                    params.skill_spec,
+                                                                    set_bonus_subset,
+                                                                    "Generated arms+deco  combinations: ");
+    SSBSeenMap<ArmourPieceCombo> waist_combos = generate_slot_combos(armour.at(ArmourSlot::waist),
                                                                      grouped_sorted_decos,
                                                                      params.skill_spec,
                                                                      set_bonus_subset,
-                                                                     "Generated arms+deco  combinations: ");
-    std::vector<ArmourPieceCombo> waist_combos = generate_slot_combos(armour.at(ArmourSlot::waist),
-                                                                      grouped_sorted_decos,
-                                                                      params.skill_spec,
-                                                                      set_bonus_subset,
                                                                      "Generated waist+deco combinations: ");
-    std::vector<ArmourPieceCombo> legs_combos = generate_slot_combos(armour.at(ArmourSlot::legs),
-                                                                     grouped_sorted_decos,
-                                                                     params.skill_spec,
-                                                                     set_bonus_subset,
-                                                                     "Generated legs+deco  combinations: ");
+    SSBSeenMap<ArmourPieceCombo> legs_combos = generate_slot_combos(armour.at(ArmourSlot::legs),
+                                                                    grouped_sorted_decos,
+                                                                    params.skill_spec,
+                                                                    set_bonus_subset,
+                                                                    "Generated legs+deco  combinations: ");
     Utils::log_stat_duration("  >>> decos, charms, and armour slot combos: ", start_t);
     Utils::log_stat();
 
@@ -552,12 +538,13 @@ static void do_search(const Database& db, const SearchParameters& params) {
     SSBSeenMap<ArmourSetCombo> armour_combos;
     for (const Charm* charm : charms) {
         ArmourSetCombo combo;
-        combo.armour.add(charm);
-        combo.skills().add_skills_filtered(*charm, charm->max_charm_lvl, params.skill_spec);
-        assert(combo.skills().only_contains_skills_in_spec(params.skill_spec));
+        std::tuple<SkillMap, SetBonusMap> ssb;
 
-        std::tuple<SkillMap, SetBonusMap> ssb_copy = combo.ssb;
-        armour_combos.add(std::move(combo), std::move(ssb_copy));
+        combo.armour.add(charm);
+        std::get<0>(ssb).add_skills_filtered(*charm, charm->max_charm_lvl, params.skill_spec);
+        assert(std::get<0>(ssb).only_contains_skills_in_spec(params.skill_spec));
+
+        armour_combos.add(std::move(combo), std::move(ssb));
     }
 
     // And now, we merge in our slot combinations!
@@ -602,20 +589,22 @@ static void do_search(const Database& db, const SearchParameters& params) {
     Utils::log_stat_reduction("Merged in legs+deco  combinations: ", stat_pre, armour_combos.size());
     Utils::log_stat_duration("  >>> legs combo merge: ", start_t);
 
-    const std::vector<ArmourSetCombo> final_armour_combos = armour_combos.get_data_as_vector();
-
     double best_efr = 0;
 
-    const std::size_t stat_pre2 = final_armour_combos.size();
+    const std::size_t stat_pre2 = armour_combos.size();
     std::size_t stat_progress2 = 0;
     start_t = std::chrono::steady_clock::now();
 
-    for (const ArmourSetCombo& ac : final_armour_combos) {
+    for (const auto& e : armour_combos) {
+        const std::tuple<SkillMap, SetBonusMap>& ac_ssb = e.first;
+        const ArmourSetCombo&                    ac     = e.second;
+
         bool reprune_weapons = false;
         for (const WeaponInstanceExtended& wc : weapons) {
 
-            SkillMap tmp_skills = ac.skills();
+            SkillMap tmp_skills = std::get<0>(ac_ssb);
             if (wc.contributions.skill) tmp_skills.increment(wc.contributions.skill, 1);
+            // TODO: are set bonuses merged in?
 
             std::vector<std::vector<const Decoration*>> w_decos = generate_deco_combos(wc.contributions.deco_slots,
                                                                                        grouped_sorted_decos,
