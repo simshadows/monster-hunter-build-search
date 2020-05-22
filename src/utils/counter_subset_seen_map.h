@@ -42,7 +42,7 @@ public:
     void add(D&& d, Cv&&... kv) noexcept {
         this->add(std::move(d), std::make_tuple(std::move(kv)...));
     }
-    void add(D&& d, Cv&... kv) noexcept {
+    void add(D&& d, const Cv&... kv) noexcept {
         this->add(std::move(d), std::make_tuple(kv...));
     }
 
@@ -63,7 +63,7 @@ public:
         this->add_power_set(k, std::make_index_sequence<T_size::value>{});
         this->data.emplace(std::make_pair(std::move(k), std::move(d)));
     }
-    void add(D&& d, T& k) noexcept {
+    void add(D&& d, const T& k) noexcept {
         if (Utils::map_has_key(seen_set, k)) {
             return;
         }

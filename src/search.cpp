@@ -27,6 +27,9 @@ namespace MHWIBuildSearch
 {
 
 
+using SSBTuple = std::tuple<SkillMap, SetBonusMap>;
+
+
 template<class StoredData>
 using SSBSeenMap = Utils::CounterSubsetSeenMap<StoredData, SkillMap, SetBonusMap>;
 
@@ -393,7 +396,7 @@ static SSBSeenMap<ArmourPieceCombo> generate_slot_combos(const std::vector<const
 
         for (std::vector<const Decoration*>& decos : deco_combos) {
 
-            std::tuple<SkillMap, SetBonusMap> ssb = {armour_skills, {}};
+            SSBTuple ssb = {armour_skills, {}};
 
             std::get<0>(ssb).add_skills_filtered(decos, skill_spec);
             if (Utils::set_has_key(set_bonus_subset, piece->set_bonus)) {
@@ -416,14 +419,14 @@ static void merge_in_armour_list(SSBSeenMap<ArmourSetCombo>& armour_combos,
     auto prev_armour_combos = armour_combos.get_data_as_vector();
 
     for (const auto& e1 : prev_armour_combos) {
-        const std::tuple<SkillMap, SetBonusMap>& set_combo_ssb = e1.first;
-        const ArmourSetCombo&                    set_combo     = e1.second;
+        const SSBTuple&       set_combo_ssb = e1.first;
+        const ArmourSetCombo& set_combo     = e1.second;
 
         assert(std::get<0>(set_combo_ssb).only_contains_skills_in_spec(skill_spec));(void)skill_spec;
 
         for (const auto& e2 : piece_combos) {
-            const std::tuple<SkillMap, SetBonusMap>& piece_combo_ssb = e2.first;
-            const ArmourPieceCombo&                  piece_combo     = e2.second;
+            const SSBTuple&         piece_combo_ssb = e2.first;
+            const ArmourPieceCombo& piece_combo     = e2.second;
 
             const auto op1 = [&](){
                 ArmourSetCombo x = set_combo;
@@ -433,7 +436,7 @@ static void merge_in_armour_list(SSBSeenMap<ArmourSetCombo>& armour_combos,
             };
 
             const auto op2 = [&](){
-                std::tuple<SkillMap, SetBonusMap> x = set_combo_ssb;
+                SSBTuple x = set_combo_ssb;
                 std::get<0>(x).merge_in(std::get<0>(piece_combo_ssb));
                 std::get<1>(x).merge_in(std::get<1>(piece_combo_ssb));
                 assert(std::get<0>(x).only_contains_skills_in_spec(skill_spec));(void)skill_spec;
@@ -461,6 +464,8 @@ static void refilter_weapons(std::vector<WeaponInstanceExtended>& weapons,
 
 
 static void do_search(const Database& db, const SearchParameters& params) {
+
+    auto total_start_t = std::chrono::steady_clock::now();
 
     std::clog << params.skill_spec.get_humanreadable() << std::endl << std::endl;
 
@@ -545,7 +550,7 @@ static void do_search(const Database& db, const SearchParameters& params) {
     SSBSeenMap<ArmourSetCombo> armour_combos;
     for (const Charm* charm : charms) {
         ArmourSetCombo combo;
-        std::tuple<SkillMap, SetBonusMap> ssb;
+        SSBTuple ssb;
 
         combo.armour.add(charm);
         std::get<0>(ssb).add_skills_filtered(*charm, charm->max_charm_lvl, params.skill_spec);
@@ -603,20 +608,23 @@ static void do_search(const Database& db, const SearchParameters& params) {
     start_t = std::chrono::steady_clock::now();
 
     for (const auto& e : armour_combos) {
-        const std::tuple<SkillMap, SetBonusMap>& ac_ssb = e.first;
-        const ArmourSetCombo&                    ac     = e.second;
+        const SSBTuple&       ac_ssb = e.first;
+        const ArmourSetCombo& ac     = e.second;
 
         bool reprune_weapons = false;
         for (const WeaponInstanceExtended& wc : weapons) {
 
-            SkillMap tmp_skills = std::get<0>(ac_ssb);
-            if (wc.contributions.skill) tmp_skills.increment(wc.contributions.skill, 1);
-            // TODO: are set bonuses merged in?
+            const SkillMap wac_skills = [&](){
+                SkillMap x = std::get<0>(ac_ssb); // "Weapon-armour-combo"
+                if (wc.contributions.skill) x.increment(wc.contributions.skill, 1);
+                // TODO: Should we merge in set bonuses here?
+                return x;
+            }();
 
             std::vector<std::vector<const Decoration*>> w_decos = generate_deco_combos(wc.contributions.deco_slots,
                                                                                        grouped_sorted_decos,
                                                                                        params.skill_spec,
-                                                                                       tmp_skills);
+                                                                                       wac_skills);
             for (std::vector<const Decoration*>& dc : w_decos) {
 
                 DecoEquips curr_decos (std::move(dc));
@@ -666,6 +674,11 @@ static void do_search(const Database& db, const SearchParameters& params) {
     }
 
     Utils::log_stat_duration("\n\n  >>> weapon combo merge: ", start_t);
+    Utils::log_stat();
+
+    std::clog << std::endl;
+    Utils::log_stat_duration("Search execution time (before teardown): ", total_start_t);
+    Utils::log_stat();
 
     //// A tempting cheat for skipping all the memory cleanup, saving us time.
     //// We could technically use it since we don't open any resources...

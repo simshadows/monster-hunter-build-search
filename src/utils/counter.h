@@ -29,7 +29,6 @@ struct CounterNoValueClip {
 template<class T,
          class ValueClipFn = CounterNoValueClip<T> >
 class Counter {
-protected:
     using N = unsigned int;
     using C = std::unordered_map<T, N>;
 
@@ -113,6 +112,14 @@ public:
         }
     }
 
+    N sum() const noexcept {
+        N ret = 0;
+        for (const auto& e : this->data) {
+            ret += e.second;
+        }
+        return ret;
+    }
+
     std::vector<std::pair<T, N>> as_vector() const noexcept {
         std::vector<std::pair<T, N>> ret;
         for (const auto& e : this->data) {
@@ -124,6 +131,10 @@ public:
     /*
      * Direct adapted interface
      */
+
+    auto find(const T& k) const noexcept {
+        return this->data.find(k);
+    }
 
     bool contains(const T& k) const noexcept {
         // TODO: This should eventually become a call to the actual std::unordered_map::contains()
@@ -174,7 +185,7 @@ class CounterPKSV : public Counter<T, ValueClipFn> {
 public:
     std::size_t calculate_hash() const noexcept {
         std::size_t ret = 0;
-        for (const auto& e : this->data) {
+        for (const auto& e : *this) {
             const auto v = std::hash<T>()(e.first) << std::hash<N>()(e.second);
             assert(std::hash<T>()(e.first) >> 6); // We require a relatively large key.
             assert(v << 4); // We require a relatively comfortable buffer before we reach a zeroed register.

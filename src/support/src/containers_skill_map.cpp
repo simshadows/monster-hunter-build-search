@@ -17,7 +17,7 @@ namespace MHWIBuildSearch
 SkillMap::SkillMap(const ArmourPiece& armour_piece) noexcept
 {
     for (const auto& e : armour_piece.skills) {
-        this->data.insert(e);
+        this->set(e.first, e.second);
     }
 }
 
@@ -82,8 +82,8 @@ unsigned int SkillMap::get_non_secret(const Skill * const skill,
     // We expect secret skills to only have one level.
     assert(associated_secret->secret_limit == 1);
 
-    const auto skill_entry = this->data.find(skill);
-    if (skill_entry == this->data.end()) {
+    const auto skill_entry = this->find(skill);
+    if (skill_entry == this->end()) {
         return 0;
     } else {
         const unsigned int level = skill_entry->second;
@@ -100,8 +100,8 @@ unsigned int SkillMap::get_non_secret(const Skill * const skill,
 bool SkillMap::binary_skill_is_lvl1(const Skill* skill) const {
     assert(skill->normal_limit == 1); // Must be a binary skill
     assert(skill->secret_limit == 1); // Must not have a secret skill (for now)
-    const bool ret = Utils::map_has_key(this->data, skill);
-    assert((!ret) || (this->data.at(skill) == 1)); // If skill is present, its level is 1.
+    const bool ret = this->contains(skill);
+    assert((!ret) || (this->get(skill) == 1)); // If skill is present, its level is 1.
     return ret;
 }
 
@@ -109,7 +109,7 @@ bool SkillMap::binary_skill_is_lvl1(const Skill* skill) const {
 std::string SkillMap::get_humanreadable() const {
     std::string ret;
     bool is_first = true;
-    for (const auto& e : this->data) {
+    for (const auto& e : *this) {
         if (!is_first) ret += "\n";
         ret += e.first->name + " = " + std::to_string(e.second);
         is_first = false;
@@ -119,7 +119,7 @@ std::string SkillMap::get_humanreadable() const {
 
 
 bool SkillMap::only_contains_skills_in_spec(const SkillSpec& skill_spec) const noexcept {
-    for (const auto& e : this->data) {
+    for (const auto& e : *this) {
         assert(e.second);
         if (!skill_spec.is_in_subset(e.first)) return false;
     }
