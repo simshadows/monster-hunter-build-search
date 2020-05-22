@@ -31,16 +31,16 @@ inline unsigned int ceil_div(const unsigned int n, const unsigned int d) {
 template<class K,
          class M = std::unordered_map<K, class V>>
 inline bool map_has_key(const M& m, const K& k) {
-    auto search = m.find(k);
-    return search != m.end();
+    const auto result = m.find(k);
+    return result != m.end();
 }
 
 // TODO: Eventually replace this with the C++20 std::unordered_set::contains method.
 template<class K,
          class S = std::unordered_set<K>>
 inline bool set_has_key(const S& s, const K& k) {
-    auto search = s.find(k);
-    return search != s.end();
+    const auto result = s.find(k);
+    return result != s.end();
 }
 
 

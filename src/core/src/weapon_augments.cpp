@@ -97,7 +97,7 @@ public:
                 for (const auto& x : map) {
                     new_augs.set_augment(x.first, x.second);
                 }
-            } catch (InvalidChange& e) {
+            } catch (const InvalidChange&) {
                 valid_new_augs = false;
             }
             if (valid_new_augs) ret.push_back(std::make_shared<IBWeaponAugments>(std::move(new_augs)));

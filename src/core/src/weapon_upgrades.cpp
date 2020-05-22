@@ -102,7 +102,7 @@ public:
                     bool valid_new_inst = true;
                     try {
                         new_inst.add_upgrade(u);
-                    } catch (InvalidChange& e) {
+                    } catch (const InvalidChange&) {
                         valid_new_inst = false;
                     }
                     if (valid_new_inst) new_ret.push_back(std::make_shared<IBCustomWeaponUpgrades>(std::move(new_inst)));
@@ -346,7 +346,7 @@ public:
                     bool valid_new_inst = true;
                     try {
                         new_inst.add_upgrade(u);
-                    } catch (InvalidChange& e) {
+                    } catch (const InvalidChange&) {
                         valid_new_inst = false;
                     }
                     if (valid_new_inst) new_ret.push_back(std::make_shared<IBSafiAwakenings>(std::move(new_inst)));

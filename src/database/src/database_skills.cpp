@@ -143,7 +143,7 @@ const Skill* SkillsDatabase::skill_at(const std::string& skill_id) const {
     assert(Utils::is_upper_snake_case(skill_id));
     try {
         return this->skills_map.at(skill_id).get();
-    } catch (std::out_of_range) {
+    } catch (const std::out_of_range&) {
         throw std::out_of_range("Skill ID '" + skill_id + "' not found in the database.");
     }
 }
@@ -153,7 +153,7 @@ const SetBonus* SkillsDatabase::set_bonus_at(const std::string& set_bonus_id) co
     assert(Utils::is_upper_snake_case(set_bonus_id));
     try {
         return this->set_bonuses_map.at(set_bonus_id).get();
-    } catch (std::out_of_range) {
+    } catch (const std::out_of_range&) {
         throw std::out_of_range("Set bonus ID '" + set_bonus_id + "' not found in the database.");
     }
 }

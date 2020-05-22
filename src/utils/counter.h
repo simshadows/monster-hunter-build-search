@@ -78,10 +78,11 @@ public:
     // Do not use this with v_to_add=0.
     void increment(const T& k, const N& v_to_add) noexcept {
         assert(v_to_add != 0);
-        if (Utils::map_has_key(this->data, k)) {
-            this->data[k] = ValueClipFn()(k, this->data.at(k) + v_to_add);
+        const auto result = this->data.find(k);
+        if (result == this->data.end()) {
+            this->data.emplace(k, ValueClipFn()(k, v_to_add));
         } else {
-            this->data[k] = ValueClipFn()(k, v_to_add);
+            result->second = ValueClipFn()(k, result->second + v_to_add);
         }
     }
 
@@ -89,12 +90,12 @@ public:
     // Do not use this with keys that aren't in the counter.
     void decrement(const T& k, const N& v_to_subtract) noexcept {
         assert(v_to_subtract != 0);
-        assert(Utils::map_has_key(this->data, k));
-        const unsigned int curr_v = this->data.at(k);
-        if (v_to_subtract < curr_v) {
-            this->data.at(k) = curr_v - v_to_subtract;
+        const auto result = this->data.find(k);
+        assert(result != this->data.end()); // We must have this key in the map.
+        if (v_to_subtract < result->second) {
+            result->second -= v_to_subtract;
         } else {
-            this->data.erase(k);
+            this->data.erase(result);
         }
     }
 
@@ -103,12 +104,12 @@ public:
      */
 
     N get(const T& k) const noexcept {
-        // TODO: Is this the best way to do this?
-        if (Utils::map_has_key(this->data, k)) {
-            assert(this->data.at(k));
-            return this->data.at(k);
-        } else {
+        const auto result = this->data.find(k);
+        if (result == this->data.end()) {
             return 0;
+        } else {
+            assert(result->second);
+            return result->second;
         }
     }
 
@@ -123,6 +124,14 @@ public:
     /*
      * Direct adapted interface
      */
+
+    bool contains(const T& k) const noexcept {
+        // TODO: This should eventually become a call to the actual std::unordered_map::contains()
+        // method in the future when I fully migrate this codebase to C++20.
+        const auto result = this->data.find(k);
+        assert((result == this->data.end()) || (result->second > 0));
+        return result != this->data.end();
+    }
 
     auto begin() const noexcept {
         return this->data.begin();

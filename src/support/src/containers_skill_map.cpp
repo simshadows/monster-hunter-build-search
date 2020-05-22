@@ -82,24 +82,18 @@ unsigned int SkillMap::get_non_secret(const Skill * const skill,
     // We expect secret skills to only have one level.
     assert(associated_secret->secret_limit == 1);
 
-    if (Utils::map_has_key(this->data, skill)) {
-        const unsigned int level = this->data.at(skill);
+    const auto skill_entry = this->data.find(skill);
+    if (skill_entry == this->data.end()) {
+        return 0;
+    } else {
+        const unsigned int level = skill_entry->second;
         const unsigned int normal_limit = skill->normal_limit;
-        if (Utils::map_has_key(this->data, associated_secret) || (level <= normal_limit)) {
-            return this->data.at(skill);
+        if (this->contains(associated_secret) || (level <= normal_limit)) {
+            return level;
         } else {
             return normal_limit;
         }
-    } else {
-        return 0;
     }
-}
-
-
-bool SkillMap::is_at_least_lvl1(const Skill* skill) const {
-    const bool ret = (Utils::map_has_key(this->data, skill));
-    assert(ret == (this->get(skill) > 0)); // TODO: Use "!=" for xor? Or "==" for xnor?
-    return ret;
 }
 
 
