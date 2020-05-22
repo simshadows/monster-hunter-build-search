@@ -62,7 +62,7 @@ private:
  ***************************************************************************************/
 
 
-using SetBonusMap = Utils::Counter<const SetBonus*>;
+using SetBonusMap = Utils::CounterPKSV<const SetBonus*>;
 
 
 /****************************************************************************************
@@ -78,13 +78,13 @@ struct HardClipSkillLevel {
 
 
 // Note that this container automatically clips levels to secret_limit.
-class SkillMap : public Utils::Counter<const Skill*, HardClipSkillLevel> {
+class SkillMap : public Utils::CounterPKSV<const Skill*, HardClipSkillLevel> {
 public:
-    using Utils::Counter<const Skill*, HardClipSkillLevel>::Counter;
+    using Utils::CounterPKSV<const Skill*, HardClipSkillLevel>::CounterPKSV;
 
     SkillMap(const ArmourPiece&) noexcept;
 
-    using Utils::Counter<const Skill*, HardClipSkillLevel>::merge_in;
+    using Utils::CounterPKSV<const Skill*, HardClipSkillLevel>::merge_in;
     void merge_in(const DecoEquips&); // Special case
 
     void add_set_bonuses(const SetBonusMap&);

@@ -157,14 +157,31 @@ public:
         std::size_t ret = 0;
         for (const auto& e : this->data) {
             ret += std::hash<T>()(e.first) * std::hash<N>()(e.second);
-            // TODO: Maybe try playing around a bit more with this hash function.
-            //       Maybe make it handle pointers in a special way or something, idk.
-            //ret += ((std::size_t)e.first) * e.second;
-            //ret += ((std::size_t)e.first) * std::hash<N>()(e.second);
         }
         return ret;
     }
 
+};
+
+
+// Counter specialized for pointer keys and small values (roughly 16 or less, this it remains untested).
+// BEWARE: Using this template outside of its intended use cases can
+//         lead to bad performance, or maybe even security issues!
+template<class T,
+         class ValueClipFn = CounterNoValueClip<T> >
+class CounterPKSV : public Counter<T, ValueClipFn> {
+    using N = unsigned int;
+public:
+    std::size_t calculate_hash() const noexcept {
+        std::size_t ret = 0;
+        for (const auto& e : this->data) {
+            const auto v = std::hash<T>()(e.first) << std::hash<N>()(e.second);
+            assert(std::hash<T>()(e.first) >> 6); // We require a relatively large key.
+            assert(v << 4); // We require a relatively comfortable buffer before we reach a zeroed register.
+            ret += v;
+        }
+        return ret;
+    }
 };
 
 
