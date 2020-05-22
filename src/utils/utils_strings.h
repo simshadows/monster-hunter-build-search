@@ -19,6 +19,20 @@ inline std::string indent(const std::string& s, const std::size_t num_spaces) no
 }
 
 
+// TODO: Should I be passing in by copy, or passing in by const reference?
+template<class ForwardIt>
+inline std::string str_join(const ForwardIt& first, const ForwardIt& last, const std::string& sep) noexcept {
+    std::string ret;
+    bool is_first = true;
+    for (ForwardIt p = first; p < last; ++p) {
+        if (!is_first) ret += sep;
+        ret += *p;
+        is_first = false;
+    }
+    return ret;
+}
+
+
 inline bool is_upper_snake_case(const std::string& s) noexcept {
     for (const char e : s) {
         if ((e >= 'A' && e <= 'Z') || (e >= '0' && e <= '9') || (e == '_')) continue;

@@ -93,6 +93,7 @@ public:
     // Also adds an assertion to check that the skill map only contains skills from the skill spec
     void add_skills_filtered(const ArmourPiece&, const SkillSpec&);
     void add_skills_filtered(const Charm&, const unsigned int charm_lvl, const SkillSpec&);
+    void add_skills_filtered(const Decoration&, const SkillSpec&);
     void add_skills_filtered(const std::vector<const Decoration*>&, const SkillSpec&);
 
     // Gets a skill's level. Skills that aren't in the container return zero.
@@ -152,19 +153,19 @@ private:
 
 
 struct WeaponContribution {
-    unsigned int              weapon_raw;
-    int                       weapon_aff;
+    unsigned int              weapon_raw {0};
+    int                       weapon_aff {0};
 
-    bool                      is_raw;
+    bool                      is_raw {false};
 
-    std::vector<unsigned int> deco_slots;
-    const Skill*              skill;
-    const SetBonus*           set_bonus;
+    std::vector<unsigned int> deco_slots {};
+    const Skill*              skill      {nullptr};
+    const SetBonus*           set_bonus  {nullptr};
 
-    SharpnessGauge            maximum_sharpness;
-    bool                      is_constant_sharpness;
+    SharpnessGauge            maximum_sharpness     {0, 0, 0, 0, 0, 0, 0};
+    bool                      is_constant_sharpness {false};
 
-    bool                      health_regen_active;
+    bool                      health_regen_active {false};
 };
 
 

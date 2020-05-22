@@ -34,6 +34,12 @@ template<class StoredData>
 using SSBSeenMap = Utils::CounterSubsetSeenMap<StoredData, SkillMap, SetBonusMap>;
 
 
+struct DecoCombo {
+    std::vector<const Decoration*> decos;
+    SkillMap skills_including_previous;
+};
+
+
 struct ArmourPieceCombo {
     const ArmourPiece* armour_piece;
     DecoEquips decos;
@@ -296,63 +302,74 @@ static std::map<ArmourSlot, std::vector<const ArmourPiece*>> prepare_armour(cons
 }
 
 
-static std::vector<std::vector<const Decoration*>> generate_deco_combos(const std::vector<unsigned int>& deco_slots,
-                                                                        const std::array<std::vector<const Decoration*>,
-                                                                                         k_MAX_DECO_SIZE>& sorted_decos,
-                                                                        const SkillSpec& skill_spec,
-                                                                        const SkillMap& existing_skills) {
+static std::vector<DecoCombo> generate_deco_combos(const std::vector<unsigned int>& deco_slots,
+                                                   const std::array<std::vector<const Decoration*>,
+                                                                    k_MAX_DECO_SIZE>& sorted_decos,
+                                                   const SkillSpec& skill_spec,
+                                                   const SkillMap& existing_skills) {
     assert(std::is_sorted(deco_slots.begin(), deco_slots.end(), std::greater<unsigned int>()));
 
-    if (!deco_slots.size()) return {};
+    if (!deco_slots.size()) return {{{}, existing_skills}};
     // The rest of the algorithm will assume the presence of decoration slots.
 
     // We will "consume" deco slots from deco_slots by tracking the first "unconsumed" slot.
     using DecoSlotsHead = std::vector<unsigned int>::const_iterator;
+    using WorkingCombo = std::pair<DecoCombo, DecoSlotsHead>;
 
-    using WorkingCombo  = std::pair<std::vector<const Decoration*>, DecoSlotsHead>;
-    using WorkingList   = std::vector<WorkingCombo>;
-    using CompleteCombo = std::vector<const Decoration*>;
-    using CompleteList  = std::vector<CompleteCombo>;
-
-    WorkingList incomplete_combos = {{{}, deco_slots.begin()}}; // Start with a seed combo
-    CompleteList complete_combos;
+    // Start with a seed combo
+    std::vector<WorkingCombo> incomplete_combos = {{{{}, existing_skills}, deco_slots.begin()}};
+    std::vector<DecoCombo> complete_combos;
 
     const std::size_t sublist_index = deco_slots.front() - 1;
     assert(sublist_index < sorted_decos.size());
     const std::vector<const Decoration*>& deco_sublist = sorted_decos[sublist_index];
 
-    for (const Decoration* deco : deco_sublist) {
+    for (const Decoration * const deco : deco_sublist) {
 
-        // We copy-initialize since we want to add zero of this deco to them anyway.
-        WorkingList new_incomplete_combos = incomplete_combos;
+        // We copy since we want to add zero of this deco to them anyway.
+        std::vector<WorkingCombo> new_incomplete_combos = incomplete_combos;
 
-        unsigned int max_to_add = 0;
-        for (const auto& e : deco->skills) {
-            if (skill_spec.is_in_subset(e.first)) {
-                assert(e.first->secret_limit >= existing_skills.get(e.first));
-                const unsigned int v = Utils::ceil_div(e.first->secret_limit - existing_skills.get(e.first), e.second);
-                if (v > max_to_add) max_to_add = v;
-            }
-        }
-
-        for (WorkingCombo combo : incomplete_combos) {
+        for (const std::pair<DecoCombo, DecoSlotsHead>& combo : incomplete_combos) {
             assert(combo.second != deco_slots.end());
 
+            const std::vector<const Decoration*>& curr_decos = combo.first.decos;
+            const SkillMap& curr_skills = combo.first.skills_including_previous;
+            const DecoSlotsHead& curr_head = combo.second;
+
+            const unsigned int max_to_add = [&](){
+                unsigned int x;
+                for (const auto& e : deco->skills) {
+                    if (skill_spec.is_in_subset(e.first)) {
+                        assert(e.first->secret_limit >= curr_skills.get(e.first));
+                        const unsigned int v = Utils::ceil_div(e.first->secret_limit - curr_skills.get(e.first), e.second);
+                        if (v > x) x = v;
+                    }
+                }
+                return x;
+            }();
+
+            //// TODO: Add this?
+            //if (!max_to_add) continue;
+
+            std::vector<const Decoration*> new_decos = curr_decos;
+            SkillMap new_skills = curr_skills;
+            DecoSlotsHead new_head = curr_head;
+
             // We skip 0 because we already copied all previous combos.
-            std::vector<const Decoration*> curr_decos = combo.first;
-            DecoSlotsHead curr_head = combo.second;
             for (unsigned int to_add = 1; to_add <= max_to_add; ++to_add) {
-                if (*curr_head < deco->slot_size) break; // Stop adding. Deco can no longer fit.
+                if (*new_head < deco->slot_size) break; // Stop adding. Deco can no longer fit.
 
-                curr_decos.emplace_back(deco);
-                ++curr_head;
+                new_decos.emplace_back(deco);
+                new_skills.add_skills_filtered(*deco, skill_spec);
+                ++new_head;
 
-                if (curr_head == deco_slots.end()) {
-                    complete_combos.emplace_back(std::move(curr_decos));
+                if (new_head == deco_slots.end()) {
+                    complete_combos.push_back({new_decos, new_skills});
+                    // TODO: ugh, why does emplace_back not work?
                     break;
                 } else {
-                    new_incomplete_combos.emplace_back(std::move(curr_decos),
-                                                       std::move(curr_head) );
+                    new_incomplete_combos.push_back({{new_decos, new_skills}, new_head});
+                    // TODO: ugh, why does emplace_back not work?
                 }
             }
 
@@ -367,6 +384,86 @@ static std::vector<std::vector<const Decoration*>> generate_deco_combos(const st
 
     return complete_combos;
 }
+
+
+//static std::vector<DecoCombo> generate_deco_combos(const std::vector<unsigned int>& deco_slots,
+//                                                   const std::array<std::vector<const Decoration*>,
+//                                                                    k_MAX_DECO_SIZE>& sorted_decos,
+//                                                   const SkillSpec& skill_spec,
+//                                                   const SkillMap& existing_skills) {
+//    assert(std::is_sorted(deco_slots.begin(), deco_slots.end(), std::greater<unsigned int>()));
+//
+//    if (!deco_slots.size()) return {{{}, existing_skills}};
+//    // The rest of the algorithm will assume the presence of decoration slots.
+//
+//    // We will "consume" deco slots from deco_slots by tracking the first "unconsumed" slot.
+//    using DecoSlotsHead = std::vector<unsigned int>::const_iterator;
+//
+//    using WorkingCombo  = std::pair<std::vector<const Decoration*>, DecoSlotsHead>;
+//    using WorkingList   = std::vector<WorkingCombo>;
+//    using CompleteCombo = std::vector<const Decoration*>;
+//    using CompleteList  = std::vector<CompleteCombo>;
+//
+//    WorkingList incomplete_combos = {{{}, deco_slots.begin()}}; // Start with a seed combo
+//    CompleteList complete_combos;
+//
+//    const std::size_t sublist_index = deco_slots.front() - 1;
+//    assert(sublist_index < sorted_decos.size());
+//    const std::vector<const Decoration*>& deco_sublist = sorted_decos[sublist_index];
+//
+//    for (const Decoration* deco : deco_sublist) {
+//
+//        // We copy-initialize since we want to add zero of this deco to them anyway.
+//        WorkingList new_incomplete_combos = incomplete_combos;
+//
+//        unsigned int max_to_add = 0;
+//        for (const auto& e : deco->skills) {
+//            if (skill_spec.is_in_subset(e.first)) {
+//                assert(e.first->secret_limit >= existing_skills.get(e.first));
+//                const unsigned int v = Utils::ceil_div(e.first->secret_limit - existing_skills.get(e.first), e.second);
+//                if (v > max_to_add) max_to_add = v;
+//            }
+//        }
+//
+//        for (WorkingCombo combo : incomplete_combos) {
+//            assert(combo.second != deco_slots.end());
+//
+//            // We skip 0 because we already copied all previous combos.
+//            std::vector<const Decoration*> curr_decos = combo.first;
+//            DecoSlotsHead curr_head = combo.second;
+//            for (unsigned int to_add = 1; to_add <= max_to_add; ++to_add) {
+//                if (*curr_head < deco->slot_size) break; // Stop adding. Deco can no longer fit.
+//
+//                curr_decos.emplace_back(deco);
+//                ++curr_head;
+//
+//                if (curr_head == deco_slots.end()) {
+//                    complete_combos.emplace_back(curr_decos);
+//                    break;
+//                } else {
+//                    new_incomplete_combos.emplace_back(curr_decos, curr_head);
+//                }
+//            }
+//
+//        }
+//
+//        incomplete_combos = std::move(new_incomplete_combos);
+//    }
+//
+//    std::vector<DecoCombo> final_combos;
+//    for (CompleteCombo& combo : complete_combos) {
+//        SkillMap skills = existing_skills;
+//        skills.add_skills_filtered(combo, skill_spec);
+//        final_combos.push_back({std::move(combo), std::move(skills)});
+//    }
+//    for (WorkingCombo& combo : incomplete_combos) {
+//        SkillMap skills = existing_skills;
+//        skills.add_skills_filtered(combo.first, skill_spec);
+//        final_combos.push_back({std::move(combo.first), std::move(skills)});
+//    }
+//
+//    return final_combos;
+//}
 
 
 static SSBSeenMap<ArmourPieceCombo> generate_slot_combos(const std::vector<const ArmourPiece*>& pieces,
@@ -387,23 +484,21 @@ static SSBSeenMap<ArmourPieceCombo> generate_slot_combos(const std::vector<const
         SkillMap armour_skills;
         armour_skills.add_skills_filtered(*piece, skill_spec);
 
-        std::vector<std::vector<const Decoration*>> deco_combos = generate_deco_combos(piece->deco_slots,
-                                                                                       sorted_decos,
-                                                                                       skill_spec,
-                                                                                       armour_skills);
+        std::vector<DecoCombo> deco_combos = generate_deco_combos(piece->deco_slots,
+                                                                  sorted_decos,
+                                                                  skill_spec,
+                                                                  armour_skills);
 
         stat_pre += deco_combos.size(); // TODO: How do I know this won't overflow?
 
-        for (std::vector<const Decoration*>& decos : deco_combos) {
+        for (DecoCombo& deco_combo : deco_combos) {
 
-            SSBTuple ssb = {armour_skills, {}};
-
-            std::get<0>(ssb).add_skills_filtered(decos, skill_spec);
+            SSBTuple ssb = {std::move(deco_combo.skills_including_previous), {}};
             if (Utils::set_has_key(set_bonus_subset, piece->set_bonus)) {
                 std::get<1>(ssb).set(piece->set_bonus, 1);
             }
 
-            seen_set.add({piece, std::move(decos)}, std::move(ssb));
+            seen_set.add({piece, std::move(deco_combo.decos)}, std::move(ssb));
         }
     }
 
@@ -432,6 +527,7 @@ static void merge_in_armour_list(SSBSeenMap<ArmourSetCombo>& armour_combos,
                 ArmourSetCombo x = set_combo;
                 x.armour.add(piece_combo.armour_piece);
                 x.decos.merge_in(piece_combo.decos);
+                assert(x.decos.fits_in(x.armour, {}));
                 return x;
             };
 
@@ -569,6 +665,15 @@ static void do_search(const Database& db, const SearchParameters& params) {
     Utils::log_stat_reduction("Merged in head+deco  combinations: ", stat_pre, armour_combos.size());
     Utils::log_stat_duration("  >>> head combo merge: ", start_t);
 
+    //std::vector<std::string> buf;
+    //for (const auto& e : head_combos) {
+    //    buf.emplace_back(std::get<0>(e.first).get_humanreadable()
+    //                     + "\n"
+    //                     + std::to_string(std::get<1>(e.first).size()) );
+    //}
+    //std::sort(buf.begin(), buf.end());
+    //std::clog << Utils::str_join(buf.begin(), buf.end(), "\n\n") << "\n\n";
+
     start_t = std::chrono::steady_clock::now();
     stat_pre = armour_combos.size() * chest_combos.size();
     //
@@ -603,8 +708,10 @@ static void do_search(const Database& db, const SearchParameters& params) {
 
     double best_efr = 0;
 
-    const std::size_t stat_pre2 = armour_combos.size();
-    std::size_t stat_progress2 = 0;
+    //const std::size_t stat_pre2 = armour_combos.size();
+    //std::size_t stat_progress2 = 0;
+    std::size_t stat_wa_combos_explored = 0;
+    std::size_t stat_wad_combos_explored = 0;
     start_t = std::chrono::steady_clock::now();
 
     for (const auto& e : armour_combos) {
@@ -621,27 +728,32 @@ static void do_search(const Database& db, const SearchParameters& params) {
                 return x;
             }();
 
-            std::vector<std::vector<const Decoration*>> w_decos = generate_deco_combos(wc.contributions.deco_slots,
-                                                                                       grouped_sorted_decos,
-                                                                                       params.skill_spec,
-                                                                                       wac_skills);
-            for (std::vector<const Decoration*>& dc : w_decos) {
+            const SetBonusMap wac_set_bonuses = [&](){
+                SetBonusMap ret = ac.armour.get_set_bonuses();
+                if (wc.contributions.set_bonus) ret.increment(wc.contributions.set_bonus, 1);
+                return ret;
+            }();
+                
 
-                DecoEquips curr_decos (std::move(dc));
-                curr_decos.merge_in(ac.decos);
+            std::vector<DecoCombo> w_deco_combos = generate_deco_combos(wc.contributions.deco_slots,
+                                                                         grouped_sorted_decos,
+                                                                         params.skill_spec,
+                                                                         wac_skills);
+            ++stat_wa_combos_explored;
+            stat_wad_combos_explored += w_deco_combos.size();
 
-                // Do EFR calculation here
-                // TODO: Make this better lol
-                SkillMap skills = ac.armour.get_skills_without_set_bonuses();
-                skills.merge_in(curr_decos);
-                if (wc.contributions.skill) skills.increment(wc.contributions.skill, 1);
-                SetBonusMap set_bonuses = ac.armour.get_set_bonuses();
-                if (wc.contributions.set_bonus) set_bonuses.increment(wc.contributions.set_bonus, 1);
-                skills.add_set_bonuses(set_bonuses);
+            for (DecoCombo& dc : w_deco_combos) {
+
+                SkillMap skills = dc.skills_including_previous;
+                skills.add_set_bonuses(wac_set_bonuses);
 
                 // Filter out anything that doesn't meet minimum requirements
                 if (!params.skill_spec.skills_meet_minimum_requirements(skills)) continue;
                 assert((!params.health_regen_required) || wc.contributions.health_regen_active);
+
+                DecoEquips curr_decos = std::move(dc.decos);
+                curr_decos.merge_in(ac.decos);
+                assert(curr_decos.fits_in(ac.armour, wc.contributions));
 
                 const double efr = calculate_efr_from_skills_lookup(db, wc.contributions, skills, params.skill_spec);
 
@@ -667,13 +779,16 @@ static void do_search(const Database& db, const SearchParameters& params) {
         }
         if (reprune_weapons) refilter_weapons(weapons, best_efr, weapons_initial_size);
 
-        (void)stat_progress2;
-        (void)stat_pre2;
+        //(void)stat_progress2;
+        //(void)stat_pre2;
         //std::clog << std::to_string(stat_progress2) + "/" + std::to_string(stat_pre2) + "\n";
-        ++stat_progress2;
+        //++stat_progress2;
     }
 
-    Utils::log_stat_duration("\n\n  >>> weapon combo merge: ", start_t);
+    Utils::log_stat_expansion("\nWeapon-armour --> +decos combinations explored: ",
+                              stat_wa_combos_explored,
+                              stat_wad_combos_explored);
+    Utils::log_stat_duration("  >>> weapon combo merge: ", start_t);
     Utils::log_stat();
 
     std::clog << std::endl;
