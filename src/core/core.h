@@ -7,6 +7,7 @@
 #define MHWIBS_CORE_H
 
 #include <memory>
+#include <string>
 #include <vector>
 
 namespace MHWIBuildSearch

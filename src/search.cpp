@@ -15,16 +15,20 @@
 #include "core/core.h"
 #include "database/database.h"
 #include "support/support.h"
-#include "support/ssb_seen_map.h"
 #include "utils/utils.h"
 #include "utils/utils_strings.h"
 #include "utils/logging.h"
 #include "utils/pruning_vector.h"
 #include "utils/counter.h"
+#include "utils/counter_subset_seen_map.h"
 
 
 namespace MHWIBuildSearch
 {
+
+
+template<class StoredData>
+using SSBSeenMap = Utils::CounterSubsetSeenMap<StoredData, SkillMap, SetBonusMap>;
 
 
 struct ArmourPieceCombo {
@@ -247,8 +251,8 @@ static std::vector<const Charm*> prepare_charms(const Database& db, const SkillS
 }
 
 
-static std::map<ArmourSlot, std::vector<const ArmourPiece*>> get_pruned_armour(const Database& db,
-                                                                               const SearchParameters& params) {
+static std::map<ArmourSlot, std::vector<const ArmourPiece*>> prepare_armour(const Database& db,
+                                                                            const SearchParameters& params) {
     std::map<ArmourSlot, std::vector<const ArmourPiece*>> ret = db.armour.get_all_pieces_by_slot();
 
     std::size_t head_pre  = ret.at(ArmourSlot::head).size();
@@ -499,7 +503,7 @@ static void do_search(const Database& db, const SearchParameters& params) {
     std::vector<const Charm*> charms = prepare_charms(db, params.skill_spec);
     assert(charms.size());
 
-    std::map<ArmourSlot, std::vector<const ArmourPiece*>> armour = get_pruned_armour(db, params);
+    std::map<ArmourSlot, std::vector<const ArmourPiece*>> armour = prepare_armour(db, params);
 
     assert(armour.size() == 5);
     assert(armour.at(ArmourSlot::head).size());

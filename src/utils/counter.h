@@ -12,6 +12,8 @@
 #include <vector>
 #include <unordered_map>
 
+#include "utils.h"
+
 namespace Utils {
 
 
@@ -76,7 +78,7 @@ public:
     // Do not use this with v_to_add=0.
     void increment(const T& k, const N& v_to_add) noexcept {
         assert(v_to_add != 0);
-        if (this->data.count(k)) {
+        if (Utils::map_has_key(this->data, k)) {
             this->data[k] = ValueClipFn()(k, this->data.at(k) + v_to_add);
         } else {
             this->data[k] = ValueClipFn()(k, v_to_add);
@@ -87,7 +89,7 @@ public:
     // Do not use this with keys that aren't in the counter.
     void decrement(const T& k, const N& v_to_subtract) noexcept {
         assert(v_to_subtract != 0);
-        assert(this->data.count(k));
+        assert(Utils::map_has_key(this->data, k));
         const unsigned int curr_v = this->data.at(k);
         if (v_to_subtract < curr_v) {
             this->data.at(k) = curr_v - v_to_subtract;
@@ -102,12 +104,20 @@ public:
 
     N get(const T& k) const noexcept {
         // TODO: Is this the best way to do this?
-        if (this->data.count(k)) {
+        if (Utils::map_has_key(this->data, k)) {
             assert(this->data.at(k));
             return this->data.at(k);
         } else {
             return 0;
         }
+    }
+
+    std::vector<std::pair<T, N>> as_vector() const noexcept {
+        std::vector<std::pair<T, N>> ret;
+        for (const auto& e : this->data) {
+            ret.emplace_back(e.first, e.second);
+        }
+        return ret;
     }
 
     /*

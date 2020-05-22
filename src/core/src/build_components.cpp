@@ -3,7 +3,8 @@
  * Author: <contact@simshadows.com>
  */
 
-#include "unordered_map"
+#include <stdexcept>
+#include <unordered_map>
 
 #include "../core.h"
 

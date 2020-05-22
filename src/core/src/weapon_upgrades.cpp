@@ -3,6 +3,7 @@
  * Author: <contact@simshadows.com>
  */
 
+#include <stdexcept>
 #include <assert.h>
 
 #include "../core.h"

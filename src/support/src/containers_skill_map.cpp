@@ -79,16 +79,17 @@ void SkillMap::add_skills_filtered(const std::vector<const Decoration*>& decos, 
 
 unsigned int SkillMap::get_non_secret(const Skill * const skill,
                                       const Skill * const associated_secret) const {
-    // count must return either 1 or 0.
-    assert(this->data.count(skill) <= 1);
-    assert(this->data.count(associated_secret) <= 1);
     // We expect secret skills to only have one level.
     assert(associated_secret->secret_limit == 1);
 
-    if (this->data.count(skill)) {
+    if (Utils::map_has_key(this->data, skill)) {
         const unsigned int level = this->data.at(skill);
         const unsigned int normal_limit = skill->normal_limit;
-        return (this->data.count(associated_secret) || (level <= normal_limit)) ? this->data.at(skill) : normal_limit;
+        if (Utils::map_has_key(this->data, associated_secret) || (level <= normal_limit)) {
+            return this->data.at(skill);
+        } else {
+            return normal_limit;
+        }
     } else {
         return 0;
     }

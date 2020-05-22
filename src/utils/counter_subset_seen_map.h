@@ -48,7 +48,7 @@ public:
 
     // This version is more efficient if you already bundle your counters together.
     void add(const D& d, const T& k) noexcept {
-        if (this->seen_set.count(k)) {
+        if (Utils::map_has_key(seen_set, k)) {
             return;
         }
 
@@ -56,7 +56,7 @@ public:
         this->data.emplace(std::make_pair(k, d));
     }
     void add(D&& d, T&& k) noexcept {
-        if (this->seen_set.count(k)) {
+        if (Utils::map_has_key(seen_set, k)) {
             return;
         }
 
@@ -64,7 +64,7 @@ public:
         this->data.emplace(std::make_pair(std::move(k), std::move(d)));
     }
     void add(D&& d, T& k) noexcept {
-        if (this->seen_set.count(k)) {
+        if (Utils::map_has_key(seen_set, k)) {
             return;
         }
 
@@ -96,7 +96,7 @@ private:
 
     template<std::size_t... Iv>
     void add_power_set(const T& k, std::index_sequence<Iv...>) noexcept {
-        if (this->seen_set.count(k)) {
+        if (Utils::map_has_key(seen_set, k)) {
             this->data.erase(k);
             return;
         }
