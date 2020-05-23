@@ -8,6 +8,7 @@
 
 #include "../support.h"
 #include "../../utils/utils.h"
+#include "../../utils/utils_strings.h"
 
 
 namespace MHWIBuildSearch
@@ -65,6 +66,16 @@ void SkillMap::add_skills_filtered(const Charm& charm, const unsigned int charm_
 }
 
 
+void SkillMap::add_skills_filtered(const Decoration& deco, const SkillSpec& skill_spec) {
+    for (const auto& e : deco.skills) {
+        if (skill_spec.is_in_subset(e.first)) {
+            this->increment(e.first, e.second);
+        }
+    }
+    assert(this->only_contains_skills_in_spec(skill_spec));
+}
+
+
 void SkillMap::add_skills_filtered(const std::vector<const Decoration*>& decos, const SkillSpec& skill_spec) {
     for (const Decoration * const deco : decos) {
         for (const auto& e : deco->skills) {
@@ -107,14 +118,12 @@ bool SkillMap::binary_skill_is_lvl1(const Skill* skill) const {
 
 
 std::string SkillMap::get_humanreadable() const {
-    std::string ret;
-    bool is_first = true;
+    std::vector<std::string> buf;
     for (const auto& e : *this) {
-        if (!is_first) ret += "\n";
-        ret += e.first->name + " = " + std::to_string(e.second);
-        is_first = false;
+        buf.emplace_back(e.first->name + " = " + std::to_string(e.second));
     }
-    return ret;
+    std::sort(buf.begin(), buf.end());
+    return Utils::str_join(buf.begin(), buf.end(), "\n");
 }
 
 

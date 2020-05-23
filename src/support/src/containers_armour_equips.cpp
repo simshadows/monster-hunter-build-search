@@ -101,7 +101,7 @@ std::vector<unsigned int> ArmourEquips::get_deco_slots() const {
 
 
 std::string ArmourEquips::get_humanreadable() const {
-    return "\nHead:  "   + this->fetch_piece_name(k_HEAD_INDEX)
+    return "Head:  "   + this->fetch_piece_name(k_HEAD_INDEX)
            + "\nChest: " + this->fetch_piece_name(k_CHEST_INDEX)
            + "\nArms:  " + this->fetch_piece_name(k_ARMS_INDEX)
            + "\nWaist: " + this->fetch_piece_name(k_WAIST_INDEX)

@@ -348,11 +348,10 @@ static std::vector<std::vector<const Decoration*>> generate_deco_combos(const st
                 ++curr_head;
 
                 if (curr_head == deco_slots.end()) {
-                    complete_combos.emplace_back(std::move(curr_decos));
+                    complete_combos.emplace_back(curr_decos);
                     break;
                 } else {
-                    new_incomplete_combos.emplace_back(std::move(curr_decos),
-                                                       std::move(curr_head) );
+                    new_incomplete_combos.emplace_back(curr_decos, curr_head);
                 }
             }
 
@@ -603,8 +602,8 @@ static void do_search(const Database& db, const SearchParameters& params) {
 
     double best_efr = 0;
 
-    const std::size_t stat_pre2 = armour_combos.size();
-    std::size_t stat_progress2 = 0;
+    std::size_t stat_wa_combos_explored = 0;
+    std::size_t stat_wad_combos_explored = 0;
     start_t = std::chrono::steady_clock::now();
 
     for (const auto& e : armour_combos) {
@@ -625,6 +624,9 @@ static void do_search(const Database& db, const SearchParameters& params) {
                                                                                        grouped_sorted_decos,
                                                                                        params.skill_spec,
                                                                                        wac_skills);
+            ++stat_wa_combos_explored;
+            stat_wad_combos_explored += w_decos.size();
+
             for (std::vector<const Decoration*>& dc : w_decos) {
 
                 DecoEquips curr_decos (std::move(dc));
@@ -666,14 +668,12 @@ static void do_search(const Database& db, const SearchParameters& params) {
 
         }
         if (reprune_weapons) refilter_weapons(weapons, best_efr, weapons_initial_size);
-
-        (void)stat_progress2;
-        (void)stat_pre2;
-        //std::clog << std::to_string(stat_progress2) + "/" + std::to_string(stat_pre2) + "\n";
-        ++stat_progress2;
     }
 
-    Utils::log_stat_duration("\n\n  >>> weapon combo merge: ", start_t);
+    Utils::log_stat_expansion("\nWeapon-armour --> +decos combinations explored: ",
+                              stat_wa_combos_explored,
+                              stat_wad_combos_explored);
+    Utils::log_stat_duration("  >>> weapon combo merge: ", start_t);
     Utils::log_stat();
 
     std::clog << std::endl;
