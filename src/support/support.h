@@ -85,6 +85,7 @@ public:
     SkillMap(const ArmourPiece&) noexcept;
 
     using Utils::CounterPKSV<const Skill*, HardClipSkillLevel>::merge_in;
+    void merge_in(const std::vector<const Decoration*>&) noexcept; // Special case
     void merge_in(const DecoEquips&); // Special case
 
     void add_set_bonuses(const SetBonusMap&);

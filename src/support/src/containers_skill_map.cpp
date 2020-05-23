@@ -23,6 +23,15 @@ SkillMap::SkillMap(const ArmourPiece& armour_piece) noexcept
 }
 
 
+void SkillMap::merge_in(const std::vector<const Decoration*>& decos) noexcept {
+    for (const Decoration* const deco : decos) {
+        for (const auto& e : deco->skills) {
+            this->increment(e.first, e.second);
+        }
+    }
+}
+
+
 void SkillMap::merge_in(const DecoEquips& decos) {
     for (const Decoration* const& deco : decos) {
         for (const auto& e : deco->skills) {

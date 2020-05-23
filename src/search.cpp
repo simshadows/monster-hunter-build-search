@@ -620,6 +620,12 @@ static void do_search(const Database& db, const SearchParameters& params) {
                 return x;
             }();
 
+            const SetBonusMap wac_set_bonuses = [&](){
+                SetBonusMap x = ac.armour.get_set_bonuses();
+                if (wc.contributions.set_bonus) x.increment(wc.contributions.set_bonus, 1);
+                return x;
+            }();
+
             std::vector<std::vector<const Decoration*>> w_decos = generate_deco_combos(wc.contributions.deco_slots,
                                                                                        grouped_sorted_decos,
                                                                                        params.skill_spec,
@@ -629,21 +635,23 @@ static void do_search(const Database& db, const SearchParameters& params) {
 
             for (std::vector<const Decoration*>& dc : w_decos) {
 
-                DecoEquips curr_decos (std::move(dc));
-                curr_decos.merge_in(ac.decos);
-
-                // Do EFR calculation here
-                // TODO: Make this better lol
-                SkillMap skills = ac.armour.get_skills_without_set_bonuses();
-                skills.merge_in(curr_decos);
-                if (wc.contributions.skill) skills.increment(wc.contributions.skill, 1);
-                SetBonusMap set_bonuses = ac.armour.get_set_bonuses();
-                if (wc.contributions.set_bonus) set_bonuses.increment(wc.contributions.set_bonus, 1);
-                skills.add_set_bonuses(set_bonuses);
+                const SkillMap skills = [&](){
+                    SkillMap x = wac_skills;
+                    x.add_set_bonuses(wac_set_bonuses);
+                    x.merge_in(dc);
+                    return x;
+                }();
 
                 // Filter out anything that doesn't meet minimum requirements
                 if (!params.skill_spec.skills_meet_minimum_requirements(skills)) continue;
                 assert((!params.health_regen_required) || wc.contributions.health_regen_active);
+
+                const DecoEquips curr_decos = [&](){
+                    DecoEquips x = std::move(dc);
+                    x.merge_in(ac.decos);
+                    assert(x.fits_in(ac.armour, wc.contributions));
+                    return x;
+                }();
 
                 const double efr = calculate_efr_from_skills_lookup(db, wc.contributions, skills, params.skill_spec);
 
