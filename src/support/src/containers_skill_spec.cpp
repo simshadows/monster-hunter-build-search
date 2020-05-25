@@ -64,6 +64,15 @@ bool SkillSpec::skills_meet_minimum_requirements(const SkillMap& skills) const {
 }
 
 
+std::vector<const Skill*> SkillSpec::get_skill_subset_as_vector() const {
+    std::vector<const Skill*> ret;
+    for (const auto& e : this->min_levels) {
+        ret.emplace_back(e.first);
+    }
+    return ret;
+}
+
+
 SkillSpec::MinLevelsIterator SkillSpec::begin() const {
     return this->min_levels.begin();
 }

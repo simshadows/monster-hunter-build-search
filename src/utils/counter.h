@@ -39,7 +39,7 @@ public:
      * Modifiers
      */
 
-    // Do not use this with v=0.
+    // Use this if you only ever intend to allow v>0.
     void set(const T& k, const N& v) noexcept {
         assert(v != 0);
         this->data[k] = ValueClipFn()(k, v);
@@ -54,8 +54,14 @@ public:
         }
     }
 
+    // Use this if you only intend to remove existing elements.
     void remove(const T& k) noexcept {
         assert(this->get(k));
+        this->try_remove(k); // We don't really have a better function for this.
+    }
+
+    // If the element doesn't exist, this won't fail.
+    void try_remove(const T& k) noexcept {
         this->data.erase(k);
     }
 

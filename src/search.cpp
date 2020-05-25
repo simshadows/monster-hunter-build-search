@@ -20,7 +20,8 @@
 #include "utils/logging.h"
 #include "utils/pruning_vector.h"
 #include "utils/counter.h"
-#include "utils/counter_subset_seen_map.h"
+#include "utils/naive_counter_subset_seen_map.h"
+#include "support/ssb_seen_map.h"
 
 
 namespace MHWIBuildSearch
@@ -31,7 +32,9 @@ using SSBTuple = std::tuple<SkillMap, SetBonusMap>;
 
 
 template<class StoredData>
-using SSBSeenMap = Utils::CounterSubsetSeenMap<StoredData, SkillMap, SetBonusMap>;
+using SSBSeenMapSmall = Utils::NaiveCounterSubsetSeenMap<StoredData, SkillMap, SetBonusMap>;
+template<class StoredData>
+using SSBSeenMap = SSBSeenMapProto<StoredData>;
 
 
 struct ArmourPieceCombo {
@@ -368,16 +371,16 @@ static std::vector<std::vector<const Decoration*>> generate_deco_combos(const st
 }
 
 
-static SSBSeenMap<ArmourPieceCombo> generate_slot_combos(const std::vector<const ArmourPiece*>& pieces,
-                                                          const std::array<std::vector<const Decoration*>,
-                                                                           k_MAX_DECO_SIZE>& sorted_decos,
-                                                          const SkillSpec& skill_spec,
-                                                          const std::unordered_set<const SetBonus*>& set_bonus_subset,
-                                                          const std::string& debug_msg) {
+static SSBSeenMapSmall<ArmourPieceCombo> generate_slot_combos(const std::vector<const ArmourPiece*>& pieces,
+                                                              const std::array<std::vector<const Decoration*>,
+                                                                               k_MAX_DECO_SIZE>& sorted_decos,
+                                                              const SkillSpec& skill_spec,
+                                                              const std::unordered_set<const SetBonus*>& set_bonus_subset,
+                                                              const std::string& debug_msg) {
     // We will assume decorations are sorted.
     // TODO: Add a runtime assert.
 
-    SSBSeenMap<ArmourPieceCombo> seen_set;
+    SSBSeenMapSmall<ArmourPieceCombo> seen_set;
 
     unsigned long long stat_pre = 0;
 
@@ -413,7 +416,7 @@ static SSBSeenMap<ArmourPieceCombo> generate_slot_combos(const std::vector<const
 
 
 static void merge_in_armour_list(SSBSeenMap<ArmourSetCombo>& armour_combos,
-                                 const SSBSeenMap<ArmourPieceCombo>& piece_combos,
+                                 const SSBSeenMapSmall<ArmourPieceCombo>& piece_combos,
                                  const SkillSpec& skill_spec) {
     auto prev_armour_combos = armour_combos.get_data_as_vector();
 
@@ -516,37 +519,47 @@ static void do_search(const Database& db, const SearchParameters& params) {
     assert(armour.at(ArmourSlot::waist).size());
     assert(armour.at(ArmourSlot::legs).size());
 
-    SSBSeenMap<ArmourPieceCombo> head_combos = generate_slot_combos(armour.at(ArmourSlot::head),
-                                                                    grouped_sorted_decos,
-                                                                    params.skill_spec,
-                                                                    set_bonus_subset,
-                                                                    "Generated head+deco  combinations: ");
-    SSBSeenMap<ArmourPieceCombo> chest_combos = generate_slot_combos(armour.at(ArmourSlot::chest),
-                                                                     grouped_sorted_decos,
-                                                                     params.skill_spec,
-                                                                     set_bonus_subset,
-                                                                     "Generated chest+deco combinations: ");
-    SSBSeenMap<ArmourPieceCombo> arms_combos = generate_slot_combos(armour.at(ArmourSlot::arms),
-                                                                    grouped_sorted_decos,
-                                                                    params.skill_spec,
-                                                                    set_bonus_subset,
-                                                                    "Generated arms+deco  combinations: ");
-    SSBSeenMap<ArmourPieceCombo> waist_combos = generate_slot_combos(armour.at(ArmourSlot::waist),
-                                                                     grouped_sorted_decos,
-                                                                     params.skill_spec,
-                                                                     set_bonus_subset,
-                                                                     "Generated waist+deco combinations: ");
-    SSBSeenMap<ArmourPieceCombo> legs_combos = generate_slot_combos(armour.at(ArmourSlot::legs),
-                                                                    grouped_sorted_decos,
-                                                                    params.skill_spec,
-                                                                    set_bonus_subset,
-                                                                    "Generated legs+deco  combinations: ");
+    SSBSeenMapSmall<ArmourPieceCombo> head_combos = generate_slot_combos(armour.at(ArmourSlot::head),
+                                                                         grouped_sorted_decos,
+                                                                         params.skill_spec,
+                                                                         set_bonus_subset,
+                                                                         "Generated head+deco  combinations: ");
+    SSBSeenMapSmall<ArmourPieceCombo> chest_combos = generate_slot_combos(armour.at(ArmourSlot::chest),
+                                                                          grouped_sorted_decos,
+                                                                          params.skill_spec,
+                                                                          set_bonus_subset,
+                                                                          "Generated chest+deco combinations: ");
+    SSBSeenMapSmall<ArmourPieceCombo> arms_combos = generate_slot_combos(armour.at(ArmourSlot::arms),
+                                                                         grouped_sorted_decos,
+                                                                         params.skill_spec,
+                                                                         set_bonus_subset,
+                                                                         "Generated arms+deco  combinations: ");
+    SSBSeenMapSmall<ArmourPieceCombo> waist_combos = generate_slot_combos(armour.at(ArmourSlot::waist),
+                                                                          grouped_sorted_decos,
+                                                                          params.skill_spec,
+                                                                          set_bonus_subset,
+                                                                          "Generated waist+deco combinations: ");
+    SSBSeenMapSmall<ArmourPieceCombo> legs_combos = generate_slot_combos(armour.at(ArmourSlot::legs),
+                                                                         grouped_sorted_decos,
+                                                                         params.skill_spec,
+                                                                         set_bonus_subset,
+                                                                         "Generated legs+deco  combinations: ");
     Utils::log_stat_duration("  >>> decos, charms, and armour slot combos: ", start_t);
     Utils::log_stat();
 
     // We build the initial build list.
     
-    SSBSeenMap<ArmourSetCombo> armour_combos;
+    start_t = std::chrono::steady_clock::now();
+    std::clog << "Combining Seen Set Initializing...";
+    SSBSeenMapProto<ArmourSetCombo> armour_combos = [&](){
+        std::vector<const SetBonus*> sb_vec (set_bonus_subset.begin(), set_bonus_subset.end());
+        return SSBSeenMapProto<ArmourSetCombo>(params.skill_spec.get_skill_subset_as_vector(), std::move(sb_vec));
+    }();
+    std::clog << " done!" << "\n";
+    Utils::log_stat_duration("  >>> Combining seen set initialization: ", start_t);
+    std::clog << "\n";
+    
+    //SSBSeenMap<ArmourSetCombo> armour_combos;
     for (const Charm* charm : charms) {
         ArmourSetCombo combo;
         SSBTuple ssb;

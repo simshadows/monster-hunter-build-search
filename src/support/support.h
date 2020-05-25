@@ -44,6 +44,8 @@ public:
 
     bool skills_meet_minimum_requirements(const SkillMap&) const;
 
+    std::vector<const Skill*> get_skill_subset_as_vector() const;
+
     // Iterating is over the minimum levels. (We'll probably never need to iterate over the states anyway.)
     MinLevelsIterator begin() const;
     MinLevelsIterator end() const;

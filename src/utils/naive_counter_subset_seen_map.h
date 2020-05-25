@@ -1,10 +1,10 @@
 /*
- * File: counter_subset_seen_map.h
+ * File: naive_counter_subset_seen_map.h
  * Author: <contact@simshadows.com>
  */
 
-#ifndef COUNTER_SUBSET_SEEN_MAP_H
-#define COUNTER_SUBSET_SEEN_MAP_H
+#ifndef NAIVE_COUNTER_SUBSET_SEEN_MAP_H
+#define NAIVE_COUNTER_SUBSET_SEEN_MAP_H
 
 #include <tuple>
 
@@ -27,7 +27,7 @@ struct CounterTupleHash {
 
 
 template<class D, class... Cv>
-class CounterSubsetSeenMap {
+class NaiveCounterSubsetSeenMap {
     using T = std::tuple<Cv...>;
     using H = CounterTupleHash<Cv...>;
 
@@ -137,5 +137,5 @@ private:
 } // namespace
 
 
-#endif // COUNTER_SUBSET_SEEN_MAP_H
+#endif // NAIVE_COUNTER_SUBSET_SEEN_MAP_H
 
