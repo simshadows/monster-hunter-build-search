@@ -579,7 +579,15 @@ static void do_search(const Database& db, const SearchParameters& params) {
     SSBSeenMapProto<ArmourSetCombo> armour_combos = [&](){
         std::vector<const Skill*> sk_vec = get_skills_in_subset_servable_without_sb_or_weapons(db, params.skill_spec);
         Utils::log_stat("Skills to be considered by the combining seen set: ", sk_vec.size());
-        std::vector<const SetBonus*> sb_vec (set_bonus_subset.begin(), set_bonus_subset.end());
+        std::unordered_set<const SetBonus*> sb_set;
+        for (const auto& e : armour) {
+            for (const ArmourPiece * const piece : e.second) {
+                if (Utils::set_has_key(set_bonus_subset, piece->set_bonus)) {
+                    sb_set.emplace(piece->set_bonus);
+                }
+            }
+        }
+        std::vector<const SetBonus*> sb_vec (sb_set.begin(), sb_set.end());
         Utils::log_stat("Set bonuses to be considered by the combining seen set: ", sb_vec.size());
         return SSBSeenMapProto<ArmourSetCombo>(sk_vec, std::move(sb_vec));
     }();
