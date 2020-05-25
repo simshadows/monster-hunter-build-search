@@ -302,6 +302,19 @@ std::map<ArmourSlot, std::vector<const ArmourPiece*>> ArmourDatabase::get_all_pi
 }
 
 
+std::unordered_set<const Skill*> ArmourDatabase::all_possible_skills_from_armour_without_set_bonuses() const {
+    std::unordered_set<const Skill*> ret;
+    for (const auto& e : this->armour_sets) {
+        for (const std::shared_ptr<ArmourPiece>& ee : e.second->pieces) {
+            for (const auto& eee : ee->skills) {
+                ret.emplace(eee.first);
+            }
+        }
+    }
+    return ret;
+}
+
+
 ArmourDatabase::ArmourDatabase() noexcept = default;
 
 

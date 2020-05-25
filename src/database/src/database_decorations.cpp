@@ -176,6 +176,17 @@ std::vector<const Decoration*> DecorationsDatabase::get_all() const {
 }
 
 
+std::unordered_set<const Skill*> DecorationsDatabase::all_possible_skills_from_decos() const {
+    std::unordered_set<const Skill*> ret;
+    for (const auto& e : this->decorations_store) {
+        for (const auto& ee : e.second->skills) {
+            ret.emplace(ee.first);
+        }
+    }
+    return ret;
+}
+
+
 DecorationsDatabase::DecorationsDatabase() noexcept = default;
 
 

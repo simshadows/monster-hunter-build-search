@@ -415,6 +415,32 @@ static SSBSeenMapSmall<ArmourPieceCombo> generate_slot_combos(const std::vector<
 }
 
 
+// TODO: I need a better name lmao
+static std::vector<const Skill*> get_skills_in_subset_servable_without_sb_or_weapons(const Database& db,
+                                                                                     const SkillSpec& skill_spec) {
+    const std::unordered_set<const Skill*> possible_skills = [&db](){
+        // Initial set is just armour skills
+        std::unordered_set<const Skill*> x = db.armour.all_possible_skills_from_armour_without_set_bonuses();
+        // Now we get the other skills
+        std::unordered_set<const Skill*> deco_skills = db.decos.all_possible_skills_from_decos();
+        std::unordered_set<const Skill*> charm_skills = db.charms.all_possible_skills_from_charms();
+        // And now, we merge them in.
+        x.insert(deco_skills.begin(), deco_skills.end());
+        x.insert(charm_skills.begin(), charm_skills.end());
+        return x;
+    }();
+
+    std::vector<const Skill*> ret = skill_spec.get_skill_subset_as_vector();
+
+    const auto pred = [&possible_skills](const Skill* x){
+        return !Utils::set_has_key(possible_skills, x);
+    };
+    ret.erase(std::remove_if(ret.begin(), ret.end(), pred), ret.end());
+
+    return ret;
+}
+
+
 static void merge_in_armour_list(SSBSeenMap<ArmourSetCombo>& armour_combos,
                                  const SSBSeenMapSmall<ArmourPieceCombo>& piece_combos,
                                  const SkillSpec& skill_spec) {
@@ -550,12 +576,13 @@ static void do_search(const Database& db, const SearchParameters& params) {
     // We build the initial build list.
     
     start_t = std::chrono::steady_clock::now();
-    std::clog << "Combining Seen Set Initializing...";
     SSBSeenMapProto<ArmourSetCombo> armour_combos = [&](){
+        std::vector<const Skill*> sk_vec = get_skills_in_subset_servable_without_sb_or_weapons(db, params.skill_spec);
+        Utils::log_stat("Skills to be considered by the combining seen set: ", sk_vec.size());
         std::vector<const SetBonus*> sb_vec (set_bonus_subset.begin(), set_bonus_subset.end());
-        return SSBSeenMapProto<ArmourSetCombo>(params.skill_spec.get_skill_subset_as_vector(), std::move(sb_vec));
+        Utils::log_stat("Set bonuses to be considered by the combining seen set: ", sb_vec.size());
+        return SSBSeenMapProto<ArmourSetCombo>(sk_vec, std::move(sb_vec));
     }();
-    std::clog << " done!" << "\n";
     Utils::log_stat_duration("  >>> Combining seen set initialization: ", start_t);
     std::clog << "\n";
     

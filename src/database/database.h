@@ -7,6 +7,7 @@
 #define MHWIBS_DATABASE_H
 
 #include <map>
+#include <unordered_set>
 #include <unordered_map>
 
 #include "../core/core.h"
@@ -58,6 +59,7 @@ public:
     // Access
     const Decoration* at(const std::string& deco_id) const;
     std::vector<const Decoration*> get_all() const;
+    std::unordered_set<const Skill*> all_possible_skills_from_decos() const;
 
 private:
     DecorationsDatabase() noexcept;
@@ -115,6 +117,7 @@ public:
                           ArmourSlot         slot) const;
     std::vector<const ArmourPiece*> get_all_pieces() const;
     std::map<ArmourSlot, std::vector<const ArmourPiece*>> get_all_pieces_by_slot() const;
+    std::unordered_set<const Skill*> all_possible_skills_from_armour_without_set_bonuses() const;
 
 private:
     ArmourDatabase() noexcept;
@@ -135,6 +138,7 @@ public:
     // Access
     const Charm* at(const std::string& charm_id) const;
     std::vector<const Charm*> get_all() const;
+    std::unordered_set<const Skill*> all_possible_skills_from_charms() const;
 
 private:
     CharmsDatabase() noexcept;

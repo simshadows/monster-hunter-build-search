@@ -99,6 +99,17 @@ std::vector<const Charm*> CharmsDatabase::get_all() const {
 }
 
 
+std::unordered_set<const Skill*> CharmsDatabase::all_possible_skills_from_charms() const {
+    std::unordered_set<const Skill*> ret;
+    for (const auto& e : this->charms_map) {
+        for (const Skill * const skill : e.second->skills) {
+            ret.emplace(skill);
+        }
+    }
+    return ret;
+}
+
+
 CharmsDatabase::CharmsDatabase() noexcept = default;
 
 
