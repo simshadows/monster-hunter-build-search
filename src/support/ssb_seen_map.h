@@ -15,53 +15,43 @@ namespace MHWIBuildSearch
 {
 
 
-// TODO: I need to try to come up with better names
-// TODO: Also, I should probably make this a union or something.
-
-struct SSBSeenTreeNode {
-    std::vector<SSBSeenTreeNode> next {};
-    bool is_fully_populated {false};
-};
-
-
 template<class D>
-class SSBSeenMapOldProto {
+class SSBSeenMapProto {
     using T = std::tuple<SkillMap, SetBonusMap>;
     using H = Utils::CounterTupleHash<SkillMap, SetBonusMap>;
+
+    template<std::size_t I>
+    using K = typename std::tuple_element<I, T>::type::key_type;
 
     using O = std::tuple<std::vector<SkillMap::key_type>, std::vector<SetBonusMap::key_type>>;
 
     template<std::size_t I>
     using O_iter = typename std::tuple_element<I, O>::type::const_iterator;
 
-    using T_size = std::tuple_size<T>;
-
-    SSBSeenTreeNode seen_tree {}; 
     // When we traverse the tree, each level corresponds to keys in this order.
     O key_order;
 
-    std::unordered_map<T, D, H> data {};
+    std::vector<bool> seen_tree; 
+
+    std::unordered_map<T, D, H> data;
+
 public:
 
-    SSBSeenMapOldProto(std::vector<const Skill*>&& new_ko1, std::vector<const SetBonus*>&& new_ko2) noexcept
-        : seen_tree {}
-        , key_order {std::make_tuple(std::move(new_ko1), std::move(new_ko2))}
+    SSBSeenMapProto(std::vector<const Skill*>&& new_ko1,
+                    std::vector<const SetBonus*>&& new_ko2) noexcept
+        : key_order {std::make_tuple(std::move(new_ko1), std::move(new_ko2))}
+        , seen_tree {build_tree(key_order)}
         , data      {}
     {
-        this->build_tree_1a(std::get<0>(this->key_order).begin(), this->seen_tree);
     }
 
-    //void add(const D& d, const SkillMap& skills, const SetBonusMap& set_bonuses) noexcept {
-    //    this->add(d, std::make_tuple(skills, set_bonuses))
-    //}
-
-    void add(const D& d, const T& k) noexcept {
+    void add(D&& d, T&& k) noexcept {
         T w;
         assert(!std::get<0>(w).size());
         assert(!std::get<1>(w).size());
-        const bool success = this->add_power_set_1(std::get<0>(this->key_order).begin(), this->seen_tree, k, w);
+        const bool success = this->add_power_set_1(std::get<0>(this->key_order).begin(), 0, this->seen_tree.size(), k, w);
         if (success) {
-            this->data.emplace(std::make_pair(k, d));
+            this->data.emplace(std::make_pair(std::move(k), std::move(d)));
         }
     }
 
@@ -87,70 +77,49 @@ public:
 
 private:
 
-    std::size_t key_1_maxnext(const O_iter<0>& p) {
-        return (*p)->secret_limit;
+    static std::size_t key_maxnext(const K<0>& x) {
+        return x->secret_limit;
     }
 
-    std::size_t key_2_maxnext(const O_iter<1>& p) {
-        (void)p;
+    static std::size_t key_maxnext(const K<1>& x) {
+        (void)x;
         return 5; // 1 for each armour piece. This *should* be true, but idk. TODO: Make something actually robust.
     }
 
-    void build_tree_1a(const O_iter<0>& p, SSBSeenTreeNode& node) {
-        assert(p != std::get<0>(this->key_order).end()); // We must have already checked for this condition.
-        const std::size_t max_index = this->key_1_maxnext(p);
-        // TODO: We could almost certainly do better than this loop below.
-        node.next.reserve(max_index + 1); // TODO: Uncomment this.
-        for (std::size_t i = 0; i <= max_index; ++i) {
-            assert(node.next.size() == i);
-            this->build_tree_1b(p, node.next.emplace_back());
+    static std::vector<bool> build_tree(const O& new_key_order) noexcept {
+        std::size_t vec_size = 1;
+        for (const K<0>& e : std::get<0>(new_key_order)) {
+            vec_size *= (key_maxnext(e) + 1); // +1 due to having to include zero values of the counter.
         }
+        for (const K<1>& e : std::get<1>(new_key_order)) {
+            vec_size *= (key_maxnext(e) + 1); // similarly +1
+        }
+
+        std::vector<bool> ret (vec_size, false);
+
+        return ret;
     }
 
-    void build_tree_1b(const O_iter<0>& p, SSBSeenTreeNode& node) {
-        const auto q = p + 1;
+    bool add_power_set_1(const O_iter<0>& q, const std::size_t tree_lo, const std::size_t tree_hi, const T& k, T& w) {
+        assert(tree_lo < tree_hi);
         if (q == std::get<0>(this->key_order).end()) {
-            this->build_tree_2a(std::get<1>(this->key_order).begin(), node);
+            return this->add_power_set_2(std::get<1>(this->key_order).begin(), tree_lo, tree_hi, k, w);
         } else {
-            this->build_tree_1a(q, node);
-        }
-    }
-
-    void build_tree_2a(const O_iter<1>& p, SSBSeenTreeNode& node) {
-        assert(p != std::get<1>(this->key_order).end()); // We must have already checked for this condition.
-        const std::size_t max_index = this->key_2_maxnext(p);
-        // TODO: We could almost certainly do better than this loop below.
-        node.next.reserve(max_index + 1); // TODO: Uncomment this.
-        for (std::size_t i = 0; i <= max_index; ++i) {
-            assert(node.next.size() == i);
-            this->build_tree_2b(p, node.next.emplace_back());
-        }
-    }
-
-    void build_tree_2b(const O_iter<1>& p, SSBSeenTreeNode& node) {
-        const auto q = p + 1;
-        if (q != std::get<1>(this->key_order).end()) {
-            this->build_tree_2a(q, node);
-        }
-    }
-
-    // Returns true if it successfully adds something.
-    // (This helps cut down unnecessary writes.)
-    bool add_power_set_1(const O_iter<0>& q, SSBSeenTreeNode& node, const T& k, T& w) {
-        if (q == std::get<0>(this->key_order).end()) {
-            return this->add_power_set_2(std::get<1>(this->key_order).begin(), node, k, w);
-        } else {
-            const unsigned int lvl = std::get<0>(k).get(*q);
-            assert(node.next.size() == key_1_maxnext(q) + 1);
-            assert(lvl < node.next.size());
+            const unsigned int max_v = key_maxnext(*q);
+            const unsigned int v = std::get<0>(k).get(*q);
+            assert(v <= max_v);
             // TODO: Having to use signed int here is weird. Change it?
-            for (int i = lvl; i >= 0; --i) {
+            for (int i = v; i >= 0; --i) {
                 std::get<0>(w).set_or_remove(*q, i); // TODO: Somehow use explicit set/remove?
-                SSBSeenTreeNode& next_node = node.next[i];
-                const bool success = this->add_power_set_1(q + 1, next_node, k, w);
+                const std::size_t next_width = (tree_hi - tree_lo) / (max_v + 1);
+                const std::size_t next_tree_lo = tree_lo + (i * next_width);
+                const std::size_t next_tree_hi = next_tree_lo + next_width;
+                assert(tree_lo <= next_tree_lo);
+                assert(next_tree_lo <= next_tree_hi);
+                assert(next_tree_hi <= tree_hi);
+                const bool success = this->add_power_set_1(q + 1, next_tree_lo, next_tree_hi, k, w);
                 if (!success) {
-                    //std::get<0>(w).try_remove(*q);
-                    return ((unsigned int) i != lvl) && (lvl > 0);
+                    return ((unsigned int) i != v) && (v > 0);
                 }
             }
             assert(!std::get<0>(w).contains(*q));
@@ -158,34 +127,40 @@ private:
         }
     }
 
-    bool add_power_set_2(const O_iter<1>& q, SSBSeenTreeNode& node, const T& k, T& w) {
+    bool add_power_set_2(const O_iter<1>& q, const std::size_t tree_lo, const std::size_t tree_hi, const T& k, T& w) {
+        assert(tree_lo < tree_hi);
         if (q == std::get<1>(this->key_order).end()) {
-            assert(!node.next.size());
-            if (node.is_fully_populated) {
+            assert(tree_lo == tree_hi - 1); // We must have already found the element we're interested in.
+            assert(tree_lo < this->seen_tree.size());
+            if (this->seen_tree[tree_lo]) {
                 if (k != w) {
                     // We need this to avoid accidentally deleting data for an input that was already seen.
                     this->data.erase(w);
                 }
                 return false;
             } else {
-                node.is_fully_populated = true;
+                this->seen_tree[tree_lo] = true;
                 return true;
             }
         } else {
-            const unsigned int pieces = std::get<1>(k).get(*q);
-            assert(node.next.size() == key_2_maxnext(q) + 1);
-            assert(pieces < node.next.size());
+            const unsigned int max_v = key_maxnext(*q);
+            const unsigned int v = std::get<1>(k).get(*q);
+            assert(v <= max_v);
             // TODO: Having to use signed int here is weird. Change it?
-            for (int i = pieces; i >= 0; --i) {
+            for (int i = v; i >= 0; --i) {
                 std::get<1>(w).set_or_remove(*q, i); // TODO: Somehow use explicit set/remove?
-                SSBSeenTreeNode& next_node = node.next[i];
-                const bool success = this->add_power_set_2(q + 1, next_node, k, w);
+                const std::size_t next_width = (tree_hi - tree_lo) / (max_v + 1);
+                const std::size_t next_tree_lo = tree_lo + (i * next_width);
+                const std::size_t next_tree_hi = next_tree_lo + next_width;
+                assert(tree_lo <= next_tree_lo);
+                assert(next_tree_lo < next_tree_hi);
+                assert(next_tree_hi <= tree_hi);
+                const bool success = this->add_power_set_2(q + 1, next_tree_lo, next_tree_hi, k, w);
                 if (!success) {
-                    //std::get<1>(w).try_remove(*q);
-                    return ((unsigned int) i != pieces) && (pieces > 0);
+                    return ((unsigned int) i != v) && (v > 0);
                 }
             }
-            assert(!std::get<1>(w).contains(*q)); // We should've finished the loop at i==0, thus *q gets removed.
+            assert(!std::get<1>(w).contains(*q));
             return true;
         }
     }

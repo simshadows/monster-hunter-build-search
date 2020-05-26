@@ -34,7 +34,7 @@ using SSBTuple = std::tuple<SkillMap, SetBonusMap>;
 template<class StoredData>
 using SSBSeenMapSmall = Utils::NaiveCounterSubsetSeenMap<StoredData, SkillMap, SetBonusMap>;
 template<class StoredData>
-using SSBSeenMap = SSBSeenMapOldProto<StoredData>;
+using SSBSeenMap = SSBSeenMapProto<StoredData>;
 
 
 struct ArmourPieceCombo {
@@ -589,6 +589,7 @@ static void do_search(const Database& db, const SearchParameters& params) {
         }
         std::vector<const SetBonus*> sb_vec (sb_set.begin(), sb_set.end());
         Utils::log_stat("Set bonuses to be considered by the combining seen set: ", sb_vec.size());
+
         return SSBSeenMap<ArmourSetCombo>(std::move(sk_vec), std::move(sb_vec));
     }();
     Utils::log_stat_duration("  >>> Combining seen set initialization: ", start_t);
