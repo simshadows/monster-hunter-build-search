@@ -34,7 +34,7 @@ using SSBTuple = std::tuple<SkillMap, SetBonusMap>;
 template<class StoredData>
 using SSBSeenMapSmall = Utils::NaiveCounterSubsetSeenMap<StoredData, SkillMap, SetBonusMap>;
 template<class StoredData>
-using SSBSeenMap = SSBSeenMapProto<StoredData>;
+using SSBSeenMap = SSBSeenMapOldProto<StoredData>;
 
 
 struct ArmourPieceCombo {
@@ -576,7 +576,7 @@ static void do_search(const Database& db, const SearchParameters& params) {
     // We build the initial build list.
     
     start_t = std::chrono::steady_clock::now();
-    SSBSeenMapProto<ArmourSetCombo> armour_combos = [&](){
+    SSBSeenMap<ArmourSetCombo> armour_combos = [&](){
         std::vector<const Skill*> sk_vec = get_skills_in_subset_servable_without_sb_or_weapons(db, params.skill_spec);
         Utils::log_stat("Skills to be considered by the combining seen set: ", sk_vec.size());
         std::unordered_set<const SetBonus*> sb_set;
@@ -589,7 +589,7 @@ static void do_search(const Database& db, const SearchParameters& params) {
         }
         std::vector<const SetBonus*> sb_vec (sb_set.begin(), sb_set.end());
         Utils::log_stat("Set bonuses to be considered by the combining seen set: ", sb_vec.size());
-        return SSBSeenMapProto<ArmourSetCombo>(sk_vec, std::move(sb_vec));
+        return SSBSeenMap<ArmourSetCombo>(std::move(sk_vec), std::move(sb_vec));
     }();
     Utils::log_stat_duration("  >>> Combining seen set initialization: ", start_t);
     std::clog << "\n";

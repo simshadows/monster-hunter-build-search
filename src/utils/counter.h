@@ -35,6 +35,8 @@ class Counter {
     C data {};
 public:
 
+    using key_type = T;
+
     /*
      * Modifiers
      */
