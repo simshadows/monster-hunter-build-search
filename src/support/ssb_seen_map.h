@@ -18,7 +18,7 @@ namespace MHWIBuildSearch
 template<class D>
 class SSBSeenMapProto {
     using T = std::tuple<SkillMap, SetBonusMap>;
-    using H = Utils::CounterTupleHash<SkillMap, SetBonusMap>;
+    using T_size = std::tuple_size<T>;
 
     template<std::size_t I>
     using K = typename std::tuple_element<I, T>::type::key_type;
@@ -27,6 +27,8 @@ class SSBSeenMapProto {
 
     template<std::size_t I>
     using O_iter = typename std::tuple_element<I, O>::type::const_iterator;
+
+    using H = Utils::CounterTupleHash<SkillMap, SetBonusMap>;
 
     // When we traverse the tree, each level corresponds to keys in this order.
     O key_order;
@@ -37,9 +39,9 @@ class SSBSeenMapProto {
 
 public:
 
-    SSBSeenMapProto(std::vector<const Skill*>&& new_ko1,
-                    std::vector<const SetBonus*>&& new_ko2) noexcept
-        : key_order {std::make_tuple(std::move(new_ko1), std::move(new_ko2))}
+    template<class... Args>
+    SSBSeenMapProto(Args&&... args) noexcept
+        : key_order {std::make_tuple(std::forward<Args>(args)...)}
         , seen_tree {build_tree(key_order)}
         , data      {}
     {
@@ -47,8 +49,6 @@ public:
 
     void add(D&& d, T&& k) noexcept {
         T w;
-        assert(!std::get<0>(w).size());
-        assert(!std::get<1>(w).size());
         const bool success = this->add_power_set_1(std::get<0>(this->key_order).begin(), 0, this->seen_tree.size(), k, w);
         if (success) {
             this->data.emplace(std::make_pair(std::move(k), std::move(d)));
@@ -88,16 +88,18 @@ private:
 
     static std::vector<bool> build_tree(const O& new_key_order) noexcept {
         std::size_t vec_size = 1;
-        for (const K<0>& e : std::get<0>(new_key_order)) {
-            vec_size *= (key_maxnext(e) + 1); // +1 due to having to include zero values of the counter.
-        }
-        for (const K<1>& e : std::get<1>(new_key_order)) {
-            vec_size *= (key_maxnext(e) + 1); // similarly +1
-        }
 
-        std::vector<bool> ret (vec_size, false);
+        const auto op1 = [&vec_size](auto& x){
+            for (const auto& e : x) {
+                vec_size *= (key_maxnext(e) + 1); // +1 due to having to include zero values of the counter.
+            }
+        };
+        const auto op2 = [&op1](auto&... xv){
+            return (op1(xv), ...);
+        };
+        std::apply(op2, new_key_order);
 
-        return ret;
+        return std::vector<bool>(vec_size, false);
     }
 
     bool add_power_set_1(const O_iter<0>& q, const std::size_t tree_lo, const std::size_t tree_hi, const T& k, T& w) {
@@ -130,18 +132,7 @@ private:
     bool add_power_set_2(const O_iter<1>& q, const std::size_t tree_lo, const std::size_t tree_hi, const T& k, T& w) {
         assert(tree_lo < tree_hi);
         if (q == std::get<1>(this->key_order).end()) {
-            assert(tree_lo == tree_hi - 1); // We must have already found the element we're interested in.
-            assert(tree_lo < this->seen_tree.size());
-            if (this->seen_tree[tree_lo]) {
-                if (k != w) {
-                    // We need this to avoid accidentally deleting data for an input that was already seen.
-                    this->data.erase(w);
-                }
-                return false;
-            } else {
-                this->seen_tree[tree_lo] = true;
-                return true;
-            }
+            return this->add_power_set_3(tree_lo, tree_hi, k, w);
         } else {
             const unsigned int max_v = key_maxnext(*q);
             const unsigned int v = std::get<1>(k).get(*q);
@@ -161,6 +152,22 @@ private:
                 }
             }
             assert(!std::get<1>(w).contains(*q));
+            return true;
+        }
+    }
+
+    bool add_power_set_3(const std::size_t tree_lo, const std::size_t tree_hi, const T& k, T& w) {
+        (void)tree_hi;
+        assert(tree_lo == tree_hi - 1); // We must have already found the element we're interested in.
+        assert(tree_lo < this->seen_tree.size());
+        if (this->seen_tree[tree_lo]) {
+            if (k != w) {
+                // We need this to avoid accidentally deleting data for an input that was already seen.
+                this->data.erase(w);
+            }
+            return false;
+        } else {
+            this->seen_tree[tree_lo] = true;
             return true;
         }
     }
