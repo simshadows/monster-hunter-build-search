@@ -49,7 +49,11 @@ public:
 
     void add(D&& d, T&& k) noexcept {
         T w;
-        const bool success = this->add_power_set_1(std::get<0>(this->key_order).begin(), 0, this->seen_tree.size(), k, w);
+        const bool success = this->add_power_set_inode<0>(0,
+                                                          this->seen_tree.size(),
+                                                          k,
+                                                          w,
+                                                          std::get<0>(this->key_order).begin() );
         if (success) {
             this->data.emplace(std::make_pair(std::move(k), std::move(d)));
         }
@@ -102,61 +106,46 @@ private:
         return std::vector<bool>(vec_size, false);
     }
 
-    bool add_power_set_1(const O_iter<0>& q, const std::size_t tree_lo, const std::size_t tree_hi, const T& k, T& w) {
+    template<std::size_t I>
+    bool add_power_set_inode(const std::size_t tree_lo,
+                             const std::size_t tree_hi,
+                             const T& k,
+                             T& w,
+                             const O_iter<I>& p ) {
         assert(tree_lo < tree_hi);
-        if (q == std::get<0>(this->key_order).end()) {
-            return this->add_power_set_2(std::get<1>(this->key_order).begin(), tree_lo, tree_hi, k, w);
+        if (p == std::get<I>(this->key_order).end()) {
+            if constexpr (I + 1 < T_size::value) {
+                return this->add_power_set_inode<I + 1>(tree_lo, tree_hi, k, w, std::get<I + 1>(this->key_order).begin());
+            } else {
+                return this->add_power_set_leafnode(tree_lo, tree_hi, k, w);
+            }
         } else {
-            const unsigned int max_v = key_maxnext(*q);
-            const unsigned int v = std::get<0>(k).get(*q);
+            const unsigned int max_v = key_maxnext(*p);
+            const unsigned int v = std::get<I>(k).get(*p);
             assert(v <= max_v);
             // TODO: Having to use signed int here is weird. Change it?
             for (int i = v; i >= 0; --i) {
-                std::get<0>(w).set_or_remove(*q, i); // TODO: Somehow use explicit set/remove?
+                std::get<I>(w).set_or_remove(*p, i); // TODO: Somehow use explicit set/remove?
                 const std::size_t next_width = (tree_hi - tree_lo) / (max_v + 1);
                 const std::size_t next_tree_lo = tree_lo + (i * next_width);
                 const std::size_t next_tree_hi = next_tree_lo + next_width;
                 assert(tree_lo <= next_tree_lo);
                 assert(next_tree_lo <= next_tree_hi);
                 assert(next_tree_hi <= tree_hi);
-                const bool success = this->add_power_set_1(q + 1, next_tree_lo, next_tree_hi, k, w);
+                const bool success = this->add_power_set_inode<I>(next_tree_lo, next_tree_hi, k, w, p + 1);
                 if (!success) {
                     return ((unsigned int) i != v) && (v > 0);
                 }
             }
-            assert(!std::get<0>(w).contains(*q));
+            assert(!std::get<I>(w).contains(*p));
             return true;
         }
     }
 
-    bool add_power_set_2(const O_iter<1>& q, const std::size_t tree_lo, const std::size_t tree_hi, const T& k, T& w) {
-        assert(tree_lo < tree_hi);
-        if (q == std::get<1>(this->key_order).end()) {
-            return this->add_power_set_3(tree_lo, tree_hi, k, w);
-        } else {
-            const unsigned int max_v = key_maxnext(*q);
-            const unsigned int v = std::get<1>(k).get(*q);
-            assert(v <= max_v);
-            // TODO: Having to use signed int here is weird. Change it?
-            for (int i = v; i >= 0; --i) {
-                std::get<1>(w).set_or_remove(*q, i); // TODO: Somehow use explicit set/remove?
-                const std::size_t next_width = (tree_hi - tree_lo) / (max_v + 1);
-                const std::size_t next_tree_lo = tree_lo + (i * next_width);
-                const std::size_t next_tree_hi = next_tree_lo + next_width;
-                assert(tree_lo <= next_tree_lo);
-                assert(next_tree_lo < next_tree_hi);
-                assert(next_tree_hi <= tree_hi);
-                const bool success = this->add_power_set_2(q + 1, next_tree_lo, next_tree_hi, k, w);
-                if (!success) {
-                    return ((unsigned int) i != v) && (v > 0);
-                }
-            }
-            assert(!std::get<1>(w).contains(*q));
-            return true;
-        }
-    }
-
-    bool add_power_set_3(const std::size_t tree_lo, const std::size_t tree_hi, const T& k, T& w) {
+    bool add_power_set_leafnode(const std::size_t tree_lo,
+                                const std::size_t tree_hi,
+                                const T& k,
+                                T& w ) {
         (void)tree_hi;
         assert(tree_lo == tree_hi - 1); // We must have already found the element we're interested in.
         assert(tree_lo < this->seen_tree.size());

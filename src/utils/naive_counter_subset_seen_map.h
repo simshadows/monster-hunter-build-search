@@ -107,13 +107,13 @@ private:
         // from copying and constructing entire tuples of counters.
         T w = k;
 
-        (this->add_power_set_stage<Iv>(k, w, std::make_index_sequence<T_size::value>{}), ...); // Fold
+        (this->add_power_set_stage<Iv>(k, w), ...); // Fold
     }
 
-    template<std::size_t J, std::size_t... Iv>
-    void add_power_set_stage(const T& k, T& w, std::index_sequence<Iv...>) noexcept {
-        for (const auto& e : std::get<J>(k)) {
-            auto& w_counter = std::get<J>(w);
+    template<std::size_t I>
+    void add_power_set_stage(const T& k, T& w) noexcept {
+        for (const auto& e : std::get<I>(k)) {
+            auto& w_counter = std::get<I>(w);
 
             const auto& kk = e.first;
             const unsigned int vv = e.second;
