@@ -66,11 +66,11 @@ public:
 
 class IBWeaponAugments : public WeaponAugmentsInstance {
 
-    using AugmentLvlMap = std::unordered_map<WeaponAugment, unsigned int>;
+    using AugmentLvls = Utils::Counter<WeaponAugment>;
 
     const unsigned int rarity;
     unsigned int augment_lvl;
-    AugmentLvlMap augments; // Augment levels
+    AugmentLvls augments; // Augment levels
 public:
     IBWeaponAugments(const Weapon * const weapon) noexcept
         : rarity      (weapon->rarity)
@@ -87,10 +87,10 @@ public:
         IBWeaponAugments base (weapon);
         base.set_augment(WeaponAugment::augment_lvl, k_IB_MAX_AUGMENT_LVL);
 
-        std::vector<AugmentLvlMap> maps = Utils::generate_cartesian_product(ib_supported_augments_v, k_IB_AUGMENT_MAX_LVL);
+        std::vector<AugmentLvls> maps = AugmentLvls::generate_power_set(ib_supported_augments_v, k_IB_AUGMENT_MAX_LVL);
 
         std::vector<std::shared_ptr<WeaponAugmentsInstance>> ret;
-        for (const AugmentLvlMap& map : maps) {
+        for (const AugmentLvls& map : maps) {
             IBWeaponAugments new_augs = base;
             bool valid_new_augs = true;
             try {
@@ -163,8 +163,8 @@ public:
                 throw InvalidChange("Attempted to apply an unsupported weapon augment.");
             }
 
-            AugmentLvlMap new_augments = this->augments;
-            new_augments[augment] = lvl;
+            AugmentLvls new_augments = this->augments;
+            new_augments.set(augment, lvl);
             const unsigned int old_limit = calculate_slot_limit(this->rarity, this->augment_lvl);
             const unsigned int new_consumption = calculate_slot_consumption_from_map(new_augments);
             if (new_consumption > old_limit) throw InvalidChange("New augments cannot be supported by current slot limit.");
@@ -175,11 +175,7 @@ public:
 private:
 
     unsigned int get_augment_lvl(const WeaponAugment augment) const {
-        if (Utils::map_has_key(this->augments, augment)) {
-            return this->augments.at(augment);
-        } else {
-            return 0;
-        }
+        return this->augments.get(augment);
     }
 
     // TODO: Figure out a better way to do this?
@@ -215,7 +211,7 @@ private:
         }
     }
 
-    static unsigned int calculate_slot_consumption_from_map(const AugmentLvlMap& test_augments) {
+    static unsigned int calculate_slot_consumption_from_map(const AugmentLvls& test_augments) {
         unsigned int ret = 0;
         for (const auto& e : test_augments) {
             ret += get_augment_accumulated_consumption(e.first, e.second);

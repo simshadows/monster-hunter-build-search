@@ -131,7 +131,7 @@ struct WeaponInstancePruneFn {
 
 static std::vector<WeaponInstanceExtended> prepare_weapons(const Database& db,
                                                            const SearchParameters& params,
-                                                           std::unordered_set<const SetBonus*>& set_bonus_subset) {
+                                                           const std::unordered_set<const SetBonus*>& set_bonus_subset) {
 
     auto start_t = std::chrono::steady_clock::now();
 
@@ -507,28 +507,30 @@ static void do_search(const Database& db, const SearchParameters& params) {
 
     std::clog << params.skill_spec.get_humanreadable() << std::endl << std::endl;
 
-    std::unordered_set<const SetBonus*> set_bonus_subset;
+    const std::unordered_set<const SetBonus*> set_bonus_subset = [&](){
+        std::unordered_set<const SetBonus*> x;
 
-    {
         const std::vector<const SetBonus*> all_set_bonuses = db.skills.get_all_set_bonuses();
 
         for (const SetBonus * const set_bonus : all_set_bonuses) {
             for (const auto& e : set_bonus->stages) {
                 if (params.skill_spec.is_in_subset(e.second)) {
-                    set_bonus_subset.emplace(set_bonus);
+                    x.emplace(set_bonus);
                     break;
                 }
             }
         }
 
-        if (set_bonus_subset.size()) {
+        if (x.size()) {
             std::clog << "Set bonuses to be considered:";
-            for (const SetBonus * const set_bonus : set_bonus_subset) {
+            for (const SetBonus * const set_bonus : x) {
                 std::clog << std::endl << "  " << set_bonus->name;
             }
             std::clog << std::endl << std::endl;
         }
-    }
+
+        return x;
+    }();
 
     std::vector<WeaponInstanceExtended> weapons = prepare_weapons(db, params, set_bonus_subset);
     const std::size_t weapons_initial_size = weapons.size();
@@ -746,11 +748,6 @@ static void do_search(const Database& db, const SearchParameters& params) {
     std::clog << std::endl;
     Utils::log_stat_duration("Search execution time (before teardown): ", total_start_t);
     Utils::log_stat();
-
-    //// A tempting cheat for skipping all the memory cleanup, saving us time.
-    //// We could technically use it since we don't open any resources...
-    //std::clog << std::flush;
-    //std::exit(0);
 }
 
 
