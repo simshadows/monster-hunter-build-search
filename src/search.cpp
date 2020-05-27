@@ -20,12 +20,22 @@
 #include "utils/logging.h"
 #include "utils/pruning_vector.h"
 #include "utils/counter.h"
-#include "utils/naive_counter_subset_seen_map.h"
-#include "support/ssb_seen_map.h"
+#include "utils/counter_subset_seen_map.h"
 
 
 namespace MHWIBuildSearch
 {
+
+
+struct SSBLimits {
+    unsigned int operator()(const Skill * const k) const noexcept {
+        return k->secret_limit;
+    }
+    unsigned int operator()(const SetBonus * const k) const noexcept {
+        (void)k;
+        return 5; // 1 for each armour piece. This is true since we don't consider the weapon.
+    }
+};
 
 
 using SSBTuple = std::tuple<SkillMap, SetBonusMap>;
@@ -34,7 +44,7 @@ using SSBTuple = std::tuple<SkillMap, SetBonusMap>;
 template<class StoredData>
 using SSBSeenMapSmall = Utils::NaiveCounterSubsetSeenMap<StoredData, SkillMap, SetBonusMap>;
 template<class StoredData>
-using SSBSeenMap = SSBSeenMapProto<StoredData>;
+using SSBSeenMap = Utils::BitTreeCounterSubsetSeenMap<StoredData, SSBLimits, SkillMap, SetBonusMap>;
 
 
 struct ArmourPieceCombo {
