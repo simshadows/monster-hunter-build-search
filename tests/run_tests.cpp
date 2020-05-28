@@ -114,7 +114,7 @@ TEST_CASE("Incrementally building up a greatsword Safi Shattersplitter build.") 
         DecoEquips decos;
 
         double efr = calculate_efr_from_gear_lookup(weapon, armour, decos, skill_spec);
-        REQUIRE(Utils::round_2decpl(efr) == 390.31);
+        REQUIRE(Utils::round_2decpl(efr) == Approx(390.31));
     }
 
     SECTION("Safi Shattersplitter + 3 Armour") {
@@ -130,7 +130,7 @@ TEST_CASE("Incrementally building up a greatsword Safi Shattersplitter build.") 
         DecoEquips decos;
 
         double efr = calculate_efr_from_gear_lookup(weapon, armour, decos, skill_spec);
-        REQUIRE(Utils::round_2decpl(efr) == 415.77);
+        REQUIRE(Utils::round_2decpl(efr) == Approx(415.77));
     }
 
     SECTION("Safi Shattersplitter + 5 Armour") {
@@ -145,7 +145,7 @@ TEST_CASE("Incrementally building up a greatsword Safi Shattersplitter build.") 
         DecoEquips decos;
 
         double efr = calculate_efr_from_gear_lookup(weapon, armour, decos, skill_spec);
-        REQUIRE(Utils::round_2decpl(efr) == 435.11);
+        REQUIRE(Utils::round_2decpl(efr) == Approx(435.11));
     }
 
     SECTION("Safi Shattersplitter + 5 Armour + Charm") {
@@ -160,7 +160,7 @@ TEST_CASE("Incrementally building up a greatsword Safi Shattersplitter build.") 
         DecoEquips decos;
 
         double efr = calculate_efr_from_gear_lookup(weapon, armour, decos, skill_spec);
-        REQUIRE(Utils::round_2decpl(efr) == 480.30);
+        REQUIRE(Utils::round_2decpl(efr) == Approx(480.30));
     }
 
     SECTION("Safi Shattersplitter + Augments + 5 Armour + Charm") {
@@ -178,7 +178,7 @@ TEST_CASE("Incrementally building up a greatsword Safi Shattersplitter build.") 
         DecoEquips decos;
 
         double efr = calculate_efr_from_gear_lookup(weapon, armour, decos, skill_spec);
-        REQUIRE(Utils::round_2decpl(efr) == 490.63);
+        REQUIRE(Utils::round_2decpl(efr) == Approx(490.63));
     }
 
     SECTION("Safi Shattersplitter + Augments + Upgrades + 5 Armour + Charm") {
@@ -201,7 +201,7 @@ TEST_CASE("Incrementally building up a greatsword Safi Shattersplitter build.") 
         DecoEquips decos;
 
         double efr = calculate_efr_from_gear_lookup(weapon, armour, decos, skill_spec);
-        REQUIRE(Utils::round_2decpl(efr) == 554.90);
+        REQUIRE(Utils::round_2decpl(efr) == Approx(554.90));
     }
 
     SECTION("Safi Shattersplitter + Augments + Upgrades + 5 Armour + Charm + Decorations") {
@@ -237,7 +237,8 @@ TEST_CASE("Incrementally building up a greatsword Safi Shattersplitter build.") 
         decos.add(db.decos.at("ATTACK"));
 
         double efr = calculate_efr_from_gear_lookup(weapon, armour, decos, skill_spec);
-        REQUIRE(Utils::round_2decpl(efr) == 682.55);
+        // Interestingly, this assertion fails when we use the -Ofast compiler flag.
+        REQUIRE(Utils::round_2decpl(efr) == Approx(682.55));
     }
 
 }
@@ -270,7 +271,7 @@ TEST_CASE("Incrementally building up a greatsword Acid Shredder II build.") {
         DecoEquips decos;
 
         double efr = calculate_efr_from_gear_lookup(weapon, armour, decos, skill_spec);
-        REQUIRE(Utils::round_2decpl(efr) == 393.60);
+        REQUIRE(Utils::round_2decpl(efr) == Approx(393.60));
     }
 
     SECTION("Acid Shredder II + Upgrades + 5 Armour + Charm") {
@@ -293,7 +294,7 @@ TEST_CASE("Incrementally building up a greatsword Acid Shredder II build.") {
         DecoEquips decos;
 
         double efr = calculate_efr_from_gear_lookup(weapon, armour, decos, skill_spec);
-        REQUIRE(Utils::round_2decpl(efr) == 469.64);
+        REQUIRE(Utils::round_2decpl(efr) == Approx(469.64));
     }
 
     SECTION("Acid Shredder II + Augments + Upgrades5 Armour + Charm") {
@@ -319,7 +320,7 @@ TEST_CASE("Incrementally building up a greatsword Acid Shredder II build.") {
         DecoEquips decos;
 
         double efr = calculate_efr_from_gear_lookup(weapon, armour, decos, skill_spec);
-        REQUIRE(Utils::round_2decpl(efr) == 492.35);
+        REQUIRE(Utils::round_2decpl(efr) == Approx(492.35));
     }
 
 }
@@ -358,7 +359,7 @@ TEST_CASE("DecoEquips::fits()") {
 
         double efr = calculate_efr_from_gear_lookup(weapon, armour, decos, skill_spec);
         REQUIRE(decos.fits_in(armour, weapon.calculate_contribution()));
-        REQUIRE(Utils::round_2decpl(efr) == 512.28);
+        REQUIRE(Utils::round_2decpl(efr) == Approx(512.28));
 
         decos.add(db.decos.at("CHALLENGER_2X"));
         decos.add(db.decos.at("ATTACK"));
@@ -375,7 +376,7 @@ TEST_CASE("DecoEquips::fits()") {
 
         efr = calculate_efr_from_gear_lookup(weapon, armour, decos, skill_spec);
         REQUIRE(decos.fits_in(armour, weapon.calculate_contribution()));
-        REQUIRE(Utils::round_2decpl(efr) == 649.38);
+        REQUIRE(Utils::round_2decpl(efr) == Approx(649.38));
 
         // Now, we attempt to overflow the deco capacity.
 

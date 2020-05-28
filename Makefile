@@ -1,7 +1,26 @@
-CXXFLAGSBASE=-Wall -Werror -Wextra -std=c++17
+# Clang 9 is the best-performing compiler in my experience on my machine,
+# even beating out Clang 10 and GCC 10.
+CXX2=clang++-9
 
-#CXX=g++
-CXXFLAGS=$(CXXFLAGSBASE) -flto -O3 -DNDEBUG
+CXXFLAGSBASE= \
+	-Wall \
+	-Werror \
+	-Wextra \
+	-std=c++17
+CXXFLAGSALL=$(CXXFLAGSBASE) \
+	-O3 \
+	-DNDEBUG \
+	-flto \
+	-fomit-frame-pointer
+CXXFLAGSFAST=$(CXXFLAGSALL) \
+ 	-march=native
+
+##########################################################################################
+##########################################################################################
+##########################################################################################
+
+# Using these flags by default!
+CXXFLAGS=$(CXXFLAGSALL)
 
 EXEC=mhwibs
 MAINOBJECTS=src/mhwi_build_search.o
@@ -33,11 +52,17 @@ TESTOBJECTS=tests/run_tests.o
 # Main Targets ###########################################################################
 ##########################################################################################
 
+# 'all' is intended for a high-portability executable.
 .PHONY : all
 all : $(EXEC) test
 
+# 'fast' is intended for a faster executable, at the cost of portability.
+.PHONY : fast
+fast : CXXFLAGS=$(CXXFLAGSFAST)
+fast : all
+
 .PHONY : asserts
-asserts : CXXFLAGS=$(CXXFLAGSBASE) -O3
+asserts : CXXFLAGS=$(CXXFLAGSBASE) -O2
 asserts : all
 
 .PHONY : debug
@@ -79,18 +104,42 @@ regenerate :
 	./regenerate_database_files.py
 
 ##########################################################################################
-# I use this specific compiler a lot on my local machine for additional testing. #########
+# Specific Compilers #####################################################################
 ##########################################################################################
 
+# *2
+
 .PHONY : all2
-all2 : CXX=clang++-9
+all2 : CXX=$(CXX2)
 all2 : all
 
+.PHONY : fast2
+fast2 : CXX=$(CXX2)
+fast2 : fast
+
 .PHONY : asserts2
-asserts2 : CXX=clang++-9
+asserts2 : CXX=$(CXX2)
 asserts2 : asserts
 
 .PHONY : debug2
-debug2 : CXX=clang++-9
+debug2 : CXX=$(CXX2)
 debug2 : debug
+
+## *3
+#
+#.PHONY : all3
+#all3 : CXX=$(CXX3)
+#all3 : all
+#
+#.PHONY : fast3
+#fast3 : CXX=$(CXX3)
+#fast3 : fast
+#
+#.PHONY : asserts3
+#asserts3 : CXX=$(CXX3)
+#asserts3 : asserts
+#
+#.PHONY : debug3
+#debug3 : CXX=$(CXX3)
+#debug3 : debug
 
