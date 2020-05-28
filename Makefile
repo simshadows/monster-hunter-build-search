@@ -1,7 +1,7 @@
 CXXFLAGSBASE=-Wall -Werror -Wextra -std=c++17
 
 #CXX=g++
-CXXFLAGS=$(CXXFLAGSBASE) -O3 -DNDEBUG
+CXXFLAGS=$(CXXFLAGSBASE) -flto -O3 -DNDEBUG
 
 EXEC=mhwibs
 MAINOBJECTS=src/mhwi_build_search.o

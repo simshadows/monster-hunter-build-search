@@ -511,9 +511,7 @@ static void do_search(const Database& db, const SearchParameters& params) {
     const std::unordered_set<const SetBonus*> set_bonus_subset = [&](){
         std::unordered_set<const SetBonus*> x;
 
-        const std::vector<const SetBonus*> all_set_bonuses = SkillsDatabase::get_all_set_bonuses();
-
-        for (const SetBonus * const set_bonus : all_set_bonuses) {
+        for (const SetBonus * const set_bonus : SkillsDatabase::g_all_setbonuses) {
             for (const auto& e : set_bonus->stages) {
                 if (params.skill_spec.is_in_subset(e.second)) {
                     x.emplace(set_bonus);

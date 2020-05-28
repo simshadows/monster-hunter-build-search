@@ -1918,6 +1918,50 @@ static const std::unordered_map<std::string, const SetBonus*> g_setbonus_map = {
 };
 
 
+const std::array<const SetBonus*, 40> g_all_setbonuses = {
+    &g_setbonus_ancient_divinity,
+    &g_setbonus_anjanath_dominance,
+    &g_setbonus_appreciation_blessing,
+    &g_setbonus_barioth_hidden_art,
+    &g_setbonus_bazelgeuse_ambition,
+    &g_setbonus_brachydios_essence,
+    &g_setbonus_brachydios_will,
+    &g_setbonus_commission_alchemy,
+    &g_setbonus_deviljho_essence,
+    &g_setbonus_diablos_ambition,
+    &g_setbonus_full_bloom_blessing,
+    &g_setbonus_glavenus_essence,
+    &g_setbonus_gold_rathian_essence,
+    &g_setbonus_guild_pride,
+    &g_setbonus_instructors_guidance,
+    &g_setbonus_joyful_blessing,
+    &g_setbonus_kirin_divinity,
+    &g_setbonus_kulve_taroth_essence,
+    &g_setbonus_kushala_daora_flight,
+    &g_setbonus_legiana_ambition,
+    &g_setbonus_lunastra_essence,
+    &g_setbonus_namielle_divinity,
+    &g_setbonus_nargacuga_essence,
+    &g_setbonus_nergigante_ambition,
+    &g_setbonus_odogaron_essence,
+    &g_setbonus_rajangs_rage,
+    &g_setbonus_rajang_will,
+    &g_setbonus_rathalos_essence,
+    &g_setbonus_rathian_essence,
+    &g_setbonus_safi_jiiva_seal,
+    &g_setbonus_shara_ishvalda_divinity,
+    &g_setbonus_silver_rathalos_essence,
+    &g_setbonus_soul_of_the_dragoon,
+    &g_setbonus_teostra_technique,
+    &g_setbonus_tigrex_essence,
+    &g_setbonus_uragaan_ambition,
+    &g_setbonus_vaal_soulvein,
+    &g_setbonus_velkhana_divinity,
+    &g_setbonus_zinogre_essence,
+    &g_setbonus_zorah_magdaros_essence,
+};
+
+
 const Skill* get_skill(const std::string& skill_id) noexcept {
     return g_skills_map.at(skill_id);
 }
@@ -1925,15 +1969,6 @@ const Skill* get_skill(const std::string& skill_id) noexcept {
 
 const SetBonus* get_setbonus(const std::string& setbonus_id) noexcept {
     return g_setbonus_map.at(setbonus_id);
-}
-
-
-std::vector<const SetBonus*> get_all_set_bonuses() noexcept {
-    std::vector<const SetBonus*> ret;
-    for (const auto& e : g_setbonus_map) {
-        ret.emplace_back(e.second);
-    }
-    return ret;
 }
 
 

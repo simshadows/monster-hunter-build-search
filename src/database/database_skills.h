@@ -18,7 +18,6 @@ namespace SkillsDatabase
 using MHWIBuildSearch::Skill;
 using MHWIBuildSearch::SetBonus;
 
-
 extern const Skill g_skill_adrenaline;
 extern const Skill g_skill_affinity_sliding;
 extern const Skill g_skill_agitator;
@@ -189,52 +188,11 @@ extern const Skill g_skill_weakness_exploit;
 extern const Skill g_skill_wide_range;
 extern const Skill g_skill_windproof;
 
-extern const SetBonus g_setbonus_ancient_divinity;
-extern const SetBonus g_setbonus_anjanath_dominance;
-extern const SetBonus g_setbonus_appreciation_blessing;
-extern const SetBonus g_setbonus_barioth_hidden_art;
-extern const SetBonus g_setbonus_bazelgeuse_ambition;
-extern const SetBonus g_setbonus_brachydios_essence;
-extern const SetBonus g_setbonus_brachydios_will;
-extern const SetBonus g_setbonus_commission_alchemy;
-extern const SetBonus g_setbonus_deviljho_essence;
-extern const SetBonus g_setbonus_diablos_ambition;
-extern const SetBonus g_setbonus_full_bloom_blessing;
-extern const SetBonus g_setbonus_glavenus_essence;
-extern const SetBonus g_setbonus_gold_rathian_essence;
-extern const SetBonus g_setbonus_guild_pride;
-extern const SetBonus g_setbonus_instructors_guidance;
-extern const SetBonus g_setbonus_joyful_blessing;
-extern const SetBonus g_setbonus_kirin_divinity;
-extern const SetBonus g_setbonus_kulve_taroth_essence;
-extern const SetBonus g_setbonus_kushala_daora_flight;
-extern const SetBonus g_setbonus_legiana_ambition;
-extern const SetBonus g_setbonus_lunastra_essence;
-extern const SetBonus g_setbonus_namielle_divinity;
-extern const SetBonus g_setbonus_nargacuga_essence;
-extern const SetBonus g_setbonus_nergigante_ambition;
-extern const SetBonus g_setbonus_odogaron_essence;
-extern const SetBonus g_setbonus_rajangs_rage;
-extern const SetBonus g_setbonus_rajang_will;
-extern const SetBonus g_setbonus_rathalos_essence;
-extern const SetBonus g_setbonus_rathian_essence;
-extern const SetBonus g_setbonus_safi_jiiva_seal;
-extern const SetBonus g_setbonus_shara_ishvalda_divinity;
-extern const SetBonus g_setbonus_silver_rathalos_essence;
-extern const SetBonus g_setbonus_soul_of_the_dragoon;
-extern const SetBonus g_setbonus_teostra_technique;
-extern const SetBonus g_setbonus_tigrex_essence;
-extern const SetBonus g_setbonus_uragaan_ambition;
-extern const SetBonus g_setbonus_vaal_soulvein;
-extern const SetBonus g_setbonus_velkhana_divinity;
-extern const SetBonus g_setbonus_zinogre_essence;
-extern const SetBonus g_setbonus_zorah_magdaros_essence;
+extern const std::array<const SetBonus*, 40> g_all_setbonuses;
 
 const Skill* get_skill(const std::string& skill_id) noexcept;
 
 const SetBonus* get_setbonus(const std::string& setbonus_id) noexcept;
-std::vector<const SetBonus*> get_all_set_bonuses() noexcept;
-
 
 } // namespace
 

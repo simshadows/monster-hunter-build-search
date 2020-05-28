@@ -39,16 +39,13 @@ namespace SkillsDatabase
 using MHWIBuildSearch::Skill;
 using MHWIBuildSearch::SetBonus;
 
-
 {skill_declarations}
 
-{setbonus_declarations}
+extern const std::array<const SetBonus*, {num_setbonuses}> g_all_setbonuses;
 
 const Skill* get_skill(const std::string& skill_id) noexcept;
 
 const SetBonus* get_setbonus(const std::string& setbonus_id) noexcept;
-std::vector<const SetBonus*> get_all_set_bonuses() noexcept;
-
 
 }} // namespace
 
@@ -88,6 +85,11 @@ static const std::unordered_map<std::string, const SetBonus*> g_setbonus_map = {
 }};
 
 
+const std::array<const SetBonus*, {num_setbonuses}> g_all_setbonuses = {{
+{setbonus_array_elements}
+}};
+
+
 const Skill* get_skill(const std::string& skill_id) noexcept {{
     return g_skills_map.at(skill_id);
 }}
@@ -95,15 +97,6 @@ const Skill* get_skill(const std::string& skill_id) noexcept {{
 
 const SetBonus* get_setbonus(const std::string& setbonus_id) noexcept {{
     return g_setbonus_map.at(setbonus_id);
-}}
-
-
-std::vector<const SetBonus*> get_all_set_bonuses() noexcept {{
-    std::vector<const SetBonus*> ret;
-    for (const auto& e : g_setbonus_map) {{
-        ret.emplace_back(e.second);
-    }}
-    return ret;
 }}
 
 
@@ -168,9 +161,10 @@ def generate_skills_source():
     skill_definitions  = []
     skill_map_elements = []
 
-    setbonus_declarations = []
-    setbonus_definitions  = []
-    setbonus_map_elements = []
+    setbonus_definitions    = []
+    setbonus_map_elements   = []
+    setbonus_array_elements = []
+    num_setbonuses          = len(setbonuses)
 
     for (_, skill) in skills.items():
         skill_declarations.append(
@@ -195,9 +189,6 @@ def generate_skills_source():
             stages.append(f"        {{ {parts}, &{skills[skill_id]['identifier']} }},")
         stages_str = "\n".join(stages)
 
-        setbonus_declarations.append(
-                    f"extern const SetBonus {setbonus['identifier']};"
-                )
         setbonus_definitions.append(
                     f"const SetBonus {setbonus['identifier']} = {{\n"
                     f"    \"{setbonus['sb_id']}\", // id\n"
@@ -210,10 +201,13 @@ def generate_skills_source():
         setbonus_map_elements.append(
                     f"    {{ \"{setbonus['sb_id']}\", &{setbonus['identifier']} }},"
                 )
+        setbonus_array_elements.append(
+                    f"    &{setbonus['identifier']},"
+                )
 
     h_file_data = SKILLS_H_BASE.format(
             skill_declarations="\n".join(skill_declarations),
-            setbonus_declarations="\n".join(setbonus_declarations),
+            num_setbonuses=num_setbonuses,
         )
     file_write(SKILLS_H_PATH, data=h_file_data)
 
@@ -222,6 +216,8 @@ def generate_skills_source():
             setbonus_definitions="\n\n".join(setbonus_definitions),
             skill_map_elements="\n".join(skill_map_elements),
             setbonus_map_elements="\n".join(setbonus_map_elements),
+            setbonus_array_elements="\n".join(setbonus_array_elements),
+            num_setbonuses=num_setbonuses,
         )
     file_write(SKILLS_CPP_PATH, data=cpp_file_data)
 
