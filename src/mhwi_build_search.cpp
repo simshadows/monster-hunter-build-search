@@ -13,6 +13,7 @@
 #include "mhwi_build_search.h"
 #include "core/core.h"
 #include "database/database.h"
+#include "database/database_skills.h"
 #include "support/support.h"
 #include "utils/utils.h"
 #include "utils/logging.h"
@@ -26,8 +27,8 @@ void no_args_cmd() {
     const Database db = Database::get_db();
 
     std::unordered_map<const Skill*, unsigned int> min_levels = {
-        {db.weakness_exploit_ptr, 0},
-        {db.agitator_ptr, 0},
+        {&SkillsDatabase::g_skill_weakness_exploit, 0},
+        {&SkillsDatabase::g_skill_agitator, 0},
     };
     std::unordered_map<const Skill*, unsigned int> forced_states;
     SkillSpec skill_spec(std::move(min_levels), std::move(forced_states));
@@ -61,7 +62,7 @@ void no_args_cmd() {
     std::clog << armour.get_humanreadable() << std::endl << std::endl;
     std::clog << armour.get_skills_without_set_bonuses().get_humanreadable() << std::endl << std::endl;
 
-    double efr = calculate_efr_from_gear_lookup(db, weapon, armour, decos, skill_spec);
+    double efr = calculate_efr_from_gear_lookup(weapon, armour, decos, skill_spec);
     std::clog << efr << std::endl;
 
     /*
@@ -71,12 +72,11 @@ void no_args_cmd() {
     weapon = WeaponInstance(db.weapons.at("ROYAL_VENUS_BLADE"));
 
     SkillMap skills;
-    skills.set(db.critical_boost_ptr, 3);
-    skills.set(db.non_elemental_boost_ptr, 1);
-    //skills.set(db.true_element_acceleration_ptr, 1);
+    skills.set(&SkillsDatabase::g_skill_critical_boost, 3);
+    skills.set(&SkillsDatabase::g_skill_non_elemental_boost, 1);
 
-    WeaponContribution wc = weapon.calculate_contribution(db);
-    efr = calculate_efr_from_skills_lookup(db, wc, skills, skill_spec);
+    WeaponContribution wc = weapon.calculate_contribution();
+    efr = calculate_efr_from_skills_lookup(wc, skills, skill_spec);
     std::clog << efr << std::endl;
     //assert(Utils::round_2decpl(efr) == 437.85); // Quick test!
 }

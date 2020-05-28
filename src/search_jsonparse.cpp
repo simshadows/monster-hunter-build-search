@@ -8,6 +8,7 @@
 #include <iostream>
 
 #include "mhwi_build_search.h"
+#include "database/database_skills.h"
 #include "utils/utils.h"
 
 #include "../dependencies/json-3-7-3/json.hpp"
@@ -17,7 +18,7 @@ namespace MHWIBuildSearch
 {
 
 
-static SearchParameters read_json_obj(const Database& db, const nlohmann::json& j) {
+static SearchParameters read_json_obj(const nlohmann::json& j) {
 
     if (!j.is_object()) {
         throw std::runtime_error("Expected JSON object.");
@@ -33,10 +34,10 @@ static SearchParameters read_json_obj(const Database& db, const nlohmann::json& 
     std::unordered_map<const Skill*, unsigned int> min_levels;
     std::unordered_map<const Skill*, unsigned int> states;
     for (auto& e : j["selected_skills"].items()) {
-        min_levels.insert({db.skills.skill_at(e.key()), e.value()});
+        min_levels.insert({SkillsDatabase::get_skill(e.key()), e.value()});
     }
     for (auto& e : j["forced_skill_states"].items()) {
-        states.insert({db.skills.skill_at(e.key()), e.value()});
+        states.insert({SkillsDatabase::get_skill(e.key()), e.value()});
     }
 
     SkillSpec skill_spec (std::move(min_levels),
@@ -52,7 +53,7 @@ static SearchParameters read_json_obj(const Database& db, const nlohmann::json& 
 }
 
 
-SearchParameters read_file(const Database& db, const std::string& filepath) {
+SearchParameters read_file(const std::string& filepath) {
     nlohmann::json j;
 
     {
@@ -60,7 +61,7 @@ SearchParameters read_file(const Database& db, const std::string& filepath) {
         f >> j;
     } // close file
 
-    return read_json_obj(db, j);
+    return read_json_obj(j);
 }
 
 

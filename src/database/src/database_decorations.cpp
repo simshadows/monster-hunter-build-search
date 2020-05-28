@@ -9,6 +9,7 @@
 #include "../../../dependencies/json-3-7-3/json.hpp"
 
 #include "../database.h"
+#include "../database_skills.h"
 #include "../../utils/utils.h"
 #include "../../utils/utils_strings.h"
 
@@ -20,8 +21,7 @@ static constexpr unsigned int k_SIMPLE_DECO_SKILL_LVL = 1;
 static constexpr unsigned int k_COMPLEX_DECO_SIZE = 4;
 
 
-const DecorationsDatabase DecorationsDatabase::read_db_file(const std::string& filename,
-                                                            const SkillsDatabase& skills_db) {
+const DecorationsDatabase DecorationsDatabase::read_db_file(const std::string& filename) {
     DecorationsDatabase new_db;
 
     nlohmann::json j;
@@ -62,7 +62,7 @@ const DecorationsDatabase DecorationsDatabase::read_db_file(const std::string& f
         }
 
         std::string skill_name = jj["skill"];
-        const Skill * const skill = skills_db.skill_at(skill_name);
+        const Skill * const skill = SkillsDatabase::get_skill(skill_name);
         std::vector<std::pair<const Skill*, unsigned int>> skills = {
             {skill, k_SIMPLE_DECO_SKILL_LVL},
         };

@@ -52,12 +52,11 @@ static double calculate_efr(unsigned int weapon_raw, // True raw, not bloated ra
 }
 
 
-double calculate_efr_from_skills_lookup(const Database&           db,
-                                        const WeaponContribution& wc,
+double calculate_efr_from_skills_lookup(const WeaponContribution& wc,
                                         const SkillMap&           full_skills,
                                         const SkillSpec&          skill_spec) {
 
-    SkillContribution sc(db, full_skills, skill_spec, wc);
+    SkillContribution sc(full_skills, skill_spec, wc);
     return calculate_efr(wc.weapon_raw,
                          wc.weapon_aff,
                          sc.neb_multiplier,
@@ -68,12 +67,11 @@ double calculate_efr_from_skills_lookup(const Database&           db,
 }
 
 
-double calculate_efr_from_gear_lookup(const Database&       db,
-                                      const WeaponInstance& weapon,
+double calculate_efr_from_gear_lookup(const WeaponInstance& weapon,
                                       const ArmourEquips&   armour,
                                       const DecoEquips&     decos,
                                       const SkillSpec&      skill_spec) {
-    WeaponContribution wc = weapon.calculate_contribution(db);
+    WeaponContribution wc = weapon.calculate_contribution();
 
     assert(decos.fits_in(armour, wc));
 
@@ -84,7 +82,7 @@ double calculate_efr_from_gear_lookup(const Database&       db,
     if (wc.set_bonus) set_bonuses.increment(wc.set_bonus, 1);
     skills.add_set_bonuses(set_bonuses);
 
-    return calculate_efr_from_skills_lookup(db, wc, skills, skill_spec);
+    return calculate_efr_from_skills_lookup(wc, skills, skill_spec);
 }
 
 

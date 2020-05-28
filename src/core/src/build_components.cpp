@@ -16,28 +16,7 @@ namespace MHWIBuildSearch
  ***************************************************************************************/
 
 
-Skill::Skill(std::string new_id,
-             std::string new_name,
-             unsigned int new_normal_limit,
-             unsigned int new_secret_limit,
-             unsigned int new_states) noexcept
-    : id           (new_id)
-    , name         (new_name)
-    , normal_limit (new_normal_limit)
-    , secret_limit (new_secret_limit)
-    , states       (new_states)
-{
-}
-
-
-SetBonus::SetBonus(const std::string&& new_id,
-                   const std::string&& new_name,
-                   const std::vector<std::pair<unsigned int, const Skill*>>&& new_stages) noexcept
-    : id     (std::move(new_id    ))
-    , name   (std::move(new_name  ))
-    , stages (std::move(new_stages))
-{
-}
+// Nothing required!
 
 
 /****************************************************************************************

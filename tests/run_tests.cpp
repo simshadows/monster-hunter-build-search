@@ -12,6 +12,7 @@
 
 #include "../src/core/core.h"
 #include "../src/database/database.h"
+#include "../src/database/database_skills.h"
 #include "../src/support/support.h"
 #include "../src/utils/utils.h"
 
@@ -92,11 +93,11 @@ static const Database db = Database::get_db();
 TEST_CASE("Incrementally building up a greatsword Safi Shattersplitter build.") {
 
     std::unordered_map<const Skill*, unsigned int> min_levels = {
-        {db.agitator_ptr, 0},
-        {db.weakness_exploit_ptr, 0},
+        {&SkillsDatabase::g_skill_agitator, 0},
+        {&SkillsDatabase::g_skill_weakness_exploit, 0},
     };
     std::unordered_map<const Skill*, unsigned int> forced_states = {
-        {db.weakness_exploit_ptr, 1},
+        {&SkillsDatabase::g_skill_weakness_exploit, 1},
     };
     SkillSpec skill_spec(std::move(min_levels), std::move(forced_states));
 
@@ -112,7 +113,7 @@ TEST_CASE("Incrementally building up a greatsword Safi Shattersplitter build.") 
                                          db);
         DecoEquips decos;
 
-        double efr = calculate_efr_from_gear_lookup(db, weapon, armour, decos, skill_spec);
+        double efr = calculate_efr_from_gear_lookup(weapon, armour, decos, skill_spec);
         REQUIRE(Utils::round_2decpl(efr) == 390.31);
     }
 
@@ -128,7 +129,7 @@ TEST_CASE("Incrementally building up a greatsword Safi Shattersplitter build.") 
                                          db);
         DecoEquips decos;
 
-        double efr = calculate_efr_from_gear_lookup(db, weapon, armour, decos, skill_spec);
+        double efr = calculate_efr_from_gear_lookup(weapon, armour, decos, skill_spec);
         REQUIRE(Utils::round_2decpl(efr) == 415.77);
     }
 
@@ -143,7 +144,7 @@ TEST_CASE("Incrementally building up a greatsword Safi Shattersplitter build.") 
                                          db);
         DecoEquips decos;
 
-        double efr = calculate_efr_from_gear_lookup(db, weapon, armour, decos, skill_spec);
+        double efr = calculate_efr_from_gear_lookup(weapon, armour, decos, skill_spec);
         REQUIRE(Utils::round_2decpl(efr) == 435.11);
     }
 
@@ -158,7 +159,7 @@ TEST_CASE("Incrementally building up a greatsword Safi Shattersplitter build.") 
                                          db);
         DecoEquips decos;
 
-        double efr = calculate_efr_from_gear_lookup(db, weapon, armour, decos, skill_spec);
+        double efr = calculate_efr_from_gear_lookup(weapon, armour, decos, skill_spec);
         REQUIRE(Utils::round_2decpl(efr) == 480.30);
     }
 
@@ -176,7 +177,7 @@ TEST_CASE("Incrementally building up a greatsword Safi Shattersplitter build.") 
                                          db);
         DecoEquips decos;
 
-        double efr = calculate_efr_from_gear_lookup(db, weapon, armour, decos, skill_spec);
+        double efr = calculate_efr_from_gear_lookup(weapon, armour, decos, skill_spec);
         REQUIRE(Utils::round_2decpl(efr) == 490.63);
     }
 
@@ -199,7 +200,7 @@ TEST_CASE("Incrementally building up a greatsword Safi Shattersplitter build.") 
                                          db);
         DecoEquips decos;
 
-        double efr = calculate_efr_from_gear_lookup(db, weapon, armour, decos, skill_spec);
+        double efr = calculate_efr_from_gear_lookup(weapon, armour, decos, skill_spec);
         REQUIRE(Utils::round_2decpl(efr) == 554.90);
     }
 
@@ -235,7 +236,7 @@ TEST_CASE("Incrementally building up a greatsword Safi Shattersplitter build.") 
         decos.add(db.decos.at("ATTACK"));
         decos.add(db.decos.at("ATTACK"));
 
-        double efr = calculate_efr_from_gear_lookup(db, weapon, armour, decos, skill_spec);
+        double efr = calculate_efr_from_gear_lookup(weapon, armour, decos, skill_spec);
         REQUIRE(Utils::round_2decpl(efr) == 682.55);
     }
 
@@ -245,12 +246,12 @@ TEST_CASE("Incrementally building up a greatsword Safi Shattersplitter build.") 
 TEST_CASE("Incrementally building up a greatsword Acid Shredder II build.") {
 
     std::unordered_map<const Skill*, unsigned int> min_levels = {
-        {db.agitator_ptr, 0},
-        {db.critical_eye_ptr, 0},
-        {db.weakness_exploit_ptr, 0},
+        {&SkillsDatabase::g_skill_agitator, 0},
+        {&SkillsDatabase::g_skill_critical_eye, 0},
+        {&SkillsDatabase::g_skill_weakness_exploit, 0},
     };
     std::unordered_map<const Skill*, unsigned int> forced_states = {
-        {db.weakness_exploit_ptr, 1},
+        {&SkillsDatabase::g_skill_weakness_exploit, 1},
     };
     SkillSpec skill_spec(std::move(min_levels), std::move(forced_states));
 
@@ -268,7 +269,7 @@ TEST_CASE("Incrementally building up a greatsword Acid Shredder II build.") {
                                          db);
         DecoEquips decos;
 
-        double efr = calculate_efr_from_gear_lookup(db, weapon, armour, decos, skill_spec);
+        double efr = calculate_efr_from_gear_lookup(weapon, armour, decos, skill_spec);
         REQUIRE(Utils::round_2decpl(efr) == 393.60);
     }
 
@@ -291,7 +292,7 @@ TEST_CASE("Incrementally building up a greatsword Acid Shredder II build.") {
                                          db);
         DecoEquips decos;
 
-        double efr = calculate_efr_from_gear_lookup(db, weapon, armour, decos, skill_spec);
+        double efr = calculate_efr_from_gear_lookup(weapon, armour, decos, skill_spec);
         REQUIRE(Utils::round_2decpl(efr) == 469.64);
     }
 
@@ -317,7 +318,7 @@ TEST_CASE("Incrementally building up a greatsword Acid Shredder II build.") {
                                          db);
         DecoEquips decos;
 
-        double efr = calculate_efr_from_gear_lookup(db, weapon, armour, decos, skill_spec);
+        double efr = calculate_efr_from_gear_lookup(weapon, armour, decos, skill_spec);
         REQUIRE(Utils::round_2decpl(efr) == 492.35);
     }
 
@@ -327,10 +328,10 @@ TEST_CASE("Incrementally building up a greatsword Acid Shredder II build.") {
 TEST_CASE("DecoEquips::fits()") {
 
     std::unordered_map<const Skill*, unsigned int> min_levels = {
-        {db.agitator_ptr, 0},
-        {db.coalescence_ptr, 0},
-        {db.peak_performance_ptr, 0},
-        {db.weakness_exploit_ptr, 0},
+        {&SkillsDatabase::g_skill_agitator, 0},
+        {&SkillsDatabase::g_skill_coalescence, 0},
+        {&SkillsDatabase::g_skill_peak_performance, 0},
+        {&SkillsDatabase::g_skill_weakness_exploit, 0},
     };
     std::unordered_map<const Skill*, unsigned int> forced_states;
     SkillSpec skill_spec(std::move(min_levels), std::move(forced_states));
@@ -355,8 +356,8 @@ TEST_CASE("DecoEquips::fits()") {
                                          db);
         DecoEquips decos;
 
-        double efr = calculate_efr_from_gear_lookup(db, weapon, armour, decos, skill_spec);
-        REQUIRE(decos.fits_in(armour, weapon.calculate_contribution(db)));
+        double efr = calculate_efr_from_gear_lookup(weapon, armour, decos, skill_spec);
+        REQUIRE(decos.fits_in(armour, weapon.calculate_contribution()));
         REQUIRE(Utils::round_2decpl(efr) == 512.28);
 
         decos.add(db.decos.at("CHALLENGER_2X"));
@@ -372,27 +373,27 @@ TEST_CASE("DecoEquips::fits()") {
         decos.add(db.decos.at("CRITICAL"));
         decos.add(db.decos.at("CRITICAL"));
 
-        efr = calculate_efr_from_gear_lookup(db, weapon, armour, decos, skill_spec);
-        REQUIRE(decos.fits_in(armour, weapon.calculate_contribution(db)));
+        efr = calculate_efr_from_gear_lookup(weapon, armour, decos, skill_spec);
+        REQUIRE(decos.fits_in(armour, weapon.calculate_contribution()));
         REQUIRE(Utils::round_2decpl(efr) == 649.38);
 
         // Now, we attempt to overflow the deco capacity.
 
         DecoEquips new_decos = decos;
         new_decos.add(db.decos.at("ATTACK"));
-        REQUIRE(!new_decos.fits_in(armour, weapon.calculate_contribution(db)));
+        REQUIRE(!new_decos.fits_in(armour, weapon.calculate_contribution()));
 
         new_decos = decos;
         new_decos.add(db.decos.at("ELEMENTLESS"));
-        REQUIRE(!new_decos.fits_in(armour, weapon.calculate_contribution(db)));
+        REQUIRE(!new_decos.fits_in(armour, weapon.calculate_contribution()));
 
         new_decos = decos;
         new_decos.add(db.decos.at("HANDICRAFT"));
-        REQUIRE(!new_decos.fits_in(armour, weapon.calculate_contribution(db)));
+        REQUIRE(!new_decos.fits_in(armour, weapon.calculate_contribution()));
 
         new_decos = decos;
         new_decos.add(db.decos.at("TENDERIZER_VITALITY_COMPOUND"));
-        REQUIRE(!new_decos.fits_in(armour, weapon.calculate_contribution(db)));
+        REQUIRE(!new_decos.fits_in(armour, weapon.calculate_contribution()));
 
     }
 

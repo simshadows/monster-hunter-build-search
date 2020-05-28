@@ -14,6 +14,7 @@
 #include "mhwi_build_search.h"
 #include "core/core.h"
 #include "database/database.h"
+#include "database/database_skills.h"
 #include "support/support.h"
 #include "utils/utils.h"
 #include "utils/utils_strings.h"
@@ -147,7 +148,7 @@ static std::vector<WeaponInstanceExtended> prepare_weapons(const Database& db,
         for (const std::shared_ptr<WeaponAugmentsInstance>& a : augment_instances) {
             for (const std::shared_ptr<WeaponUpgradesInstance>& u : upgrade_instances) {
                 WeaponInstance new_inst = {weapon, a, u};
-                WeaponContribution new_cont = new_inst.calculate_contribution(db);
+                WeaponContribution new_cont = new_inst.calculate_contribution();
                 if (params.health_regen_required && !new_cont.health_regen_active) {
                     continue;
                 }
@@ -178,7 +179,7 @@ static std::vector<WeaponInstanceExtended> prepare_weapons(const Database& db,
 
     std::vector<WeaponInstanceExtended> ret;
     for (const auto& original : pruned.underlying()) {
-        const double ceiling_efr = calculate_efr_from_skills_lookup(db, original.second, maximized_skills, params.skill_spec);
+        const double ceiling_efr = calculate_efr_from_skills_lookup(original.second, maximized_skills, params.skill_spec);
         ret.push_back({std::move(original.first), std::move(original.second), ceiling_efr});
     }
 
@@ -510,7 +511,7 @@ static void do_search(const Database& db, const SearchParameters& params) {
     const std::unordered_set<const SetBonus*> set_bonus_subset = [&](){
         std::unordered_set<const SetBonus*> x;
 
-        const std::vector<const SetBonus*> all_set_bonuses = db.skills.get_all_set_bonuses();
+        const std::vector<const SetBonus*> all_set_bonuses = SkillsDatabase::get_all_set_bonuses();
 
         for (const SetBonus * const set_bonus : all_set_bonuses) {
             for (const auto& e : set_bonus->stages) {
@@ -714,7 +715,7 @@ static void do_search(const Database& db, const SearchParameters& params) {
                     return x;
                 }();
 
-                const double efr = calculate_efr_from_skills_lookup(db, wc.contributions, skills, params.skill_spec);
+                const double efr = calculate_efr_from_skills_lookup(wc.contributions, skills, params.skill_spec);
 
                 if (efr > best_efr) {
                     best_efr = efr;
@@ -754,7 +755,7 @@ static void do_search(const Database& db, const SearchParameters& params) {
 void search_cmd(const std::string& search_parameters_path) {
 
     const Database db = Database::get_db();
-    const SearchParameters params = read_file(db, search_parameters_path);
+    const SearchParameters params = read_file(search_parameters_path);
 
     do_search(db, params);
 }

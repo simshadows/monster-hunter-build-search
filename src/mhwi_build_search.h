@@ -28,7 +28,7 @@ struct SearchParameters {
 };
 
 
-SearchParameters read_file(const Database& db, const std::string& filepath);
+SearchParameters read_file(const std::string& filepath);
 
 
 /****************************************************************************************

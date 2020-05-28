@@ -9,6 +9,7 @@
 #include "../../../dependencies/json-3-7-3/json.hpp"
 
 #include "../database.h"
+#include "../database_skills.h"
 #include "../../utils/utils.h"
 #include "../../utils/utils_strings.h"
 
@@ -16,7 +17,7 @@
 namespace MHWIBuildSearch {
 
 
-const CharmsDatabase CharmsDatabase::read_db_file(const std::string& filename, const SkillsDatabase& skills_db) {
+const CharmsDatabase CharmsDatabase::read_db_file(const std::string& filename) {
     CharmsDatabase new_db;
 
     nlohmann::json j;
@@ -59,7 +60,7 @@ const CharmsDatabase CharmsDatabase::read_db_file(const std::string& filename, c
         }
         for (auto& e : jj["skills"].items()) {
             const std::string skill_id = e.value();
-            const Skill* const skill = skills_db.skill_at(skill_id);
+            const Skill* const skill = SkillsDatabase::get_skill(skill_id);
 
             if (max_charm_lvl > skill->secret_limit) {
                 throw std::runtime_error("Charm levels must not exceed their skill maximum levels. "

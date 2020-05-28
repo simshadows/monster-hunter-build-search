@@ -9,6 +9,7 @@
 #include "../../../dependencies/json-3-7-3/json.hpp"
 
 #include "../database.h"
+#include "../database_skills.h"
 #include "../../utils/utils_strings.h"
 
 
@@ -54,7 +55,7 @@ static const std::unordered_map<std::string, WeaponUpgradeScheme> str_to_upgrade
 
 
 // static
-const WeaponsDatabase WeaponsDatabase::read_db_file(const std::string& filename, const SkillsDatabase& skills_db) {
+const WeaponsDatabase WeaponsDatabase::read_db_file(const std::string& filename) {
     WeaponsDatabase new_db;
     new_db.all_weapons = std::vector<Weapon>(); // Do I need to do this?
 
@@ -94,7 +95,7 @@ const WeaponsDatabase WeaponsDatabase::read_db_file(const std::string& filename,
             skill = nullptr;
         } else {
             const std::string& skill_id = jj["skill"];
-            skill = skills_db.skill_at(skill_id);
+            skill = SkillsDatabase::get_skill(skill_id);
         }
 
         WeaponAugmentationScheme augmentation_scheme = str_to_augmentation_scheme.at(jj["augmentation_scheme"]);

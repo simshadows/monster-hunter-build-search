@@ -9,6 +9,7 @@
 #include "../../../dependencies/json-3-7-3/json.hpp"
 
 #include "../database.h"
+#include "../database_skills.h"
 #include "../../utils/utils.h"
 #include "../../utils/utils_strings.h"
 
@@ -92,7 +93,7 @@ Tier upper_snake_case_to_tier(const std::string& s) {
 }
 
 
-const ArmourDatabase ArmourDatabase::read_db_file(const std::string& filename, const SkillsDatabase& skills_db) {
+const ArmourDatabase ArmourDatabase::read_db_file(const std::string& filename) {
     ArmourDatabase new_db;
 
     nlohmann::json j;
@@ -167,7 +168,7 @@ const ArmourDatabase ArmourDatabase::read_db_file(const std::string& filename, c
             set_bonus = nullptr;
         } else {
             std::string set_bonus_str = jj["set_bonus"];
-            set_bonus = skills_db.set_bonus_at(set_bonus_str);
+            set_bonus = SkillsDatabase::get_setbonus(set_bonus_str);
         }
 
         std::vector<std::shared_ptr<ArmourPiece>> pieces;
@@ -216,7 +217,7 @@ const ArmourDatabase ArmourDatabase::read_db_file(const std::string& filename, c
                 std::vector<std::pair<const Skill*, unsigned int>> skills;
                 for (auto& eee : jjj[1].items()) {
                     const std::string skill_name = eee.key();
-                    const Skill* const skill = skills_db.skill_at(skill_name);
+                    const Skill* const skill = SkillsDatabase::get_skill(skill_name);
 
                     const unsigned int skill_level = eee.value();
                     if (skill_level > skill->secret_limit) { // SANITY CHECK

@@ -184,7 +184,7 @@ struct WeaponInstance {
                    const std::shared_ptr<WeaponAugmentsInstance>&,
                    const std::shared_ptr<WeaponUpgradesInstance>&) noexcept; // Copies in augments and upgrades.
 
-    WeaponContribution calculate_contribution(const Database&) const;
+    WeaponContribution calculate_contribution() const;
     std::string get_humanreadable() const;
 };
 
@@ -227,8 +227,7 @@ struct SkillContribution {
     double       raw_crit_dmg_multiplier;
     double       raw_sharpness_modifier;
 
-    SkillContribution(const Database&,
-                      const SkillMap&,
+    SkillContribution(const SkillMap&,
                       const SkillSpec&,
                       const WeaponContribution&) noexcept;
 };
@@ -239,13 +238,11 @@ struct SkillContribution {
  ***************************************************************************************/
 
 
-double calculate_efr_from_skills_lookup(const Database&,
-                                        const WeaponContribution&,
+double calculate_efr_from_skills_lookup(const WeaponContribution&,
                                         const SkillMap&,
                                         const SkillSpec&);
 
-double calculate_efr_from_gear_lookup(const Database&,
-                                      const WeaponInstance&,
+double calculate_efr_from_gear_lookup(const WeaponInstance&,
                                       const ArmourEquips&,
                                       const DecoEquips&,
                                       const SkillSpec&);

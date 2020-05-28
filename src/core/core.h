@@ -116,12 +116,6 @@ struct Skill {
     //const std::string  info;          // Additional information about a skill.
 
     //const std::string  previous_name; // Additional information about a skill.
-
-    Skill(std::string  new_id,
-          std::string  new_name,
-          unsigned int new_normal_limit,
-          unsigned int new_secret_limit,
-          unsigned int new_states) noexcept;
 };
 
 
@@ -129,10 +123,6 @@ struct SetBonus {
     const std::string id;
     const std::string name;
     const std::vector<std::pair<unsigned int, const Skill*>> stages; // tuple format: (number of stages, skill)
-
-    SetBonus(const std::string&&,
-             const std::string&&,
-             const std::vector<std::pair<unsigned int, const Skill*>>&&) noexcept;
 };
 
 
