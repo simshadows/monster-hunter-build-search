@@ -7,6 +7,7 @@
 #include <assert.h>
 
 #include "../core.h"
+#include "../../database/database_skills.h"
 #include "../../utils/utils.h"
 
 namespace MHWIBuildSearch
@@ -31,7 +32,7 @@ public:
     }
 
     WeaponUpgradesContribution calculate_contribution() const {
-        return {0, 0, 0, weapon->maximum_sharpness, ""};
+        return {0, 0, 0, weapon->maximum_sharpness, nullptr};
     }
 
     std::string get_humanreadable() const {
@@ -121,7 +122,7 @@ public:
     }
 
     WeaponUpgradesContribution calculate_contribution() const {
-        WeaponUpgradesContribution ret = {0, 0, 0, weapon->maximum_sharpness, ""};
+        WeaponUpgradesContribution ret = {0, 0, 0, weapon->maximum_sharpness, nullptr};
 
         for (std::size_t i = 0; i < this->upgrades.size(); ++i) {
             switch (this->upgrades[i]) {
@@ -210,36 +211,36 @@ static const std::unordered_set<WeaponUpgrade> ib_safi_deco_slot_awakenings = {
     WeaponUpgrade::ib_safi_deco_slot_6,
 };
 
-static const std::unordered_map<WeaponUpgrade, std::string> ib_safi_set_bonus_id_map = {
-    {WeaponUpgrade::ib_safi_sb_ancient_divinity       , "ANCIENT_DIVINITY"       },
-    {WeaponUpgrade::ib_safi_sb_anjanath_dominance     , "ANJANATH_DOMINANCE"     },
-    {WeaponUpgrade::ib_safi_sb_barioth_hidden_art     , "BARIOTH_HIDDEN_ART"     },
-    {WeaponUpgrade::ib_safi_sb_bazelgeuse_ambition    , "BAZELGEUSE_AMBITION"    },
-    {WeaponUpgrade::ib_safi_sb_brachydios_essence     , "BRACHYDIOS_ESSENCE"     },
-    {WeaponUpgrade::ib_safi_sb_deviljho_essence       , "DEVILJHO_ESSENCE"       },
-    {WeaponUpgrade::ib_safi_sb_diablos_ambition       , "DIABLOS_AMBITION"       },
-    {WeaponUpgrade::ib_safi_sb_glavenus_essence       , "GLAVENUS_ESSENCE"       },
-    {WeaponUpgrade::ib_safi_sb_gold_rathian_essence   , "GOLD_RATHIAN_ESSENCE"   },
-    {WeaponUpgrade::ib_safi_sb_kirin_divinity         , "KIRIN_DIVINITY"         },
-    {WeaponUpgrade::ib_safi_sb_kushala_daora_flight   , "KUSHALA_DAORA_FLIGHT"   },
-    {WeaponUpgrade::ib_safi_sb_legiana_ambition       , "LEGIANA_AMBITION"       },
-    {WeaponUpgrade::ib_safi_sb_lunastra_essence       , "LUNASTRA_ESSENCE"       },
-    {WeaponUpgrade::ib_safi_sb_namielle_divinity      , "NAMIELLE_DIVINITY"      },
-    {WeaponUpgrade::ib_safi_sb_nargacuga_essence      , "NARGACUGA_ESSENCE"      },
-    {WeaponUpgrade::ib_safi_sb_nergigante_ambition    , "NERGIGANTE_AMBITION"    },
-    {WeaponUpgrade::ib_safi_sb_odogaron_essence       , "ODOGARON_ESSENCE"       },
-    {WeaponUpgrade::ib_safi_sb_rajangs_rage           , "RAJANGS_RAGE"           },
-    {WeaponUpgrade::ib_safi_sb_rathalos_essence       , "RATHALOS_ESSENCE"       },
-    {WeaponUpgrade::ib_safi_sb_rathian_essence        , "RATHIAN_ESSENCE"        },
-    {WeaponUpgrade::ib_safi_sb_shara_ishvalda_divinity, "SHARA_ISHVALDA_DIVINITY"},
-    {WeaponUpgrade::ib_safi_sb_silver_rathalos_essence, "SILVER_RATHALOS_ESSENCE"},
-    {WeaponUpgrade::ib_safi_sb_teostra_technique      , "TEOSTRA_TECHNIQUE"      },
-    {WeaponUpgrade::ib_safi_sb_tigrex_essence         , "TIGREX_ESSENCE"         },
-    {WeaponUpgrade::ib_safi_sb_uragaan_ambition       , "URAGAAN_AMBITION"       },
-    {WeaponUpgrade::ib_safi_sb_vaal_soulvein          , "VAAL_SOULVEIN"          },
-    {WeaponUpgrade::ib_safi_sb_velkhana_divinity      , "VELKHANA_DIVINITY"      },
-    {WeaponUpgrade::ib_safi_sb_zinogre_essence        , "ZINOGRE_ESSENCE"        },
-    {WeaponUpgrade::ib_safi_sb_zorah_magdaros_essence , "ZORAH_MAGDAROS_ESSENCE" },
+static const std::unordered_map<WeaponUpgrade, const SetBonus*> ib_safi_set_bonus_map = {
+    {WeaponUpgrade::ib_safi_sb_ancient_divinity       , &SkillsDatabase::g_setbonus_ancient_divinity       },
+    {WeaponUpgrade::ib_safi_sb_anjanath_dominance     , &SkillsDatabase::g_setbonus_anjanath_dominance     },
+    {WeaponUpgrade::ib_safi_sb_barioth_hidden_art     , &SkillsDatabase::g_setbonus_barioth_hidden_art     },
+    {WeaponUpgrade::ib_safi_sb_bazelgeuse_ambition    , &SkillsDatabase::g_setbonus_bazelgeuse_ambition    },
+    {WeaponUpgrade::ib_safi_sb_brachydios_essence     , &SkillsDatabase::g_setbonus_brachydios_essence     },
+    {WeaponUpgrade::ib_safi_sb_deviljho_essence       , &SkillsDatabase::g_setbonus_deviljho_essence       },
+    {WeaponUpgrade::ib_safi_sb_diablos_ambition       , &SkillsDatabase::g_setbonus_diablos_ambition       },
+    {WeaponUpgrade::ib_safi_sb_glavenus_essence       , &SkillsDatabase::g_setbonus_glavenus_essence       },
+    {WeaponUpgrade::ib_safi_sb_gold_rathian_essence   , &SkillsDatabase::g_setbonus_gold_rathian_essence   },
+    {WeaponUpgrade::ib_safi_sb_kirin_divinity         , &SkillsDatabase::g_setbonus_kirin_divinity         },
+    {WeaponUpgrade::ib_safi_sb_kushala_daora_flight   , &SkillsDatabase::g_setbonus_kushala_daora_flight   },
+    {WeaponUpgrade::ib_safi_sb_legiana_ambition       , &SkillsDatabase::g_setbonus_legiana_ambition       },
+    {WeaponUpgrade::ib_safi_sb_lunastra_essence       , &SkillsDatabase::g_setbonus_lunastra_essence       },
+    {WeaponUpgrade::ib_safi_sb_namielle_divinity      , &SkillsDatabase::g_setbonus_namielle_divinity      },
+    {WeaponUpgrade::ib_safi_sb_nargacuga_essence      , &SkillsDatabase::g_setbonus_nargacuga_essence      },
+    {WeaponUpgrade::ib_safi_sb_nergigante_ambition    , &SkillsDatabase::g_setbonus_nergigante_ambition    },
+    {WeaponUpgrade::ib_safi_sb_odogaron_essence       , &SkillsDatabase::g_setbonus_odogaron_essence       },
+    {WeaponUpgrade::ib_safi_sb_rajangs_rage           , &SkillsDatabase::g_setbonus_rajangs_rage           },
+    {WeaponUpgrade::ib_safi_sb_rathalos_essence       , &SkillsDatabase::g_setbonus_rathalos_essence       },
+    {WeaponUpgrade::ib_safi_sb_rathian_essence        , &SkillsDatabase::g_setbonus_rathian_essence        },
+    {WeaponUpgrade::ib_safi_sb_shara_ishvalda_divinity, &SkillsDatabase::g_setbonus_shara_ishvalda_divinity},
+    {WeaponUpgrade::ib_safi_sb_silver_rathalos_essence, &SkillsDatabase::g_setbonus_silver_rathalos_essence},
+    {WeaponUpgrade::ib_safi_sb_teostra_technique      , &SkillsDatabase::g_setbonus_teostra_technique      },
+    {WeaponUpgrade::ib_safi_sb_tigrex_essence         , &SkillsDatabase::g_setbonus_tigrex_essence         },
+    {WeaponUpgrade::ib_safi_sb_uragaan_ambition       , &SkillsDatabase::g_setbonus_uragaan_ambition       },
+    {WeaponUpgrade::ib_safi_sb_vaal_soulvein          , &SkillsDatabase::g_setbonus_vaal_soulvein          },
+    {WeaponUpgrade::ib_safi_sb_velkhana_divinity      , &SkillsDatabase::g_setbonus_velkhana_divinity      },
+    {WeaponUpgrade::ib_safi_sb_zinogre_essence        , &SkillsDatabase::g_setbonus_zinogre_essence        },
+    {WeaponUpgrade::ib_safi_sb_zorah_magdaros_essence , &SkillsDatabase::g_setbonus_zorah_magdaros_essence },
 };
 
 static const std::unordered_map<WeaponUpgrade, std::string> ib_safi_supported_upgrades = {
@@ -320,7 +321,7 @@ public:
         lvl5_or_deco.insert(lvl5_or_deco.end(), ib_safi_deco_slot_awakenings.begin(), ib_safi_deco_slot_awakenings.end());
 
         std::vector<WeaponUpgrade> lvl5_or_sb = ib_safi_nondeco_lvl5_awakenings;
-        for (const auto& e : ib_safi_set_bonus_id_map) {
+        for (const auto& e : ib_safi_set_bonus_map) {
             lvl5_or_sb.push_back(e.first);
         }
 
@@ -365,17 +366,17 @@ public:
     }
 
     WeaponUpgradesContribution calculate_contribution() const {
-        unsigned int added_raw = 0;
-        int          added_aff = 0;
-        unsigned int extra_deco_slot_size = 0;
-        std::string  set_bonus_id = "";
+        unsigned int    added_raw = 0;
+        int             added_aff = 0;
+        unsigned int    extra_deco_slot_size = 0;
+        const SetBonus* set_bonus = nullptr;
 
         unsigned int white_sharpness = k_BASE_SHARPNESS_WHITE;
 
         for (const WeaponUpgrade& e : this->awakenings) {
-            if (Utils::map_has_key(ib_safi_set_bonus_id_map, e)) {
-                assert(set_bonus_id == "");
-                set_bonus_id = ib_safi_set_bonus_id_map.at(e);
+            if (Utils::map_has_key(ib_safi_set_bonus_map, e)) {
+                assert(!set_bonus);
+                set_bonus = ib_safi_set_bonus_map.at(e);
             } else {
                 switch (e) {
                     case WeaponUpgrade::ib_safi_attack_4:    added_raw += 7;           break;
@@ -415,7 +416,7 @@ public:
                            k_BASE_SHARPNESS_BLUE,
                            white_sharpness,
                            purple_sharpness),
-            std::move(set_bonus_id),
+            set_bonus,
         };
     }
 
@@ -459,7 +460,7 @@ private:
             } else if (Utils::set_has_key(ib_safi_deco_slot_awakenings, e)) {
                 if (has_slot) return false;
                 has_slot = true;
-            } else if (Utils::map_has_key(ib_safi_set_bonus_id_map, e)) {
+            } else if (Utils::map_has_key(ib_safi_set_bonus_map, e)) {
                 if (has_set_bonus) return false;
                 has_set_bonus = true;
             }

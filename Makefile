@@ -62,7 +62,7 @@ fast : CXXFLAGS=$(CXXFLAGSFAST)
 fast : all
 
 .PHONY : asserts
-asserts : CXXFLAGS=$(CXXFLAGSBASE) -O2
+asserts : CXXFLAGS=$(CXXFLAGSBASE) -O3
 asserts : all
 
 .PHONY : debug

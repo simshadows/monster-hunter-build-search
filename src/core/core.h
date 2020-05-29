@@ -412,7 +412,7 @@ struct WeaponUpgradesContribution {
     int             added_aff;
     unsigned int    extra_deco_slot_size;
     SharpnessGauge  sharpness_gauge_override;
-    std::string     set_bonus_id; // USING IDS IS SO FUCKING UNSAFE. PLEASE FIX. TODO: FIIIIIIIX THIIIIIIIIS
+    const SetBonus* set_bonus;
 };
 
 

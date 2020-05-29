@@ -37,10 +37,6 @@ WeaponContribution WeaponInstance::calculate_contribution() const {
     WeaponAugmentsContribution ac = this->augments->calculate_contribution();
     WeaponUpgradesContribution uc = this->upgrades->calculate_contribution();
 
-    // OH MY GOD THIS IS SO UNSAFE.
-    // TODO: FIX THIS OH GOD
-    const SetBonus * const set_bonus = (uc.set_bonus_id == "") ? nullptr : SkillsDatabase::get_setbonus(uc.set_bonus_id);
-
     WeaponContribution ret = {
         this->weapon->true_raw + ac.added_raw + uc.added_raw,
         this->weapon->affinity + ac.added_aff + uc.added_aff,
@@ -49,7 +45,7 @@ WeaponContribution WeaponInstance::calculate_contribution() const {
 
         this->weapon->deco_slots,
         this->weapon->skill,
-        set_bonus,
+        uc.set_bonus,
 
         uc.sharpness_gauge_override,
         this->weapon->is_constant_sharpness,

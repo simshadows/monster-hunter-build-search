@@ -59,6 +59,8 @@ using MHWIBuildSearch::SetBonus;
 
 {skill_declarations}
 
+{setbonus_declarations}
+
 extern const std::array<const SetBonus*, {num_setbonuses}> g_all_setbonuses;
 
 const Skill* get_skill(const std::string& skill_id) noexcept;
@@ -212,6 +214,7 @@ def generate_skills_source():
     skill_definitions  = []
     skill_map_elements = []
 
+    setbonus_declarations   = []
     setbonus_definitions    = []
     setbonus_map_elements   = []
     setbonus_array_elements = []
@@ -240,6 +243,9 @@ def generate_skills_source():
             stages.append(f"        {{ {parts}, &{skills[skill_id]['identifier']} }},")
         stages_str = "\n".join(stages)
 
+        setbonus_declarations.append(
+                    f"extern const SetBonus {setbonus['identifier']};"
+                )
         setbonus_definitions.append(
                     f"const SetBonus {setbonus['identifier']} = {{\n"
                     f"    \"{setbonus['sb_id']}\", // id\n"
@@ -258,6 +264,7 @@ def generate_skills_source():
 
     h_file_data = SKILLS_H_BASE.format(
             skill_declarations="\n".join(skill_declarations),
+            setbonus_declarations="\n".join(setbonus_declarations),
             num_setbonuses=num_setbonuses,
         )
     file_write(SKILLS_H_PATH, data=h_file_data)
