@@ -56,8 +56,9 @@ const DecorationsDatabase DecorationsDatabase::read_db_file(const std::string& f
             throw std::runtime_error("Simple decorations must have a slot size of 1, 2, or 3.");
         }
 
-        std::string name = jj["name"];// + " Jewel " + std::to_string(slot_size);
-        if (!Utils::has_ascii_letters(name)) { // SANITY CHECK
+        std::string base_name = jj["name"];
+        std::string name = ((std::string) jj["name"]) + " Jewel " + std::to_string(slot_size);
+        if (!Utils::has_ascii_letters(base_name)) { // SANITY CHECK
             throw std::runtime_error("Decoration names must have at least one ASCII letter (A-Z or a-z).");
         }
 
@@ -68,12 +69,11 @@ const DecorationsDatabase DecorationsDatabase::read_db_file(const std::string& f
         };
 
         std::string deco_id_copy = deco_id;
-        std::string name_copy = name;
         new_db.decorations_store.insert({deco_id, std::make_shared<Decoration>(std::move(deco_id_copy),
-                                                                               std::move(name_copy),
+                                                                               std::move(name),
                                                                                slot_size,
                                                                                std::move(skills)) });
-        simple_deco_to_skill.insert({deco_id, {skill, name}});
+        simple_deco_to_skill.insert({deco_id, {skill, std::move(base_name)}});
     }
 
     /*

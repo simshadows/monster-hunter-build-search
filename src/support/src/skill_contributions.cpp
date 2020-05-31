@@ -136,9 +136,13 @@ SkillContribution::SkillContribution(const SkillMap&           skills,
         this->added_aff += agitator_added_aff[agitator_lvl];
     }
 
+    // TODO: Airborne
+
     const unsigned int attack_boost_lvl = skills.get(&SkillsDatabase::g_skill_attack_boost);
     this->added_raw += attack_boost_added_raw[attack_boost_lvl];
     this->added_aff += attack_boost_added_aff[attack_boost_lvl];
+
+    // TODO: Bludgeoner
 
     if (skills_spec.get_state_for_binary_skill(&SkillsDatabase::g_skill_coalescence)) {
         const unsigned int coalescence_lvl = skills.get(&SkillsDatabase::g_skill_coalescence);
@@ -162,6 +166,12 @@ SkillContribution::SkillContribution(const SkillMap&           skills,
         }
     }
 
+    // TODO: Fortify
+
+    // TODO: Frostcraft
+
+    // TODO: Heroics and Heroics Secret
+
     if (skills_spec.get_state_for_binary_skill(&SkillsDatabase::g_skill_latent_power)) {
         const unsigned int latent_power_lvl = skills.get_non_secret(&SkillsDatabase::g_skill_latent_power,
                                                                     &SkillsDatabase::g_skill_latent_power_secret);
@@ -174,10 +184,14 @@ SkillContribution::SkillContribution(const SkillMap&           skills,
         this->added_aff += maximum_might_added_aff[maximum_might_lvl];
     }
 
+    // TODO: Offensive Guard
+
     if (skills_spec.get_state_for_binary_skill(&SkillsDatabase::g_skill_peak_performance)) {
         const unsigned int peak_performance_lvl = skills.get(&SkillsDatabase::g_skill_peak_performance);
         this->added_raw += peak_performance_added_raw[peak_performance_lvl];
     }
+
+    // TODO: Punishing Draw
 
     if (skills_spec.get_state_for_binary_skill(&SkillsDatabase::g_skill_resentment)) {
         const unsigned int resentment_lvl = skills.get(&SkillsDatabase::g_skill_resentment);
