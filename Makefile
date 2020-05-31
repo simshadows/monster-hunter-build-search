@@ -1,6 +1,5 @@
-# Clang 9 is the best-performing compiler in my experience on my machine,
-# even beating out Clang 10 and GCC 10.
-CXX2=clang++-9
+# Clang 10 is the best-performing compiler in my experience on my machine.
+CXX2=clang++-10
 
 CXXFLAGSBASE= \
 	-Wall \
