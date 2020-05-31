@@ -15,6 +15,7 @@
 #include "core/core.h"
 #include "database/database.h"
 #include "database/database_skills.h"
+#include "database/database_decorations.h"
 #include "support/support.h"
 #include "utils/utils.h"
 #include "utils/utils_strings.h"
@@ -130,6 +131,17 @@ struct WeaponInstancePruneFn {
 };
 
 
+static std::unordered_set<const Skill*> all_possible_skills_from_decos() {
+    std::unordered_set<const Skill*> ret;
+    for (const Decoration* deco : DecorationsDatabase::g_all_decorations) {
+        for (const auto& e : deco->skills) {
+            ret.emplace(e.first);
+        }
+    }
+    return ret;
+}
+
+
 static std::vector<WeaponInstanceExtended> prepare_weapons(const Database& db,
                                                            const SearchParameters& params,
                                                            const std::unordered_set<const SetBonus*>& set_bonus_subset) {
@@ -191,9 +203,9 @@ static std::vector<WeaponInstanceExtended> prepare_weapons(const Database& db,
 }
 
 
-static std::array<std::vector<const Decoration*>, k_MAX_DECO_SIZE> prepare_decos(const Database& db,
-                                                                                 const SkillSpec& skill_spec) {
-    std::vector<const Decoration*> all_decos = db.decos.get_all();
+static std::array<std::vector<const Decoration*>, k_MAX_DECO_SIZE> prepare_decos(const SkillSpec& skill_spec) {
+    std::vector<const Decoration*> all_decos (DecorationsDatabase::g_all_decorations.begin(),
+                                              DecorationsDatabase::g_all_decorations.end());
 
     std::unordered_map<const Skill*, const Decoration*> simplest_decos;
     std::vector<const Decoration*> decos_to_keep;
@@ -433,7 +445,7 @@ static std::vector<const Skill*> get_skills_in_subset_servable_without_sb_or_wea
         // Initial set is just armour skills
         std::unordered_set<const Skill*> x = db.armour.all_possible_skills_from_armour_without_set_bonuses();
         // Now we get the other skills
-        std::unordered_set<const Skill*> deco_skills = db.decos.all_possible_skills_from_decos();
+        std::unordered_set<const Skill*> deco_skills = all_possible_skills_from_decos();
         std::unordered_set<const Skill*> charm_skills = db.charms.all_possible_skills_from_charms();
         // And now, we merge them in.
         x.insert(deco_skills.begin(), deco_skills.end());
@@ -537,7 +549,7 @@ static void do_search(const Database& db, const SearchParameters& params) {
 
     auto start_t = std::chrono::steady_clock::now();
 
-    std::array<std::vector<const Decoration*>, k_MAX_DECO_SIZE> grouped_sorted_decos = prepare_decos(db, params.skill_spec);
+    std::array<std::vector<const Decoration*>, k_MAX_DECO_SIZE> grouped_sorted_decos = prepare_decos(params.skill_spec);
     assert(grouped_sorted_decos.size() == 4);
     assert(grouped_sorted_decos[0].size());
     assert(grouped_sorted_decos[1].size());

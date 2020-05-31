@@ -15,8 +15,7 @@ const Database Database::get_db() {
 
 
 Database::Database()
-    : decos   (DecorationsDatabase::read_db_file("data/database_decorations.json"))
-    , weapons (WeaponsDatabase    ::read_db_file("data/database_weapons.json"    ))
+    : weapons (WeaponsDatabase    ::read_db_file("data/database_weapons.json"    ))
     , armour  (ArmourDatabase     ::read_db_file("data/database_armour.json"     ))
     , charms  (CharmsDatabase     ::read_db_file("data/database_charms.json"     ))
 {

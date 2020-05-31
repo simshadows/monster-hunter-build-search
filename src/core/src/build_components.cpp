@@ -23,16 +23,8 @@ namespace MHWIBuildSearch
  * Basic Build Components: Decoration
  ***************************************************************************************/
 
-Decoration::Decoration(std::string&& new_id,
-                       std::string&& new_name,
-                       unsigned int new_slot_size,
-                       std::vector<std::pair<const Skill*, unsigned int>>&& new_skills) noexcept
-    : id        (std::move(new_id       ))
-    , name      (std::move(new_name     ))
-    , slot_size (std::move(new_slot_size))
-    , skills    (std::move(new_skills   ))
-{
-}
+
+// Nothing required!
 
 
 /****************************************************************************************
