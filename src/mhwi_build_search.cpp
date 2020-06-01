@@ -31,7 +31,7 @@ void no_args_cmd() {
         {&SkillsDatabase::g_skill_agitator, 0},
     };
     std::unordered_map<const Skill*, unsigned int> forced_states;
-    SkillSpec skill_spec(std::move(min_levels), std::move(forced_states));
+    SkillSpec skill_spec(std::move(min_levels), std::move(forced_states), {});
     std::clog << std::endl << skill_spec.get_humanreadable() << std::endl << std::endl;
 
     /*

@@ -17,9 +17,12 @@ namespace MHWIBuildSearch
 static constexpr unsigned int k_DEACTIVATED_STATE = 0;
 
 
-SkillSpec::SkillSpec(InputContainer&& new_min_levels, InputContainer&& forced_states) noexcept
-    : min_levels (std::move(new_min_levels   ))
-    , states     (std::move(forced_states))
+SkillSpec::SkillSpec(InputContainer&& new_min_levels,
+                     InputContainer&& forced_states,
+                     SkillSet&& new_force_remove_skills ) noexcept
+    : min_levels          (std::move(new_min_levels))
+    , states              (std::move(forced_states))
+    , force_remove_skills (std::move(new_force_remove_skills))
 {
     for (const auto& e : this->min_levels) {
         const Skill * const skill = e.first;
@@ -64,6 +67,11 @@ bool SkillSpec::skills_meet_minimum_requirements(const SkillMap& skills) const {
 }
 
 
+bool SkillSpec::skill_must_be_removed(const Skill* skill) const {
+    return Utils::set_has_key(this->force_remove_skills, skill);
+}
+
+
 std::vector<const Skill*> SkillSpec::get_skill_subset_as_vector() const {
     std::vector<const Skill*> ret;
     for (const auto& e : this->min_levels) {
@@ -84,7 +92,7 @@ SkillSpec::MinLevelsIterator SkillSpec::end() const {
 
 std::string SkillSpec::get_humanreadable() const {
     assert(this->data_is_valid());
-    std::string ret = "Skill Subset:";
+    std::string ret = "Skill subset:";
 
     if (min_levels.size() == 0) {
         ret += "\n  (no skills)";
@@ -98,6 +106,15 @@ std::string SkillSpec::get_humanreadable() const {
             ret += "\n  " + skill->name;
             if (min_lvl > 0)       ret += " [Minimum level: " + std::to_string(min_lvl) + "]";
             if (skill->states > 2) ret += " [State: " + std::to_string(state) + "]";
+        }
+    }
+
+    ret += "\n\nForce-remove skills:";
+    if (force_remove_skills.size() == 0) {
+        ret += "\n  (no skills)";
+    } else {
+        for (const Skill* skill : this->force_remove_skills) {
+            ret += "\n  " + skill->name;
         }
     }
 

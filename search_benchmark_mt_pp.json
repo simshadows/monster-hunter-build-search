@@ -19,5 +19,10 @@
     },
     "forced_skill_states": {
         "WEAKNESS_EXPLOIT": 2
-    }
+    },
+    "force_remove_skills": [
+        "ELEMENT_ACCELERATION",
+        "TRUE_ELEMENT_ACCELERATION",
+        "FREE_ELEM_AMMO_UP"
+    ]
 }

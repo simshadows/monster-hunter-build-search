@@ -149,6 +149,9 @@ static std::vector<WeaponInstanceExtended> prepare_weapons(const Database& db,
             for (const std::shared_ptr<WeaponUpgradesInstance>& u : upgrade_instances) {
                 WeaponInstance new_inst = {weapon, a, u};
                 WeaponContribution new_cont = new_inst.calculate_contribution();
+                if (params.skill_spec.skill_must_be_removed(new_cont.skill)) {
+                    continue;
+                }
                 if (params.health_regen_required && !new_cont.health_regen_active) {
                     continue;
                 }
@@ -206,12 +209,22 @@ static std::array<std::vector<const Decoration*>, k_MAX_DECO_SIZE> prepare_decos
     for (const Decoration * const deco : all_decos) {
         const Skill* found_skill;
         std::size_t num_contribution = 0;
+
+        bool dont_add = false;
         for (const auto& e : deco->skills) {
+            if (skill_spec.skill_must_be_removed(e.first)) {
+                dont_add = true;
+                break;
+            }
             if (skill_spec.is_in_subset(e.first)) {
                 found_skill = e.first;
                 num_contribution += e.second;
             }
         }
+        if (dont_add) {
+            continue;
+        }
+
         if (num_contribution == 1) {
             if (Utils::map_has_key(simplest_decos, found_skill)
                     && (simplest_decos.at(found_skill)->slot_size < deco->slot_size)) {
@@ -254,6 +267,7 @@ static std::vector<const Charm*> prepare_charms(const Database& db, const SkillS
 
     const auto pred = [&](const Charm* x){
         for (const Skill* s : x->skills) {
+            if (skill_spec.skill_must_be_removed(s)) return true;
             if (skill_spec.is_in_subset(s)) return false;
         }
         return true;
@@ -286,6 +300,11 @@ static std::map<ArmourSlot, std::vector<const ArmourPiece*>> prepare_armour(cons
     assert(legs_pre);
 
     const auto pred = [&](const ArmourPiece* x){
+        for (const auto& e : x->skills) {
+            assert(e.second); // Non-zero level
+            if (params.skill_spec.skill_must_be_removed(e.first)) return true;
+        }
+
         switch (armour_variant_to_tier(x->variant)) {
             case Tier::low_rank:    return !params.allow_low_rank;
             case Tier::high_rank:   return !params.allow_high_rank;
@@ -300,11 +319,16 @@ static std::map<ArmourSlot, std::vector<const ArmourPiece*>> prepare_armour(cons
         a.erase(std::remove_if(a.begin(), a.end(), pred), a.end());
     }
 
-    Utils::log_stat_reduction("Head piece  - filtering by tier: ", head_pre,  ret.at(ArmourSlot::head).size());
-    Utils::log_stat_reduction("Chest piece - filtering by tier: ", chest_pre, ret.at(ArmourSlot::chest).size());
-    Utils::log_stat_reduction("Arm piece   - filtering by tier: ", arms_pre,  ret.at(ArmourSlot::arms).size());
-    Utils::log_stat_reduction("Waist piece - filtering by tier: ", waist_pre, ret.at(ArmourSlot::waist).size());
-    Utils::log_stat_reduction("Leg piece   - filtering by tier: ", legs_pre,  ret.at(ArmourSlot::legs).size());
+    Utils::log_stat_reduction("Head piece  - filtering by tier and removed skills: ",
+                              head_pre, ret.at(ArmourSlot::head).size());
+    Utils::log_stat_reduction("Chest piece - filtering by tier and removed skills: ",
+                              chest_pre, ret.at(ArmourSlot::chest).size());
+    Utils::log_stat_reduction("Arm piece   - filtering by tier and removed skills: ",
+                              arms_pre, ret.at(ArmourSlot::arms).size());
+    Utils::log_stat_reduction("Waist piece - filtering by tier and removed skills: ",
+                              waist_pre, ret.at(ArmourSlot::waist).size());
+    Utils::log_stat_reduction("Leg piece   - filtering by tier and removed skills: ",
+                              legs_pre, ret.at(ArmourSlot::legs).size());
 
     return ret;
 }

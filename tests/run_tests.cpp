@@ -99,7 +99,7 @@ TEST_CASE("Incrementally building up a greatsword Safi Shattersplitter build.") 
     std::unordered_map<const Skill*, unsigned int> forced_states = {
         {&SkillsDatabase::g_skill_weakness_exploit, 1},
     };
-    SkillSpec skill_spec(std::move(min_levels), std::move(forced_states));
+    SkillSpec skill_spec(std::move(min_levels), std::move(forced_states), {});
 
     SECTION("Safi Shattersplitter + 1 Armour") {
 
@@ -254,7 +254,7 @@ TEST_CASE("Incrementally building up a greatsword Acid Shredder II build.") {
     std::unordered_map<const Skill*, unsigned int> forced_states = {
         {&SkillsDatabase::g_skill_weakness_exploit, 1},
     };
-    SkillSpec skill_spec(std::move(min_levels), std::move(forced_states));
+    SkillSpec skill_spec(std::move(min_levels), std::move(forced_states), {});
 
     DecoEquips decos;
 
@@ -335,7 +335,7 @@ TEST_CASE("DecoEquips::fits()") {
         {&SkillsDatabase::g_skill_weakness_exploit, 0},
     };
     std::unordered_map<const Skill*, unsigned int> forced_states;
-    SkillSpec skill_spec(std::move(min_levels), std::move(forced_states));
+    SkillSpec skill_spec(std::move(min_levels), std::move(forced_states), {});
 
     SECTION("Mixed Test, Exact Fit") {
 

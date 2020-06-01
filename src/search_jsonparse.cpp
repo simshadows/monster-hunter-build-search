@@ -31,17 +31,38 @@ static SearchParameters read_json_obj(const nlohmann::json& j) {
 
     WeaponClass weapon_class = upper_snake_case_to_weaponclass(j["selected_weapon_class"]);
 
-    std::unordered_map<const Skill*, unsigned int> min_levels;
-    std::unordered_map<const Skill*, unsigned int> states;
-    for (auto& e : j["selected_skills"].items()) {
-        min_levels.insert({SkillsDatabase::get_skill(e.key()), e.value()});
-    }
-    for (auto& e : j["forced_skill_states"].items()) {
-        states.insert({SkillsDatabase::get_skill(e.key()), e.value()});
-    }
+    std::unordered_map<const Skill*, unsigned int> min_levels = [&](){
+        std::unordered_map<const Skill*, unsigned int> ret;
+        for (auto& e : j["selected_skills"].items()) {
+            ret.insert({SkillsDatabase::get_skill(e.key()), e.value()});
+        }
+        return ret;
+    }();
+
+    std::unordered_map<const Skill*, unsigned int> states = [&](){
+        std::unordered_map<const Skill*, unsigned int> ret;
+        for (auto& e : j["forced_skill_states"].items()) {
+            ret.insert({SkillsDatabase::get_skill(e.key()), e.value()});
+        }
+        return ret;
+    }();
+
+    std::unordered_set<const Skill*> force_remove_skill = [&](){
+        std::unordered_set<const Skill*> ret;
+        nlohmann::json j2 = j["force_remove_skills"];
+        if (!j2.is_array()) {
+            throw std::runtime_error("'force_remove_skills' must be an array of strings.");
+        }
+        std::vector<std::string> force_remove_skill_ids = j2;
+        for (const std::string& skill_id : force_remove_skill_ids) {
+            ret.emplace(SkillsDatabase::get_skill(skill_id));
+        }
+        return ret;
+    }();
 
     SkillSpec skill_spec (std::move(min_levels),
-                          std::move(states));
+                          std::move(states),
+                          std::move(force_remove_skill) );
 
     return {allow_low_rank,
             allow_high_rank,

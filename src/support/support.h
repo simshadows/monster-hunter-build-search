@@ -28,14 +28,18 @@ class DecoEquips;
 
 class SkillSpec {
     using ContainerType = std::unordered_map<const Skill*, unsigned int>;
+    using SkillSet = std::unordered_set<const Skill*>;
 
     ContainerType min_levels;
     ContainerType states;
+    SkillSet force_remove_skills;
 public:
     using InputContainer    = ContainerType;
     using MinLevelsIterator = ContainerType::const_iterator;
 
-    SkillSpec(InputContainer&& new_min_levels, InputContainer&& forced_states) noexcept;
+    SkillSpec(InputContainer&& new_min_levels,
+              InputContainer&& forced_states,
+              SkillSet&& new_force_remove_skills) noexcept;
 
     bool is_in_subset(const Skill*) const;
     unsigned int get_min_lvl(const Skill*) const;
@@ -43,6 +47,8 @@ public:
     bool get_state_for_binary_skill(const Skill*) const; // Adds an assertion for skills with only two states
 
     bool skills_meet_minimum_requirements(const SkillMap&) const;
+
+    bool skill_must_be_removed(const Skill*) const;
 
     std::vector<const Skill*> get_skill_subset_as_vector() const;
 
