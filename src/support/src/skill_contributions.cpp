@@ -118,7 +118,7 @@ SkillContribution::SkillContribution(const SkillMap&           skills,
                                      const WeaponContribution& wc) noexcept
     : added_raw               (0)
     , added_aff               (0)
-    , neb_multiplier          (calculate_non_elemental_boost_multiplier(skills, skills_spec, wc))
+    , base_raw_multiplier     (calculate_non_elemental_boost_multiplier(skills, skills_spec, wc))
     , raw_crit_dmg_multiplier (calculate_raw_crit_dmg_multiplier(skills))
     , raw_sharpness_modifier  (calculate_raw_sharpness_modifier(skills, wc))
 {
@@ -166,7 +166,19 @@ SkillContribution::SkillContribution(const SkillMap&           skills,
         }
     }
 
-    // TODO: Fortify
+    if (skills.binary_skill_is_lvl1(&SkillsDatabase::g_skill_fortify)) {
+        const unsigned int fortify_state = skills_spec.get_state(&SkillsDatabase::g_skill_fortify);
+        switch (fortify_state) {
+            case 1:
+                this->base_raw_multiplier *= 1.1;
+                break;
+            case 2:
+                this->base_raw_multiplier *= 1.2;
+                break;
+            default:
+                assert(fortify_state == 0);
+        }
+    }
 
     // TODO: Frostcraft
 

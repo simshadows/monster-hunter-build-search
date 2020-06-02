@@ -29,8 +29,11 @@ void no_args_cmd() {
     std::unordered_map<const Skill*, unsigned int> min_levels = {
         {&SkillsDatabase::g_skill_weakness_exploit, 0},
         {&SkillsDatabase::g_skill_agitator, 0},
+        {&SkillsDatabase::g_skill_fortify, 0},
     };
-    std::unordered_map<const Skill*, unsigned int> forced_states;
+    std::unordered_map<const Skill*, unsigned int> forced_states = {
+        {&SkillsDatabase::g_skill_fortify, 1},
+    };
     SkillSpec skill_spec(std::move(min_levels), std::move(forced_states), {});
     std::clog << std::endl << skill_spec.get_humanreadable() << std::endl << std::endl;
 
@@ -63,7 +66,7 @@ void no_args_cmd() {
     std::clog << armour.get_skills_without_set_bonuses().get_humanreadable() << std::endl << std::endl;
 
     double efr = calculate_efr_from_gear_lookup(weapon, armour, decos, skill_spec);
-    std::clog << efr << std::endl;
+    std::clog << efr << "\n\n===================\n\n";
 
     /*
      * For testing purposes, we'll also do a by-skill lookup.
@@ -72,10 +75,14 @@ void no_args_cmd() {
     weapon = WeaponInstance(db.weapons.at("ROYAL_VENUS_BLADE"));
 
     SkillMap skills;
+    skills.set(&SkillsDatabase::g_skill_agitator, 1);
     skills.set(&SkillsDatabase::g_skill_critical_boost, 3);
     skills.set(&SkillsDatabase::g_skill_non_elemental_boost, 1);
+    skills.set(&SkillsDatabase::g_skill_fortify, 1);
 
     WeaponContribution wc = weapon.calculate_contribution();
+    std::clog << std::endl << skill_spec.get_humanreadable() + "\n\n";
+    std::clog << skills.get_humanreadable() + "\n\n";
     efr = calculate_efr_from_skills_lookup(wc, skills, skill_spec);
     std::clog << efr << std::endl;
     //assert(Utils::round_2decpl(efr) == 437.85); // Quick test!

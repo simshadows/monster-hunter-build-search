@@ -465,7 +465,7 @@ const Skill g_skill_fortify = {
     "Fortify", // name
     1, // normal_limit
     1, // secret_limit
-    2 // states
+    3 // states
 };
 
 const Skill g_skill_free_elem_ammo_up = {

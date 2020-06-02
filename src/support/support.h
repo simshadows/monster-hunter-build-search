@@ -232,7 +232,7 @@ public:
 struct SkillContribution {
     unsigned int added_raw;
     int          added_aff;
-    double       neb_multiplier;
+    double       base_raw_multiplier;
     double       raw_crit_dmg_multiplier;
     double       raw_sharpness_modifier;
 

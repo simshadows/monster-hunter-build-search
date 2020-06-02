@@ -348,6 +348,8 @@
                 "name": "Fortify",
                 "limit": 1,
 
+                "states": 3,
+
                 "tooltip": "((TODO))"
         },
         "FREE_ELEM_AMMO_UP": {
