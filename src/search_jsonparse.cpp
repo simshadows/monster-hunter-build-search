@@ -63,6 +63,10 @@ static SearchParameters read_json_obj(const nlohmann::json& j) {
     SkillSpec skill_spec (std::move(min_levels),
                           std::move(states),
                           std::move(force_remove_skill) );
+    // TODO: Just throw an exception from within the constructor instead.
+    if (!skill_spec.data_is_valid()) {
+        throw std::runtime_error("Invalid query.");
+    }
 
     return {allow_low_rank,
             allow_high_rank,

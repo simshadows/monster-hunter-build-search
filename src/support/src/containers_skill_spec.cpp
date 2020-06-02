@@ -6,6 +6,7 @@
 #include <assert.h>
 #include <algorithm>
 
+#include "../../database/database_skills.h"
 #include "../support.h"
 #include "../../utils/utils.h"
 
@@ -23,6 +24,7 @@ SkillSpec::SkillSpec(InputContainer&& new_min_levels,
     : min_levels          (std::move(new_min_levels))
     , states              (std::move(forced_states))
     , force_remove_skills (std::move(new_force_remove_skills))
+    , set_bonus_cutoffs   {}
 {
     for (const auto& e : this->min_levels) {
         const Skill * const skill = e.first;
@@ -31,6 +33,23 @@ SkillSpec::SkillSpec(InputContainer&& new_min_levels,
             this->states.emplace(skill, max_state);
         }
     }
+
+    // TODO: Make this a static function?
+    std::unordered_map<const SetBonus*, unsigned int> setbonus_cutoffs_intermediate;
+    for (const SetBonus * const set_bonus : SkillsDatabase::g_all_setbonuses) {
+        for (const auto& e : set_bonus->stages) {
+            if (Utils::set_has_key(this->force_remove_skills, e.second)) {
+                const auto result = setbonus_cutoffs_intermediate.find(set_bonus);
+                if ((result != setbonus_cutoffs_intermediate.end()) && (result->second > e.first)) {
+                    result->second = e.first;
+                } else {
+                    setbonus_cutoffs_intermediate.emplace(std::make_pair(set_bonus, e.first));
+                }
+            }
+        }
+    }
+    this->set_bonus_cutoffs.assign(setbonus_cutoffs_intermediate.begin(), setbonus_cutoffs_intermediate.end());
+
     assert(this->data_is_valid());
 }
 
@@ -69,6 +88,11 @@ bool SkillSpec::skills_meet_minimum_requirements(const SkillMap& skills) const {
 
 bool SkillSpec::skill_must_be_removed(const Skill* skill) const {
     return Utils::set_has_key(this->force_remove_skills, skill);
+}
+
+
+const std::vector<std::pair<const SetBonus*, unsigned int>>& SkillSpec::get_set_bonus_cutoffs() const {
+    return this->set_bonus_cutoffs;
 }
 
 
@@ -118,6 +142,15 @@ std::string SkillSpec::get_humanreadable() const {
         }
     }
 
+    ret += "\n\nForce-remove set bonuses:";
+    if (set_bonus_cutoffs.size() == 0) {
+        ret += "\n  (no set bonuses)";
+    } else {
+        for (const auto& e : this->set_bonus_cutoffs) {
+            ret += "\n  " + e.first->name + " @ " + std::to_string(e.second) + " or more pieces";
+        }
+    }
+
     return ret;
 }
 
@@ -136,7 +169,17 @@ bool SkillSpec::data_is_valid() const {
         const unsigned int state = e.second;
         if (state >= possible_states) return false;
     }
-    return this->min_levels.size() == this->states.size();
+    if (this->min_levels.size() != this->states.size()) {
+        return false;
+    }
+    // Check 3: No skills that are forced to be removed are present in the to-be-removed map.
+    for (const auto& e : this->force_remove_skills) {
+        if (Utils::map_has_key(this->min_levels, e)) return false;
+    }
+    // TODO: Can we check if any set bonus maximums prevent certain skills with minimum levels from ever being provided?
+
+    // All checks passed. State is deemed valid.
+    return true;
 }
 
 

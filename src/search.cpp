@@ -491,12 +491,27 @@ static void merge_in_armour_list(SSBSeenMap<ArmourSetCombo>& armour_combos,
             const SSBTuple&         piece_combo_ssb = e2.first;
             const ArmourPieceCombo& piece_combo     = e2.second;
 
-            const auto op1 = [&](){
+            ArmourSetCombo set_combo_to_add = [&](){
                 ArmourSetCombo x = set_combo;
                 x.armour.add(piece_combo.armour_piece);
                 x.decos.merge_in(piece_combo.decos);
                 return x;
-            };
+            }();
+
+            // We first need to check if the set bonuses exceed our limits.
+            bool skip = false;
+            const SetBonusMap tmp_setbonuses = set_combo_to_add.armour.get_set_bonuses();
+            for (const auto& e : skill_spec.get_set_bonus_cutoffs()) {
+                if (tmp_setbonuses.get(e.first) >= e.second) {
+                    skip = true;
+                    break;
+                }
+            }
+            if (skip) {
+                continue;
+            }
+
+            // Now, we may continue to add it!
 
             const auto op2 = [&](){
                 SSBTuple x = set_combo_ssb;
@@ -506,7 +521,7 @@ static void merge_in_armour_list(SSBSeenMap<ArmourSetCombo>& armour_combos,
                 return x;
             };
 
-            armour_combos.add(op1(), op2());
+            armour_combos.add(std::move(set_combo_to_add), op2());
         }
     }
 }
@@ -709,6 +724,19 @@ static void do_search(const Database& db, const SearchParameters& params) {
                 if (wc.contributions.set_bonus) x.increment(wc.contributions.set_bonus, 1);
                 return x;
             }();
+            
+            // Filter out anything that exceeds set bonus cutoffs.
+            bool invalid_set_bonuses = false;
+            for (const auto& e : params.skill_spec.get_set_bonus_cutoffs()) {
+                assert(wac_set_bonuses.get(e.first) <= e.second);
+                if (wac_set_bonuses.get(e.first) == e.second) {
+                    invalid_set_bonuses = true;
+                    break;
+                }
+            }
+            if (invalid_set_bonuses) {
+                continue;
+            }
 
             std::vector<std::vector<const Decoration*>> w_decos = generate_deco_combos(wc.contributions.deco_slots,
                                                                                        grouped_sorted_decos,

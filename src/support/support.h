@@ -32,7 +32,9 @@ class SkillSpec {
 
     ContainerType min_levels;
     ContainerType states;
+
     SkillSet force_remove_skills;
+    std::vector<std::pair<const SetBonus*, unsigned int>> set_bonus_cutoffs;
 public:
     using InputContainer    = ContainerType;
     using MinLevelsIterator = ContainerType::const_iterator;
@@ -49,6 +51,7 @@ public:
     bool skills_meet_minimum_requirements(const SkillMap&) const;
 
     bool skill_must_be_removed(const Skill*) const;
+    const std::vector<std::pair<const SetBonus*, unsigned int>>& get_set_bonus_cutoffs() const;
 
     std::vector<const Skill*> get_skill_subset_as_vector() const;
 
@@ -60,7 +63,7 @@ public:
 
     std::string get_humanreadable() const;
 
-private:
+    // TODO: We should just throw exceptions instead.
     bool data_is_valid() const;
 };
 

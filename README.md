@@ -6,8 +6,6 @@ As of the time of writing, a significantly more functional version is available 
 
 ## How do I use this?
 
-This doesn't really have a user interface yet as I'm merely assertion-testing to build the basic components for now.
-
 I'll write a detailed guide on how to use this thing later.
 
 ## Issues
