@@ -326,6 +326,40 @@ TEST_CASE("Incrementally building up a greatsword Acid Shredder II build.") {
 }
 
 
+TEST_CASE("Testing unusual skill combinations.") {
+
+    std::unordered_map<const Skill*, unsigned int> min_levels = {
+        {&SkillsDatabase::g_skill_weakness_exploit, 0},
+        {&SkillsDatabase::g_skill_agitator, 0},
+        {&SkillsDatabase::g_skill_fortify, 0},
+        {&SkillsDatabase::g_skill_frostcraft, 0},
+        {&SkillsDatabase::g_skill_bludgeoner, 0},
+    };
+    std::unordered_map<const Skill*, unsigned int> forced_states = {
+        {&SkillsDatabase::g_skill_fortify, 1},
+    };
+    SkillSpec skill_spec(std::move(min_levels), std::move(forced_states), {});
+
+    SECTION("Bludgeoner + Non-elemental Boost + Fortify + Frostcraft") {
+
+        WeaponInstance weapon(db.weapons.at("BUSTER_SWORD_I"));
+
+        SkillMap skills;
+        skills.set(&SkillsDatabase::g_skill_agitator, 1);
+        skills.set(&SkillsDatabase::g_skill_critical_boost, 3);
+        skills.set(&SkillsDatabase::g_skill_non_elemental_boost, 1);
+        skills.set(&SkillsDatabase::g_skill_fortify, 1);
+        skills.set(&SkillsDatabase::g_skill_frostcraft, 1);
+        skills.set(&SkillsDatabase::g_skill_bludgeoner, 1);
+
+        WeaponContribution wc = weapon.calculate_contribution();
+
+        double efr = calculate_efr_from_skills_lookup(weapon.weapon->weapon_class, wc, skills, skill_spec);
+        REQUIRE(Utils::round_2decpl(efr) == Approx(185.64));
+    }
+}
+
+
 TEST_CASE("DecoEquips::fits()") {
 
     std::unordered_map<const Skill*, unsigned int> min_levels = {

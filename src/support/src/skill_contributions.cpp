@@ -23,6 +23,13 @@ static const std::array<int         , 8> agitator_added_aff = {0, 5, 5, 7,  7,  
 static const std::array<unsigned int, 8> attack_boost_added_raw = {0, 3, 6, 9, 12, 15, 18, 21};
 static const std::array<int         , 8> attack_boost_added_aff = {0, 0, 0, 0,  5,  5,  5,  5};
 
+// Bludgeoner
+static constexpr unsigned int k_BLUDGEONER_ADDED_RAW_GREEN  = 15;
+static constexpr unsigned int k_BLUDGEONER_ADDED_RAW_YELLOW = 25;
+static constexpr unsigned int k_BLUDGEONER_ADDED_RAW_ORANGE = 30;
+static constexpr unsigned int k_BLUDGEONER_ADDED_RAW_RED    = 30;
+static constexpr unsigned int k_BLUDGEONER_ADDED_RAW_OTHER  = 0;
+
 // Coalescence                                             level: 0,  1,  2,  3
 static const std::array<unsigned int, 4> coalescence_added_raw = {0, 12, 15, 18};
 
@@ -114,17 +121,6 @@ static double calculate_raw_crit_dmg_multiplier(const SkillMap& skills) {
 }
 
 
-static double calculate_raw_sharpness_modifier(const SkillMap& skills,
-                                               const WeaponContribution& wc) {
-    if (wc.is_constant_sharpness) {
-        return wc.maximum_sharpness.get_raw_sharpness_modifier();
-    } else {
-        const unsigned int handicraft_lvl = skills.get(&SkillsDatabase::g_skill_handicraft);
-        return wc.maximum_sharpness.get_raw_sharpness_modifier(handicraft_lvl);
-    }
-};
-
-
 SkillContribution::SkillContribution(const SkillMap&           skills,
                                      const SkillSpec&          skills_spec,
                                      const WeaponClass         weapon_class,
@@ -133,9 +129,21 @@ SkillContribution::SkillContribution(const SkillMap&           skills,
     , added_aff                 (0)
     , base_raw_multiplier       (calculate_non_elemental_boost_multiplier(skills, skills_spec, wc))
     //, frostcraft_raw_multiplier (1.0) // We initialize later
+    //, bludgeoner_added_raw      (0)   // We initialize later
     , raw_crit_dmg_multiplier   (calculate_raw_crit_dmg_multiplier(skills))
-    , raw_sharpness_modifier    (calculate_raw_sharpness_modifier(skills, wc))
+    //, raw_sharpness_modifier    ()    // We initialize later
 {
+    const SharpnessGauge final_sharpness = [&](){
+        if (wc.is_constant_sharpness) {
+            return wc.maximum_sharpness;
+        } else {
+            const unsigned int handicraft_lvl = skills.get(&SkillsDatabase::g_skill_handicraft);
+            return wc.maximum_sharpness.apply_handicraft(handicraft_lvl);
+        }
+    }();
+    const SharpnessLevel sharpness_lvl = final_sharpness.get_sharpness_level();
+    this->raw_sharpness_modifier = SharpnessGauge::sharpness_level_to_raw_sharpness_modifier(sharpness_lvl);
+
     // We calculate the remaining fields.
 
     if (skills_spec.get_state_for_binary_skill(&SkillsDatabase::g_skill_affinity_sliding)
@@ -156,7 +164,26 @@ SkillContribution::SkillContribution(const SkillMap&           skills,
     this->added_raw += attack_boost_added_raw[attack_boost_lvl];
     this->added_aff += attack_boost_added_aff[attack_boost_lvl];
 
-    // TODO: Bludgeoner
+    if (skills.binary_skill_is_lvl1(&SkillsDatabase::g_skill_bludgeoner)) {
+        switch (sharpness_lvl) {
+            case SharpnessLevel::red:
+                this->bludgeoner_added_raw = k_BLUDGEONER_ADDED_RAW_RED;
+                break;
+            case SharpnessLevel::orange:
+                this->bludgeoner_added_raw = k_BLUDGEONER_ADDED_RAW_ORANGE;
+                break;
+            case SharpnessLevel::yellow:
+                this->bludgeoner_added_raw = k_BLUDGEONER_ADDED_RAW_YELLOW;
+                break;
+            case SharpnessLevel::green:
+                this->bludgeoner_added_raw = k_BLUDGEONER_ADDED_RAW_GREEN;
+                break;
+            default:
+                this->bludgeoner_added_raw = k_BLUDGEONER_ADDED_RAW_OTHER;
+        }
+    } else {
+        this->bludgeoner_added_raw = k_BLUDGEONER_ADDED_RAW_OTHER;
+    }
 
     if (skills_spec.get_state_for_binary_skill(&SkillsDatabase::g_skill_coalescence)) {
         const unsigned int coalescence_lvl = skills.get(&SkillsDatabase::g_skill_coalescence);

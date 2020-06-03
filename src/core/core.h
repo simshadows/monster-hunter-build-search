@@ -42,6 +42,16 @@ public:
  ***************************************************************************************/
 
 
+enum class SharpnessLevel {
+    red,
+    orange,
+    yellow,
+    green,
+    blue,
+    white,
+    purple,
+};
+
 constexpr std::size_t k_SHARPNESS_LEVELS = 7;
 
 
@@ -60,21 +70,22 @@ public:
     // Special constructor.
     // Throws an exception if the vector is of the wrong size.
     static SharpnessGauge from_vector(const std::vector<unsigned int>&);
+    static double sharpness_level_to_raw_sharpness_modifier(SharpnessLevel);
+
+    // Constructs a new SharpnessGauge that is the result of applying handicraft to
+    // another SharpnessGauge.
+    SharpnessGauge apply_handicraft(unsigned int handicraft_lvl) const noexcept;
 
     double get_raw_sharpness_modifier() const; // Uses the full sharpness gauge.
     double get_raw_sharpness_modifier(unsigned int handicraft_lvl) const;
+
+    SharpnessLevel get_sharpness_level() const;
 
     std::string get_humanreadable() const;
 
     static bool left_has_eq_or_more_hits(const SharpnessGauge& lhs, const SharpnessGauge& rhs) noexcept;
 
 protected:
-
-    // Constructs a new SharpnessGauge that is the result of applying handicraft to
-    // another SharpnessGauge.
-    //
-    // MOVE TO PUBLIC AS NEEDED.
-    SharpnessGauge apply_handicraft(unsigned int handicraft_lvl) const noexcept;
 
     // Minimal constructor.
     // Doesn't do more work than is necessary.

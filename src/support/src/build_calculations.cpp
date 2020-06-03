@@ -28,6 +28,7 @@ static double calculate_efr(unsigned int weapon_raw, // True raw, not bloated ra
                             int          weapon_aff,
                             double       base_raw_multiplier,
                             double       frostcraft_raw_multiplier,
+                            unsigned int bludgeoner_added_raw,
                             unsigned int added_raw,
                             int          added_aff,
                             double       raw_crit_dmg_multiplier,
@@ -51,7 +52,7 @@ static double calculate_efr(unsigned int weapon_raw, // True raw, not bloated ra
 
     const unsigned int raw_cap = weapon_raw * k_RAW_CAP;
 
-    const double weapon_multiplied_raw = weapon_raw * base_raw_multiplier;
+    const double weapon_multiplied_raw = (weapon_raw + bludgeoner_added_raw) * base_raw_multiplier;
     const unsigned int precap_true_raw = std::round(weapon_multiplied_raw) + added_raw;
     const unsigned int postcap_true_raw = std::min(precap_true_raw, raw_cap);
     // TODO: Find a way to output the wasted raw.
@@ -71,6 +72,7 @@ double calculate_efr_from_skills_lookup(const WeaponClass         weapon_class,
                          wc.weapon_aff,
                          sc.base_raw_multiplier,
                          sc.frostcraft_raw_multiplier,
+                         sc.bludgeoner_added_raw,
                          sc.added_raw + k_POWERCHARM_RAW + k_POWERTALON_RAW,
                          sc.added_aff,
                          sc.raw_crit_dmg_multiplier,

@@ -48,6 +48,21 @@ SharpnessGauge SharpnessGauge::from_vector(const std::vector<unsigned int>& vec)
 }
 
 
+double SharpnessGauge::sharpness_level_to_raw_sharpness_modifier(const SharpnessLevel lvl) {
+    switch (lvl) {
+        case SharpnessLevel::red:    return k_RAW_SHARPNESS_MODIFIER_RED;
+        case SharpnessLevel::orange: return k_RAW_SHARPNESS_MODIFIER_ORANGE;
+        case SharpnessLevel::yellow: return k_RAW_SHARPNESS_MODIFIER_YELLOW;
+        case SharpnessLevel::green:  return k_RAW_SHARPNESS_MODIFIER_GREEN;
+        case SharpnessLevel::blue:   return k_RAW_SHARPNESS_MODIFIER_BLUE;
+        case SharpnessLevel::white:  return k_RAW_SHARPNESS_MODIFIER_WHITE;
+        case SharpnessLevel::purple: return k_RAW_SHARPNESS_MODIFIER_PURPLE;
+        default:
+            throw std::logic_error("Invalid sharpness level.");
+    }
+}
+
+
 SharpnessGauge SharpnessGauge::apply_handicraft(unsigned int handicraft_lvl) const noexcept {
     assert(handicraft_lvl <= k_HANDICRAFT_MAX);
 
@@ -71,7 +86,6 @@ SharpnessGauge SharpnessGauge::apply_handicraft(unsigned int handicraft_lvl) con
 }
 
 
-// TODO: Rewrite this function. It's so freaking ugly.
 double SharpnessGauge::get_raw_sharpness_modifier() const {
     // TODO: Rewrite this unsafe reverse loop.
     for (int i = this->hits.size() - 1; i >= 0; --i) {
@@ -91,6 +105,28 @@ double SharpnessGauge::get_raw_sharpness_modifier() const {
     }
     // If the sharpness gauge is ever empty, we will still be in red gauge.
     return k_RAW_SHARPNESS_MODIFIER_RED;
+}
+
+
+SharpnessLevel SharpnessGauge::get_sharpness_level() const {
+    // TODO: Rewrite this unsafe reverse loop.
+    for (int i = this->hits.size() - 1; i >= 0; --i) {
+        if (this->hits[i] > 0) {
+            switch (i) {
+                case 0: return SharpnessLevel::red;
+                case 1: return SharpnessLevel::orange;
+                case 2: return SharpnessLevel::yellow;
+                case 3: return SharpnessLevel::green;
+                case 4: return SharpnessLevel::blue;
+                case 5: return SharpnessLevel::white;
+                case 6: return SharpnessLevel::purple;
+                default:
+                    throw std::logic_error("Invalid index.");
+            }
+        }
+    }
+    // If the sharpness gauge is ever empty, we will still be in red gauge.
+    return SharpnessLevel::red;
 }
 
 

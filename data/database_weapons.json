@@ -1,4 +1,23 @@
 {
+    "BUSTER_SWORD_I": {
+        "class" : "GREATSWORD",
+        "rarity": 1,
+
+        "name"    : "Buster Sword I",
+        "attack"  : 384,
+        "affinity": 0,
+        "slots"   : [],
+
+        "is_raw": true,
+
+        "maximum_sharpness" : [100, 50, 80, 20, 0, 0, 0],
+        "constant_sharpness": false,
+
+        "skill" : null,
+
+        "augmentation_scheme": "NONE",
+        "upgrade_scheme"     : "NONE"
+    },
     "CHROME_DEATHSCYTHE_III": {
         "class" : "GREATSWORD",
         "rarity": 11,

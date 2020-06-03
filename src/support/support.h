@@ -234,6 +234,7 @@ struct SkillContribution {
     int          added_aff;
     double       base_raw_multiplier;
     double       frostcraft_raw_multiplier;
+    unsigned int bludgeoner_added_raw;
     double       raw_crit_dmg_multiplier;
     double       raw_sharpness_modifier;
 
