@@ -19,6 +19,9 @@ static constexpr int k_AFFINITY_SLIDING_AFF = 30;
 static const std::array<unsigned int, 8> agitator_added_raw = {0, 4, 8, 12, 16, 20, 24, 28};
 static const std::array<int         , 8> agitator_added_aff = {0, 5, 5, 7,  7,  10, 15, 20};
 
+// Airborne
+static constexpr double k_AIRBORNE_RAW_MULTIPLIER = 1.3;
+
 // Attack Boost                                             level: 0, 1, 2, 3,  4,  5,  6,  7
 static const std::array<unsigned int, 8> attack_boost_added_raw = {0, 3, 6, 9, 12, 15, 18, 21};
 static const std::array<int         , 8> attack_boost_added_aff = {0, 0, 0, 0,  5,  5,  5,  5};
@@ -70,12 +73,18 @@ static const std::array<int, 8> latent_power_added_aff = {0, 10, 20, 30, 40, 50,
 // Maximum Might                                    level: 0,  1,  2,  3,  4,  5
 static const std::array<int, 6> maximum_might_added_aff = {0, 10, 20, 30, 40, 40};
 
+// Offensive Guard                                            level: 0,    1,    2,    3
+static const std::array<double, 4> offensive_guard_raw_multiplier = {1.00, 1.05, 1.10, 1.15};
+
 // Non-elemental Boost
 static constexpr double k_NON_ELEMENTAL_BOOST_MULTIPLIER_DISABLED = 1.00;
 static constexpr double k_NON_ELEMENTAL_BOOST_MULTIPLIER_ACTIVE   = 1.05;
 
 // Peak Performance                                             level: 0, 1,  2,  3
 static const std::array<unsigned int, 4> peak_performance_added_raw = {0, 5, 10, 20};
+
+// Punishing Draw
+static constexpr unsigned int k_PUNISHING_DRAW_ADDED_RAW = 5;
 
 // Resentment                                             level: 0, 1,  2,  3,  4,  5
 static const std::array<unsigned int, 6> resentment_added_raw = {0, 5, 10, 15, 20, 25};
@@ -161,7 +170,10 @@ SkillContribution::SkillContribution(const SkillMap&           skills,
         this->added_aff += agitator_added_aff[agitator_lvl];
     }
 
-    // TODO: Airborne
+    if (skills_spec.get_state_for_binary_skill(&SkillsDatabase::g_skill_airborne)
+            && skills.binary_skill_is_lvl1(&SkillsDatabase::g_skill_airborne)) {
+        this->base_raw_multiplier *= k_AIRBORNE_RAW_MULTIPLIER;
+    }
 
     const unsigned int attack_boost_lvl = skills.get(&SkillsDatabase::g_skill_attack_boost);
     this->added_raw += attack_boost_added_raw[attack_boost_lvl];
@@ -263,14 +275,20 @@ SkillContribution::SkillContribution(const SkillMap&           skills,
         this->added_aff += maximum_might_added_aff[maximum_might_lvl];
     }
 
-    // TODO: Offensive Guard
+    if (skills_spec.get_state_for_binary_skill(&SkillsDatabase::g_skill_offensive_guard)) {
+        const unsigned int offensive_guard_lvl = skills.get(&SkillsDatabase::g_skill_offensive_guard);
+        this->base_raw_multiplier *= offensive_guard_raw_multiplier[offensive_guard_lvl];
+    }
 
     if (skills_spec.get_state_for_binary_skill(&SkillsDatabase::g_skill_peak_performance)) {
         const unsigned int peak_performance_lvl = skills.get(&SkillsDatabase::g_skill_peak_performance);
         this->added_raw += peak_performance_added_raw[peak_performance_lvl];
     }
 
-    // TODO: Punishing Draw
+    if (skills_spec.get_state_for_binary_skill(&SkillsDatabase::g_skill_punishing_draw)
+            && skills.binary_skill_is_lvl1(&SkillsDatabase::g_skill_punishing_draw)) {
+        this->added_raw += k_PUNISHING_DRAW_ADDED_RAW;
+    }
 
     if (skills_spec.get_state_for_binary_skill(&SkillsDatabase::g_skill_resentment)) {
         const unsigned int resentment_lvl = skills.get(&SkillsDatabase::g_skill_resentment);

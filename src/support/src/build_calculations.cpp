@@ -57,7 +57,6 @@ static EffectiveDamageValues calculate_edv(const unsigned int    weapon_raw, // 
     const double weapon_multiplied_raw = (weapon_raw + bludgeoner_added_raw) * base_raw_multiplier;
     const unsigned int precap_true_raw = std::round(weapon_multiplied_raw) + added_raw;
     const unsigned int postcap_true_raw = std::min(precap_true_raw, raw_cap);
-    // TODO: Find a way to output the wasted raw.
     
     const double efr = postcap_true_raw * raw_crit_modifier * raw_sharpness_modifier * frostcraft_raw_multiplier;
 
