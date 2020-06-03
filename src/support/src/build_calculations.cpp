@@ -24,23 +24,25 @@ static constexpr unsigned int k_POWERCHARM_RAW = 6;
 static constexpr unsigned int k_POWERTALON_RAW = 9;
 
 
-static double calculate_efr(unsigned int weapon_raw, // True raw, not bloated raw.
-                            int          weapon_aff,
-                            double       base_raw_multiplier,
-                            double       frostcraft_raw_multiplier,
-                            unsigned int bludgeoner_added_raw,
-                            unsigned int added_raw,
-                            int          added_aff,
-                            double       raw_crit_dmg_multiplier,
-                            double       raw_sharpness_modifier) {
+static EffectiveDamageValues calculate_edv(const unsigned int    weapon_raw, // True raw, not bloated raw.
+                                           const int             weapon_aff,
+                                           const double          base_raw_multiplier,
+                                           const double          frostcraft_raw_multiplier,
+                                           const unsigned int    bludgeoner_added_raw,
+                                           const unsigned int    added_raw,
+                                           const int             added_aff,
+                                           const double          raw_crit_dmg_multiplier,
+                                           const SharpnessGauge& final_sharpness_gauge) {
 
     assert(weapon_raw > 0);
     assert(base_raw_multiplier > 0.0);
     assert(raw_crit_dmg_multiplier > 0.0);
-    assert(raw_sharpness_modifier > 0.0);
+
+    const double raw_sharpness_modifier = final_sharpness_gauge.get_raw_sharpness_modifier();
+    const int affinity = weapon_aff + added_aff;
 
     //double raw_crit_chance = std::clamp(((double) (weapon_aff + added_aff)) / 100, -1.0, 1.0); // C++17
-    double raw_crit_chance = ((double) (weapon_aff + added_aff)) / 100;
+    double raw_crit_chance = ((double) affinity) / 100;
     double raw_crit_modifier;
     if (raw_crit_chance < 0) {
         double raw_blunder_chance = (raw_crit_chance < -1.0) ? -1.0 : -raw_crit_chance;
@@ -58,17 +60,20 @@ static double calculate_efr(unsigned int weapon_raw, // True raw, not bloated ra
     // TODO: Find a way to output the wasted raw.
     
     const double efr = postcap_true_raw * raw_crit_modifier * raw_sharpness_modifier * frostcraft_raw_multiplier;
-    return efr;
+
+    return {affinity,
+            final_sharpness_gauge,
+            efr };
 }
 
 
-double calculate_efr_from_skills_lookup(const WeaponClass         weapon_class,
-                                        const WeaponContribution& wc,
-                                        const SkillMap&           full_skills,
-                                        const SkillSpec&          skill_spec) {
+EffectiveDamageValues calculate_edv_from_skills_lookup(const WeaponClass         weapon_class,
+                                                       const WeaponContribution& wc,
+                                                       const SkillMap&           full_skills,
+                                                       const SkillSpec&          skill_spec) {
 
     SkillContribution sc(full_skills, skill_spec, weapon_class, wc);
-    return calculate_efr(wc.weapon_raw,
+    return calculate_edv(wc.weapon_raw,
                          wc.weapon_aff,
                          sc.base_raw_multiplier,
                          sc.frostcraft_raw_multiplier,
@@ -76,14 +81,14 @@ double calculate_efr_from_skills_lookup(const WeaponClass         weapon_class,
                          sc.added_raw + k_POWERCHARM_RAW + k_POWERTALON_RAW,
                          sc.added_aff,
                          sc.raw_crit_dmg_multiplier,
-                         sc.raw_sharpness_modifier);
+                         sc.final_sharpness_gauge);
 }
 
 
-double calculate_efr_from_gear_lookup(const WeaponInstance& weapon,
-                                      const ArmourEquips&   armour,
-                                      const DecoEquips&     decos,
-                                      const SkillSpec&      skill_spec) {
+EffectiveDamageValues calculate_edv_from_gear_lookup(const WeaponInstance& weapon,
+                                                     const ArmourEquips&   armour,
+                                                     const DecoEquips&     decos,
+                                                     const SkillSpec&      skill_spec) {
     WeaponContribution wc = weapon.calculate_contribution();
 
     assert(decos.fits_in(armour, wc));
@@ -95,7 +100,14 @@ double calculate_efr_from_gear_lookup(const WeaponInstance& weapon,
     if (wc.set_bonus) set_bonuses.increment(wc.set_bonus, 1);
     skills.add_set_bonuses(set_bonuses);
 
-    return calculate_efr_from_skills_lookup(weapon.weapon->weapon_class, wc, skills, skill_spec);
+    return calculate_edv_from_skills_lookup(weapon.weapon->weapon_class, wc, skills, skill_spec);
+}
+
+
+std::string EffectiveDamageValues::get_humanreadable() const {
+    return "EFR: " + std::to_string(this->efr)
+           + "\nAffinity: " + std::to_string(this->affinity)
+           + "\nSharpness Gauge: " + this->final_sharpness_gauge.get_humanreadable();
 }
 
 

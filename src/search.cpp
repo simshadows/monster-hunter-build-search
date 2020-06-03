@@ -182,10 +182,11 @@ static std::vector<WeaponInstanceExtended> prepare_weapons(const Database& db,
 
     std::vector<WeaponInstanceExtended> ret;
     for (const auto& original : pruned.underlying()) {
-        const double ceiling_efr = calculate_efr_from_skills_lookup(original.first.weapon->weapon_class,
-                                                                    original.second,
-                                                                    maximized_skills,
-                                                                    params.skill_spec);
+        const EffectiveDamageValues edv = calculate_edv_from_skills_lookup(original.first.weapon->weapon_class,
+                                                                           original.second,
+                                                                           maximized_skills,
+                                                                           params.skill_spec);
+        const double ceiling_efr = edv.efr;
         ret.push_back({std::move(original.first), std::move(original.second), ceiling_efr});
     }
 
@@ -768,10 +769,11 @@ static void do_search(const Database& db, const SearchParameters& params) {
                     return x;
                 }();
 
-                const double efr = calculate_efr_from_skills_lookup(wc.instance.weapon->weapon_class,
-                                                                    wc.contributions,
-                                                                    skills,
-                                                                    params.skill_spec);
+                const EffectiveDamageValues edv = calculate_edv_from_skills_lookup(wc.instance.weapon->weapon_class,
+                                                                                   wc.contributions,
+                                                                                   skills,
+                                                                                   params.skill_spec);
+                const double efr = edv.efr;
 
                 if (efr > best_efr) {
                     best_efr = efr;
@@ -784,7 +786,9 @@ static void do_search(const Database& db, const SearchParameters& params) {
                                                    + "Decorations:\n"
                                                    + Utils::indent(curr_decos.get_humanreadable(), 4) + "\n\n"
                                                    + "Skills:\n"
-                                                   + Utils::indent(skills.get_humanreadable(), 4);
+                                                   + Utils::indent(skills.get_humanreadable(), 4) + "\n\n"
+                                                   + "Effective Damage Values:\n"
+                                                   + Utils::indent(edv.get_humanreadable(), 4);
                     std::clog << "\n\nFound EFR: " + std::to_string(best_efr) + "\n\n"
                               << Utils::indent(build_info, 4) + "\n";
                     reprune_weapons = true;

@@ -113,7 +113,8 @@ TEST_CASE("Incrementally building up a greatsword Safi Shattersplitter build.") 
                                          db);
         DecoEquips decos;
 
-        double efr = calculate_efr_from_gear_lookup(weapon, armour, decos, skill_spec);
+        const EffectiveDamageValues edv = calculate_edv_from_gear_lookup(weapon, armour, decos, skill_spec);
+        const double efr = edv.efr;
         REQUIRE(Utils::round_2decpl(efr) == Approx(390.31));
     }
 
@@ -129,7 +130,8 @@ TEST_CASE("Incrementally building up a greatsword Safi Shattersplitter build.") 
                                          db);
         DecoEquips decos;
 
-        double efr = calculate_efr_from_gear_lookup(weapon, armour, decos, skill_spec);
+        const EffectiveDamageValues edv = calculate_edv_from_gear_lookup(weapon, armour, decos, skill_spec);
+        const double efr = edv.efr;
         REQUIRE(Utils::round_2decpl(efr) == Approx(415.77));
     }
 
@@ -144,7 +146,8 @@ TEST_CASE("Incrementally building up a greatsword Safi Shattersplitter build.") 
                                          db);
         DecoEquips decos;
 
-        double efr = calculate_efr_from_gear_lookup(weapon, armour, decos, skill_spec);
+        const EffectiveDamageValues edv = calculate_edv_from_gear_lookup(weapon, armour, decos, skill_spec);
+        const double efr = edv.efr;
         REQUIRE(Utils::round_2decpl(efr) == Approx(435.11));
     }
 
@@ -159,7 +162,8 @@ TEST_CASE("Incrementally building up a greatsword Safi Shattersplitter build.") 
                                          db);
         DecoEquips decos;
 
-        double efr = calculate_efr_from_gear_lookup(weapon, armour, decos, skill_spec);
+        const EffectiveDamageValues edv = calculate_edv_from_gear_lookup(weapon, armour, decos, skill_spec);
+        const double efr = edv.efr;
         REQUIRE(Utils::round_2decpl(efr) == Approx(480.30));
     }
 
@@ -177,7 +181,8 @@ TEST_CASE("Incrementally building up a greatsword Safi Shattersplitter build.") 
                                          db);
         DecoEquips decos;
 
-        double efr = calculate_efr_from_gear_lookup(weapon, armour, decos, skill_spec);
+        const EffectiveDamageValues edv = calculate_edv_from_gear_lookup(weapon, armour, decos, skill_spec);
+        const double efr = edv.efr;
         REQUIRE(Utils::round_2decpl(efr) == Approx(490.63));
     }
 
@@ -200,7 +205,8 @@ TEST_CASE("Incrementally building up a greatsword Safi Shattersplitter build.") 
                                          db);
         DecoEquips decos;
 
-        double efr = calculate_efr_from_gear_lookup(weapon, armour, decos, skill_spec);
+        const EffectiveDamageValues edv = calculate_edv_from_gear_lookup(weapon, armour, decos, skill_spec);
+        const double efr = edv.efr;
         REQUIRE(Utils::round_2decpl(efr) == Approx(554.90));
     }
 
@@ -236,7 +242,8 @@ TEST_CASE("Incrementally building up a greatsword Safi Shattersplitter build.") 
         decos.add(db.decos.at("ATTACK"));
         decos.add(db.decos.at("ATTACK"));
 
-        double efr = calculate_efr_from_gear_lookup(weapon, armour, decos, skill_spec);
+        const EffectiveDamageValues edv = calculate_edv_from_gear_lookup(weapon, armour, decos, skill_spec);
+        const double efr = edv.efr;
         // Interestingly, this assertion fails when we use the -Ofast compiler flag.
         REQUIRE(Utils::round_2decpl(efr) == Approx(682.55));
     }
@@ -270,7 +277,8 @@ TEST_CASE("Incrementally building up a greatsword Acid Shredder II build.") {
                                          db);
         DecoEquips decos;
 
-        double efr = calculate_efr_from_gear_lookup(weapon, armour, decos, skill_spec);
+        const EffectiveDamageValues edv = calculate_edv_from_gear_lookup(weapon, armour, decos, skill_spec);
+        const double efr = edv.efr;
         REQUIRE(Utils::round_2decpl(efr) == Approx(393.60));
     }
 
@@ -293,7 +301,8 @@ TEST_CASE("Incrementally building up a greatsword Acid Shredder II build.") {
                                          db);
         DecoEquips decos;
 
-        double efr = calculate_efr_from_gear_lookup(weapon, armour, decos, skill_spec);
+        const EffectiveDamageValues edv = calculate_edv_from_gear_lookup(weapon, armour, decos, skill_spec);
+        const double efr = edv.efr;
         REQUIRE(Utils::round_2decpl(efr) == Approx(469.64));
     }
 
@@ -319,7 +328,8 @@ TEST_CASE("Incrementally building up a greatsword Acid Shredder II build.") {
                                          db);
         DecoEquips decos;
 
-        double efr = calculate_efr_from_gear_lookup(weapon, armour, decos, skill_spec);
+        const EffectiveDamageValues edv = calculate_edv_from_gear_lookup(weapon, armour, decos, skill_spec);
+        const double efr = edv.efr;
         REQUIRE(Utils::round_2decpl(efr) == Approx(492.35));
     }
 
@@ -354,7 +364,8 @@ TEST_CASE("Testing unusual skill combinations.") {
 
         WeaponContribution wc = weapon.calculate_contribution();
 
-        double efr = calculate_efr_from_skills_lookup(weapon.weapon->weapon_class, wc, skills, skill_spec);
+        const EffectiveDamageValues edv = calculate_edv_from_skills_lookup(weapon.weapon->weapon_class, wc, skills, skill_spec);
+        const double efr = edv.efr;
         REQUIRE(Utils::round_2decpl(efr) == Approx(185.64));
     }
 }
@@ -391,7 +402,8 @@ TEST_CASE("DecoEquips::fits()") {
                                          db);
         DecoEquips decos;
 
-        double efr = calculate_efr_from_gear_lookup(weapon, armour, decos, skill_spec);
+        const EffectiveDamageValues edv = calculate_edv_from_gear_lookup(weapon, armour, decos, skill_spec);
+        const double efr = edv.efr;
         REQUIRE(decos.fits_in(armour, weapon.calculate_contribution()));
         REQUIRE(Utils::round_2decpl(efr) == Approx(512.28));
 
@@ -408,9 +420,10 @@ TEST_CASE("DecoEquips::fits()") {
         decos.add(db.decos.at("CRITICAL"));
         decos.add(db.decos.at("CRITICAL"));
 
-        efr = calculate_efr_from_gear_lookup(weapon, armour, decos, skill_spec);
+        const EffectiveDamageValues edv2 = calculate_edv_from_gear_lookup(weapon, armour, decos, skill_spec);
+        const double efr2 = edv2.efr;
         REQUIRE(decos.fits_in(armour, weapon.calculate_contribution()));
-        REQUIRE(Utils::round_2decpl(efr) == Approx(649.38));
+        REQUIRE(Utils::round_2decpl(efr2) == Approx(649.38));
 
         // Now, we attempt to overflow the deco capacity.
 

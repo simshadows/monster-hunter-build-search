@@ -121,6 +121,17 @@ static double calculate_raw_crit_dmg_multiplier(const SkillMap& skills) {
 }
 
 
+static SharpnessGauge calculate_final_sharpness_gauge(const SkillMap& skills,
+                                                      const WeaponContribution& wc) {
+    if (wc.is_constant_sharpness) {
+        return wc.maximum_sharpness;
+    } else {
+        const unsigned int handicraft_lvl = skills.get(&SkillsDatabase::g_skill_handicraft);
+        return wc.maximum_sharpness.apply_handicraft(handicraft_lvl);
+    }
+}
+
+
 SkillContribution::SkillContribution(const SkillMap&           skills,
                                      const SkillSpec&          skills_spec,
                                      const WeaponClass         weapon_class,
@@ -131,19 +142,8 @@ SkillContribution::SkillContribution(const SkillMap&           skills,
     //, frostcraft_raw_multiplier (1.0) // We initialize later
     //, bludgeoner_added_raw      (0)   // We initialize later
     , raw_crit_dmg_multiplier   (calculate_raw_crit_dmg_multiplier(skills))
-    //, raw_sharpness_modifier    ()    // We initialize later
+    , final_sharpness_gauge     (calculate_final_sharpness_gauge(skills, wc))
 {
-    const SharpnessGauge final_sharpness = [&](){
-        if (wc.is_constant_sharpness) {
-            return wc.maximum_sharpness;
-        } else {
-            const unsigned int handicraft_lvl = skills.get(&SkillsDatabase::g_skill_handicraft);
-            return wc.maximum_sharpness.apply_handicraft(handicraft_lvl);
-        }
-    }();
-    const SharpnessLevel sharpness_lvl = final_sharpness.get_sharpness_level();
-    this->raw_sharpness_modifier = SharpnessGauge::sharpness_level_to_raw_sharpness_modifier(sharpness_lvl);
-
     // We calculate the remaining fields.
 
     if (skills_spec.get_state_for_binary_skill(&SkillsDatabase::g_skill_affinity_sliding)
@@ -165,7 +165,7 @@ SkillContribution::SkillContribution(const SkillMap&           skills,
     this->added_aff += attack_boost_added_aff[attack_boost_lvl];
 
     if (skills.binary_skill_is_lvl1(&SkillsDatabase::g_skill_bludgeoner)) {
-        switch (sharpness_lvl) {
+        switch (this->final_sharpness_gauge.get_sharpness_level()) {
             case SharpnessLevel::red:
                 this->bludgeoner_added_raw = k_BLUDGEONER_ADDED_RAW_RED;
                 break;

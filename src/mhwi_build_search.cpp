@@ -66,8 +66,8 @@ void no_args_cmd() {
     std::clog << armour.get_humanreadable() << std::endl << std::endl;
     std::clog << armour.get_skills_without_set_bonuses().get_humanreadable() << std::endl << std::endl;
 
-    double efr = calculate_efr_from_gear_lookup(weapon, armour, decos, skill_spec);
-    std::clog << efr << "\n\n===================\n\n";
+    EffectiveDamageValues edv = calculate_edv_from_gear_lookup(weapon, armour, decos, skill_spec);
+    std::clog << edv.get_humanreadable() << "\n\n===================\n\n";
 
     /*
      * For testing purposes, we'll also do a by-skill lookup.
@@ -85,8 +85,8 @@ void no_args_cmd() {
     WeaponContribution wc = weapon.calculate_contribution();
     std::clog << std::endl << skill_spec.get_humanreadable() + "\n\n";
     std::clog << skills.get_humanreadable() + "\n\n";
-    efr = calculate_efr_from_skills_lookup(weapon.weapon->weapon_class, wc, skills, skill_spec);
-    std::clog << efr << std::endl;
+    edv = calculate_edv_from_skills_lookup(weapon.weapon->weapon_class, wc, skills, skill_spec);
+    std::clog << edv.get_humanreadable() << std::endl;
     //assert(Utils::round_2decpl(efr) == 437.85); // Quick test!
 }
 

@@ -22,6 +22,20 @@ static constexpr double k_RAW_SHARPNESS_MODIFIER_BLUE   = 1.20;
 static constexpr double k_RAW_SHARPNESS_MODIFIER_WHITE  = 1.32;
 static constexpr double k_RAW_SHARPNESS_MODIFIER_PURPLE = 1.39;
 
+static std::string sharpness_level_to_humanreadable(const SharpnessLevel lvl) {
+    switch (lvl) {
+        case SharpnessLevel::red:    return "Red";
+        case SharpnessLevel::orange: return "Orange";
+        case SharpnessLevel::yellow: return "Yellow";
+        case SharpnessLevel::green:  return "Green";
+        case SharpnessLevel::blue:   return "Blue";
+        case SharpnessLevel::white:  return "White";
+        case SharpnessLevel::purple: return "Purple";
+        default:
+            throw std::logic_error("Invalid sharpness level.");
+    }
+}
+
 
 SharpnessGauge::SharpnessGauge(unsigned int r,
                                unsigned int o,
@@ -145,6 +159,7 @@ std::string SharpnessGauge::get_humanreadable() const {
         buf += std::to_string(v);
         first = false;
     }
+    buf += " [" + sharpness_level_to_humanreadable(this->get_sharpness_level()) + "]";
     return buf;
 }
 

@@ -230,13 +230,13 @@ public:
 
 
 struct SkillContribution {
-    unsigned int added_raw;
-    int          added_aff;
-    double       base_raw_multiplier;
-    double       frostcraft_raw_multiplier;
-    unsigned int bludgeoner_added_raw;
-    double       raw_crit_dmg_multiplier;
-    double       raw_sharpness_modifier;
+    unsigned int   added_raw;
+    int            added_aff;
+    double         base_raw_multiplier;
+    double         frostcraft_raw_multiplier;
+    unsigned int   bludgeoner_added_raw;
+    double         raw_crit_dmg_multiplier;
+    SharpnessGauge final_sharpness_gauge;
 
     SkillContribution(const SkillMap&,
                       const SkillSpec&,
@@ -250,15 +250,25 @@ struct SkillContribution {
  ***************************************************************************************/
 
 
-double calculate_efr_from_skills_lookup(WeaponClass,
-                                        const WeaponContribution&,
-                                        const SkillMap&,
-                                        const SkillSpec&);
+struct EffectiveDamageValues {
+    int affinity;
+    SharpnessGauge final_sharpness_gauge;
 
-double calculate_efr_from_gear_lookup(const WeaponInstance&,
-                                      const ArmourEquips&,
-                                      const DecoEquips&,
-                                      const SkillSpec&);
+    double efr; // "Effective Raw"
+
+    std::string get_humanreadable() const;
+};
+
+
+EffectiveDamageValues calculate_edv_from_skills_lookup(WeaponClass,
+                                                       const WeaponContribution&,
+                                                       const SkillMap&,
+                                                       const SkillSpec&);
+
+EffectiveDamageValues calculate_edv_from_gear_lookup(const WeaponInstance&,
+                                                     const ArmourEquips&,
+                                                     const DecoEquips&,
+                                                     const SkillSpec&);
 
 
 } // namespace
