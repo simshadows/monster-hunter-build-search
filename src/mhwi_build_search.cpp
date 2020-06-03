@@ -30,6 +30,7 @@ void no_args_cmd() {
         {&SkillsDatabase::g_skill_weakness_exploit, 0},
         {&SkillsDatabase::g_skill_agitator, 0},
         {&SkillsDatabase::g_skill_fortify, 0},
+        {&SkillsDatabase::g_skill_frostcraft, 0},
     };
     std::unordered_map<const Skill*, unsigned int> forced_states = {
         {&SkillsDatabase::g_skill_fortify, 1},
@@ -79,11 +80,12 @@ void no_args_cmd() {
     skills.set(&SkillsDatabase::g_skill_critical_boost, 3);
     skills.set(&SkillsDatabase::g_skill_non_elemental_boost, 1);
     skills.set(&SkillsDatabase::g_skill_fortify, 1);
+    skills.set(&SkillsDatabase::g_skill_frostcraft, 1);
 
     WeaponContribution wc = weapon.calculate_contribution();
     std::clog << std::endl << skill_spec.get_humanreadable() + "\n\n";
     std::clog << skills.get_humanreadable() + "\n\n";
-    efr = calculate_efr_from_skills_lookup(wc, skills, skill_spec);
+    efr = calculate_efr_from_skills_lookup(weapon.weapon->weapon_class, wc, skills, skill_spec);
     std::clog << efr << std::endl;
     //assert(Utils::round_2decpl(efr) == 437.85); // Quick test!
 }

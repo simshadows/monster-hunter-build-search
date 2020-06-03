@@ -27,6 +27,7 @@ static constexpr unsigned int k_POWERTALON_RAW = 9;
 static double calculate_efr(unsigned int weapon_raw, // True raw, not bloated raw.
                             int          weapon_aff,
                             double       base_raw_multiplier,
+                            double       frostcraft_raw_multiplier,
                             unsigned int added_raw,
                             int          added_aff,
                             double       raw_crit_dmg_multiplier,
@@ -55,19 +56,21 @@ static double calculate_efr(unsigned int weapon_raw, // True raw, not bloated ra
     const unsigned int postcap_true_raw = std::min(precap_true_raw, raw_cap);
     // TODO: Find a way to output the wasted raw.
     
-    const double efr = postcap_true_raw * raw_crit_modifier * raw_sharpness_modifier;
+    const double efr = postcap_true_raw * raw_crit_modifier * raw_sharpness_modifier * frostcraft_raw_multiplier;
     return efr;
 }
 
 
-double calculate_efr_from_skills_lookup(const WeaponContribution& wc,
+double calculate_efr_from_skills_lookup(const WeaponClass         weapon_class,
+                                        const WeaponContribution& wc,
                                         const SkillMap&           full_skills,
                                         const SkillSpec&          skill_spec) {
 
-    SkillContribution sc(full_skills, skill_spec, wc);
+    SkillContribution sc(full_skills, skill_spec, weapon_class, wc);
     return calculate_efr(wc.weapon_raw,
                          wc.weapon_aff,
                          sc.base_raw_multiplier,
+                         sc.frostcraft_raw_multiplier,
                          sc.added_raw + k_POWERCHARM_RAW + k_POWERTALON_RAW,
                          sc.added_aff,
                          sc.raw_crit_dmg_multiplier,
@@ -90,7 +93,7 @@ double calculate_efr_from_gear_lookup(const WeaponInstance& weapon,
     if (wc.set_bonus) set_bonuses.increment(wc.set_bonus, 1);
     skills.add_set_bonuses(set_bonuses);
 
-    return calculate_efr_from_skills_lookup(wc, skills, skill_spec);
+    return calculate_efr_from_skills_lookup(weapon.weapon->weapon_class, wc, skills, skill_spec);
 }
 
 

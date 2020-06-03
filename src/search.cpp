@@ -182,7 +182,10 @@ static std::vector<WeaponInstanceExtended> prepare_weapons(const Database& db,
 
     std::vector<WeaponInstanceExtended> ret;
     for (const auto& original : pruned.underlying()) {
-        const double ceiling_efr = calculate_efr_from_skills_lookup(original.second, maximized_skills, params.skill_spec);
+        const double ceiling_efr = calculate_efr_from_skills_lookup(original.first.weapon->weapon_class,
+                                                                    original.second,
+                                                                    maximized_skills,
+                                                                    params.skill_spec);
         ret.push_back({std::move(original.first), std::move(original.second), ceiling_efr});
     }
 
@@ -765,7 +768,10 @@ static void do_search(const Database& db, const SearchParameters& params) {
                     return x;
                 }();
 
-                const double efr = calculate_efr_from_skills_lookup(wc.contributions, skills, params.skill_spec);
+                const double efr = calculate_efr_from_skills_lookup(wc.instance.weapon->weapon_class,
+                                                                    wc.contributions,
+                                                                    skills,
+                                                                    params.skill_spec);
 
                 if (efr > best_efr) {
                     best_efr = efr;

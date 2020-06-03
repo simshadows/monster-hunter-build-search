@@ -233,11 +233,13 @@ struct SkillContribution {
     unsigned int added_raw;
     int          added_aff;
     double       base_raw_multiplier;
+    double       frostcraft_raw_multiplier;
     double       raw_crit_dmg_multiplier;
     double       raw_sharpness_modifier;
 
     SkillContribution(const SkillMap&,
                       const SkillSpec&,
+                      WeaponClass,
                       const WeaponContribution&) noexcept;
 };
 
@@ -247,7 +249,8 @@ struct SkillContribution {
  ***************************************************************************************/
 
 
-double calculate_efr_from_skills_lookup(const WeaponContribution&,
+double calculate_efr_from_skills_lookup(WeaponClass,
+                                        const WeaponContribution&,
                                         const SkillMap&,
                                         const SkillSpec&);
 

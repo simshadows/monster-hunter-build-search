@@ -376,6 +376,8 @@
                 "name": "Frostcraft",
                 "limit": 1,
 
+                "states": 4,
+
                 "tooltip": "((TODO))"
         },
         "FULL_BLOOM_GRATITUDE": {

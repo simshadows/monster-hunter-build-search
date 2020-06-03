@@ -42,6 +42,18 @@ static const std::array<int, 8> critical_eye_added_aff = {0, 5, 10, 15, 20, 25, 
 static constexpr int k_DRAGONVEIN_AWAKENING_AFF      = 20;
 static constexpr int k_TRUE_DRAGONVEIN_AWAKENING_AFF = 40;
 
+// Fortify
+static constexpr double k_FORTIFY_RAW_MULTIPLIER_S1 = 1.1;
+static constexpr double k_FORTIFY_RAW_MULTIPLIER_S2 = 1.2;
+
+// Frostcraft
+// Table 1: Greatsword, Hammer                              state: 0     1     2     3
+static const std::array<double, 4> frostcraft_multipliers_gs_h  = {1.00, 1.05, 1.15, 1.30};
+// Table 2: Heavy Bowgun
+static const std::array<double, 4> frostcraft_multipliers_hbg = {1.00, 1.10, 1.20, 1.30};
+// Table 3: Everything Else
+static const std::array<double, 4> frostcraft_multipliers_else = {1.00, 1.05, 1.20, 1.25};
+
 // Latent Power                                    level: 0,  1,  2,  3,  4,  5,  6,  7
 static const std::array<int, 8> latent_power_added_aff = {0, 10, 20, 30, 40, 50, 50, 60};
 
@@ -115,12 +127,14 @@ static double calculate_raw_sharpness_modifier(const SkillMap& skills,
 
 SkillContribution::SkillContribution(const SkillMap&           skills,
                                      const SkillSpec&          skills_spec,
-                                     const WeaponContribution& wc) noexcept
-    : added_raw               (0)
-    , added_aff               (0)
-    , base_raw_multiplier     (calculate_non_elemental_boost_multiplier(skills, skills_spec, wc))
-    , raw_crit_dmg_multiplier (calculate_raw_crit_dmg_multiplier(skills))
-    , raw_sharpness_modifier  (calculate_raw_sharpness_modifier(skills, wc))
+                                     const WeaponClass         weapon_class,
+                                     const WeaponContribution& wc ) noexcept
+    : added_raw                 (0)
+    , added_aff                 (0)
+    , base_raw_multiplier       (calculate_non_elemental_boost_multiplier(skills, skills_spec, wc))
+    //, frostcraft_raw_multiplier (1.0) // We initialize later
+    , raw_crit_dmg_multiplier   (calculate_raw_crit_dmg_multiplier(skills))
+    , raw_sharpness_modifier    (calculate_raw_sharpness_modifier(skills, wc))
 {
     // We calculate the remaining fields.
 
@@ -170,17 +184,36 @@ SkillContribution::SkillContribution(const SkillMap&           skills,
         const unsigned int fortify_state = skills_spec.get_state(&SkillsDatabase::g_skill_fortify);
         switch (fortify_state) {
             case 1:
-                this->base_raw_multiplier *= 1.1;
+                this->base_raw_multiplier *= k_FORTIFY_RAW_MULTIPLIER_S1;
                 break;
             case 2:
-                this->base_raw_multiplier *= 1.2;
+                this->base_raw_multiplier *= k_FORTIFY_RAW_MULTIPLIER_S2;
                 break;
             default:
                 assert(fortify_state == 0);
         }
     }
 
-    // TODO: Frostcraft
+    if (skills.binary_skill_is_lvl1(&SkillsDatabase::g_skill_frostcraft)) {
+        const unsigned int frostcraft_state = skills_spec.get_state(&SkillsDatabase::g_skill_frostcraft);
+        //assert(frostcraft_state > 0); // TODO: Should we add an if-statement for the zero-state?
+        assert(frostcraft_state < frostcraft_multipliers_gs_h.size());
+        assert(frostcraft_state < frostcraft_multipliers_hbg.size());
+        assert(frostcraft_state < frostcraft_multipliers_else.size());
+        switch (weapon_class) {
+            case WeaponClass::greatsword:
+            case WeaponClass::hammer:
+                this->frostcraft_raw_multiplier = frostcraft_multipliers_gs_h[frostcraft_state];
+                break;
+            case WeaponClass::heavy_bowgun:
+                this->frostcraft_raw_multiplier = frostcraft_multipliers_hbg[frostcraft_state];
+                break;
+            default:
+                this->frostcraft_raw_multiplier = frostcraft_multipliers_else[frostcraft_state];
+        }
+    } else {
+        this->frostcraft_raw_multiplier = 1.0;
+    }
 
     // TODO: Heroics and Heroics Secret
 

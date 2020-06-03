@@ -497,7 +497,7 @@ const Skill g_skill_frostcraft = {
     "Frostcraft", // name
     1, // normal_limit
     1, // secret_limit
-    2 // states
+    4 // states
 };
 
 const Skill g_skill_full_bloom_gratitude = {
