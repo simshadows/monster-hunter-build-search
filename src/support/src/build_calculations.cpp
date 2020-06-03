@@ -63,6 +63,7 @@ static EffectiveDamageValues calculate_edv(const unsigned int    weapon_raw, // 
 
     return {affinity,
             final_sharpness_gauge,
+            ((double) precap_true_raw / raw_cap),
             efr };
 }
 
@@ -107,7 +108,8 @@ EffectiveDamageValues calculate_edv_from_gear_lookup(const WeaponInstance& weapo
 std::string EffectiveDamageValues::get_humanreadable() const {
     return "EFR: " + std::to_string(this->efr)
            + "\nAffinity: " + std::to_string(this->affinity)
-           + "\nSharpness Gauge: " + this->final_sharpness_gauge.get_humanreadable();
+           + "\nSharpness Gauge: " + this->final_sharpness_gauge.get_humanreadable()
+           + "\nPre-Raw Cap Ratio: " + std::to_string(this->pre_raw_cap_ratio * 100) + "%";
 }
 
 

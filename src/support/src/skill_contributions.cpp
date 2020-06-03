@@ -61,6 +61,9 @@ static const std::array<double, 4> frostcraft_multipliers_hbg = {1.00, 1.10, 1.2
 // Table 3: Everything Else
 static const std::array<double, 4> frostcraft_multipliers_else = {1.00, 1.05, 1.20, 1.25};
 
+// Heroics (and Heroics Secret)                       level: 0,    1,    2,    3,    4,    5,    6,    7
+static const std::array<double, 8> heroics_raw_multiplier = {1.00, 1.00, 1.05, 1.05, 1.10, 1.15, 1.25, 1.40};
+
 // Latent Power                                    level: 0,  1,  2,  3,  4,  5,  6,  7
 static const std::array<int, 8> latent_power_added_aff = {0, 10, 20, 30, 40, 50, 50, 60};
 
@@ -242,7 +245,11 @@ SkillContribution::SkillContribution(const SkillMap&           skills,
         this->frostcraft_raw_multiplier = 1.0;
     }
 
-    // TODO: Heroics and Heroics Secret
+    if (skills_spec.get_state_for_binary_skill(&SkillsDatabase::g_skill_heroics)) {
+        const unsigned int heroics_lvl = skills.get_non_secret(&SkillsDatabase::g_skill_heroics,
+                                                               &SkillsDatabase::g_skill_heroics_secret);
+        this->base_raw_multiplier *= heroics_raw_multiplier[heroics_lvl];
+    }
 
     if (skills_spec.get_state_for_binary_skill(&SkillsDatabase::g_skill_latent_power)) {
         const unsigned int latent_power_lvl = skills.get_non_secret(&SkillsDatabase::g_skill_latent_power,

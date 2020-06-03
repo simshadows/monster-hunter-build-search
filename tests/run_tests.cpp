@@ -344,13 +344,14 @@ TEST_CASE("Testing unusual skill combinations.") {
         {&SkillsDatabase::g_skill_fortify, 0},
         {&SkillsDatabase::g_skill_frostcraft, 0},
         {&SkillsDatabase::g_skill_bludgeoner, 0},
+        {&SkillsDatabase::g_skill_heroics, 0},
     };
     std::unordered_map<const Skill*, unsigned int> forced_states = {
         {&SkillsDatabase::g_skill_fortify, 1},
     };
     SkillSpec skill_spec(std::move(min_levels), std::move(forced_states), {});
 
-    SECTION("Bludgeoner + Non-elemental Boost + Fortify + Frostcraft") {
+    SECTION("Bludgeoner + Non-elemental Boost + Fortify + Frostcraft + Heroics") {
 
         WeaponInstance weapon(db.weapons.at("BUSTER_SWORD_I"));
 
@@ -361,12 +362,13 @@ TEST_CASE("Testing unusual skill combinations.") {
         skills.set(&SkillsDatabase::g_skill_fortify, 1);
         skills.set(&SkillsDatabase::g_skill_frostcraft, 1);
         skills.set(&SkillsDatabase::g_skill_bludgeoner, 1);
+        skills.set(&SkillsDatabase::g_skill_heroics, 5);
 
         WeaponContribution wc = weapon.calculate_contribution();
 
         const EffectiveDamageValues edv = calculate_edv_from_skills_lookup(weapon.weapon->weapon_class, wc, skills, skill_spec);
         const double efr = edv.efr;
-        REQUIRE(Utils::round_2decpl(efr) == Approx(185.64));
+        REQUIRE(Utils::round_2decpl(efr) == Approx(209.51));
     }
 }
 

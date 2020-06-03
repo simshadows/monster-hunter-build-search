@@ -632,15 +632,15 @@ const Skill g_skill_heroics = {
     "HEROICS", // id
     "Heroics", // name
     5, // normal_limit
-    5, // secret_limit
+    7, // secret_limit
     2 // states
 };
 
 const Skill g_skill_heroics_secret = {
     "HEROICS_SECRET", // id
     "Heroics Secret", // name
-    7, // normal_limit
-    7, // secret_limit
+    1, // normal_limit
+    1, // secret_limit
     2 // states
 };
 

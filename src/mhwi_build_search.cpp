@@ -31,6 +31,7 @@ void no_args_cmd() {
         {&SkillsDatabase::g_skill_agitator, 0},
         {&SkillsDatabase::g_skill_fortify, 0},
         {&SkillsDatabase::g_skill_frostcraft, 0},
+        {&SkillsDatabase::g_skill_heroics, 0},
     };
     std::unordered_map<const Skill*, unsigned int> forced_states = {
         {&SkillsDatabase::g_skill_fortify, 1},
@@ -81,6 +82,7 @@ void no_args_cmd() {
     skills.set(&SkillsDatabase::g_skill_non_elemental_boost, 1);
     skills.set(&SkillsDatabase::g_skill_fortify, 1);
     skills.set(&SkillsDatabase::g_skill_frostcraft, 1);
+    skills.set(&SkillsDatabase::g_skill_heroics, 5);
 
     WeaponContribution wc = weapon.calculate_contribution();
     std::clog << std::endl << skill_spec.get_humanreadable() + "\n\n";

@@ -480,11 +480,13 @@
                 "name": "Heroics",
                 "limit": 5,
 
+                "secret_limit": 7,
+
                 "tooltip": "((TODO))"
         },
         "HEROICS_SECRET": {
                 "name": "Heroics Secret",
-                "limit": 7,
+                "limit": 1,
 
                 "tooltip": "((TODO))"
         },

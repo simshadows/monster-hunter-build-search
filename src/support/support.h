@@ -254,6 +254,13 @@ struct EffectiveDamageValues {
     int affinity;
     SharpnessGauge final_sharpness_gauge;
 
+    // The ratio between true raw before raw cap is applied, and the raw cap itself.
+    //      Equation: precap_true_raw / raw_cap
+    //      If <1, then we haven't hit the raw cap.
+    //      If 1, then we're exactly at cap!
+    //      If >1, then we have exceeded the raw cap.
+    double pre_raw_cap_ratio; 
+
     double efr; // "Effective Raw"
 
     std::string get_humanreadable() const;
