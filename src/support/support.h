@@ -225,6 +225,30 @@ public:
 
 
 /****************************************************************************************
+ * MiscBuffsEquips
+ ***************************************************************************************/
+
+
+class MiscBuffsEquips {
+    using ContainerType = std::unordered_set<const MiscBuff*>;
+    using IteratorType  = ContainerType::const_iterator;
+
+    ContainerType data;
+    
+    // Contributions
+    unsigned int added_raw;
+    double base_raw_multiplier;
+public:
+    MiscBuffsEquips(ContainerType&&);
+
+    unsigned int get_added_raw() const;
+    double get_base_raw_multiplier() const;
+
+    std::string get_humanreadable() const;
+};
+
+
+/****************************************************************************************
  * SkillContribution
  ***************************************************************************************/
 
@@ -270,11 +294,13 @@ struct EffectiveDamageValues {
 EffectiveDamageValues calculate_edv_from_skills_lookup(WeaponClass,
                                                        const WeaponContribution&,
                                                        const SkillMap&,
+                                                       const MiscBuffsEquips&,
                                                        const SkillSpec&);
 
 EffectiveDamageValues calculate_edv_from_gear_lookup(const WeaponInstance&,
                                                      const ArmourEquips&,
                                                      const DecoEquips&,
+                                                     const MiscBuffsEquips&,
                                                      const SkillSpec&);
 
 

@@ -185,6 +185,7 @@ static std::vector<WeaponInstanceExtended> prepare_weapons(const Database& db,
         const EffectiveDamageValues edv = calculate_edv_from_skills_lookup(original.first.weapon->weapon_class,
                                                                            original.second,
                                                                            maximized_skills,
+                                                                           params.misc_buffs,
                                                                            params.skill_spec);
         const double ceiling_efr = edv.efr;
         ret.push_back({std::move(original.first), std::move(original.second), ceiling_efr});
@@ -549,7 +550,7 @@ static void do_search(const Database& db, const SearchParameters& params) {
 
     auto total_start_t = std::chrono::steady_clock::now();
 
-    std::clog << params.skill_spec.get_humanreadable() << std::endl << std::endl;
+    std::clog << params.skill_spec.get_humanreadable() << "\n\n";
 
     const std::unordered_set<const SetBonus*> set_bonus_subset = [&](){
         std::unordered_set<const SetBonus*> x;
@@ -573,6 +574,8 @@ static void do_search(const Database& db, const SearchParameters& params) {
 
         return x;
     }();
+
+    std::clog << "Buffs:\n" + Utils::indent(params.misc_buffs.get_humanreadable(), 2) + "\n\n";
 
     std::vector<WeaponInstanceExtended> weapons = prepare_weapons(db, params, set_bonus_subset);
     const std::size_t weapons_initial_size = weapons.size();
@@ -772,6 +775,7 @@ static void do_search(const Database& db, const SearchParameters& params) {
                 const EffectiveDamageValues edv = calculate_edv_from_skills_lookup(wc.instance.weapon->weapon_class,
                                                                                    wc.contributions,
                                                                                    skills,
+                                                                                   params.misc_buffs,
                                                                                    params.skill_spec);
                 const double efr = edv.efr;
 
@@ -787,6 +791,8 @@ static void do_search(const Database& db, const SearchParameters& params) {
                                                    + Utils::indent(curr_decos.get_humanreadable(), 4) + "\n\n"
                                                    + "Skills:\n"
                                                    + Utils::indent(skills.get_humanreadable(), 4) + "\n\n"
+                                                   + "Buffs:\n"
+                                                   + Utils::indent(params.misc_buffs.get_humanreadable(), 4) + "\n\n"
                                                    + "Effective Damage Values:\n"
                                                    + Utils::indent(edv.get_humanreadable(), 4);
                     std::clog << "\n\nFound EFR: " + std::to_string(best_efr) + "\n\n"

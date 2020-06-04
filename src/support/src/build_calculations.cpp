@@ -20,9 +20,6 @@ static constexpr unsigned int k_RAW_CAP = 2;
 
 static constexpr double k_RAW_BLUNDER_MULTIPLIER = 0.75;
 
-static constexpr unsigned int k_POWERCHARM_RAW = 6;
-static constexpr unsigned int k_POWERTALON_RAW = 9;
-
 
 static EffectiveDamageValues calculate_edv(const unsigned int    weapon_raw, // True raw, not bloated raw.
                                            const int             weapon_aff,
@@ -70,25 +67,27 @@ static EffectiveDamageValues calculate_edv(const unsigned int    weapon_raw, // 
 EffectiveDamageValues calculate_edv_from_skills_lookup(const WeaponClass         weapon_class,
                                                        const WeaponContribution& wc,
                                                        const SkillMap&           full_skills,
+                                                       const MiscBuffsEquips&    misc_buffs,
                                                        const SkillSpec&          skill_spec) {
 
     SkillContribution sc(full_skills, skill_spec, weapon_class, wc);
     return calculate_edv(wc.weapon_raw,
                          wc.weapon_aff,
-                         sc.base_raw_multiplier,
+                         sc.base_raw_multiplier * misc_buffs.get_base_raw_multiplier(),
                          sc.frostcraft_raw_multiplier,
                          sc.bludgeoner_added_raw,
-                         sc.added_raw + k_POWERCHARM_RAW + k_POWERTALON_RAW,
+                         sc.added_raw + misc_buffs.get_added_raw(),
                          sc.added_aff,
                          sc.raw_crit_dmg_multiplier,
                          sc.final_sharpness_gauge);
 }
 
 
-EffectiveDamageValues calculate_edv_from_gear_lookup(const WeaponInstance& weapon,
-                                                     const ArmourEquips&   armour,
-                                                     const DecoEquips&     decos,
-                                                     const SkillSpec&      skill_spec) {
+EffectiveDamageValues calculate_edv_from_gear_lookup(const WeaponInstance&  weapon,
+                                                     const ArmourEquips&    armour,
+                                                     const DecoEquips&      decos,
+                                                     const MiscBuffsEquips& misc_buffs,
+                                                     const SkillSpec&       skill_spec) {
     WeaponContribution wc = weapon.calculate_contribution();
 
     assert(decos.fits_in(armour, wc));
@@ -100,7 +99,7 @@ EffectiveDamageValues calculate_edv_from_gear_lookup(const WeaponInstance& weapo
     if (wc.set_bonus) set_bonuses.increment(wc.set_bonus, 1);
     skills.add_set_bonuses(set_bonuses);
 
-    return calculate_edv_from_skills_lookup(weapon.weapon->weapon_class, wc, skills, skill_spec);
+    return calculate_edv_from_skills_lookup(weapon.weapon->weapon_class, wc, skills, misc_buffs, skill_spec);
 }
 
 

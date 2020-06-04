@@ -25,6 +25,8 @@ struct SearchParameters {
     WeaponClass weapon_class;
 
     SkillSpec skill_spec;
+
+    MiscBuffsEquips misc_buffs;
 };
 
 

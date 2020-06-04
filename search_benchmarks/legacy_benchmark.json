@@ -24,5 +24,10 @@
         "ELEMENT_ACCELERATION",
         "TRUE_ELEMENT_ACCELERATION",
         "FREE_ELEM_AMMO_UP"
+    ],
+
+    "misc_buffs": [
+        "POWERCHARM",
+        "POWERTALON"
     ]
 }

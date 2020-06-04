@@ -13,6 +13,7 @@
 #include "mhwi_build_search.h"
 #include "core/core.h"
 #include "database/database.h"
+#include "database/database_miscbuffs.h"
 #include "database/database_skills.h"
 #include "support/support.h"
 #include "utils/utils.h"
@@ -37,6 +38,15 @@ void no_args_cmd() {
     std::unordered_map<const Skill*, unsigned int> forced_states = {
         {&SkillsDatabase::g_skill_fortify, 1},
     };
+    MiscBuffsEquips misc_buffs ({
+        &MiscBuffsDatabase::get_miscbuff("POWERCHARM"),
+        &MiscBuffsDatabase::get_miscbuff("POWERTALON"),
+        &MiscBuffsDatabase::get_miscbuff("MEGA_DEMONDRUG"),
+        &MiscBuffsDatabase::get_miscbuff("MIGHT_SEED"),
+        &MiscBuffsDatabase::get_miscbuff("DEMON_POWDER"),
+        &MiscBuffsDatabase::get_miscbuff("FOOD_ATTACK_UP_L"),
+        &MiscBuffsDatabase::get_miscbuff("MELODY_ATTACK_UP_XL"),
+    });
     SkillSpec skill_spec(std::move(min_levels), std::move(forced_states), {});
     std::clog << std::endl << skill_spec.get_humanreadable() << std::endl << std::endl;
 
@@ -68,7 +78,7 @@ void no_args_cmd() {
     std::clog << armour.get_humanreadable() << std::endl << std::endl;
     std::clog << armour.get_skills_without_set_bonuses().get_humanreadable() << std::endl << std::endl;
 
-    EffectiveDamageValues edv = calculate_edv_from_gear_lookup(weapon, armour, decos, skill_spec);
+    EffectiveDamageValues edv = calculate_edv_from_gear_lookup(weapon, armour, decos, misc_buffs, skill_spec);
     std::clog << edv.get_humanreadable() << "\n\n===================\n\n";
 
     /*
@@ -89,7 +99,7 @@ void no_args_cmd() {
     WeaponContribution wc = weapon.calculate_contribution();
     std::clog << std::endl << skill_spec.get_humanreadable() + "\n\n";
     std::clog << skills.get_humanreadable() + "\n\n";
-    edv = calculate_edv_from_skills_lookup(weapon.weapon->weapon_class, wc, skills, skill_spec);
+    edv = calculate_edv_from_skills_lookup(weapon.weapon->weapon_class, wc, skills, misc_buffs, skill_spec);
     std::clog << edv.get_humanreadable() << std::endl;
     //assert(Utils::round_2decpl(efr) == 437.85); // Quick test!
 }

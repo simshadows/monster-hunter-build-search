@@ -24,7 +24,7 @@ def is_upper_snake_case(s):
     return bool(re.match("^[A-Z0-9_]+$", s))
 
 def is_safe_name(s):
-    return bool(re.match("^[a-zA-Z0-9 '+/_-]+$", s))
+    return bool(re.match("^[():a-zA-Z0-9 '+/_-]+$", s))
 
 ###
 

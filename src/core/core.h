@@ -9,6 +9,7 @@
 #include <memory>
 #include <string>
 #include <vector>
+#include <unordered_set>
 
 namespace MHWIBuildSearch
 {
@@ -310,6 +311,21 @@ struct Charm {
           std::string&&               new_name,
           unsigned int                new_max_charm_lvl,
           std::vector<const Skill*>&& new_skills) noexcept;
+};
+
+
+/****************************************************************************************
+ * Basic Build Components: MiscBuff
+ ***************************************************************************************/
+
+
+struct MiscBuff {
+    const std::string id;
+    const std::string name;
+    //const std::string buff_class; // The class field in the database is purely for human use.
+    const unsigned int added_raw;
+    const double base_raw_multiplier;
+    const std::unordered_set<std::string> uniqueness_tags;
 };
 
 

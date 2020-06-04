@@ -1,0 +1,133 @@
+{
+    "miscbuffs": {
+
+
+
+
+
+        "FOOD_ATTACK_UP_S": {
+            "name": "Food: Attack Up (S)",
+            "class": "FOOD_BUFF",
+
+            "added_raw": 5,
+
+            "uniqueness_tags": ["ATTACK_FOOD"]
+        },
+        "FOOD_ATTACK_UP_M": {
+            "name": "Food: Attack Up (M)",
+            "class": "FOOD_BUFF",
+
+            "added_raw": 10,
+
+            "uniqueness_tags": ["ATTACK_FOOD"]
+        },
+        "FOOD_ATTACK_UP_L": {
+            "name": "Food: Attack Up (L)",
+            "class": "FOOD_BUFF",
+
+            "added_raw": 15,
+
+            "uniqueness_tags": ["ATTACK_FOOD"]
+        },
+
+
+
+
+
+        "MELODY_ATTACK_UP_S": {
+            "name": "Melody: Attack Up (S)",
+            "class": "HORN_MELODY",
+
+            "base_raw_multiplier": 1.10,
+
+            "uniqueness_tags": ["ATTACK_MELODY"]
+        },
+        "MELODY_ATTACK_UP_L": {
+            "name": "Melody: Attack Up (L)",
+            "class": "HORN_MELODY",
+
+            "base_raw_multiplier": 1.15,
+
+            "uniqueness_tags": ["ATTACK_MELODY"]
+        },
+        "MELODY_ATTACK_UP_XL": {
+            "name": "Melody: Attack Up (XL)",
+            "class": "HORN_MELODY",
+
+            "base_raw_multiplier": 1.20,
+
+            "uniqueness_tags": ["ATTACK_MELODY"]
+        },
+
+
+
+
+
+        "POWERCHARM": {
+            "name": "Powercharm",
+            "class": "ITEM_PASSIVE",
+
+            "added_raw": 6,
+
+            "uniqueness_tags": []
+        },
+        "POWERTALON": {
+            "name": "Powertalon",
+            "class": "ITEM_PASSIVE",
+
+            "added_raw": 9,
+
+            "uniqueness_tags": []
+        },
+
+
+
+
+
+        "DEMONDRUG": {
+            "name": "Demondrug",
+            "class": "ITEM_CONSUMABLE",
+
+            "added_raw": 5,
+
+            "uniqueness_tags": ["DEMONDRUG"]
+        },
+        "MEGA_DEMONDRUG": {
+            "name": "Mega Demondrug",
+            "class": "ITEM_CONSUMABLE",
+
+            "added_raw": 7,
+
+            "uniqueness_tags": ["DEMONDRUG"]
+        },
+        "MIGHT_SEED": {
+            "name": "Might Seed",
+            "class": "ITEM_CONSUMABLE",
+
+            "added_raw": 10,
+
+            "uniqueness_tags": ["MIGHT_SEED"]
+        },
+        "DEMON_POWDER": {
+            "name": "Demon Powder",
+            "class": "ITEM_CONSUMABLE",
+
+            "added_raw": 10,
+
+            "uniqueness_tags": []
+        },
+        "MIGHT_PILL": {
+            "name": "Might Pill",
+            "class": "ITEM_CONSUMABLE",
+
+            "added_raw": 25,
+
+            "uniqueness_tags": ["MIGHT_SEED"]
+        }
+
+
+
+
+
+    }
+}

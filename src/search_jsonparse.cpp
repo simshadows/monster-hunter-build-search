@@ -8,6 +8,7 @@
 #include <iostream>
 
 #include "mhwi_build_search.h"
+#include "database/database_miscbuffs.h"
 #include "database/database_skills.h"
 #include "utils/utils.h"
 
@@ -68,13 +69,28 @@ static SearchParameters read_json_obj(const nlohmann::json& j) {
         throw std::runtime_error("Invalid query.");
     }
 
+    // Now, we determine miscellaneous buffs here.
+    std::unordered_set<const MiscBuff*> miscbuffs;
+    {
+        nlohmann::json j2 = j["misc_buffs"];
+        if (!j2.is_array()) {
+            throw std::runtime_error("'misc_buffs' must be an array of strings.");
+        }
+        std::vector<std::string> miscbuff_ids = j2;
+        for (const std::string& miscbuff_id : miscbuff_ids) {
+            const MiscBuff& miscbuff = MiscBuffsDatabase::get_miscbuff(miscbuff_id);
+            miscbuffs.emplace(&miscbuff);
+        }
+    }
+
     return {allow_low_rank,
             allow_high_rank,
             allow_master_rank,
             health_regen_required,
     
             weapon_class,
-            std::move(skill_spec)};
+            std::move(skill_spec),
+            MiscBuffsEquips(std::move(miscbuffs)) };
 }
 
 

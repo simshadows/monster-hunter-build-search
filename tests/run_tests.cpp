@@ -12,6 +12,7 @@
 
 #include "../src/core/core.h"
 #include "../src/database/database.h"
+#include "../src/database/database_miscbuffs.h"
 #include "../src/database/database_skills.h"
 #include "../src/support/support.h"
 #include "../src/utils/utils.h"
@@ -99,6 +100,10 @@ TEST_CASE("Incrementally building up a greatsword Safi Shattersplitter build.") 
     std::unordered_map<const Skill*, unsigned int> forced_states = {
         {&SkillsDatabase::g_skill_weakness_exploit, 1},
     };
+    MiscBuffsEquips misc_buffs ({
+        &MiscBuffsDatabase::get_miscbuff("POWERCHARM"),
+        &MiscBuffsDatabase::get_miscbuff("POWERTALON"),
+    });
     SkillSpec skill_spec(std::move(min_levels), std::move(forced_states), {});
 
     SECTION("Safi Shattersplitter + 1 Armour") {
@@ -113,7 +118,7 @@ TEST_CASE("Incrementally building up a greatsword Safi Shattersplitter build.") 
                                          db);
         DecoEquips decos;
 
-        const EffectiveDamageValues edv = calculate_edv_from_gear_lookup(weapon, armour, decos, skill_spec);
+        const EffectiveDamageValues edv = calculate_edv_from_gear_lookup(weapon, armour, decos, misc_buffs, skill_spec);
         const double efr = edv.efr;
         REQUIRE(Utils::round_2decpl(efr) == Approx(390.31));
     }
@@ -130,7 +135,7 @@ TEST_CASE("Incrementally building up a greatsword Safi Shattersplitter build.") 
                                          db);
         DecoEquips decos;
 
-        const EffectiveDamageValues edv = calculate_edv_from_gear_lookup(weapon, armour, decos, skill_spec);
+        const EffectiveDamageValues edv = calculate_edv_from_gear_lookup(weapon, armour, decos, misc_buffs, skill_spec);
         const double efr = edv.efr;
         REQUIRE(Utils::round_2decpl(efr) == Approx(415.77));
     }
@@ -146,7 +151,7 @@ TEST_CASE("Incrementally building up a greatsword Safi Shattersplitter build.") 
                                          db);
         DecoEquips decos;
 
-        const EffectiveDamageValues edv = calculate_edv_from_gear_lookup(weapon, armour, decos, skill_spec);
+        const EffectiveDamageValues edv = calculate_edv_from_gear_lookup(weapon, armour, decos, misc_buffs, skill_spec);
         const double efr = edv.efr;
         REQUIRE(Utils::round_2decpl(efr) == Approx(435.11));
     }
@@ -162,7 +167,7 @@ TEST_CASE("Incrementally building up a greatsword Safi Shattersplitter build.") 
                                          db);
         DecoEquips decos;
 
-        const EffectiveDamageValues edv = calculate_edv_from_gear_lookup(weapon, armour, decos, skill_spec);
+        const EffectiveDamageValues edv = calculate_edv_from_gear_lookup(weapon, armour, decos, misc_buffs, skill_spec);
         const double efr = edv.efr;
         REQUIRE(Utils::round_2decpl(efr) == Approx(480.30));
     }
@@ -181,7 +186,7 @@ TEST_CASE("Incrementally building up a greatsword Safi Shattersplitter build.") 
                                          db);
         DecoEquips decos;
 
-        const EffectiveDamageValues edv = calculate_edv_from_gear_lookup(weapon, armour, decos, skill_spec);
+        const EffectiveDamageValues edv = calculate_edv_from_gear_lookup(weapon, armour, decos, misc_buffs, skill_spec);
         const double efr = edv.efr;
         REQUIRE(Utils::round_2decpl(efr) == Approx(490.63));
     }
@@ -205,7 +210,7 @@ TEST_CASE("Incrementally building up a greatsword Safi Shattersplitter build.") 
                                          db);
         DecoEquips decos;
 
-        const EffectiveDamageValues edv = calculate_edv_from_gear_lookup(weapon, armour, decos, skill_spec);
+        const EffectiveDamageValues edv = calculate_edv_from_gear_lookup(weapon, armour, decos, misc_buffs, skill_spec);
         const double efr = edv.efr;
         REQUIRE(Utils::round_2decpl(efr) == Approx(554.90));
     }
@@ -242,7 +247,7 @@ TEST_CASE("Incrementally building up a greatsword Safi Shattersplitter build.") 
         decos.add(db.decos.at("ATTACK"));
         decos.add(db.decos.at("ATTACK"));
 
-        const EffectiveDamageValues edv = calculate_edv_from_gear_lookup(weapon, armour, decos, skill_spec);
+        const EffectiveDamageValues edv = calculate_edv_from_gear_lookup(weapon, armour, decos, misc_buffs, skill_spec);
         const double efr = edv.efr;
         // Interestingly, this assertion fails when we use the -Ofast compiler flag.
         REQUIRE(Utils::round_2decpl(efr) == Approx(682.55));
@@ -261,6 +266,10 @@ TEST_CASE("Incrementally building up a greatsword Acid Shredder II build.") {
     std::unordered_map<const Skill*, unsigned int> forced_states = {
         {&SkillsDatabase::g_skill_weakness_exploit, 1},
     };
+    MiscBuffsEquips misc_buffs ({
+        &MiscBuffsDatabase::get_miscbuff("POWERCHARM"),
+        &MiscBuffsDatabase::get_miscbuff("POWERTALON"),
+    });
     SkillSpec skill_spec(std::move(min_levels), std::move(forced_states), {});
 
     DecoEquips decos;
@@ -277,7 +286,7 @@ TEST_CASE("Incrementally building up a greatsword Acid Shredder II build.") {
                                          db);
         DecoEquips decos;
 
-        const EffectiveDamageValues edv = calculate_edv_from_gear_lookup(weapon, armour, decos, skill_spec);
+        const EffectiveDamageValues edv = calculate_edv_from_gear_lookup(weapon, armour, decos, misc_buffs, skill_spec);
         const double efr = edv.efr;
         REQUIRE(Utils::round_2decpl(efr) == Approx(393.60));
     }
@@ -301,7 +310,7 @@ TEST_CASE("Incrementally building up a greatsword Acid Shredder II build.") {
                                          db);
         DecoEquips decos;
 
-        const EffectiveDamageValues edv = calculate_edv_from_gear_lookup(weapon, armour, decos, skill_spec);
+        const EffectiveDamageValues edv = calculate_edv_from_gear_lookup(weapon, armour, decos, misc_buffs, skill_spec);
         const double efr = edv.efr;
         REQUIRE(Utils::round_2decpl(efr) == Approx(469.64));
     }
@@ -328,7 +337,7 @@ TEST_CASE("Incrementally building up a greatsword Acid Shredder II build.") {
                                          db);
         DecoEquips decos;
 
-        const EffectiveDamageValues edv = calculate_edv_from_gear_lookup(weapon, armour, decos, skill_spec);
+        const EffectiveDamageValues edv = calculate_edv_from_gear_lookup(weapon, armour, decos, misc_buffs, skill_spec);
         const double efr = edv.efr;
         REQUIRE(Utils::round_2decpl(efr) == Approx(492.35));
     }
@@ -350,6 +359,10 @@ TEST_CASE("Testing unusual skill combinations.") {
     std::unordered_map<const Skill*, unsigned int> forced_states = {
         {&SkillsDatabase::g_skill_fortify, 1},
     };
+    MiscBuffsEquips misc_buffs ({
+        &MiscBuffsDatabase::get_miscbuff("POWERCHARM"),
+        &MiscBuffsDatabase::get_miscbuff("POWERTALON"),
+    });
     SkillSpec skill_spec(std::move(min_levels), std::move(forced_states), {});
 
     SECTION("Bludgeoner + Non-elemental Boost + Fortify + Frostcraft + Heroics") {
@@ -367,7 +380,11 @@ TEST_CASE("Testing unusual skill combinations.") {
 
         WeaponContribution wc = weapon.calculate_contribution();
 
-        const EffectiveDamageValues edv = calculate_edv_from_skills_lookup(weapon.weapon->weapon_class, wc, skills, skill_spec);
+        const EffectiveDamageValues edv = calculate_edv_from_skills_lookup(weapon.weapon->weapon_class,
+                                                                           wc,
+                                                                           skills,
+                                                                           misc_buffs,
+                                                                           skill_spec);
         const double efr = edv.efr;
         REQUIRE(Utils::round_2decpl(efr) == Approx(209.51));
     }
@@ -388,7 +405,11 @@ TEST_CASE("Testing unusual skill combinations.") {
 
         WeaponContribution wc = weapon.calculate_contribution();
 
-        const EffectiveDamageValues edv = calculate_edv_from_skills_lookup(weapon.weapon->weapon_class, wc, skills, skill_spec);
+        const EffectiveDamageValues edv = calculate_edv_from_skills_lookup(weapon.weapon->weapon_class,
+                                                                           wc,
+                                                                           skills,
+                                                                           misc_buffs,
+                                                                           skill_spec);
         const double efr = edv.efr;
         REQUIRE(Utils::round_2decpl(efr) == Approx(212.16));
     }
@@ -404,6 +425,10 @@ TEST_CASE("DecoEquips::fits()") {
         {&SkillsDatabase::g_skill_weakness_exploit, 0},
     };
     std::unordered_map<const Skill*, unsigned int> forced_states;
+    MiscBuffsEquips misc_buffs ({
+        &MiscBuffsDatabase::get_miscbuff("POWERCHARM"),
+        &MiscBuffsDatabase::get_miscbuff("POWERTALON"),
+    });
     SkillSpec skill_spec(std::move(min_levels), std::move(forced_states), {});
 
     SECTION("Mixed Test, Exact Fit") {
@@ -426,7 +451,7 @@ TEST_CASE("DecoEquips::fits()") {
                                          db);
         DecoEquips decos;
 
-        const EffectiveDamageValues edv = calculate_edv_from_gear_lookup(weapon, armour, decos, skill_spec);
+        const EffectiveDamageValues edv = calculate_edv_from_gear_lookup(weapon, armour, decos, misc_buffs, skill_spec);
         const double efr = edv.efr;
         REQUIRE(decos.fits_in(armour, weapon.calculate_contribution()));
         REQUIRE(Utils::round_2decpl(efr) == Approx(512.28));
@@ -444,7 +469,7 @@ TEST_CASE("DecoEquips::fits()") {
         decos.add(db.decos.at("CRITICAL"));
         decos.add(db.decos.at("CRITICAL"));
 
-        const EffectiveDamageValues edv2 = calculate_edv_from_gear_lookup(weapon, armour, decos, skill_spec);
+        const EffectiveDamageValues edv2 = calculate_edv_from_gear_lookup(weapon, armour, decos, misc_buffs, skill_spec);
         const double efr2 = edv2.efr;
         REQUIRE(decos.fits_in(armour, weapon.calculate_contribution()));
         REQUIRE(Utils::round_2decpl(efr2) == Approx(649.38));
