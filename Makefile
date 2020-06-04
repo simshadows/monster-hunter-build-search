@@ -96,12 +96,12 @@ $(TESTEXEC) : $(OBJECTS) $(TESTOBJECTS)
 # Compiling the project ##################################################################
 ##########################################################################################
 
-$(EXEC) : regenerate $(OBJECTS) $(MAINOBJECTS)
+$(EXEC) : autogen $(OBJECTS) $(MAINOBJECTS)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -o $(EXEC) $(OBJECTS) $(MAINOBJECTS)
 
-.PHONY : regenerate
-regenerate :
-	./regenerate_database_files.py
+.PHONY : autogen
+autogen :
+	./src_autogen/autogen_skills_data.py
 
 ##########################################################################################
 # Specific Compilers #####################################################################

@@ -1973,4 +1973,3 @@ const SetBonus* get_setbonus(const std::string& setbonus_id) noexcept {
 
 
 } // namespace
-
