@@ -215,6 +215,31 @@ TEST_CASE("Incrementally building up a greatsword Safi Shattersplitter build.") 
         REQUIRE(Utils::round_2decpl(efr) == Approx(554.90));
     }
 
+    SECTION("Safi Shattersplitter + Augments + Upgrades + 5 Armour + Charm + Non-elemental Boost Decoration") {
+        WeaponInstance weapon(db.weapons.at("SAFI_SHATTERSPLITTER"));
+        weapon.augments->set_augment(WeaponAugment::augment_lvl, 3);
+        weapon.augments->set_augment(WeaponAugment::affinity_increase, 1);
+        weapon.augments->set_augment(WeaponAugment::health_regen, 1);
+        weapon.upgrades->add_upgrade(WeaponUpgrade::ib_safi_attack_6);
+        weapon.upgrades->add_upgrade(WeaponUpgrade::ib_safi_attack_5);
+        weapon.upgrades->add_upgrade(WeaponUpgrade::ib_safi_attack_5);
+        weapon.upgrades->add_upgrade(WeaponUpgrade::ib_safi_attack_5);
+        weapon.upgrades->add_upgrade(WeaponUpgrade::ib_safi_sharpness_5);
+        ArmourEquips armour = get_armour("Teostra",       "MB",
+                                         "Raging Brachy", "MB",
+                                         "Teostra",       "MB",
+                                         "Teostra",       "MB",
+                                         "Raging Brachy", "MB",
+                                         "CHALLENGER_CHARM",
+                                         db);
+        DecoEquips decos;
+        decos.add(db.decos.at("ELEMENTLESS"));
+
+        const EffectiveDamageValues edv = calculate_edv_from_gear_lookup(weapon, armour, decos, misc_buffs, skill_spec);
+        const double efr = edv.efr;
+        REQUIRE(Utils::round_2decpl(efr) == Approx(554.90));
+    }
+
     SECTION("Safi Shattersplitter + Augments + Upgrades + 5 Armour + Charm + Decorations") {
         WeaponInstance weapon(db.weapons.at("SAFI_SHATTERSPLITTER"));
         weapon.augments->set_augment(WeaponAugment::augment_lvl, 3);

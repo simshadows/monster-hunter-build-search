@@ -20,6 +20,10 @@ namespace MHWIBuildSearch {
  * Static Stuff
  */
 
+
+static constexpr unsigned int k_ELESTAT_BLOAT_VALUE = 10;
+
+
 static double weaponclass_to_bloat_value(const WeaponClass wt) {
     switch (wt) {
         case WeaponClass::greatsword:       return 4.8;
@@ -51,6 +55,27 @@ static const std::unordered_map<std::string, WeaponUpgradeScheme> str_to_upgrade
     {"NONE"           , WeaponUpgradeScheme::none},
     {"ICEBORNE_CUSTOM", WeaponUpgradeScheme::iceborne_custom},
     {"ICEBORNE_SAFI"  , WeaponUpgradeScheme::iceborne_safi},
+};
+
+static const std::unordered_map<std::string, EleStatVisibility> str_to_elestat_visibility = {
+    {"NONE",   EleStatVisibility::none},
+    {"OPEN",   EleStatVisibility::open},
+    {"HIDDEN", EleStatVisibility::hidden},
+};
+
+static const std::unordered_map<std::string, EleStatType> str_to_elestat_type = {
+    // EleStatType::none is invalid here.
+
+    {"FIRE",      EleStatType::fire     },
+    {"WATER",     EleStatType::water    },
+    {"THUNDER",   EleStatType::thunder  },
+    {"ICE",       EleStatType::ice      },
+    {"DRAGON",    EleStatType::dragon   },
+
+    {"POISON",    EleStatType::poison   },
+    {"SLEEP",     EleStatType::sleep    },
+    {"PARALYSIS", EleStatType::paralysis},
+    {"BLAST",     EleStatType::blast    },
 };
 
 
@@ -86,7 +111,18 @@ const WeaponsDatabase WeaponsDatabase::read_db_file(const std::string& filename)
         assert((true_raw * weaponclass_to_bloat_value(weapon_class)) == bloated_raw);
         int affinity = jj["affinity"];
 
-        bool is_raw = jj["is_raw"];
+        EleStatVisibility elestat_visibility = str_to_elestat_visibility.at(jj["elestat_visibility"]);
+        EleStatType elestat_type;
+        unsigned int elestat_value;
+        if (elestat_visibility == EleStatVisibility::none) {
+            elestat_type = EleStatType::none;
+            elestat_value = 0;
+        } else {
+            elestat_type = str_to_elestat_type.at(jj["elestat_type"]);
+            const unsigned int elestat_bloat_value = jj["elestat_value"];
+            elestat_value = elestat_bloat_value / k_ELESTAT_BLOAT_VALUE;
+            assert((elestat_value * k_ELESTAT_BLOAT_VALUE) == elestat_bloat_value);
+        }
 
         std::vector<unsigned int> deco_slots = jj["slots"];
 
@@ -115,7 +151,9 @@ const WeaponsDatabase WeaponsDatabase::read_db_file(const std::string& filename)
                                              std::move(true_raw),
                                              std::move(affinity),
 
-                                             std::move(is_raw),
+                                             std::move(elestat_visibility),
+                                             std::move(elestat_type),
+                                             std::move(elestat_value),
 
                                              std::move(deco_slots),
 

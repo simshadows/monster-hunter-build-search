@@ -4,6 +4,7 @@
  */
 
 #include <assert.h>
+#include <stdexcept>
 
 #include "../../database/database_skills.h"
 #include "../support.h"
@@ -97,27 +98,37 @@ static constexpr std::array<int, 4> weakness_exploit_s2_aff = {0, 15, 30, 50};
 static double calculate_non_elemental_boost_multiplier(const SkillMap& skills,
                                                        const SkillSpec& skills_spec,
                                                        const WeaponContribution& wc) {
-    // TODO: Oh my god this if-statement is so messy in order to account for element acceleration. Please fix.
-    if (wc.is_raw
-            && skills.binary_skill_is_lvl1(&SkillsDatabase::g_skill_non_elemental_boost)
-            && (skills.get(&SkillsDatabase::g_skill_free_elem_ammo_up) == 0)
-            &&
-                (
-                    (
-                        (!skills_spec.get_state_for_binary_skill(&SkillsDatabase::g_skill_element_acceleration))
-                        && (!skills_spec.get_state_for_binary_skill(&SkillsDatabase::g_skill_true_element_acceleration))
-                    )
-                    ||
-                    (
-                        (!skills.binary_skill_is_lvl1(&SkillsDatabase::g_skill_element_acceleration))
-                        && (!skills.binary_skill_is_lvl1(&SkillsDatabase::g_skill_true_element_acceleration))
-                    )
-                )
-            ) {
-        return k_NON_ELEMENTAL_BOOST_MULTIPLIER_ACTIVE;
-    } else {
+
+    if (!skills.binary_skill_is_lvl1(&SkillsDatabase::g_skill_non_elemental_boost)) {
         return k_NON_ELEMENTAL_BOOST_MULTIPLIER_DISABLED;
     }
+
+    // We can now assume the Non-elemental Boost skill is active.
+
+    const bool is_raw = [&](){
+        switch (wc.elestat_visibility) {
+            case EleStatVisibility::none:
+                return true;
+            case EleStatVisibility::open:
+                assert(wc.elestat_type != EleStatType::none);
+                assert(wc.elestat_value);
+                return false;
+            case EleStatVisibility::hidden:
+                if (skills.get(&SkillsDatabase::g_skill_free_elem_ammo_up) > 0) {
+                    return false;
+                }
+                if ((!skills_spec.get_state_for_binary_skill(&SkillsDatabase::g_skill_element_acceleration))
+                        && (!skills_spec.get_state_for_binary_skill(&SkillsDatabase::g_skill_true_element_acceleration))) {
+                    return true;
+                }
+                return skills.binary_skill_is_lvl1(&SkillsDatabase::g_skill_element_acceleration)
+                       || skills.binary_skill_is_lvl1(&SkillsDatabase::g_skill_true_element_acceleration);
+            default:
+                throw std::logic_error("Unexpected EleStatVisibility value.");
+        }
+    }();
+
+    return (is_raw) ? k_NON_ELEMENTAL_BOOST_MULTIPLIER_ACTIVE : k_NON_ELEMENTAL_BOOST_MULTIPLIER_DISABLED;
 }
 
 

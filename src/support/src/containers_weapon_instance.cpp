@@ -41,7 +41,9 @@ WeaponContribution WeaponInstance::calculate_contribution() const {
         this->weapon->true_raw + ac.added_raw + uc.added_raw,
         this->weapon->affinity + ac.added_aff + uc.added_aff,
 
-        this->weapon->is_raw,
+        this->weapon->elestat_visibility,
+        this->weapon->elestat_type,
+        this->weapon->elestat_value,
 
         this->weapon->deco_slots,
         this->weapon->skill,

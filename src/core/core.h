@@ -24,6 +24,28 @@ enum class Tier {
     master_rank,
 };
 
+enum class EleStatType {
+    none,
+
+    // Elements
+    fire,
+    water,
+    thunder,
+    ice,
+    dragon,
+
+    // Statuses
+    poison,
+    sleep,
+    paralysis,
+    blast,
+
+    //// We won't include these in this enum.
+    //ko,
+    //exhaust,
+    //mount,
+};
+
 
 class InvalidChange : public std::exception {
     const char * const msg;
@@ -182,6 +204,13 @@ enum class WeaponClass {
     light_bowgun,
 };
 
+enum class EleStatVisibility {
+    none,   // Always elementless.
+    open,   // Always has an element.
+    hidden, // Elementless, but has a "hidden element" that can be activated
+            // under certain conditions (usually the Free Element skill).
+};
+
 enum class WeaponAugmentationScheme {
     none,
     //base_game, // Currently unused.
@@ -207,7 +236,9 @@ struct Weapon {
     const unsigned int   true_raw; // Must be converted from its bloated raw.
     const int            affinity;
 
-    const bool           is_raw; // Temporary implementation while I sort out how to do elemental calculations.
+    const EleStatVisibility elestat_visibility;
+    const EleStatType       elestat_type;
+    const unsigned int      elestat_value;
 
     const std::vector<unsigned int> deco_slots;
 

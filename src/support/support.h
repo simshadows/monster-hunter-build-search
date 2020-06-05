@@ -168,7 +168,9 @@ struct WeaponContribution {
     unsigned int              weapon_raw {0};
     int                       weapon_aff {0};
 
-    bool                      is_raw {false};
+    EleStatVisibility         elestat_visibility {EleStatVisibility::none};
+    EleStatType               elestat_type       {EleStatType::none};
+    unsigned int              elestat_value      {0};
 
     std::vector<unsigned int> deco_slots {};
     const Skill*              skill      {nullptr};
