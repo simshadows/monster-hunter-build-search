@@ -198,7 +198,7 @@ def generate_skills_source():
                     f"extern const Skill {skill['identifier']};"
                 )
         skill_definitions.append(
-                    f"const Skill {skill['identifier']} = {{\n"
+                    f"constinit const Skill {skill['identifier']} = {{\n"
                     f"    \"{skill['skill_id']}\", // id\n"
                     f"    \"{skill['skill_name']}\", // name\n"
                     f"    {skill['normal_limit']}, // normal_limit\n"
