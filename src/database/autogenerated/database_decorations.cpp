@@ -18,7 +18,7 @@ namespace DecorationsDatabase
 //static constexpr unsigned int k_COMPLEX_DECO_SIZE = 4;
 
 
-const Decoration g_decoration_blastcoat = {
+static const Decoration g_decoration_blastcoat = {
     "BLASTCOAT", // id
     "Blastcoat Jewel 3", // name
     3, // slot_size
@@ -27,7 +27,7 @@ const Decoration g_decoration_blastcoat = {
     }
 };
 
-const Decoration g_decoration_brace = {
+static const Decoration g_decoration_brace = {
     "BRACE", // id
     "Brace Jewel 3", // name
     3, // slot_size
@@ -36,7 +36,7 @@ const Decoration g_decoration_brace = {
     }
 };
 
-const Decoration g_decoration_dragonseal = {
+static const Decoration g_decoration_dragonseal = {
     "DRAGONSEAL", // id
     "Dragonseal Jewel 3", // name
     3, // slot_size
@@ -45,7 +45,7 @@ const Decoration g_decoration_dragonseal = {
     }
 };
 
-const Decoration g_decoration_earplug = {
+static const Decoration g_decoration_earplug = {
     "EARPLUG", // id
     "Earplug Jewel 3", // name
     3, // slot_size
@@ -54,7 +54,7 @@ const Decoration g_decoration_earplug = {
     }
 };
 
-const Decoration g_decoration_forceshot = {
+static const Decoration g_decoration_forceshot = {
     "FORCESHOT", // id
     "Forceshot Jewel 3", // name
     3, // slot_size
@@ -63,7 +63,7 @@ const Decoration g_decoration_forceshot = {
     }
 };
 
-const Decoration g_decoration_handicraft = {
+static const Decoration g_decoration_handicraft = {
     "HANDICRAFT", // id
     "Handicraft Jewel 3", // name
     3, // slot_size
@@ -72,7 +72,7 @@ const Decoration g_decoration_handicraft = {
     }
 };
 
-const Decoration g_decoration_paracoat = {
+static const Decoration g_decoration_paracoat = {
     "PARACOAT", // id
     "Paracoat Jewel 3", // name
     3, // slot_size
@@ -81,7 +81,7 @@ const Decoration g_decoration_paracoat = {
     }
 };
 
-const Decoration g_decoration_pierce = {
+static const Decoration g_decoration_pierce = {
     "PIERCE", // id
     "Pierce Jewel 3", // name
     3, // slot_size
@@ -90,7 +90,7 @@ const Decoration g_decoration_pierce = {
     }
 };
 
-const Decoration g_decoration_poisoncoat = {
+static const Decoration g_decoration_poisoncoat = {
     "POISONCOAT", // id
     "Poisoncoat Jewel 3", // name
     3, // slot_size
@@ -99,7 +99,7 @@ const Decoration g_decoration_poisoncoat = {
     }
 };
 
-const Decoration g_decoration_release = {
+static const Decoration g_decoration_release = {
     "RELEASE", // id
     "Release Jewel 3", // name
     3, // slot_size
@@ -108,7 +108,7 @@ const Decoration g_decoration_release = {
     }
 };
 
-const Decoration g_decoration_sleepcoat = {
+static const Decoration g_decoration_sleepcoat = {
     "SLEEPCOAT", // id
     "Sleepcoat Jewel 3", // name
     3, // slot_size
@@ -117,7 +117,7 @@ const Decoration g_decoration_sleepcoat = {
     }
 };
 
-const Decoration g_decoration_spread = {
+static const Decoration g_decoration_spread = {
     "SPREAD", // id
     "Spread Jewel 3", // name
     3, // slot_size
@@ -126,7 +126,7 @@ const Decoration g_decoration_spread = {
     }
 };
 
-const Decoration g_decoration_phoenix = {
+static const Decoration g_decoration_phoenix = {
     "PHOENIX", // id
     "Phoenix Jewel 3", // name
     3, // slot_size
@@ -135,7 +135,7 @@ const Decoration g_decoration_phoenix = {
     }
 };
 
-const Decoration g_decoration_challenger = {
+static const Decoration g_decoration_challenger = {
     "CHALLENGER", // id
     "Challenger Jewel 2", // name
     2, // slot_size
@@ -144,7 +144,7 @@ const Decoration g_decoration_challenger = {
     }
 };
 
-const Decoration g_decoration_charger = {
+static const Decoration g_decoration_charger = {
     "CHARGER", // id
     "Charger Jewel 2", // name
     2, // slot_size
@@ -153,7 +153,7 @@ const Decoration g_decoration_charger = {
     }
 };
 
-const Decoration g_decoration_critical = {
+static const Decoration g_decoration_critical = {
     "CRITICAL", // id
     "Critical Jewel 2", // name
     2, // slot_size
@@ -162,7 +162,7 @@ const Decoration g_decoration_critical = {
     }
 };
 
-const Decoration g_decoration_destroyer = {
+static const Decoration g_decoration_destroyer = {
     "DESTROYER", // id
     "Destroyer Jewel 2", // name
     2, // slot_size
@@ -171,7 +171,7 @@ const Decoration g_decoration_destroyer = {
     }
 };
 
-const Decoration g_decoration_draw = {
+static const Decoration g_decoration_draw = {
     "DRAW", // id
     "Draw Jewel 2", // name
     2, // slot_size
@@ -180,7 +180,7 @@ const Decoration g_decoration_draw = {
     }
 };
 
-const Decoration g_decoration_elementless = {
+static const Decoration g_decoration_elementless = {
     "ELEMENTLESS", // id
     "Elementless Jewel 2", // name
     2, // slot_size
@@ -189,7 +189,7 @@ const Decoration g_decoration_elementless = {
     }
 };
 
-const Decoration g_decoration_enhancer = {
+static const Decoration g_decoration_enhancer = {
     "ENHANCER", // id
     "Enhancer Jewel 2", // name
     2, // slot_size
@@ -198,7 +198,7 @@ const Decoration g_decoration_enhancer = {
     }
 };
 
-const Decoration g_decoration_evasion = {
+static const Decoration g_decoration_evasion = {
     "EVASION", // id
     "Evasion Jewel 2", // name
     2, // slot_size
@@ -207,7 +207,7 @@ const Decoration g_decoration_evasion = {
     }
 };
 
-const Decoration g_decoration_flawless = {
+static const Decoration g_decoration_flawless = {
     "FLAWLESS", // id
     "Flawless Jewel 2", // name
     2, // slot_size
@@ -216,7 +216,7 @@ const Decoration g_decoration_flawless = {
     }
 };
 
-const Decoration g_decoration_flight = {
+static const Decoration g_decoration_flight = {
     "FLIGHT", // id
     "Flight Jewel 2", // name
     2, // slot_size
@@ -225,7 +225,7 @@ const Decoration g_decoration_flight = {
     }
 };
 
-const Decoration g_decoration_footing = {
+static const Decoration g_decoration_footing = {
     "FOOTING", // id
     "Footing Jewel 2", // name
     2, // slot_size
@@ -234,7 +234,7 @@ const Decoration g_decoration_footing = {
     }
 };
 
-const Decoration g_decoration_furor = {
+static const Decoration g_decoration_furor = {
     "FUROR", // id
     "Furor Jewel 2", // name
     2, // slot_size
@@ -243,7 +243,7 @@ const Decoration g_decoration_furor = {
     }
 };
 
-const Decoration g_decoration_jumping = {
+static const Decoration g_decoration_jumping = {
     "JUMPING", // id
     "Jumping Jewel 2", // name
     2, // slot_size
@@ -252,7 +252,7 @@ const Decoration g_decoration_jumping = {
     }
 };
 
-const Decoration g_decoration_ko = {
+static const Decoration g_decoration_ko = {
     "KO", // id
     "KO Jewel 2", // name
     2, // slot_size
@@ -261,7 +261,7 @@ const Decoration g_decoration_ko = {
     }
 };
 
-const Decoration g_decoration_magazine = {
+static const Decoration g_decoration_magazine = {
     "MAGAZINE", // id
     "Magazine Jewel 2", // name
     2, // slot_size
@@ -270,7 +270,7 @@ const Decoration g_decoration_magazine = {
     }
 };
 
-const Decoration g_decoration_mighty = {
+static const Decoration g_decoration_mighty = {
     "MIGHTY", // id
     "Mighty Jewel 2", // name
     2, // slot_size
@@ -279,7 +279,7 @@ const Decoration g_decoration_mighty = {
     }
 };
 
-const Decoration g_decoration_mighty_bow = {
+static const Decoration g_decoration_mighty_bow = {
     "MIGHTY_BOW", // id
     "Mighty Bow Jewel 2", // name
     2, // slot_size
@@ -288,7 +288,7 @@ const Decoration g_decoration_mighty_bow = {
     }
 };
 
-const Decoration g_decoration_minds_eye = {
+static const Decoration g_decoration_minds_eye = {
     "MINDS_EYE", // id
     "Mind's Eye Jewel 2", // name
     2, // slot_size
@@ -297,7 +297,7 @@ const Decoration g_decoration_minds_eye = {
     }
 };
 
-const Decoration g_decoration_physique = {
+static const Decoration g_decoration_physique = {
     "PHYSIQUE", // id
     "Physique Jewel 2", // name
     2, // slot_size
@@ -306,7 +306,7 @@ const Decoration g_decoration_physique = {
     }
 };
 
-const Decoration g_decoration_potential = {
+static const Decoration g_decoration_potential = {
     "POTENTIAL", // id
     "Potential Jewel 2", // name
     2, // slot_size
@@ -315,7 +315,7 @@ const Decoration g_decoration_potential = {
     }
 };
 
-const Decoration g_decoration_refresh = {
+static const Decoration g_decoration_refresh = {
     "REFRESH", // id
     "Refresh Jewel 2", // name
     2, // slot_size
@@ -324,7 +324,7 @@ const Decoration g_decoration_refresh = {
     }
 };
 
-const Decoration g_decoration_sharp = {
+static const Decoration g_decoration_sharp = {
     "SHARP", // id
     "Sharp Jewel 2", // name
     2, // slot_size
@@ -333,7 +333,7 @@ const Decoration g_decoration_sharp = {
     }
 };
 
-const Decoration g_decoration_shield = {
+static const Decoration g_decoration_shield = {
     "SHIELD", // id
     "Shield Jewel 2", // name
     2, // slot_size
@@ -342,7 +342,7 @@ const Decoration g_decoration_shield = {
     }
 };
 
-const Decoration g_decoration_slider = {
+static const Decoration g_decoration_slider = {
     "SLIDER", // id
     "Slider Jewel 2", // name
     2, // slot_size
@@ -351,7 +351,7 @@ const Decoration g_decoration_slider = {
     }
 };
 
-const Decoration g_decoration_sprinter = {
+static const Decoration g_decoration_sprinter = {
     "SPRINTER", // id
     "Sprinter Jewel 2", // name
     2, // slot_size
@@ -360,7 +360,7 @@ const Decoration g_decoration_sprinter = {
     }
 };
 
-const Decoration g_decoration_tenderizer = {
+static const Decoration g_decoration_tenderizer = {
     "TENDERIZER", // id
     "Tenderizer Jewel 2", // name
     2, // slot_size
@@ -369,7 +369,7 @@ const Decoration g_decoration_tenderizer = {
     }
 };
 
-const Decoration g_decoration_throttle = {
+static const Decoration g_decoration_throttle = {
     "THROTTLE", // id
     "Throttle Jewel 2", // name
     2, // slot_size
@@ -378,7 +378,7 @@ const Decoration g_decoration_throttle = {
     }
 };
 
-const Decoration g_decoration_wind_resist = {
+static const Decoration g_decoration_wind_resist = {
     "WIND_RESIST", // id
     "Wind Resist Jewel 2", // name
     2, // slot_size
@@ -387,7 +387,7 @@ const Decoration g_decoration_wind_resist = {
     }
 };
 
-const Decoration g_decoration_cooling = {
+static const Decoration g_decoration_cooling = {
     "COOLING", // id
     "Cooling Jewel 2", // name
     2, // slot_size
@@ -396,7 +396,7 @@ const Decoration g_decoration_cooling = {
     }
 };
 
-const Decoration g_decoration_guardian = {
+static const Decoration g_decoration_guardian = {
     "GUARDIAN", // id
     "Guardian Jewel 2", // name
     2, // slot_size
@@ -405,7 +405,7 @@ const Decoration g_decoration_guardian = {
     }
 };
 
-const Decoration g_decoration_warming = {
+static const Decoration g_decoration_warming = {
     "WARMING", // id
     "Warming Jewel 2", // name
     2, // slot_size
@@ -414,7 +414,7 @@ const Decoration g_decoration_warming = {
     }
 };
 
-const Decoration g_decoration_antiblast = {
+static const Decoration g_decoration_antiblast = {
     "ANTIBLAST", // id
     "Antiblast Jewel 1", // name
     1, // slot_size
@@ -423,7 +423,7 @@ const Decoration g_decoration_antiblast = {
     }
 };
 
-const Decoration g_decoration_antidote = {
+static const Decoration g_decoration_antidote = {
     "ANTIDOTE", // id
     "Antidote Jewel 1", // name
     1, // slot_size
@@ -432,7 +432,7 @@ const Decoration g_decoration_antidote = {
     }
 };
 
-const Decoration g_decoration_antipara = {
+static const Decoration g_decoration_antipara = {
     "ANTIPARA", // id
     "Antipara Jewel 1", // name
     1, // slot_size
@@ -441,7 +441,7 @@ const Decoration g_decoration_antipara = {
     }
 };
 
-const Decoration g_decoration_artillery = {
+static const Decoration g_decoration_artillery = {
     "ARTILLERY", // id
     "Artillery Jewel 1", // name
     1, // slot_size
@@ -450,7 +450,7 @@ const Decoration g_decoration_artillery = {
     }
 };
 
-const Decoration g_decoration_attack = {
+static const Decoration g_decoration_attack = {
     "ATTACK", // id
     "Attack Jewel 1", // name
     1, // slot_size
@@ -459,7 +459,7 @@ const Decoration g_decoration_attack = {
     }
 };
 
-const Decoration g_decoration_blast = {
+static const Decoration g_decoration_blast = {
     "BLAST", // id
     "Blast Jewel 1", // name
     1, // slot_size
@@ -468,7 +468,7 @@ const Decoration g_decoration_blast = {
     }
 };
 
-const Decoration g_decoration_blaze = {
+static const Decoration g_decoration_blaze = {
     "BLAZE", // id
     "Blaze Jewel 1", // name
     1, // slot_size
@@ -477,7 +477,7 @@ const Decoration g_decoration_blaze = {
     }
 };
 
-const Decoration g_decoration_bolt = {
+static const Decoration g_decoration_bolt = {
     "BOLT", // id
     "Bolt Jewel 1", // name
     1, // slot_size
@@ -486,7 +486,7 @@ const Decoration g_decoration_bolt = {
     }
 };
 
-const Decoration g_decoration_bomber = {
+static const Decoration g_decoration_bomber = {
     "BOMBER", // id
     "Bomber Jewel 1", // name
     1, // slot_size
@@ -495,7 +495,7 @@ const Decoration g_decoration_bomber = {
     }
 };
 
-const Decoration g_decoration_botany = {
+static const Decoration g_decoration_botany = {
     "BOTANY", // id
     "Botany Jewel 1", // name
     1, // slot_size
@@ -504,7 +504,7 @@ const Decoration g_decoration_botany = {
     }
 };
 
-const Decoration g_decoration_crisis = {
+static const Decoration g_decoration_crisis = {
     "CRISIS", // id
     "Crisis Jewel 1", // name
     1, // slot_size
@@ -513,7 +513,7 @@ const Decoration g_decoration_crisis = {
     }
 };
 
-const Decoration g_decoration_def_lock = {
+static const Decoration g_decoration_def_lock = {
     "DEF_LOCK", // id
     "Def Lock Jewel 1", // name
     1, // slot_size
@@ -522,7 +522,7 @@ const Decoration g_decoration_def_lock = {
     }
 };
 
-const Decoration g_decoration_defense = {
+static const Decoration g_decoration_defense = {
     "DEFENSE", // id
     "Defense Jewel 1", // name
     1, // slot_size
@@ -531,7 +531,7 @@ const Decoration g_decoration_defense = {
     }
 };
 
-const Decoration g_decoration_dragon = {
+static const Decoration g_decoration_dragon = {
     "DRAGON", // id
     "Dragon Jewel 1", // name
     1, // slot_size
@@ -540,7 +540,7 @@ const Decoration g_decoration_dragon = {
     }
 };
 
-const Decoration g_decoration_dragon_res = {
+static const Decoration g_decoration_dragon_res = {
     "DRAGON_RES", // id
     "Dragon Res Jewel 1", // name
     1, // slot_size
@@ -549,7 +549,7 @@ const Decoration g_decoration_dragon_res = {
     }
 };
 
-const Decoration g_decoration_drain = {
+static const Decoration g_decoration_drain = {
     "DRAIN", // id
     "Drain Jewel 1", // name
     1, // slot_size
@@ -558,7 +558,7 @@ const Decoration g_decoration_drain = {
     }
 };
 
-const Decoration g_decoration_enduring = {
+static const Decoration g_decoration_enduring = {
     "ENDURING", // id
     "Enduring Jewel 1", // name
     1, // slot_size
@@ -567,7 +567,7 @@ const Decoration g_decoration_enduring = {
     }
 };
 
-const Decoration g_decoration_expert = {
+static const Decoration g_decoration_expert = {
     "EXPERT", // id
     "Expert Jewel 1", // name
     1, // slot_size
@@ -576,7 +576,7 @@ const Decoration g_decoration_expert = {
     }
 };
 
-const Decoration g_decoration_fire_res = {
+static const Decoration g_decoration_fire_res = {
     "FIRE_RES", // id
     "Fire Res Jewel 1", // name
     1, // slot_size
@@ -585,7 +585,7 @@ const Decoration g_decoration_fire_res = {
     }
 };
 
-const Decoration g_decoration_fortitude = {
+static const Decoration g_decoration_fortitude = {
     "FORTITUDE", // id
     "Fortitude Jewel 1", // name
     1, // slot_size
@@ -594,7 +594,7 @@ const Decoration g_decoration_fortitude = {
     }
 };
 
-const Decoration g_decoration_friendship = {
+static const Decoration g_decoration_friendship = {
     "FRIENDSHIP", // id
     "Friendship Jewel 1", // name
     1, // slot_size
@@ -603,7 +603,7 @@ const Decoration g_decoration_friendship = {
     }
 };
 
-const Decoration g_decoration_frost = {
+static const Decoration g_decoration_frost = {
     "FROST", // id
     "Frost Jewel 1", // name
     1, // slot_size
@@ -612,7 +612,7 @@ const Decoration g_decoration_frost = {
     }
 };
 
-const Decoration g_decoration_fungiform = {
+static const Decoration g_decoration_fungiform = {
     "FUNGIFORM", // id
     "Fungiform Jewel 1", // name
     1, // slot_size
@@ -621,7 +621,7 @@ const Decoration g_decoration_fungiform = {
     }
 };
 
-const Decoration g_decoration_geology = {
+static const Decoration g_decoration_geology = {
     "GEOLOGY", // id
     "Geology Jewel 1", // name
     1, // slot_size
@@ -630,7 +630,7 @@ const Decoration g_decoration_geology = {
     }
 };
 
-const Decoration g_decoration_gobbler = {
+static const Decoration g_decoration_gobbler = {
     "GOBBLER", // id
     "Gobbler Jewel 1", // name
     1, // slot_size
@@ -639,7 +639,7 @@ const Decoration g_decoration_gobbler = {
     }
 };
 
-const Decoration g_decoration_grinder = {
+static const Decoration g_decoration_grinder = {
     "GRINDER", // id
     "Grinder Jewel 1", // name
     1, // slot_size
@@ -648,7 +648,7 @@ const Decoration g_decoration_grinder = {
     }
 };
 
-const Decoration g_decoration_heavy_artillery = {
+static const Decoration g_decoration_heavy_artillery = {
     "HEAVY_ARTILLERY", // id
     "Heavy Artillery Jewel 1", // name
     1, // slot_size
@@ -657,7 +657,7 @@ const Decoration g_decoration_heavy_artillery = {
     }
 };
 
-const Decoration g_decoration_hungerless = {
+static const Decoration g_decoration_hungerless = {
     "HUNGERLESS", // id
     "Hungerless Jewel 1", // name
     1, // slot_size
@@ -666,7 +666,7 @@ const Decoration g_decoration_hungerless = {
     }
 };
 
-const Decoration g_decoration_ice_res = {
+static const Decoration g_decoration_ice_res = {
     "ICE_RES", // id
     "Ice Res Jewel 1", // name
     1, // slot_size
@@ -675,7 +675,7 @@ const Decoration g_decoration_ice_res = {
     }
 };
 
-const Decoration g_decoration_intimidator = {
+static const Decoration g_decoration_intimidator = {
     "INTIMIDATOR", // id
     "Intimidator Jewel 1", // name
     1, // slot_size
@@ -684,7 +684,7 @@ const Decoration g_decoration_intimidator = {
     }
 };
 
-const Decoration g_decoration_ironwall = {
+static const Decoration g_decoration_ironwall = {
     "IRONWALL", // id
     "Ironwall Jewel 1", // name
     1, // slot_size
@@ -693,7 +693,7 @@ const Decoration g_decoration_ironwall = {
     }
 };
 
-const Decoration g_decoration_maintenance = {
+static const Decoration g_decoration_maintenance = {
     "MAINTENANCE", // id
     "Maintenance Jewel 1", // name
     1, // slot_size
@@ -702,7 +702,7 @@ const Decoration g_decoration_maintenance = {
     }
 };
 
-const Decoration g_decoration_medicine = {
+static const Decoration g_decoration_medicine = {
     "MEDICINE", // id
     "Medicine Jewel 1", // name
     1, // slot_size
@@ -711,7 +711,7 @@ const Decoration g_decoration_medicine = {
     }
 };
 
-const Decoration g_decoration_meowster = {
+static const Decoration g_decoration_meowster = {
     "MEOWSTER", // id
     "Meowster Jewel 1", // name
     1, // slot_size
@@ -720,7 +720,7 @@ const Decoration g_decoration_meowster = {
     }
 };
 
-const Decoration g_decoration_miasma = {
+static const Decoration g_decoration_miasma = {
     "MIASMA", // id
     "Miasma Jewel 1", // name
     1, // slot_size
@@ -729,7 +729,7 @@ const Decoration g_decoration_miasma = {
     }
 };
 
-const Decoration g_decoration_mirewalker = {
+static const Decoration g_decoration_mirewalker = {
     "MIREWALKER", // id
     "Mirewalker Jewel 1", // name
     1, // slot_size
@@ -738,7 +738,7 @@ const Decoration g_decoration_mirewalker = {
     }
 };
 
-const Decoration g_decoration_paralyzer = {
+static const Decoration g_decoration_paralyzer = {
     "PARALYZER", // id
     "Paralyzer Jewel 1", // name
     1, // slot_size
@@ -747,7 +747,7 @@ const Decoration g_decoration_paralyzer = {
     }
 };
 
-const Decoration g_decoration_pep = {
+static const Decoration g_decoration_pep = {
     "PEP", // id
     "Pep Jewel 1", // name
     1, // slot_size
@@ -756,7 +756,7 @@ const Decoration g_decoration_pep = {
     }
 };
 
-const Decoration g_decoration_protection = {
+static const Decoration g_decoration_protection = {
     "PROTECTION", // id
     "Protection Jewel 1", // name
     1, // slot_size
@@ -765,7 +765,7 @@ const Decoration g_decoration_protection = {
     }
 };
 
-const Decoration g_decoration_recovery = {
+static const Decoration g_decoration_recovery = {
     "RECOVERY", // id
     "Recovery Jewel 1", // name
     1, // slot_size
@@ -774,7 +774,7 @@ const Decoration g_decoration_recovery = {
     }
 };
 
-const Decoration g_decoration_resistor = {
+static const Decoration g_decoration_resistor = {
     "RESISTOR", // id
     "Resistor Jewel 1", // name
     1, // slot_size
@@ -783,7 +783,7 @@ const Decoration g_decoration_resistor = {
     }
 };
 
-const Decoration g_decoration_satiated = {
+static const Decoration g_decoration_satiated = {
     "SATIATED", // id
     "Satiated Jewel 1", // name
     1, // slot_size
@@ -792,7 +792,7 @@ const Decoration g_decoration_satiated = {
     }
 };
 
-const Decoration g_decoration_scent = {
+static const Decoration g_decoration_scent = {
     "SCENT", // id
     "Scent Jewel 1", // name
     1, // slot_size
@@ -801,7 +801,7 @@ const Decoration g_decoration_scent = {
     }
 };
 
-const Decoration g_decoration_sheath = {
+static const Decoration g_decoration_sheath = {
     "SHEATH", // id
     "Sheath Jewel 1", // name
     1, // slot_size
@@ -810,7 +810,7 @@ const Decoration g_decoration_sheath = {
     }
 };
 
-const Decoration g_decoration_sleep = {
+static const Decoration g_decoration_sleep = {
     "SLEEP", // id
     "Sleep Jewel 1", // name
     1, // slot_size
@@ -819,7 +819,7 @@ const Decoration g_decoration_sleep = {
     }
 };
 
-const Decoration g_decoration_sonorous = {
+static const Decoration g_decoration_sonorous = {
     "SONOROUS", // id
     "Sonorous Jewel 1", // name
     1, // slot_size
@@ -828,7 +828,7 @@ const Decoration g_decoration_sonorous = {
     }
 };
 
-const Decoration g_decoration_specimen = {
+static const Decoration g_decoration_specimen = {
     "SPECIMEN", // id
     "Specimen Jewel 1", // name
     1, // slot_size
@@ -837,7 +837,7 @@ const Decoration g_decoration_specimen = {
     }
 };
 
-const Decoration g_decoration_steadfast = {
+static const Decoration g_decoration_steadfast = {
     "STEADFAST", // id
     "Steadfast Jewel 1", // name
     1, // slot_size
@@ -846,7 +846,7 @@ const Decoration g_decoration_steadfast = {
     }
 };
 
-const Decoration g_decoration_stonethrower = {
+static const Decoration g_decoration_stonethrower = {
     "STONETHROWER", // id
     "Stonethrower Jewel 1", // name
     1, // slot_size
@@ -855,7 +855,7 @@ const Decoration g_decoration_stonethrower = {
     }
 };
 
-const Decoration g_decoration_stream = {
+static const Decoration g_decoration_stream = {
     "STREAM", // id
     "Stream Jewel 1", // name
     1, // slot_size
@@ -864,7 +864,7 @@ const Decoration g_decoration_stream = {
     }
 };
 
-const Decoration g_decoration_survival = {
+static const Decoration g_decoration_survival = {
     "SURVIVAL", // id
     "Survival Jewel 1", // name
     1, // slot_size
@@ -873,7 +873,7 @@ const Decoration g_decoration_survival = {
     }
 };
 
-const Decoration g_decoration_suture = {
+static const Decoration g_decoration_suture = {
     "SUTURE", // id
     "Suture Jewel 1", // name
     1, // slot_size
@@ -882,7 +882,7 @@ const Decoration g_decoration_suture = {
     }
 };
 
-const Decoration g_decoration_thunder_res = {
+static const Decoration g_decoration_thunder_res = {
     "THUNDER_RES", // id
     "Thunder Res Jewel 1", // name
     1, // slot_size
@@ -891,7 +891,7 @@ const Decoration g_decoration_thunder_res = {
     }
 };
 
-const Decoration g_decoration_tip_toe = {
+static const Decoration g_decoration_tip_toe = {
     "TIP_TOE", // id
     "Tip Toe Jewel 1", // name
     1, // slot_size
@@ -900,7 +900,7 @@ const Decoration g_decoration_tip_toe = {
     }
 };
 
-const Decoration g_decoration_trueshot = {
+static const Decoration g_decoration_trueshot = {
     "TRUESHOT", // id
     "Trueshot Jewel 1", // name
     1, // slot_size
@@ -909,7 +909,7 @@ const Decoration g_decoration_trueshot = {
     }
 };
 
-const Decoration g_decoration_venom = {
+static const Decoration g_decoration_venom = {
     "VENOM", // id
     "Venom Jewel 1", // name
     1, // slot_size
@@ -918,7 +918,7 @@ const Decoration g_decoration_venom = {
     }
 };
 
-const Decoration g_decoration_vitality = {
+static const Decoration g_decoration_vitality = {
     "VITALITY", // id
     "Vitality Jewel 1", // name
     1, // slot_size
@@ -927,7 +927,7 @@ const Decoration g_decoration_vitality = {
     }
 };
 
-const Decoration g_decoration_water_res = {
+static const Decoration g_decoration_water_res = {
     "WATER_RES", // id
     "Water Res Jewel 1", // name
     1, // slot_size
@@ -936,7 +936,7 @@ const Decoration g_decoration_water_res = {
     }
 };
 
-const Decoration g_decoration_bomber_attack_compound = {
+static const Decoration g_decoration_bomber_attack_compound = {
     "BOMBER_ATTACK_COMPOUND", // id
     "Bomber/Attack Jewel 4", // name
     4, // slot_size
@@ -946,7 +946,7 @@ const Decoration g_decoration_bomber_attack_compound = {
     }
 };
 
-const Decoration g_decoration_bomber_evasion_compound = {
+static const Decoration g_decoration_bomber_evasion_compound = {
     "BOMBER_EVASION_COMPOUND", // id
     "Bomber/Evasion Jewel 4", // name
     4, // slot_size
@@ -956,7 +956,7 @@ const Decoration g_decoration_bomber_evasion_compound = {
     }
 };
 
-const Decoration g_decoration_bomber_expert_compound = {
+static const Decoration g_decoration_bomber_expert_compound = {
     "BOMBER_EXPERT_COMPOUND", // id
     "Bomber/Expert Jewel 4", // name
     4, // slot_size
@@ -966,7 +966,7 @@ const Decoration g_decoration_bomber_expert_compound = {
     }
 };
 
-const Decoration g_decoration_bomber_handicraft_compound = {
+static const Decoration g_decoration_bomber_handicraft_compound = {
     "BOMBER_HANDICRAFT_COMPOUND", // id
     "Bomber/Handicraft Jewel 4", // name
     4, // slot_size
@@ -976,7 +976,7 @@ const Decoration g_decoration_bomber_handicraft_compound = {
     }
 };
 
-const Decoration g_decoration_bomber_physique_compound = {
+static const Decoration g_decoration_bomber_physique_compound = {
     "BOMBER_PHYSIQUE_COMPOUND", // id
     "Bomber/Physique Jewel 4", // name
     4, // slot_size
@@ -986,7 +986,7 @@ const Decoration g_decoration_bomber_physique_compound = {
     }
 };
 
-const Decoration g_decoration_bomber_release_compound = {
+static const Decoration g_decoration_bomber_release_compound = {
     "BOMBER_RELEASE_COMPOUND", // id
     "Bomber/Release Jewel 4", // name
     4, // slot_size
@@ -996,7 +996,7 @@ const Decoration g_decoration_bomber_release_compound = {
     }
 };
 
-const Decoration g_decoration_crisis_attack_compound = {
+static const Decoration g_decoration_crisis_attack_compound = {
     "CRISIS_ATTACK_COMPOUND", // id
     "Crisis/Attack Jewel 4", // name
     4, // slot_size
@@ -1006,7 +1006,7 @@ const Decoration g_decoration_crisis_attack_compound = {
     }
 };
 
-const Decoration g_decoration_crisis_evasion_compound = {
+static const Decoration g_decoration_crisis_evasion_compound = {
     "CRISIS_EVASION_COMPOUND", // id
     "Crisis/Evasion Jewel 4", // name
     4, // slot_size
@@ -1016,7 +1016,7 @@ const Decoration g_decoration_crisis_evasion_compound = {
     }
 };
 
-const Decoration g_decoration_crisis_expert_compound = {
+static const Decoration g_decoration_crisis_expert_compound = {
     "CRISIS_EXPERT_COMPOUND", // id
     "Crisis/Expert Jewel 4", // name
     4, // slot_size
@@ -1026,7 +1026,7 @@ const Decoration g_decoration_crisis_expert_compound = {
     }
 };
 
-const Decoration g_decoration_crisis_handicraft_compound = {
+static const Decoration g_decoration_crisis_handicraft_compound = {
     "CRISIS_HANDICRAFT_COMPOUND", // id
     "Crisis/Handicraft Jewel 4", // name
     4, // slot_size
@@ -1036,7 +1036,7 @@ const Decoration g_decoration_crisis_handicraft_compound = {
     }
 };
 
-const Decoration g_decoration_crisis_physique_compound = {
+static const Decoration g_decoration_crisis_physique_compound = {
     "CRISIS_PHYSIQUE_COMPOUND", // id
     "Crisis/Physique Jewel 4", // name
     4, // slot_size
@@ -1046,7 +1046,7 @@ const Decoration g_decoration_crisis_physique_compound = {
     }
 };
 
-const Decoration g_decoration_crisis_release_compound = {
+static const Decoration g_decoration_crisis_release_compound = {
     "CRISIS_RELEASE_COMPOUND", // id
     "Crisis/Release Jewel 4", // name
     4, // slot_size
@@ -1056,7 +1056,7 @@ const Decoration g_decoration_crisis_release_compound = {
     }
 };
 
-const Decoration g_decoration_drain_attack_compound = {
+static const Decoration g_decoration_drain_attack_compound = {
     "DRAIN_ATTACK_COMPOUND", // id
     "Drain/Attack Jewel 4", // name
     4, // slot_size
@@ -1066,7 +1066,7 @@ const Decoration g_decoration_drain_attack_compound = {
     }
 };
 
-const Decoration g_decoration_drain_evasion_compound = {
+static const Decoration g_decoration_drain_evasion_compound = {
     "DRAIN_EVASION_COMPOUND", // id
     "Drain/Evasion Jewel 4", // name
     4, // slot_size
@@ -1076,7 +1076,7 @@ const Decoration g_decoration_drain_evasion_compound = {
     }
 };
 
-const Decoration g_decoration_drain_expert_compound = {
+static const Decoration g_decoration_drain_expert_compound = {
     "DRAIN_EXPERT_COMPOUND", // id
     "Drain/Expert Jewel 4", // name
     4, // slot_size
@@ -1086,7 +1086,7 @@ const Decoration g_decoration_drain_expert_compound = {
     }
 };
 
-const Decoration g_decoration_drain_handicraft_compound = {
+static const Decoration g_decoration_drain_handicraft_compound = {
     "DRAIN_HANDICRAFT_COMPOUND", // id
     "Drain/Handicraft Jewel 4", // name
     4, // slot_size
@@ -1096,7 +1096,7 @@ const Decoration g_decoration_drain_handicraft_compound = {
     }
 };
 
-const Decoration g_decoration_drain_physique_compound = {
+static const Decoration g_decoration_drain_physique_compound = {
     "DRAIN_PHYSIQUE_COMPOUND", // id
     "Drain/Physique Jewel 4", // name
     4, // slot_size
@@ -1106,7 +1106,7 @@ const Decoration g_decoration_drain_physique_compound = {
     }
 };
 
-const Decoration g_decoration_drain_release_compound = {
+static const Decoration g_decoration_drain_release_compound = {
     "DRAIN_RELEASE_COMPOUND", // id
     "Drain/Release Jewel 4", // name
     4, // slot_size
@@ -1116,7 +1116,7 @@ const Decoration g_decoration_drain_release_compound = {
     }
 };
 
-const Decoration g_decoration_flight_attack_compound = {
+static const Decoration g_decoration_flight_attack_compound = {
     "FLIGHT_ATTACK_COMPOUND", // id
     "Flight/Attack Jewel 4", // name
     4, // slot_size
@@ -1126,7 +1126,7 @@ const Decoration g_decoration_flight_attack_compound = {
     }
 };
 
-const Decoration g_decoration_flight_evasion_compound = {
+static const Decoration g_decoration_flight_evasion_compound = {
     "FLIGHT_EVASION_COMPOUND", // id
     "Flight/Evasion Jewel 4", // name
     4, // slot_size
@@ -1136,7 +1136,7 @@ const Decoration g_decoration_flight_evasion_compound = {
     }
 };
 
-const Decoration g_decoration_flight_expert_compound = {
+static const Decoration g_decoration_flight_expert_compound = {
     "FLIGHT_EXPERT_COMPOUND", // id
     "Flight/Expert Jewel 4", // name
     4, // slot_size
@@ -1146,7 +1146,7 @@ const Decoration g_decoration_flight_expert_compound = {
     }
 };
 
-const Decoration g_decoration_flight_handicraft_compound = {
+static const Decoration g_decoration_flight_handicraft_compound = {
     "FLIGHT_HANDICRAFT_COMPOUND", // id
     "Flight/Handicraft Jewel 4", // name
     4, // slot_size
@@ -1156,7 +1156,7 @@ const Decoration g_decoration_flight_handicraft_compound = {
     }
 };
 
-const Decoration g_decoration_flight_physique_compound = {
+static const Decoration g_decoration_flight_physique_compound = {
     "FLIGHT_PHYSIQUE_COMPOUND", // id
     "Flight/Physique Jewel 4", // name
     4, // slot_size
@@ -1166,7 +1166,7 @@ const Decoration g_decoration_flight_physique_compound = {
     }
 };
 
-const Decoration g_decoration_flight_release_compound = {
+static const Decoration g_decoration_flight_release_compound = {
     "FLIGHT_RELEASE_COMPOUND", // id
     "Flight/Release Jewel 4", // name
     4, // slot_size
@@ -1176,7 +1176,7 @@ const Decoration g_decoration_flight_release_compound = {
     }
 };
 
-const Decoration g_decoration_fungiform_attack_compound = {
+static const Decoration g_decoration_fungiform_attack_compound = {
     "FUNGIFORM_ATTACK_COMPOUND", // id
     "Fungiform/Attack Jewel 4", // name
     4, // slot_size
@@ -1186,7 +1186,7 @@ const Decoration g_decoration_fungiform_attack_compound = {
     }
 };
 
-const Decoration g_decoration_fungiform_evasion_compound = {
+static const Decoration g_decoration_fungiform_evasion_compound = {
     "FUNGIFORM_EVASION_COMPOUND", // id
     "Fungiform/Evasion Jewel 4", // name
     4, // slot_size
@@ -1196,7 +1196,7 @@ const Decoration g_decoration_fungiform_evasion_compound = {
     }
 };
 
-const Decoration g_decoration_fungiform_expert_compound = {
+static const Decoration g_decoration_fungiform_expert_compound = {
     "FUNGIFORM_EXPERT_COMPOUND", // id
     "Fungiform/Expert Jewel 4", // name
     4, // slot_size
@@ -1206,7 +1206,7 @@ const Decoration g_decoration_fungiform_expert_compound = {
     }
 };
 
-const Decoration g_decoration_fungiform_handicraft_compound = {
+static const Decoration g_decoration_fungiform_handicraft_compound = {
     "FUNGIFORM_HANDICRAFT_COMPOUND", // id
     "Fungiform/Handicraft Jewel 4", // name
     4, // slot_size
@@ -1216,7 +1216,7 @@ const Decoration g_decoration_fungiform_handicraft_compound = {
     }
 };
 
-const Decoration g_decoration_fungiform_physique_compound = {
+static const Decoration g_decoration_fungiform_physique_compound = {
     "FUNGIFORM_PHYSIQUE_COMPOUND", // id
     "Fungiform/Physique Jewel 4", // name
     4, // slot_size
@@ -1226,7 +1226,7 @@ const Decoration g_decoration_fungiform_physique_compound = {
     }
 };
 
-const Decoration g_decoration_fungiform_release_compound = {
+static const Decoration g_decoration_fungiform_release_compound = {
     "FUNGIFORM_RELEASE_COMPOUND", // id
     "Fungiform/Release Jewel 4", // name
     4, // slot_size
@@ -1236,7 +1236,7 @@ const Decoration g_decoration_fungiform_release_compound = {
     }
 };
 
-const Decoration g_decoration_fortitude_attack_compound = {
+static const Decoration g_decoration_fortitude_attack_compound = {
     "FORTITUDE_ATTACK_COMPOUND", // id
     "Fortitude/Attack Jewel 4", // name
     4, // slot_size
@@ -1246,7 +1246,7 @@ const Decoration g_decoration_fortitude_attack_compound = {
     }
 };
 
-const Decoration g_decoration_fortitude_evasion_compound = {
+static const Decoration g_decoration_fortitude_evasion_compound = {
     "FORTITUDE_EVASION_COMPOUND", // id
     "Fortitude/Evasion Jewel 4", // name
     4, // slot_size
@@ -1256,7 +1256,7 @@ const Decoration g_decoration_fortitude_evasion_compound = {
     }
 };
 
-const Decoration g_decoration_fortitude_expert_compound = {
+static const Decoration g_decoration_fortitude_expert_compound = {
     "FORTITUDE_EXPERT_COMPOUND", // id
     "Fortitude/Expert Jewel 4", // name
     4, // slot_size
@@ -1266,7 +1266,7 @@ const Decoration g_decoration_fortitude_expert_compound = {
     }
 };
 
-const Decoration g_decoration_fortitude_handicraft_compound = {
+static const Decoration g_decoration_fortitude_handicraft_compound = {
     "FORTITUDE_HANDICRAFT_COMPOUND", // id
     "Fortitude/Handicraft Jewel 4", // name
     4, // slot_size
@@ -1276,7 +1276,7 @@ const Decoration g_decoration_fortitude_handicraft_compound = {
     }
 };
 
-const Decoration g_decoration_fortitude_physique_compound = {
+static const Decoration g_decoration_fortitude_physique_compound = {
     "FORTITUDE_PHYSIQUE_COMPOUND", // id
     "Fortitude/Physique Jewel 4", // name
     4, // slot_size
@@ -1286,7 +1286,7 @@ const Decoration g_decoration_fortitude_physique_compound = {
     }
 };
 
-const Decoration g_decoration_fortitude_release_compound = {
+static const Decoration g_decoration_fortitude_release_compound = {
     "FORTITUDE_RELEASE_COMPOUND", // id
     "Fortitude/Release Jewel 4", // name
     4, // slot_size
@@ -1296,7 +1296,7 @@ const Decoration g_decoration_fortitude_release_compound = {
     }
 };
 
-const Decoration g_decoration_friendship_attack_compound = {
+static const Decoration g_decoration_friendship_attack_compound = {
     "FRIENDSHIP_ATTACK_COMPOUND", // id
     "Friendship/Attack Jewel 4", // name
     4, // slot_size
@@ -1306,7 +1306,7 @@ const Decoration g_decoration_friendship_attack_compound = {
     }
 };
 
-const Decoration g_decoration_friendship_evasion_compound = {
+static const Decoration g_decoration_friendship_evasion_compound = {
     "FRIENDSHIP_EVASION_COMPOUND", // id
     "Friendship/Evasion Jewel 4", // name
     4, // slot_size
@@ -1316,7 +1316,7 @@ const Decoration g_decoration_friendship_evasion_compound = {
     }
 };
 
-const Decoration g_decoration_friendship_expert_compound = {
+static const Decoration g_decoration_friendship_expert_compound = {
     "FRIENDSHIP_EXPERT_COMPOUND", // id
     "Friendship/Expert Jewel 4", // name
     4, // slot_size
@@ -1326,7 +1326,7 @@ const Decoration g_decoration_friendship_expert_compound = {
     }
 };
 
-const Decoration g_decoration_friendship_handicraft_compound = {
+static const Decoration g_decoration_friendship_handicraft_compound = {
     "FRIENDSHIP_HANDICRAFT_COMPOUND", // id
     "Friendship/Handicraft Jewel 4", // name
     4, // slot_size
@@ -1336,7 +1336,7 @@ const Decoration g_decoration_friendship_handicraft_compound = {
     }
 };
 
-const Decoration g_decoration_friendship_physique_compound = {
+static const Decoration g_decoration_friendship_physique_compound = {
     "FRIENDSHIP_PHYSIQUE_COMPOUND", // id
     "Friendship/Physique Jewel 4", // name
     4, // slot_size
@@ -1346,7 +1346,7 @@ const Decoration g_decoration_friendship_physique_compound = {
     }
 };
 
-const Decoration g_decoration_friendship_release_compound = {
+static const Decoration g_decoration_friendship_release_compound = {
     "FRIENDSHIP_RELEASE_COMPOUND", // id
     "Friendship/Release Jewel 4", // name
     4, // slot_size
@@ -1356,7 +1356,7 @@ const Decoration g_decoration_friendship_release_compound = {
     }
 };
 
-const Decoration g_decoration_gobbler_attack_compound = {
+static const Decoration g_decoration_gobbler_attack_compound = {
     "GOBBLER_ATTACK_COMPOUND", // id
     "Gobbler/Attack Jewel 4", // name
     4, // slot_size
@@ -1366,7 +1366,7 @@ const Decoration g_decoration_gobbler_attack_compound = {
     }
 };
 
-const Decoration g_decoration_gobbler_evasion_compound = {
+static const Decoration g_decoration_gobbler_evasion_compound = {
     "GOBBLER_EVASION_COMPOUND", // id
     "Gobbler/Evasion Jewel 4", // name
     4, // slot_size
@@ -1376,7 +1376,7 @@ const Decoration g_decoration_gobbler_evasion_compound = {
     }
 };
 
-const Decoration g_decoration_gobbler_expert_compound = {
+static const Decoration g_decoration_gobbler_expert_compound = {
     "GOBBLER_EXPERT_COMPOUND", // id
     "Gobbler/Expert Jewel 4", // name
     4, // slot_size
@@ -1386,7 +1386,7 @@ const Decoration g_decoration_gobbler_expert_compound = {
     }
 };
 
-const Decoration g_decoration_gobbler_handicraft_compound = {
+static const Decoration g_decoration_gobbler_handicraft_compound = {
     "GOBBLER_HANDICRAFT_COMPOUND", // id
     "Gobbler/Handicraft Jewel 4", // name
     4, // slot_size
@@ -1396,7 +1396,7 @@ const Decoration g_decoration_gobbler_handicraft_compound = {
     }
 };
 
-const Decoration g_decoration_gobbler_physique_compound = {
+static const Decoration g_decoration_gobbler_physique_compound = {
     "GOBBLER_PHYSIQUE_COMPOUND", // id
     "Gobbler/Physique Jewel 4", // name
     4, // slot_size
@@ -1406,7 +1406,7 @@ const Decoration g_decoration_gobbler_physique_compound = {
     }
 };
 
-const Decoration g_decoration_gobbler_release_compound = {
+static const Decoration g_decoration_gobbler_release_compound = {
     "GOBBLER_RELEASE_COMPOUND", // id
     "Gobbler/Release Jewel 4", // name
     4, // slot_size
@@ -1416,7 +1416,7 @@ const Decoration g_decoration_gobbler_release_compound = {
     }
 };
 
-const Decoration g_decoration_grinder_attack_compound = {
+static const Decoration g_decoration_grinder_attack_compound = {
     "GRINDER_ATTACK_COMPOUND", // id
     "Grinder/Attack Jewel 4", // name
     4, // slot_size
@@ -1426,7 +1426,7 @@ const Decoration g_decoration_grinder_attack_compound = {
     }
 };
 
-const Decoration g_decoration_grinder_evasion_compound = {
+static const Decoration g_decoration_grinder_evasion_compound = {
     "GRINDER_EVASION_COMPOUND", // id
     "Grinder/Evasion Jewel 4", // name
     4, // slot_size
@@ -1436,7 +1436,7 @@ const Decoration g_decoration_grinder_evasion_compound = {
     }
 };
 
-const Decoration g_decoration_grinder_expert_compound = {
+static const Decoration g_decoration_grinder_expert_compound = {
     "GRINDER_EXPERT_COMPOUND", // id
     "Grinder/Expert Jewel 4", // name
     4, // slot_size
@@ -1446,7 +1446,7 @@ const Decoration g_decoration_grinder_expert_compound = {
     }
 };
 
-const Decoration g_decoration_grinder_handicraft_compound = {
+static const Decoration g_decoration_grinder_handicraft_compound = {
     "GRINDER_HANDICRAFT_COMPOUND", // id
     "Grinder/Handicraft Jewel 4", // name
     4, // slot_size
@@ -1456,7 +1456,7 @@ const Decoration g_decoration_grinder_handicraft_compound = {
     }
 };
 
-const Decoration g_decoration_grinder_physique_compound = {
+static const Decoration g_decoration_grinder_physique_compound = {
     "GRINDER_PHYSIQUE_COMPOUND", // id
     "Grinder/Physique Jewel 4", // name
     4, // slot_size
@@ -1466,7 +1466,7 @@ const Decoration g_decoration_grinder_physique_compound = {
     }
 };
 
-const Decoration g_decoration_grinder_release_compound = {
+static const Decoration g_decoration_grinder_release_compound = {
     "GRINDER_RELEASE_COMPOUND", // id
     "Grinder/Release Jewel 4", // name
     4, // slot_size
@@ -1476,7 +1476,7 @@ const Decoration g_decoration_grinder_release_compound = {
     }
 };
 
-const Decoration g_decoration_guardian_attack_compound = {
+static const Decoration g_decoration_guardian_attack_compound = {
     "GUARDIAN_ATTACK_COMPOUND", // id
     "Guardian/Attack Jewel 4", // name
     4, // slot_size
@@ -1486,7 +1486,7 @@ const Decoration g_decoration_guardian_attack_compound = {
     }
 };
 
-const Decoration g_decoration_guardian_evasion_compound = {
+static const Decoration g_decoration_guardian_evasion_compound = {
     "GUARDIAN_EVASION_COMPOUND", // id
     "Guardian/Evasion Jewel 4", // name
     4, // slot_size
@@ -1496,7 +1496,7 @@ const Decoration g_decoration_guardian_evasion_compound = {
     }
 };
 
-const Decoration g_decoration_guardian_expert_compound = {
+static const Decoration g_decoration_guardian_expert_compound = {
     "GUARDIAN_EXPERT_COMPOUND", // id
     "Guardian/Expert Jewel 4", // name
     4, // slot_size
@@ -1506,7 +1506,7 @@ const Decoration g_decoration_guardian_expert_compound = {
     }
 };
 
-const Decoration g_decoration_guardian_handicraft_compound = {
+static const Decoration g_decoration_guardian_handicraft_compound = {
     "GUARDIAN_HANDICRAFT_COMPOUND", // id
     "Guardian/Handicraft Jewel 4", // name
     4, // slot_size
@@ -1516,7 +1516,7 @@ const Decoration g_decoration_guardian_handicraft_compound = {
     }
 };
 
-const Decoration g_decoration_guardian_physique_compound = {
+static const Decoration g_decoration_guardian_physique_compound = {
     "GUARDIAN_PHYSIQUE_COMPOUND", // id
     "Guardian/Physique Jewel 4", // name
     4, // slot_size
@@ -1526,7 +1526,7 @@ const Decoration g_decoration_guardian_physique_compound = {
     }
 };
 
-const Decoration g_decoration_guardian_release_compound = {
+static const Decoration g_decoration_guardian_release_compound = {
     "GUARDIAN_RELEASE_COMPOUND", // id
     "Guardian/Release Jewel 4", // name
     4, // slot_size
@@ -1536,7 +1536,7 @@ const Decoration g_decoration_guardian_release_compound = {
     }
 };
 
-const Decoration g_decoration_ironwall_attack_compound = {
+static const Decoration g_decoration_ironwall_attack_compound = {
     "IRONWALL_ATTACK_COMPOUND", // id
     "Ironwall/Attack Jewel 4", // name
     4, // slot_size
@@ -1546,7 +1546,7 @@ const Decoration g_decoration_ironwall_attack_compound = {
     }
 };
 
-const Decoration g_decoration_ironwall_evasion_compound = {
+static const Decoration g_decoration_ironwall_evasion_compound = {
     "IRONWALL_EVASION_COMPOUND", // id
     "Ironwall/Evasion Jewel 4", // name
     4, // slot_size
@@ -1556,7 +1556,7 @@ const Decoration g_decoration_ironwall_evasion_compound = {
     }
 };
 
-const Decoration g_decoration_ironwall_expert_compound = {
+static const Decoration g_decoration_ironwall_expert_compound = {
     "IRONWALL_EXPERT_COMPOUND", // id
     "Ironwall/Expert Jewel 4", // name
     4, // slot_size
@@ -1566,7 +1566,7 @@ const Decoration g_decoration_ironwall_expert_compound = {
     }
 };
 
-const Decoration g_decoration_ironwall_handicraft_compound = {
+static const Decoration g_decoration_ironwall_handicraft_compound = {
     "IRONWALL_HANDICRAFT_COMPOUND", // id
     "Ironwall/Handicraft Jewel 4", // name
     4, // slot_size
@@ -1576,7 +1576,7 @@ const Decoration g_decoration_ironwall_handicraft_compound = {
     }
 };
 
-const Decoration g_decoration_ironwall_physique_compound = {
+static const Decoration g_decoration_ironwall_physique_compound = {
     "IRONWALL_PHYSIQUE_COMPOUND", // id
     "Ironwall/Physique Jewel 4", // name
     4, // slot_size
@@ -1586,7 +1586,7 @@ const Decoration g_decoration_ironwall_physique_compound = {
     }
 };
 
-const Decoration g_decoration_ironwall_release_compound = {
+static const Decoration g_decoration_ironwall_release_compound = {
     "IRONWALL_RELEASE_COMPOUND", // id
     "Ironwall/Release Jewel 4", // name
     4, // slot_size
@@ -1596,7 +1596,7 @@ const Decoration g_decoration_ironwall_release_compound = {
     }
 };
 
-const Decoration g_decoration_jumping_attack_compound = {
+static const Decoration g_decoration_jumping_attack_compound = {
     "JUMPING_ATTACK_COMPOUND", // id
     "Jumping/Attack Jewel 4", // name
     4, // slot_size
@@ -1606,7 +1606,7 @@ const Decoration g_decoration_jumping_attack_compound = {
     }
 };
 
-const Decoration g_decoration_jumping_evasion_compound = {
+static const Decoration g_decoration_jumping_evasion_compound = {
     "JUMPING_EVASION_COMPOUND", // id
     "Jumping/Evasion Jewel 4", // name
     4, // slot_size
@@ -1616,7 +1616,7 @@ const Decoration g_decoration_jumping_evasion_compound = {
     }
 };
 
-const Decoration g_decoration_jumping_expert_compound = {
+static const Decoration g_decoration_jumping_expert_compound = {
     "JUMPING_EXPERT_COMPOUND", // id
     "Jumping/Expert Jewel 4", // name
     4, // slot_size
@@ -1626,7 +1626,7 @@ const Decoration g_decoration_jumping_expert_compound = {
     }
 };
 
-const Decoration g_decoration_jumping_handicraft_compound = {
+static const Decoration g_decoration_jumping_handicraft_compound = {
     "JUMPING_HANDICRAFT_COMPOUND", // id
     "Jumping/Handicraft Jewel 4", // name
     4, // slot_size
@@ -1636,7 +1636,7 @@ const Decoration g_decoration_jumping_handicraft_compound = {
     }
 };
 
-const Decoration g_decoration_jumping_physique_compound = {
+static const Decoration g_decoration_jumping_physique_compound = {
     "JUMPING_PHYSIQUE_COMPOUND", // id
     "Jumping/Physique Jewel 4", // name
     4, // slot_size
@@ -1646,7 +1646,7 @@ const Decoration g_decoration_jumping_physique_compound = {
     }
 };
 
-const Decoration g_decoration_jumping_release_compound = {
+static const Decoration g_decoration_jumping_release_compound = {
     "JUMPING_RELEASE_COMPOUND", // id
     "Jumping/Release Jewel 4", // name
     4, // slot_size
@@ -1656,7 +1656,7 @@ const Decoration g_decoration_jumping_release_compound = {
     }
 };
 
-const Decoration g_decoration_refresh_attack_compound = {
+static const Decoration g_decoration_refresh_attack_compound = {
     "REFRESH_ATTACK_COMPOUND", // id
     "Refresh/Attack Jewel 4", // name
     4, // slot_size
@@ -1666,7 +1666,7 @@ const Decoration g_decoration_refresh_attack_compound = {
     }
 };
 
-const Decoration g_decoration_refresh_evasion_compound = {
+static const Decoration g_decoration_refresh_evasion_compound = {
     "REFRESH_EVASION_COMPOUND", // id
     "Refresh/Evasion Jewel 4", // name
     4, // slot_size
@@ -1676,7 +1676,7 @@ const Decoration g_decoration_refresh_evasion_compound = {
     }
 };
 
-const Decoration g_decoration_refresh_expert_compound = {
+static const Decoration g_decoration_refresh_expert_compound = {
     "REFRESH_EXPERT_COMPOUND", // id
     "Refresh/Expert Jewel 4", // name
     4, // slot_size
@@ -1686,7 +1686,7 @@ const Decoration g_decoration_refresh_expert_compound = {
     }
 };
 
-const Decoration g_decoration_refresh_handicraft_compound = {
+static const Decoration g_decoration_refresh_handicraft_compound = {
     "REFRESH_HANDICRAFT_COMPOUND", // id
     "Refresh/Handicraft Jewel 4", // name
     4, // slot_size
@@ -1696,7 +1696,7 @@ const Decoration g_decoration_refresh_handicraft_compound = {
     }
 };
 
-const Decoration g_decoration_refresh_physique_compound = {
+static const Decoration g_decoration_refresh_physique_compound = {
     "REFRESH_PHYSIQUE_COMPOUND", // id
     "Refresh/Physique Jewel 4", // name
     4, // slot_size
@@ -1706,7 +1706,7 @@ const Decoration g_decoration_refresh_physique_compound = {
     }
 };
 
-const Decoration g_decoration_refresh_release_compound = {
+static const Decoration g_decoration_refresh_release_compound = {
     "REFRESH_RELEASE_COMPOUND", // id
     "Refresh/Release Jewel 4", // name
     4, // slot_size
@@ -1716,7 +1716,7 @@ const Decoration g_decoration_refresh_release_compound = {
     }
 };
 
-const Decoration g_decoration_resistor_attack_compound = {
+static const Decoration g_decoration_resistor_attack_compound = {
     "RESISTOR_ATTACK_COMPOUND", // id
     "Resistor/Attack Jewel 4", // name
     4, // slot_size
@@ -1726,7 +1726,7 @@ const Decoration g_decoration_resistor_attack_compound = {
     }
 };
 
-const Decoration g_decoration_resistor_evasion_compound = {
+static const Decoration g_decoration_resistor_evasion_compound = {
     "RESISTOR_EVASION_COMPOUND", // id
     "Resistor/Evasion Jewel 4", // name
     4, // slot_size
@@ -1736,7 +1736,7 @@ const Decoration g_decoration_resistor_evasion_compound = {
     }
 };
 
-const Decoration g_decoration_resistor_expert_compound = {
+static const Decoration g_decoration_resistor_expert_compound = {
     "RESISTOR_EXPERT_COMPOUND", // id
     "Resistor/Expert Jewel 4", // name
     4, // slot_size
@@ -1746,7 +1746,7 @@ const Decoration g_decoration_resistor_expert_compound = {
     }
 };
 
-const Decoration g_decoration_resistor_handicraft_compound = {
+static const Decoration g_decoration_resistor_handicraft_compound = {
     "RESISTOR_HANDICRAFT_COMPOUND", // id
     "Resistor/Handicraft Jewel 4", // name
     4, // slot_size
@@ -1756,7 +1756,7 @@ const Decoration g_decoration_resistor_handicraft_compound = {
     }
 };
 
-const Decoration g_decoration_resistor_physique_compound = {
+static const Decoration g_decoration_resistor_physique_compound = {
     "RESISTOR_PHYSIQUE_COMPOUND", // id
     "Resistor/Physique Jewel 4", // name
     4, // slot_size
@@ -1766,7 +1766,7 @@ const Decoration g_decoration_resistor_physique_compound = {
     }
 };
 
-const Decoration g_decoration_resistor_release_compound = {
+static const Decoration g_decoration_resistor_release_compound = {
     "RESISTOR_RELEASE_COMPOUND", // id
     "Resistor/Release Jewel 4", // name
     4, // slot_size
@@ -1776,7 +1776,7 @@ const Decoration g_decoration_resistor_release_compound = {
     }
 };
 
-const Decoration g_decoration_satiated_attack_compound = {
+static const Decoration g_decoration_satiated_attack_compound = {
     "SATIATED_ATTACK_COMPOUND", // id
     "Satiated/Attack Jewel 4", // name
     4, // slot_size
@@ -1786,7 +1786,7 @@ const Decoration g_decoration_satiated_attack_compound = {
     }
 };
 
-const Decoration g_decoration_satiated_evasion_compound = {
+static const Decoration g_decoration_satiated_evasion_compound = {
     "SATIATED_EVASION_COMPOUND", // id
     "Satiated/Evasion Jewel 4", // name
     4, // slot_size
@@ -1796,7 +1796,7 @@ const Decoration g_decoration_satiated_evasion_compound = {
     }
 };
 
-const Decoration g_decoration_satiated_expert_compound = {
+static const Decoration g_decoration_satiated_expert_compound = {
     "SATIATED_EXPERT_COMPOUND", // id
     "Satiated/Expert Jewel 4", // name
     4, // slot_size
@@ -1806,7 +1806,7 @@ const Decoration g_decoration_satiated_expert_compound = {
     }
 };
 
-const Decoration g_decoration_satiated_handicraft_compound = {
+static const Decoration g_decoration_satiated_handicraft_compound = {
     "SATIATED_HANDICRAFT_COMPOUND", // id
     "Satiated/Handicraft Jewel 4", // name
     4, // slot_size
@@ -1816,7 +1816,7 @@ const Decoration g_decoration_satiated_handicraft_compound = {
     }
 };
 
-const Decoration g_decoration_satiated_physique_compound = {
+static const Decoration g_decoration_satiated_physique_compound = {
     "SATIATED_PHYSIQUE_COMPOUND", // id
     "Satiated/Physique Jewel 4", // name
     4, // slot_size
@@ -1826,7 +1826,7 @@ const Decoration g_decoration_satiated_physique_compound = {
     }
 };
 
-const Decoration g_decoration_satiated_release_compound = {
+static const Decoration g_decoration_satiated_release_compound = {
     "SATIATED_RELEASE_COMPOUND", // id
     "Satiated/Release Jewel 4", // name
     4, // slot_size
@@ -1836,7 +1836,7 @@ const Decoration g_decoration_satiated_release_compound = {
     }
 };
 
-const Decoration g_decoration_sheath_attack_compound = {
+static const Decoration g_decoration_sheath_attack_compound = {
     "SHEATH_ATTACK_COMPOUND", // id
     "Sheath/Attack Jewel 4", // name
     4, // slot_size
@@ -1846,7 +1846,7 @@ const Decoration g_decoration_sheath_attack_compound = {
     }
 };
 
-const Decoration g_decoration_sheath_evasion_compound = {
+static const Decoration g_decoration_sheath_evasion_compound = {
     "SHEATH_EVASION_COMPOUND", // id
     "Sheath/Evasion Jewel 4", // name
     4, // slot_size
@@ -1856,7 +1856,7 @@ const Decoration g_decoration_sheath_evasion_compound = {
     }
 };
 
-const Decoration g_decoration_sheath_expert_compound = {
+static const Decoration g_decoration_sheath_expert_compound = {
     "SHEATH_EXPERT_COMPOUND", // id
     "Sheath/Expert Jewel 4", // name
     4, // slot_size
@@ -1866,7 +1866,7 @@ const Decoration g_decoration_sheath_expert_compound = {
     }
 };
 
-const Decoration g_decoration_sheath_handicraft_compound = {
+static const Decoration g_decoration_sheath_handicraft_compound = {
     "SHEATH_HANDICRAFT_COMPOUND", // id
     "Sheath/Handicraft Jewel 4", // name
     4, // slot_size
@@ -1876,7 +1876,7 @@ const Decoration g_decoration_sheath_handicraft_compound = {
     }
 };
 
-const Decoration g_decoration_sheath_physique_compound = {
+static const Decoration g_decoration_sheath_physique_compound = {
     "SHEATH_PHYSIQUE_COMPOUND", // id
     "Sheath/Physique Jewel 4", // name
     4, // slot_size
@@ -1886,7 +1886,7 @@ const Decoration g_decoration_sheath_physique_compound = {
     }
 };
 
-const Decoration g_decoration_sheath_release_compound = {
+static const Decoration g_decoration_sheath_release_compound = {
     "SHEATH_RELEASE_COMPOUND", // id
     "Sheath/Release Jewel 4", // name
     4, // slot_size
@@ -1896,7 +1896,7 @@ const Decoration g_decoration_sheath_release_compound = {
     }
 };
 
-const Decoration g_decoration_slider_attack_compound = {
+static const Decoration g_decoration_slider_attack_compound = {
     "SLIDER_ATTACK_COMPOUND", // id
     "Slider/Attack Jewel 4", // name
     4, // slot_size
@@ -1906,7 +1906,7 @@ const Decoration g_decoration_slider_attack_compound = {
     }
 };
 
-const Decoration g_decoration_slider_evasion_compound = {
+static const Decoration g_decoration_slider_evasion_compound = {
     "SLIDER_EVASION_COMPOUND", // id
     "Slider/Evasion Jewel 4", // name
     4, // slot_size
@@ -1916,7 +1916,7 @@ const Decoration g_decoration_slider_evasion_compound = {
     }
 };
 
-const Decoration g_decoration_slider_expert_compound = {
+static const Decoration g_decoration_slider_expert_compound = {
     "SLIDER_EXPERT_COMPOUND", // id
     "Slider/Expert Jewel 4", // name
     4, // slot_size
@@ -1926,7 +1926,7 @@ const Decoration g_decoration_slider_expert_compound = {
     }
 };
 
-const Decoration g_decoration_slider_handicraft_compound = {
+static const Decoration g_decoration_slider_handicraft_compound = {
     "SLIDER_HANDICRAFT_COMPOUND", // id
     "Slider/Handicraft Jewel 4", // name
     4, // slot_size
@@ -1936,7 +1936,7 @@ const Decoration g_decoration_slider_handicraft_compound = {
     }
 };
 
-const Decoration g_decoration_slider_physique_compound = {
+static const Decoration g_decoration_slider_physique_compound = {
     "SLIDER_PHYSIQUE_COMPOUND", // id
     "Slider/Physique Jewel 4", // name
     4, // slot_size
@@ -1946,7 +1946,7 @@ const Decoration g_decoration_slider_physique_compound = {
     }
 };
 
-const Decoration g_decoration_slider_release_compound = {
+static const Decoration g_decoration_slider_release_compound = {
     "SLIDER_RELEASE_COMPOUND", // id
     "Slider/Release Jewel 4", // name
     4, // slot_size
@@ -1956,7 +1956,7 @@ const Decoration g_decoration_slider_release_compound = {
     }
 };
 
-const Decoration g_decoration_sprinter_attack_compound = {
+static const Decoration g_decoration_sprinter_attack_compound = {
     "SPRINTER_ATTACK_COMPOUND", // id
     "Sprinter/Attack Jewel 4", // name
     4, // slot_size
@@ -1966,7 +1966,7 @@ const Decoration g_decoration_sprinter_attack_compound = {
     }
 };
 
-const Decoration g_decoration_sprinter_evasion_compound = {
+static const Decoration g_decoration_sprinter_evasion_compound = {
     "SPRINTER_EVASION_COMPOUND", // id
     "Sprinter/Evasion Jewel 4", // name
     4, // slot_size
@@ -1976,7 +1976,7 @@ const Decoration g_decoration_sprinter_evasion_compound = {
     }
 };
 
-const Decoration g_decoration_sprinter_expert_compound = {
+static const Decoration g_decoration_sprinter_expert_compound = {
     "SPRINTER_EXPERT_COMPOUND", // id
     "Sprinter/Expert Jewel 4", // name
     4, // slot_size
@@ -1986,7 +1986,7 @@ const Decoration g_decoration_sprinter_expert_compound = {
     }
 };
 
-const Decoration g_decoration_sprinter_handicraft_compound = {
+static const Decoration g_decoration_sprinter_handicraft_compound = {
     "SPRINTER_HANDICRAFT_COMPOUND", // id
     "Sprinter/Handicraft Jewel 4", // name
     4, // slot_size
@@ -1996,7 +1996,7 @@ const Decoration g_decoration_sprinter_handicraft_compound = {
     }
 };
 
-const Decoration g_decoration_sprinter_physique_compound = {
+static const Decoration g_decoration_sprinter_physique_compound = {
     "SPRINTER_PHYSIQUE_COMPOUND", // id
     "Sprinter/Physique Jewel 4", // name
     4, // slot_size
@@ -2006,7 +2006,7 @@ const Decoration g_decoration_sprinter_physique_compound = {
     }
 };
 
-const Decoration g_decoration_sprinter_release_compound = {
+static const Decoration g_decoration_sprinter_release_compound = {
     "SPRINTER_RELEASE_COMPOUND", // id
     "Sprinter/Release Jewel 4", // name
     4, // slot_size
@@ -2016,7 +2016,7 @@ const Decoration g_decoration_sprinter_release_compound = {
     }
 };
 
-const Decoration g_decoration_stonethrower_attack_compound = {
+static const Decoration g_decoration_stonethrower_attack_compound = {
     "STONETHROWER_ATTACK_COMPOUND", // id
     "Stonethrower/Attack Jewel 4", // name
     4, // slot_size
@@ -2026,7 +2026,7 @@ const Decoration g_decoration_stonethrower_attack_compound = {
     }
 };
 
-const Decoration g_decoration_stonethrower_evasion_compound = {
+static const Decoration g_decoration_stonethrower_evasion_compound = {
     "STONETHROWER_EVASION_COMPOUND", // id
     "Stonethrower/Evasion Jewel 4", // name
     4, // slot_size
@@ -2036,7 +2036,7 @@ const Decoration g_decoration_stonethrower_evasion_compound = {
     }
 };
 
-const Decoration g_decoration_stonethrower_expert_compound = {
+static const Decoration g_decoration_stonethrower_expert_compound = {
     "STONETHROWER_EXPERT_COMPOUND", // id
     "Stonethrower/Expert Jewel 4", // name
     4, // slot_size
@@ -2046,7 +2046,7 @@ const Decoration g_decoration_stonethrower_expert_compound = {
     }
 };
 
-const Decoration g_decoration_stonethrower_handicraft_compound = {
+static const Decoration g_decoration_stonethrower_handicraft_compound = {
     "STONETHROWER_HANDICRAFT_COMPOUND", // id
     "Stonethrower/Handicraft Jewel 4", // name
     4, // slot_size
@@ -2056,7 +2056,7 @@ const Decoration g_decoration_stonethrower_handicraft_compound = {
     }
 };
 
-const Decoration g_decoration_stonethrower_physique_compound = {
+static const Decoration g_decoration_stonethrower_physique_compound = {
     "STONETHROWER_PHYSIQUE_COMPOUND", // id
     "Stonethrower/Physique Jewel 4", // name
     4, // slot_size
@@ -2066,7 +2066,7 @@ const Decoration g_decoration_stonethrower_physique_compound = {
     }
 };
 
-const Decoration g_decoration_stonethrower_release_compound = {
+static const Decoration g_decoration_stonethrower_release_compound = {
     "STONETHROWER_RELEASE_COMPOUND", // id
     "Stonethrower/Release Jewel 4", // name
     4, // slot_size
@@ -2076,7 +2076,7 @@ const Decoration g_decoration_stonethrower_release_compound = {
     }
 };
 
-const Decoration g_decoration_brace_evasion_compound = {
+static const Decoration g_decoration_brace_evasion_compound = {
     "BRACE_EVASION_COMPOUND", // id
     "Brace/Evasion Jewel 4", // name
     4, // slot_size
@@ -2086,7 +2086,7 @@ const Decoration g_decoration_brace_evasion_compound = {
     }
 };
 
-const Decoration g_decoration_brace_maintenance_compound = {
+static const Decoration g_decoration_brace_maintenance_compound = {
     "BRACE_MAINTENANCE_COMPOUND", // id
     "Brace/Maintenance Jewel 4", // name
     4, // slot_size
@@ -2096,7 +2096,7 @@ const Decoration g_decoration_brace_maintenance_compound = {
     }
 };
 
-const Decoration g_decoration_brace_medicine_compound = {
+static const Decoration g_decoration_brace_medicine_compound = {
     "BRACE_MEDICINE_COMPOUND", // id
     "Brace/Medicine Jewel 4", // name
     4, // slot_size
@@ -2106,7 +2106,7 @@ const Decoration g_decoration_brace_medicine_compound = {
     }
 };
 
-const Decoration g_decoration_brace_physique_compound = {
+static const Decoration g_decoration_brace_physique_compound = {
     "BRACE_PHYSIQUE_COMPOUND", // id
     "Brace/Physique Jewel 4", // name
     4, // slot_size
@@ -2116,7 +2116,7 @@ const Decoration g_decoration_brace_physique_compound = {
     }
 };
 
-const Decoration g_decoration_brace_protection_compound = {
+static const Decoration g_decoration_brace_protection_compound = {
     "BRACE_PROTECTION_COMPOUND", // id
     "Brace/Protection Jewel 4", // name
     4, // slot_size
@@ -2126,7 +2126,7 @@ const Decoration g_decoration_brace_protection_compound = {
     }
 };
 
-const Decoration g_decoration_brace_vitality_compound = {
+static const Decoration g_decoration_brace_vitality_compound = {
     "BRACE_VITALITY_COMPOUND", // id
     "Brace/Vitality Jewel 4", // name
     4, // slot_size
@@ -2136,7 +2136,7 @@ const Decoration g_decoration_brace_vitality_compound = {
     }
 };
 
-const Decoration g_decoration_challenger_evasion_compound = {
+static const Decoration g_decoration_challenger_evasion_compound = {
     "CHALLENGER_EVASION_COMPOUND", // id
     "Challenger/Evasion Jewel 4", // name
     4, // slot_size
@@ -2146,7 +2146,7 @@ const Decoration g_decoration_challenger_evasion_compound = {
     }
 };
 
-const Decoration g_decoration_challenger_maintenance_compound = {
+static const Decoration g_decoration_challenger_maintenance_compound = {
     "CHALLENGER_MAINTENANCE_COMPOUND", // id
     "Challenger/Maintenance Jewel 4", // name
     4, // slot_size
@@ -2156,7 +2156,7 @@ const Decoration g_decoration_challenger_maintenance_compound = {
     }
 };
 
-const Decoration g_decoration_challenger_medicine_compound = {
+static const Decoration g_decoration_challenger_medicine_compound = {
     "CHALLENGER_MEDICINE_COMPOUND", // id
     "Challenger/Medicine Jewel 4", // name
     4, // slot_size
@@ -2166,7 +2166,7 @@ const Decoration g_decoration_challenger_medicine_compound = {
     }
 };
 
-const Decoration g_decoration_challenger_physique_compound = {
+static const Decoration g_decoration_challenger_physique_compound = {
     "CHALLENGER_PHYSIQUE_COMPOUND", // id
     "Challenger/Physique Jewel 4", // name
     4, // slot_size
@@ -2176,7 +2176,7 @@ const Decoration g_decoration_challenger_physique_compound = {
     }
 };
 
-const Decoration g_decoration_challenger_protection_compound = {
+static const Decoration g_decoration_challenger_protection_compound = {
     "CHALLENGER_PROTECTION_COMPOUND", // id
     "Challenger/Protection Jewel 4", // name
     4, // slot_size
@@ -2186,7 +2186,7 @@ const Decoration g_decoration_challenger_protection_compound = {
     }
 };
 
-const Decoration g_decoration_challenger_vitality_compound = {
+static const Decoration g_decoration_challenger_vitality_compound = {
     "CHALLENGER_VITALITY_COMPOUND", // id
     "Challenger/Vitality Jewel 4", // name
     4, // slot_size
@@ -2196,7 +2196,7 @@ const Decoration g_decoration_challenger_vitality_compound = {
     }
 };
 
-const Decoration g_decoration_charger_evasion_compound = {
+static const Decoration g_decoration_charger_evasion_compound = {
     "CHARGER_EVASION_COMPOUND", // id
     "Charger/Evasion Jewel 4", // name
     4, // slot_size
@@ -2206,7 +2206,7 @@ const Decoration g_decoration_charger_evasion_compound = {
     }
 };
 
-const Decoration g_decoration_charger_maintenance_compound = {
+static const Decoration g_decoration_charger_maintenance_compound = {
     "CHARGER_MAINTENANCE_COMPOUND", // id
     "Charger/Maintenance Jewel 4", // name
     4, // slot_size
@@ -2216,7 +2216,7 @@ const Decoration g_decoration_charger_maintenance_compound = {
     }
 };
 
-const Decoration g_decoration_charger_medicine_compound = {
+static const Decoration g_decoration_charger_medicine_compound = {
     "CHARGER_MEDICINE_COMPOUND", // id
     "Charger/Medicine Jewel 4", // name
     4, // slot_size
@@ -2226,7 +2226,7 @@ const Decoration g_decoration_charger_medicine_compound = {
     }
 };
 
-const Decoration g_decoration_charger_physique_compound = {
+static const Decoration g_decoration_charger_physique_compound = {
     "CHARGER_PHYSIQUE_COMPOUND", // id
     "Charger/Physique Jewel 4", // name
     4, // slot_size
@@ -2236,7 +2236,7 @@ const Decoration g_decoration_charger_physique_compound = {
     }
 };
 
-const Decoration g_decoration_charger_protection_compound = {
+static const Decoration g_decoration_charger_protection_compound = {
     "CHARGER_PROTECTION_COMPOUND", // id
     "Charger/Protection Jewel 4", // name
     4, // slot_size
@@ -2246,7 +2246,7 @@ const Decoration g_decoration_charger_protection_compound = {
     }
 };
 
-const Decoration g_decoration_charger_vitality_compound = {
+static const Decoration g_decoration_charger_vitality_compound = {
     "CHARGER_VITALITY_COMPOUND", // id
     "Charger/Vitality Jewel 4", // name
     4, // slot_size
@@ -2256,7 +2256,7 @@ const Decoration g_decoration_charger_vitality_compound = {
     }
 };
 
-const Decoration g_decoration_critical_evasion_compound = {
+static const Decoration g_decoration_critical_evasion_compound = {
     "CRITICAL_EVASION_COMPOUND", // id
     "Critical/Evasion Jewel 4", // name
     4, // slot_size
@@ -2266,7 +2266,7 @@ const Decoration g_decoration_critical_evasion_compound = {
     }
 };
 
-const Decoration g_decoration_critical_maintenance_compound = {
+static const Decoration g_decoration_critical_maintenance_compound = {
     "CRITICAL_MAINTENANCE_COMPOUND", // id
     "Critical/Maintenance Jewel 4", // name
     4, // slot_size
@@ -2276,7 +2276,7 @@ const Decoration g_decoration_critical_maintenance_compound = {
     }
 };
 
-const Decoration g_decoration_critical_medicine_compound = {
+static const Decoration g_decoration_critical_medicine_compound = {
     "CRITICAL_MEDICINE_COMPOUND", // id
     "Critical/Medicine Jewel 4", // name
     4, // slot_size
@@ -2286,7 +2286,7 @@ const Decoration g_decoration_critical_medicine_compound = {
     }
 };
 
-const Decoration g_decoration_critical_physique_compound = {
+static const Decoration g_decoration_critical_physique_compound = {
     "CRITICAL_PHYSIQUE_COMPOUND", // id
     "Critical/Physique Jewel 4", // name
     4, // slot_size
@@ -2296,7 +2296,7 @@ const Decoration g_decoration_critical_physique_compound = {
     }
 };
 
-const Decoration g_decoration_critical_protection_compound = {
+static const Decoration g_decoration_critical_protection_compound = {
     "CRITICAL_PROTECTION_COMPOUND", // id
     "Critical/Protection Jewel 4", // name
     4, // slot_size
@@ -2306,7 +2306,7 @@ const Decoration g_decoration_critical_protection_compound = {
     }
 };
 
-const Decoration g_decoration_critical_vitality_compound = {
+static const Decoration g_decoration_critical_vitality_compound = {
     "CRITICAL_VITALITY_COMPOUND", // id
     "Critical/Vitality Jewel 4", // name
     4, // slot_size
@@ -2316,7 +2316,7 @@ const Decoration g_decoration_critical_vitality_compound = {
     }
 };
 
-const Decoration g_decoration_destroyer_evasion_compound = {
+static const Decoration g_decoration_destroyer_evasion_compound = {
     "DESTROYER_EVASION_COMPOUND", // id
     "Destroyer/Evasion Jewel 4", // name
     4, // slot_size
@@ -2326,7 +2326,7 @@ const Decoration g_decoration_destroyer_evasion_compound = {
     }
 };
 
-const Decoration g_decoration_destroyer_maintenance_compound = {
+static const Decoration g_decoration_destroyer_maintenance_compound = {
     "DESTROYER_MAINTENANCE_COMPOUND", // id
     "Destroyer/Maintenance Jewel 4", // name
     4, // slot_size
@@ -2336,7 +2336,7 @@ const Decoration g_decoration_destroyer_maintenance_compound = {
     }
 };
 
-const Decoration g_decoration_destroyer_medicine_compound = {
+static const Decoration g_decoration_destroyer_medicine_compound = {
     "DESTROYER_MEDICINE_COMPOUND", // id
     "Destroyer/Medicine Jewel 4", // name
     4, // slot_size
@@ -2346,7 +2346,7 @@ const Decoration g_decoration_destroyer_medicine_compound = {
     }
 };
 
-const Decoration g_decoration_destroyer_physique_compound = {
+static const Decoration g_decoration_destroyer_physique_compound = {
     "DESTROYER_PHYSIQUE_COMPOUND", // id
     "Destroyer/Physique Jewel 4", // name
     4, // slot_size
@@ -2356,7 +2356,7 @@ const Decoration g_decoration_destroyer_physique_compound = {
     }
 };
 
-const Decoration g_decoration_destroyer_protection_compound = {
+static const Decoration g_decoration_destroyer_protection_compound = {
     "DESTROYER_PROTECTION_COMPOUND", // id
     "Destroyer/Protection Jewel 4", // name
     4, // slot_size
@@ -2366,7 +2366,7 @@ const Decoration g_decoration_destroyer_protection_compound = {
     }
 };
 
-const Decoration g_decoration_destroyer_vitality_compound = {
+static const Decoration g_decoration_destroyer_vitality_compound = {
     "DESTROYER_VITALITY_COMPOUND", // id
     "Destroyer/Vitality Jewel 4", // name
     4, // slot_size
@@ -2376,7 +2376,7 @@ const Decoration g_decoration_destroyer_vitality_compound = {
     }
 };
 
-const Decoration g_decoration_draw_evasion_compound = {
+static const Decoration g_decoration_draw_evasion_compound = {
     "DRAW_EVASION_COMPOUND", // id
     "Draw/Evasion Jewel 4", // name
     4, // slot_size
@@ -2386,7 +2386,7 @@ const Decoration g_decoration_draw_evasion_compound = {
     }
 };
 
-const Decoration g_decoration_draw_maintenance_compound = {
+static const Decoration g_decoration_draw_maintenance_compound = {
     "DRAW_MAINTENANCE_COMPOUND", // id
     "Draw/Maintenance Jewel 4", // name
     4, // slot_size
@@ -2396,7 +2396,7 @@ const Decoration g_decoration_draw_maintenance_compound = {
     }
 };
 
-const Decoration g_decoration_draw_medicine_compound = {
+static const Decoration g_decoration_draw_medicine_compound = {
     "DRAW_MEDICINE_COMPOUND", // id
     "Draw/Medicine Jewel 4", // name
     4, // slot_size
@@ -2406,7 +2406,7 @@ const Decoration g_decoration_draw_medicine_compound = {
     }
 };
 
-const Decoration g_decoration_draw_physique_compound = {
+static const Decoration g_decoration_draw_physique_compound = {
     "DRAW_PHYSIQUE_COMPOUND", // id
     "Draw/Physique Jewel 4", // name
     4, // slot_size
@@ -2416,7 +2416,7 @@ const Decoration g_decoration_draw_physique_compound = {
     }
 };
 
-const Decoration g_decoration_draw_protection_compound = {
+static const Decoration g_decoration_draw_protection_compound = {
     "DRAW_PROTECTION_COMPOUND", // id
     "Draw/Protection Jewel 4", // name
     4, // slot_size
@@ -2426,7 +2426,7 @@ const Decoration g_decoration_draw_protection_compound = {
     }
 };
 
-const Decoration g_decoration_draw_vitality_compound = {
+static const Decoration g_decoration_draw_vitality_compound = {
     "DRAW_VITALITY_COMPOUND", // id
     "Draw/Vitality Jewel 4", // name
     4, // slot_size
@@ -2436,7 +2436,7 @@ const Decoration g_decoration_draw_vitality_compound = {
     }
 };
 
-const Decoration g_decoration_earplug_evasion_compound = {
+static const Decoration g_decoration_earplug_evasion_compound = {
     "EARPLUG_EVASION_COMPOUND", // id
     "Earplug/Evasion Jewel 4", // name
     4, // slot_size
@@ -2446,7 +2446,7 @@ const Decoration g_decoration_earplug_evasion_compound = {
     }
 };
 
-const Decoration g_decoration_earplug_maintenance_compound = {
+static const Decoration g_decoration_earplug_maintenance_compound = {
     "EARPLUG_MAINTENANCE_COMPOUND", // id
     "Earplug/Maintenance Jewel 4", // name
     4, // slot_size
@@ -2456,7 +2456,7 @@ const Decoration g_decoration_earplug_maintenance_compound = {
     }
 };
 
-const Decoration g_decoration_earplug_medicine_compound = {
+static const Decoration g_decoration_earplug_medicine_compound = {
     "EARPLUG_MEDICINE_COMPOUND", // id
     "Earplug/Medicine Jewel 4", // name
     4, // slot_size
@@ -2466,7 +2466,7 @@ const Decoration g_decoration_earplug_medicine_compound = {
     }
 };
 
-const Decoration g_decoration_earplug_physique_compound = {
+static const Decoration g_decoration_earplug_physique_compound = {
     "EARPLUG_PHYSIQUE_COMPOUND", // id
     "Earplug/Physique Jewel 4", // name
     4, // slot_size
@@ -2476,7 +2476,7 @@ const Decoration g_decoration_earplug_physique_compound = {
     }
 };
 
-const Decoration g_decoration_earplug_protection_compound = {
+static const Decoration g_decoration_earplug_protection_compound = {
     "EARPLUG_PROTECTION_COMPOUND", // id
     "Earplug/Protection Jewel 4", // name
     4, // slot_size
@@ -2486,7 +2486,7 @@ const Decoration g_decoration_earplug_protection_compound = {
     }
 };
 
-const Decoration g_decoration_earplug_vitality_compound = {
+static const Decoration g_decoration_earplug_vitality_compound = {
     "EARPLUG_VITALITY_COMPOUND", // id
     "Earplug/Vitality Jewel 4", // name
     4, // slot_size
@@ -2496,7 +2496,7 @@ const Decoration g_decoration_earplug_vitality_compound = {
     }
 };
 
-const Decoration g_decoration_enhancer_evasion_compound = {
+static const Decoration g_decoration_enhancer_evasion_compound = {
     "ENHANCER_EVASION_COMPOUND", // id
     "Enhancer/Evasion Jewel 4", // name
     4, // slot_size
@@ -2506,7 +2506,7 @@ const Decoration g_decoration_enhancer_evasion_compound = {
     }
 };
 
-const Decoration g_decoration_enhancer_maintenance_compound = {
+static const Decoration g_decoration_enhancer_maintenance_compound = {
     "ENHANCER_MAINTENANCE_COMPOUND", // id
     "Enhancer/Maintenance Jewel 4", // name
     4, // slot_size
@@ -2516,7 +2516,7 @@ const Decoration g_decoration_enhancer_maintenance_compound = {
     }
 };
 
-const Decoration g_decoration_enhancer_medicine_compound = {
+static const Decoration g_decoration_enhancer_medicine_compound = {
     "ENHANCER_MEDICINE_COMPOUND", // id
     "Enhancer/Medicine Jewel 4", // name
     4, // slot_size
@@ -2526,7 +2526,7 @@ const Decoration g_decoration_enhancer_medicine_compound = {
     }
 };
 
-const Decoration g_decoration_enhancer_physique_compound = {
+static const Decoration g_decoration_enhancer_physique_compound = {
     "ENHANCER_PHYSIQUE_COMPOUND", // id
     "Enhancer/Physique Jewel 4", // name
     4, // slot_size
@@ -2536,7 +2536,7 @@ const Decoration g_decoration_enhancer_physique_compound = {
     }
 };
 
-const Decoration g_decoration_enhancer_protection_compound = {
+static const Decoration g_decoration_enhancer_protection_compound = {
     "ENHANCER_PROTECTION_COMPOUND", // id
     "Enhancer/Protection Jewel 4", // name
     4, // slot_size
@@ -2546,7 +2546,7 @@ const Decoration g_decoration_enhancer_protection_compound = {
     }
 };
 
-const Decoration g_decoration_enhancer_vitality_compound = {
+static const Decoration g_decoration_enhancer_vitality_compound = {
     "ENHANCER_VITALITY_COMPOUND", // id
     "Enhancer/Vitality Jewel 4", // name
     4, // slot_size
@@ -2556,7 +2556,7 @@ const Decoration g_decoration_enhancer_vitality_compound = {
     }
 };
 
-const Decoration g_decoration_flawless_evasion_compound = {
+static const Decoration g_decoration_flawless_evasion_compound = {
     "FLAWLESS_EVASION_COMPOUND", // id
     "Flawless/Evasion Jewel 4", // name
     4, // slot_size
@@ -2566,7 +2566,7 @@ const Decoration g_decoration_flawless_evasion_compound = {
     }
 };
 
-const Decoration g_decoration_flawless_maintenance_compound = {
+static const Decoration g_decoration_flawless_maintenance_compound = {
     "FLAWLESS_MAINTENANCE_COMPOUND", // id
     "Flawless/Maintenance Jewel 4", // name
     4, // slot_size
@@ -2576,7 +2576,7 @@ const Decoration g_decoration_flawless_maintenance_compound = {
     }
 };
 
-const Decoration g_decoration_flawless_medicine_compound = {
+static const Decoration g_decoration_flawless_medicine_compound = {
     "FLAWLESS_MEDICINE_COMPOUND", // id
     "Flawless/Medicine Jewel 4", // name
     4, // slot_size
@@ -2586,7 +2586,7 @@ const Decoration g_decoration_flawless_medicine_compound = {
     }
 };
 
-const Decoration g_decoration_flawless_physique_compound = {
+static const Decoration g_decoration_flawless_physique_compound = {
     "FLAWLESS_PHYSIQUE_COMPOUND", // id
     "Flawless/Physique Jewel 4", // name
     4, // slot_size
@@ -2596,7 +2596,7 @@ const Decoration g_decoration_flawless_physique_compound = {
     }
 };
 
-const Decoration g_decoration_flawless_protection_compound = {
+static const Decoration g_decoration_flawless_protection_compound = {
     "FLAWLESS_PROTECTION_COMPOUND", // id
     "Flawless/Protection Jewel 4", // name
     4, // slot_size
@@ -2606,7 +2606,7 @@ const Decoration g_decoration_flawless_protection_compound = {
     }
 };
 
-const Decoration g_decoration_flawless_vitality_compound = {
+static const Decoration g_decoration_flawless_vitality_compound = {
     "FLAWLESS_VITALITY_COMPOUND", // id
     "Flawless/Vitality Jewel 4", // name
     4, // slot_size
@@ -2616,7 +2616,7 @@ const Decoration g_decoration_flawless_vitality_compound = {
     }
 };
 
-const Decoration g_decoration_footing_evasion_compound = {
+static const Decoration g_decoration_footing_evasion_compound = {
     "FOOTING_EVASION_COMPOUND", // id
     "Footing/Evasion Jewel 4", // name
     4, // slot_size
@@ -2626,7 +2626,7 @@ const Decoration g_decoration_footing_evasion_compound = {
     }
 };
 
-const Decoration g_decoration_footing_maintenance_compound = {
+static const Decoration g_decoration_footing_maintenance_compound = {
     "FOOTING_MAINTENANCE_COMPOUND", // id
     "Footing/Maintenance Jewel 4", // name
     4, // slot_size
@@ -2636,7 +2636,7 @@ const Decoration g_decoration_footing_maintenance_compound = {
     }
 };
 
-const Decoration g_decoration_footing_medicine_compound = {
+static const Decoration g_decoration_footing_medicine_compound = {
     "FOOTING_MEDICINE_COMPOUND", // id
     "Footing/Medicine Jewel 4", // name
     4, // slot_size
@@ -2646,7 +2646,7 @@ const Decoration g_decoration_footing_medicine_compound = {
     }
 };
 
-const Decoration g_decoration_footing_physique_compound = {
+static const Decoration g_decoration_footing_physique_compound = {
     "FOOTING_PHYSIQUE_COMPOUND", // id
     "Footing/Physique Jewel 4", // name
     4, // slot_size
@@ -2656,7 +2656,7 @@ const Decoration g_decoration_footing_physique_compound = {
     }
 };
 
-const Decoration g_decoration_footing_protection_compound = {
+static const Decoration g_decoration_footing_protection_compound = {
     "FOOTING_PROTECTION_COMPOUND", // id
     "Footing/Protection Jewel 4", // name
     4, // slot_size
@@ -2666,7 +2666,7 @@ const Decoration g_decoration_footing_protection_compound = {
     }
 };
 
-const Decoration g_decoration_footing_vitality_compound = {
+static const Decoration g_decoration_footing_vitality_compound = {
     "FOOTING_VITALITY_COMPOUND", // id
     "Footing/Vitality Jewel 4", // name
     4, // slot_size
@@ -2676,7 +2676,7 @@ const Decoration g_decoration_footing_vitality_compound = {
     }
 };
 
-const Decoration g_decoration_furor_evasion_compound = {
+static const Decoration g_decoration_furor_evasion_compound = {
     "FUROR_EVASION_COMPOUND", // id
     "Furor/Evasion Jewel 4", // name
     4, // slot_size
@@ -2686,7 +2686,7 @@ const Decoration g_decoration_furor_evasion_compound = {
     }
 };
 
-const Decoration g_decoration_furor_maintenance_compound = {
+static const Decoration g_decoration_furor_maintenance_compound = {
     "FUROR_MAINTENANCE_COMPOUND", // id
     "Furor/Maintenance Jewel 4", // name
     4, // slot_size
@@ -2696,7 +2696,7 @@ const Decoration g_decoration_furor_maintenance_compound = {
     }
 };
 
-const Decoration g_decoration_furor_medicine_compound = {
+static const Decoration g_decoration_furor_medicine_compound = {
     "FUROR_MEDICINE_COMPOUND", // id
     "Furor/Medicine Jewel 4", // name
     4, // slot_size
@@ -2706,7 +2706,7 @@ const Decoration g_decoration_furor_medicine_compound = {
     }
 };
 
-const Decoration g_decoration_furor_physique_compound = {
+static const Decoration g_decoration_furor_physique_compound = {
     "FUROR_PHYSIQUE_COMPOUND", // id
     "Furor/Physique Jewel 4", // name
     4, // slot_size
@@ -2716,7 +2716,7 @@ const Decoration g_decoration_furor_physique_compound = {
     }
 };
 
-const Decoration g_decoration_furor_protection_compound = {
+static const Decoration g_decoration_furor_protection_compound = {
     "FUROR_PROTECTION_COMPOUND", // id
     "Furor/Protection Jewel 4", // name
     4, // slot_size
@@ -2726,7 +2726,7 @@ const Decoration g_decoration_furor_protection_compound = {
     }
 };
 
-const Decoration g_decoration_furor_vitality_compound = {
+static const Decoration g_decoration_furor_vitality_compound = {
     "FUROR_VITALITY_COMPOUND", // id
     "Furor/Vitality Jewel 4", // name
     4, // slot_size
@@ -2736,7 +2736,7 @@ const Decoration g_decoration_furor_vitality_compound = {
     }
 };
 
-const Decoration g_decoration_handicraft_evasion_compound = {
+static const Decoration g_decoration_handicraft_evasion_compound = {
     "HANDICRAFT_EVASION_COMPOUND", // id
     "Handicraft/Evasion Jewel 4", // name
     4, // slot_size
@@ -2746,7 +2746,7 @@ const Decoration g_decoration_handicraft_evasion_compound = {
     }
 };
 
-const Decoration g_decoration_handicraft_maintenance_compound = {
+static const Decoration g_decoration_handicraft_maintenance_compound = {
     "HANDICRAFT_MAINTENANCE_COMPOUND", // id
     "Handicraft/Maintenance Jewel 4", // name
     4, // slot_size
@@ -2756,7 +2756,7 @@ const Decoration g_decoration_handicraft_maintenance_compound = {
     }
 };
 
-const Decoration g_decoration_handicraft_medicine_compound = {
+static const Decoration g_decoration_handicraft_medicine_compound = {
     "HANDICRAFT_MEDICINE_COMPOUND", // id
     "Handicraft/Medicine Jewel 4", // name
     4, // slot_size
@@ -2766,7 +2766,7 @@ const Decoration g_decoration_handicraft_medicine_compound = {
     }
 };
 
-const Decoration g_decoration_handicraft_physique_compound = {
+static const Decoration g_decoration_handicraft_physique_compound = {
     "HANDICRAFT_PHYSIQUE_COMPOUND", // id
     "Handicraft/Physique Jewel 4", // name
     4, // slot_size
@@ -2776,7 +2776,7 @@ const Decoration g_decoration_handicraft_physique_compound = {
     }
 };
 
-const Decoration g_decoration_handicraft_protection_compound = {
+static const Decoration g_decoration_handicraft_protection_compound = {
     "HANDICRAFT_PROTECTION_COMPOUND", // id
     "Handicraft/Protection Jewel 4", // name
     4, // slot_size
@@ -2786,7 +2786,7 @@ const Decoration g_decoration_handicraft_protection_compound = {
     }
 };
 
-const Decoration g_decoration_handicraft_vitality_compound = {
+static const Decoration g_decoration_handicraft_vitality_compound = {
     "HANDICRAFT_VITALITY_COMPOUND", // id
     "Handicraft/Vitality Jewel 4", // name
     4, // slot_size
@@ -2796,7 +2796,7 @@ const Decoration g_decoration_handicraft_vitality_compound = {
     }
 };
 
-const Decoration g_decoration_ko_evasion_compound = {
+static const Decoration g_decoration_ko_evasion_compound = {
     "KO_EVASION_COMPOUND", // id
     "KO/Evasion Jewel 4", // name
     4, // slot_size
@@ -2806,7 +2806,7 @@ const Decoration g_decoration_ko_evasion_compound = {
     }
 };
 
-const Decoration g_decoration_ko_maintenance_compound = {
+static const Decoration g_decoration_ko_maintenance_compound = {
     "KO_MAINTENANCE_COMPOUND", // id
     "KO/Maintenance Jewel 4", // name
     4, // slot_size
@@ -2816,7 +2816,7 @@ const Decoration g_decoration_ko_maintenance_compound = {
     }
 };
 
-const Decoration g_decoration_ko_medicine_compound = {
+static const Decoration g_decoration_ko_medicine_compound = {
     "KO_MEDICINE_COMPOUND", // id
     "KO/Medicine Jewel 4", // name
     4, // slot_size
@@ -2826,7 +2826,7 @@ const Decoration g_decoration_ko_medicine_compound = {
     }
 };
 
-const Decoration g_decoration_ko_physique_compound = {
+static const Decoration g_decoration_ko_physique_compound = {
     "KO_PHYSIQUE_COMPOUND", // id
     "KO/Physique Jewel 4", // name
     4, // slot_size
@@ -2836,7 +2836,7 @@ const Decoration g_decoration_ko_physique_compound = {
     }
 };
 
-const Decoration g_decoration_ko_protection_compound = {
+static const Decoration g_decoration_ko_protection_compound = {
     "KO_PROTECTION_COMPOUND", // id
     "KO/Protection Jewel 4", // name
     4, // slot_size
@@ -2846,7 +2846,7 @@ const Decoration g_decoration_ko_protection_compound = {
     }
 };
 
-const Decoration g_decoration_ko_vitality_compound = {
+static const Decoration g_decoration_ko_vitality_compound = {
     "KO_VITALITY_COMPOUND", // id
     "KO/Vitality Jewel 4", // name
     4, // slot_size
@@ -2856,7 +2856,7 @@ const Decoration g_decoration_ko_vitality_compound = {
     }
 };
 
-const Decoration g_decoration_mighty_evasion_compound = {
+static const Decoration g_decoration_mighty_evasion_compound = {
     "MIGHTY_EVASION_COMPOUND", // id
     "Mighty/Evasion Jewel 4", // name
     4, // slot_size
@@ -2866,7 +2866,7 @@ const Decoration g_decoration_mighty_evasion_compound = {
     }
 };
 
-const Decoration g_decoration_mighty_maintenance_compound = {
+static const Decoration g_decoration_mighty_maintenance_compound = {
     "MIGHTY_MAINTENANCE_COMPOUND", // id
     "Mighty/Maintenance Jewel 4", // name
     4, // slot_size
@@ -2876,7 +2876,7 @@ const Decoration g_decoration_mighty_maintenance_compound = {
     }
 };
 
-const Decoration g_decoration_mighty_medicine_compound = {
+static const Decoration g_decoration_mighty_medicine_compound = {
     "MIGHTY_MEDICINE_COMPOUND", // id
     "Mighty/Medicine Jewel 4", // name
     4, // slot_size
@@ -2886,7 +2886,7 @@ const Decoration g_decoration_mighty_medicine_compound = {
     }
 };
 
-const Decoration g_decoration_mighty_physique_compound = {
+static const Decoration g_decoration_mighty_physique_compound = {
     "MIGHTY_PHYSIQUE_COMPOUND", // id
     "Mighty/Physique Jewel 4", // name
     4, // slot_size
@@ -2896,7 +2896,7 @@ const Decoration g_decoration_mighty_physique_compound = {
     }
 };
 
-const Decoration g_decoration_mighty_protection_compound = {
+static const Decoration g_decoration_mighty_protection_compound = {
     "MIGHTY_PROTECTION_COMPOUND", // id
     "Mighty/Protection Jewel 4", // name
     4, // slot_size
@@ -2906,7 +2906,7 @@ const Decoration g_decoration_mighty_protection_compound = {
     }
 };
 
-const Decoration g_decoration_mighty_vitality_compound = {
+static const Decoration g_decoration_mighty_vitality_compound = {
     "MIGHTY_VITALITY_COMPOUND", // id
     "Mighty/Vitality Jewel 4", // name
     4, // slot_size
@@ -2916,7 +2916,7 @@ const Decoration g_decoration_mighty_vitality_compound = {
     }
 };
 
-const Decoration g_decoration_phoenix_evasion_compound = {
+static const Decoration g_decoration_phoenix_evasion_compound = {
     "PHOENIX_EVASION_COMPOUND", // id
     "Phoenix/Evasion Jewel 4", // name
     4, // slot_size
@@ -2926,7 +2926,7 @@ const Decoration g_decoration_phoenix_evasion_compound = {
     }
 };
 
-const Decoration g_decoration_phoenix_maintenance_compound = {
+static const Decoration g_decoration_phoenix_maintenance_compound = {
     "PHOENIX_MAINTENANCE_COMPOUND", // id
     "Phoenix/Maintenance Jewel 4", // name
     4, // slot_size
@@ -2936,7 +2936,7 @@ const Decoration g_decoration_phoenix_maintenance_compound = {
     }
 };
 
-const Decoration g_decoration_phoenix_medicine_compound = {
+static const Decoration g_decoration_phoenix_medicine_compound = {
     "PHOENIX_MEDICINE_COMPOUND", // id
     "Phoenix/Medicine Jewel 4", // name
     4, // slot_size
@@ -2946,7 +2946,7 @@ const Decoration g_decoration_phoenix_medicine_compound = {
     }
 };
 
-const Decoration g_decoration_phoenix_physique_compound = {
+static const Decoration g_decoration_phoenix_physique_compound = {
     "PHOENIX_PHYSIQUE_COMPOUND", // id
     "Phoenix/Physique Jewel 4", // name
     4, // slot_size
@@ -2956,7 +2956,7 @@ const Decoration g_decoration_phoenix_physique_compound = {
     }
 };
 
-const Decoration g_decoration_phoenix_protection_compound = {
+static const Decoration g_decoration_phoenix_protection_compound = {
     "PHOENIX_PROTECTION_COMPOUND", // id
     "Phoenix/Protection Jewel 4", // name
     4, // slot_size
@@ -2966,7 +2966,7 @@ const Decoration g_decoration_phoenix_protection_compound = {
     }
 };
 
-const Decoration g_decoration_phoenix_vitality_compound = {
+static const Decoration g_decoration_phoenix_vitality_compound = {
     "PHOENIX_VITALITY_COMPOUND", // id
     "Phoenix/Vitality Jewel 4", // name
     4, // slot_size
@@ -2976,7 +2976,7 @@ const Decoration g_decoration_phoenix_vitality_compound = {
     }
 };
 
-const Decoration g_decoration_potential_evasion_compound = {
+static const Decoration g_decoration_potential_evasion_compound = {
     "POTENTIAL_EVASION_COMPOUND", // id
     "Potential/Evasion Jewel 4", // name
     4, // slot_size
@@ -2986,7 +2986,7 @@ const Decoration g_decoration_potential_evasion_compound = {
     }
 };
 
-const Decoration g_decoration_potential_maintenance_compound = {
+static const Decoration g_decoration_potential_maintenance_compound = {
     "POTENTIAL_MAINTENANCE_COMPOUND", // id
     "Potential/Maintenance Jewel 4", // name
     4, // slot_size
@@ -2996,7 +2996,7 @@ const Decoration g_decoration_potential_maintenance_compound = {
     }
 };
 
-const Decoration g_decoration_potential_medicine_compound = {
+static const Decoration g_decoration_potential_medicine_compound = {
     "POTENTIAL_MEDICINE_COMPOUND", // id
     "Potential/Medicine Jewel 4", // name
     4, // slot_size
@@ -3006,7 +3006,7 @@ const Decoration g_decoration_potential_medicine_compound = {
     }
 };
 
-const Decoration g_decoration_potential_physique_compound = {
+static const Decoration g_decoration_potential_physique_compound = {
     "POTENTIAL_PHYSIQUE_COMPOUND", // id
     "Potential/Physique Jewel 4", // name
     4, // slot_size
@@ -3016,7 +3016,7 @@ const Decoration g_decoration_potential_physique_compound = {
     }
 };
 
-const Decoration g_decoration_potential_protection_compound = {
+static const Decoration g_decoration_potential_protection_compound = {
     "POTENTIAL_PROTECTION_COMPOUND", // id
     "Potential/Protection Jewel 4", // name
     4, // slot_size
@@ -3026,7 +3026,7 @@ const Decoration g_decoration_potential_protection_compound = {
     }
 };
 
-const Decoration g_decoration_potential_vitality_compound = {
+static const Decoration g_decoration_potential_vitality_compound = {
     "POTENTIAL_VITALITY_COMPOUND", // id
     "Potential/Vitality Jewel 4", // name
     4, // slot_size
@@ -3036,7 +3036,7 @@ const Decoration g_decoration_potential_vitality_compound = {
     }
 };
 
-const Decoration g_decoration_release_evasion_compound = {
+static const Decoration g_decoration_release_evasion_compound = {
     "RELEASE_EVASION_COMPOUND", // id
     "Release/Evasion Jewel 4", // name
     4, // slot_size
@@ -3046,7 +3046,7 @@ const Decoration g_decoration_release_evasion_compound = {
     }
 };
 
-const Decoration g_decoration_release_maintenance_compound = {
+static const Decoration g_decoration_release_maintenance_compound = {
     "RELEASE_MAINTENANCE_COMPOUND", // id
     "Release/Maintenance Jewel 4", // name
     4, // slot_size
@@ -3056,7 +3056,7 @@ const Decoration g_decoration_release_maintenance_compound = {
     }
 };
 
-const Decoration g_decoration_release_medicine_compound = {
+static const Decoration g_decoration_release_medicine_compound = {
     "RELEASE_MEDICINE_COMPOUND", // id
     "Release/Medicine Jewel 4", // name
     4, // slot_size
@@ -3066,7 +3066,7 @@ const Decoration g_decoration_release_medicine_compound = {
     }
 };
 
-const Decoration g_decoration_release_physique_compound = {
+static const Decoration g_decoration_release_physique_compound = {
     "RELEASE_PHYSIQUE_COMPOUND", // id
     "Release/Physique Jewel 4", // name
     4, // slot_size
@@ -3076,7 +3076,7 @@ const Decoration g_decoration_release_physique_compound = {
     }
 };
 
-const Decoration g_decoration_release_protection_compound = {
+static const Decoration g_decoration_release_protection_compound = {
     "RELEASE_PROTECTION_COMPOUND", // id
     "Release/Protection Jewel 4", // name
     4, // slot_size
@@ -3086,7 +3086,7 @@ const Decoration g_decoration_release_protection_compound = {
     }
 };
 
-const Decoration g_decoration_release_vitality_compound = {
+static const Decoration g_decoration_release_vitality_compound = {
     "RELEASE_VITALITY_COMPOUND", // id
     "Release/Vitality Jewel 4", // name
     4, // slot_size
@@ -3096,7 +3096,7 @@ const Decoration g_decoration_release_vitality_compound = {
     }
 };
 
-const Decoration g_decoration_tenderizer_evasion_compound = {
+static const Decoration g_decoration_tenderizer_evasion_compound = {
     "TENDERIZER_EVASION_COMPOUND", // id
     "Tenderizer/Evasion Jewel 4", // name
     4, // slot_size
@@ -3106,7 +3106,7 @@ const Decoration g_decoration_tenderizer_evasion_compound = {
     }
 };
 
-const Decoration g_decoration_tenderizer_maintenance_compound = {
+static const Decoration g_decoration_tenderizer_maintenance_compound = {
     "TENDERIZER_MAINTENANCE_COMPOUND", // id
     "Tenderizer/Maintenance Jewel 4", // name
     4, // slot_size
@@ -3116,7 +3116,7 @@ const Decoration g_decoration_tenderizer_maintenance_compound = {
     }
 };
 
-const Decoration g_decoration_tenderizer_medicine_compound = {
+static const Decoration g_decoration_tenderizer_medicine_compound = {
     "TENDERIZER_MEDICINE_COMPOUND", // id
     "Tenderizer/Medicine Jewel 4", // name
     4, // slot_size
@@ -3126,7 +3126,7 @@ const Decoration g_decoration_tenderizer_medicine_compound = {
     }
 };
 
-const Decoration g_decoration_tenderizer_physique_compound = {
+static const Decoration g_decoration_tenderizer_physique_compound = {
     "TENDERIZER_PHYSIQUE_COMPOUND", // id
     "Tenderizer/Physique Jewel 4", // name
     4, // slot_size
@@ -3136,7 +3136,7 @@ const Decoration g_decoration_tenderizer_physique_compound = {
     }
 };
 
-const Decoration g_decoration_tenderizer_protection_compound = {
+static const Decoration g_decoration_tenderizer_protection_compound = {
     "TENDERIZER_PROTECTION_COMPOUND", // id
     "Tenderizer/Protection Jewel 4", // name
     4, // slot_size
@@ -3146,7 +3146,7 @@ const Decoration g_decoration_tenderizer_protection_compound = {
     }
 };
 
-const Decoration g_decoration_tenderizer_vitality_compound = {
+static const Decoration g_decoration_tenderizer_vitality_compound = {
     "TENDERIZER_VITALITY_COMPOUND", // id
     "Tenderizer/Vitality Jewel 4", // name
     4, // slot_size
@@ -3156,7 +3156,7 @@ const Decoration g_decoration_tenderizer_vitality_compound = {
     }
 };
 
-const Decoration g_decoration_throttle_evasion_compound = {
+static const Decoration g_decoration_throttle_evasion_compound = {
     "THROTTLE_EVASION_COMPOUND", // id
     "Throttle/Evasion Jewel 4", // name
     4, // slot_size
@@ -3166,7 +3166,7 @@ const Decoration g_decoration_throttle_evasion_compound = {
     }
 };
 
-const Decoration g_decoration_throttle_maintenance_compound = {
+static const Decoration g_decoration_throttle_maintenance_compound = {
     "THROTTLE_MAINTENANCE_COMPOUND", // id
     "Throttle/Maintenance Jewel 4", // name
     4, // slot_size
@@ -3176,7 +3176,7 @@ const Decoration g_decoration_throttle_maintenance_compound = {
     }
 };
 
-const Decoration g_decoration_throttle_medicine_compound = {
+static const Decoration g_decoration_throttle_medicine_compound = {
     "THROTTLE_MEDICINE_COMPOUND", // id
     "Throttle/Medicine Jewel 4", // name
     4, // slot_size
@@ -3186,7 +3186,7 @@ const Decoration g_decoration_throttle_medicine_compound = {
     }
 };
 
-const Decoration g_decoration_throttle_physique_compound = {
+static const Decoration g_decoration_throttle_physique_compound = {
     "THROTTLE_PHYSIQUE_COMPOUND", // id
     "Throttle/Physique Jewel 4", // name
     4, // slot_size
@@ -3196,7 +3196,7 @@ const Decoration g_decoration_throttle_physique_compound = {
     }
 };
 
-const Decoration g_decoration_throttle_protection_compound = {
+static const Decoration g_decoration_throttle_protection_compound = {
     "THROTTLE_PROTECTION_COMPOUND", // id
     "Throttle/Protection Jewel 4", // name
     4, // slot_size
@@ -3206,7 +3206,7 @@ const Decoration g_decoration_throttle_protection_compound = {
     }
 };
 
-const Decoration g_decoration_throttle_vitality_compound = {
+static const Decoration g_decoration_throttle_vitality_compound = {
     "THROTTLE_VITALITY_COMPOUND", // id
     "Throttle/Vitality Jewel 4", // name
     4, // slot_size
@@ -3216,7 +3216,7 @@ const Decoration g_decoration_throttle_vitality_compound = {
     }
 };
 
-const Decoration g_decoration_wind_resist_evasion_compound = {
+static const Decoration g_decoration_wind_resist_evasion_compound = {
     "WIND_RESIST_EVASION_COMPOUND", // id
     "Wind Resist/Evasion Jewel 4", // name
     4, // slot_size
@@ -3226,7 +3226,7 @@ const Decoration g_decoration_wind_resist_evasion_compound = {
     }
 };
 
-const Decoration g_decoration_wind_resist_maintenance_compound = {
+static const Decoration g_decoration_wind_resist_maintenance_compound = {
     "WIND_RESIST_MAINTENANCE_COMPOUND", // id
     "Wind Resist/Maintenance Jewel 4", // name
     4, // slot_size
@@ -3236,7 +3236,7 @@ const Decoration g_decoration_wind_resist_maintenance_compound = {
     }
 };
 
-const Decoration g_decoration_wind_resist_medicine_compound = {
+static const Decoration g_decoration_wind_resist_medicine_compound = {
     "WIND_RESIST_MEDICINE_COMPOUND", // id
     "Wind Resist/Medicine Jewel 4", // name
     4, // slot_size
@@ -3246,7 +3246,7 @@ const Decoration g_decoration_wind_resist_medicine_compound = {
     }
 };
 
-const Decoration g_decoration_wind_resist_physique_compound = {
+static const Decoration g_decoration_wind_resist_physique_compound = {
     "WIND_RESIST_PHYSIQUE_COMPOUND", // id
     "Wind Resist/Physique Jewel 4", // name
     4, // slot_size
@@ -3256,7 +3256,7 @@ const Decoration g_decoration_wind_resist_physique_compound = {
     }
 };
 
-const Decoration g_decoration_wind_resist_protection_compound = {
+static const Decoration g_decoration_wind_resist_protection_compound = {
     "WIND_RESIST_PROTECTION_COMPOUND", // id
     "Wind Resist/Protection Jewel 4", // name
     4, // slot_size
@@ -3266,7 +3266,7 @@ const Decoration g_decoration_wind_resist_protection_compound = {
     }
 };
 
-const Decoration g_decoration_wind_resist_vitality_compound = {
+static const Decoration g_decoration_wind_resist_vitality_compound = {
     "WIND_RESIST_VITALITY_COMPOUND", // id
     "Wind Resist/Vitality Jewel 4", // name
     4, // slot_size
@@ -3276,7 +3276,7 @@ const Decoration g_decoration_wind_resist_vitality_compound = {
     }
 };
 
-const Decoration g_decoration_fire_res_2x = {
+static const Decoration g_decoration_fire_res_2x = {
     "FIRE_RES_2X", // id
     "Fire Res Jewel+ 4", // name
     4, // slot_size
@@ -3285,7 +3285,7 @@ const Decoration g_decoration_fire_res_2x = {
     }
 };
 
-const Decoration g_decoration_fire_res_3x = {
+static const Decoration g_decoration_fire_res_3x = {
     "FIRE_RES_3X", // id
     "Hard Fire Res Jewel 4", // name
     4, // slot_size
@@ -3294,7 +3294,7 @@ const Decoration g_decoration_fire_res_3x = {
     }
 };
 
-const Decoration g_decoration_water_res_2x = {
+static const Decoration g_decoration_water_res_2x = {
     "WATER_RES_2X", // id
     "Water Res Jewel+ 4", // name
     4, // slot_size
@@ -3303,7 +3303,7 @@ const Decoration g_decoration_water_res_2x = {
     }
 };
 
-const Decoration g_decoration_water_res_3x = {
+static const Decoration g_decoration_water_res_3x = {
     "WATER_RES_3X", // id
     "Hard Water Res Jewel 4", // name
     4, // slot_size
@@ -3312,7 +3312,7 @@ const Decoration g_decoration_water_res_3x = {
     }
 };
 
-const Decoration g_decoration_ice_res_2x = {
+static const Decoration g_decoration_ice_res_2x = {
     "ICE_RES_2X", // id
     "Ice Res Jewel+ 4", // name
     4, // slot_size
@@ -3321,7 +3321,7 @@ const Decoration g_decoration_ice_res_2x = {
     }
 };
 
-const Decoration g_decoration_ice_res_3x = {
+static const Decoration g_decoration_ice_res_3x = {
     "ICE_RES_3X", // id
     "Hard Ice Res Jewel 4", // name
     4, // slot_size
@@ -3330,7 +3330,7 @@ const Decoration g_decoration_ice_res_3x = {
     }
 };
 
-const Decoration g_decoration_thunder_res_2x = {
+static const Decoration g_decoration_thunder_res_2x = {
     "THUNDER_RES_2X", // id
     "Thunder Res Jewel+ 4", // name
     4, // slot_size
@@ -3339,7 +3339,7 @@ const Decoration g_decoration_thunder_res_2x = {
     }
 };
 
-const Decoration g_decoration_thunder_res_3x = {
+static const Decoration g_decoration_thunder_res_3x = {
     "THUNDER_RES_3X", // id
     "Hard Thunder Res Jewel 4", // name
     4, // slot_size
@@ -3348,7 +3348,7 @@ const Decoration g_decoration_thunder_res_3x = {
     }
 };
 
-const Decoration g_decoration_dragon_res_2x = {
+static const Decoration g_decoration_dragon_res_2x = {
     "DRAGON_RES_2X", // id
     "Dragon Res Jewel+ 4", // name
     4, // slot_size
@@ -3357,7 +3357,7 @@ const Decoration g_decoration_dragon_res_2x = {
     }
 };
 
-const Decoration g_decoration_dragon_res_3x = {
+static const Decoration g_decoration_dragon_res_3x = {
     "DRAGON_RES_3X", // id
     "Hard Dragon Res Jewel 4", // name
     4, // slot_size
@@ -3366,7 +3366,7 @@ const Decoration g_decoration_dragon_res_3x = {
     }
 };
 
-const Decoration g_decoration_blaze_2x = {
+static const Decoration g_decoration_blaze_2x = {
     "BLAZE_2X", // id
     "Blaze Jewel+ 4", // name
     4, // slot_size
@@ -3375,7 +3375,7 @@ const Decoration g_decoration_blaze_2x = {
     }
 };
 
-const Decoration g_decoration_stream_2x = {
+static const Decoration g_decoration_stream_2x = {
     "STREAM_2X", // id
     "Stream Jewel+ 4", // name
     4, // slot_size
@@ -3384,7 +3384,7 @@ const Decoration g_decoration_stream_2x = {
     }
 };
 
-const Decoration g_decoration_frost_2x = {
+static const Decoration g_decoration_frost_2x = {
     "FROST_2X", // id
     "Frost Jewel+ 4", // name
     4, // slot_size
@@ -3393,7 +3393,7 @@ const Decoration g_decoration_frost_2x = {
     }
 };
 
-const Decoration g_decoration_bolt_2x = {
+static const Decoration g_decoration_bolt_2x = {
     "BOLT_2X", // id
     "Bolt Jewel+ 4", // name
     4, // slot_size
@@ -3402,7 +3402,7 @@ const Decoration g_decoration_bolt_2x = {
     }
 };
 
-const Decoration g_decoration_dragon_2x = {
+static const Decoration g_decoration_dragon_2x = {
     "DRAGON_2X", // id
     "Dragon Jewel+ 4", // name
     4, // slot_size
@@ -3411,7 +3411,7 @@ const Decoration g_decoration_dragon_2x = {
     }
 };
 
-const Decoration g_decoration_venom_2x = {
+static const Decoration g_decoration_venom_2x = {
     "VENOM_2X", // id
     "Venom Jewel+ 4", // name
     4, // slot_size
@@ -3420,7 +3420,7 @@ const Decoration g_decoration_venom_2x = {
     }
 };
 
-const Decoration g_decoration_paralyzer_2x = {
+static const Decoration g_decoration_paralyzer_2x = {
     "PARALYZER_2X", // id
     "Paralyzer Jewel+ 4", // name
     4, // slot_size
@@ -3429,7 +3429,7 @@ const Decoration g_decoration_paralyzer_2x = {
     }
 };
 
-const Decoration g_decoration_sleep_2x = {
+static const Decoration g_decoration_sleep_2x = {
     "SLEEP_2X", // id
     "Sleep Jewel+ 4", // name
     4, // slot_size
@@ -3438,7 +3438,7 @@ const Decoration g_decoration_sleep_2x = {
     }
 };
 
-const Decoration g_decoration_blast_2x = {
+static const Decoration g_decoration_blast_2x = {
     "BLAST_2X", // id
     "Blast Jewel+ 4", // name
     4, // slot_size
@@ -3447,7 +3447,7 @@ const Decoration g_decoration_blast_2x = {
     }
 };
 
-const Decoration g_decoration_antidote_2x = {
+static const Decoration g_decoration_antidote_2x = {
     "ANTIDOTE_2X", // id
     "Antidote Jewel+ 4", // name
     4, // slot_size
@@ -3456,7 +3456,7 @@ const Decoration g_decoration_antidote_2x = {
     }
 };
 
-const Decoration g_decoration_antipara_2x = {
+static const Decoration g_decoration_antipara_2x = {
     "ANTIPARA_2X", // id
     "Antipara Jewel+ 4", // name
     4, // slot_size
@@ -3465,7 +3465,7 @@ const Decoration g_decoration_antipara_2x = {
     }
 };
 
-const Decoration g_decoration_pep_2x = {
+static const Decoration g_decoration_pep_2x = {
     "PEP_2X", // id
     "Pep Jewel+ 4", // name
     4, // slot_size
@@ -3474,7 +3474,7 @@ const Decoration g_decoration_pep_2x = {
     }
 };
 
-const Decoration g_decoration_steadfast_2x = {
+static const Decoration g_decoration_steadfast_2x = {
     "STEADFAST_2X", // id
     "Steadfast Jewel+ 4", // name
     4, // slot_size
@@ -3483,7 +3483,7 @@ const Decoration g_decoration_steadfast_2x = {
     }
 };
 
-const Decoration g_decoration_antiblast_2x = {
+static const Decoration g_decoration_antiblast_2x = {
     "ANTIBLAST_2X", // id
     "Antiblast Jewel+ 4", // name
     4, // slot_size
@@ -3492,7 +3492,7 @@ const Decoration g_decoration_antiblast_2x = {
     }
 };
 
-const Decoration g_decoration_suture_2x = {
+static const Decoration g_decoration_suture_2x = {
     "SUTURE_2X", // id
     "Suture Jewel+ 4", // name
     4, // slot_size
@@ -3501,7 +3501,7 @@ const Decoration g_decoration_suture_2x = {
     }
 };
 
-const Decoration g_decoration_def_lock_2x = {
+static const Decoration g_decoration_def_lock_2x = {
     "DEF_LOCK_2X", // id
     "Def Lock Jewel+ 4", // name
     4, // slot_size
@@ -3510,7 +3510,7 @@ const Decoration g_decoration_def_lock_2x = {
     }
 };
 
-const Decoration g_decoration_miasma_2x = {
+static const Decoration g_decoration_miasma_2x = {
     "MIASMA_2X", // id
     "Miasma Jewel+ 4", // name
     4, // slot_size
@@ -3519,7 +3519,7 @@ const Decoration g_decoration_miasma_2x = {
     }
 };
 
-const Decoration g_decoration_hungerless_2x = {
+static const Decoration g_decoration_hungerless_2x = {
     "HUNGERLESS_2X", // id
     "Hungerless Jewel+ 4", // name
     4, // slot_size
@@ -3528,7 +3528,7 @@ const Decoration g_decoration_hungerless_2x = {
     }
 };
 
-const Decoration g_decoration_recovery_2x = {
+static const Decoration g_decoration_recovery_2x = {
     "RECOVERY_2X", // id
     "Recovery Jewel+ 4", // name
     4, // slot_size
@@ -3537,7 +3537,7 @@ const Decoration g_decoration_recovery_2x = {
     }
 };
 
-const Decoration g_decoration_tip_toe_2x = {
+static const Decoration g_decoration_tip_toe_2x = {
     "TIP_TOE_2X", // id
     "Tip Toe Jewel+ 4", // name
     4, // slot_size
@@ -3546,7 +3546,7 @@ const Decoration g_decoration_tip_toe_2x = {
     }
 };
 
-const Decoration g_decoration_tip_toe_3x = {
+static const Decoration g_decoration_tip_toe_3x = {
     "TIP_TOE_3X", // id
     "Hard Tip Toe Jewel 4", // name
     4, // slot_size
@@ -3555,7 +3555,7 @@ const Decoration g_decoration_tip_toe_3x = {
     }
 };
 
-const Decoration g_decoration_intimidator_2x = {
+static const Decoration g_decoration_intimidator_2x = {
     "INTIMIDATOR_2X", // id
     "Intimidator Jewel+ 4", // name
     4, // slot_size
@@ -3564,7 +3564,7 @@ const Decoration g_decoration_intimidator_2x = {
     }
 };
 
-const Decoration g_decoration_intimidator_3x = {
+static const Decoration g_decoration_intimidator_3x = {
     "INTIMIDATOR_3X", // id
     "Hard Intimidator Jewel 4", // name
     4, // slot_size
@@ -3573,7 +3573,7 @@ const Decoration g_decoration_intimidator_3x = {
     }
 };
 
-const Decoration g_decoration_meowster_2x = {
+static const Decoration g_decoration_meowster_2x = {
     "MEOWSTER_2X", // id
     "Meowster Jewel+ 4", // name
     4, // slot_size
@@ -3582,7 +3582,7 @@ const Decoration g_decoration_meowster_2x = {
     }
 };
 
-const Decoration g_decoration_meowster_3x = {
+static const Decoration g_decoration_meowster_3x = {
     "MEOWSTER_3X", // id
     "Hard Meowster Jewel 4", // name
     4, // slot_size
@@ -3591,7 +3591,7 @@ const Decoration g_decoration_meowster_3x = {
     }
 };
 
-const Decoration g_decoration_trueshot_2x = {
+static const Decoration g_decoration_trueshot_2x = {
     "TRUESHOT_2X", // id
     "Trueshot Jewel+ 4", // name
     4, // slot_size
@@ -3600,7 +3600,7 @@ const Decoration g_decoration_trueshot_2x = {
     }
 };
 
-const Decoration g_decoration_heavy_artillery_2x = {
+static const Decoration g_decoration_heavy_artillery_2x = {
     "HEAVY_ARTILLERY_2X", // id
     "Heavy Artillery Jewel+ 4", // name
     4, // slot_size
@@ -3609,7 +3609,7 @@ const Decoration g_decoration_heavy_artillery_2x = {
     }
 };
 
-const Decoration g_decoration_botany_2x = {
+static const Decoration g_decoration_botany_2x = {
     "BOTANY_2X", // id
     "Botany Jewel+ 4", // name
     4, // slot_size
@@ -3618,7 +3618,7 @@ const Decoration g_decoration_botany_2x = {
     }
 };
 
-const Decoration g_decoration_botany_3x = {
+static const Decoration g_decoration_botany_3x = {
     "BOTANY_3X", // id
     "Hard Botany Jewel 4", // name
     4, // slot_size
@@ -3627,7 +3627,7 @@ const Decoration g_decoration_botany_3x = {
     }
 };
 
-const Decoration g_decoration_geology_2x = {
+static const Decoration g_decoration_geology_2x = {
     "GEOLOGY_2X", // id
     "Geology Jewel+ 4", // name
     4, // slot_size
@@ -3636,7 +3636,7 @@ const Decoration g_decoration_geology_2x = {
     }
 };
 
-const Decoration g_decoration_geology_3x = {
+static const Decoration g_decoration_geology_3x = {
     "GEOLOGY_3X", // id
     "Hard Geology Jewel 4", // name
     4, // slot_size
@@ -3645,7 +3645,7 @@ const Decoration g_decoration_geology_3x = {
     }
 };
 
-const Decoration g_decoration_survival_2x = {
+static const Decoration g_decoration_survival_2x = {
     "SURVIVAL_2X", // id
     "Survival Jewel+ 4", // name
     4, // slot_size
@@ -3654,7 +3654,7 @@ const Decoration g_decoration_survival_2x = {
     }
 };
 
-const Decoration g_decoration_survival_3x = {
+static const Decoration g_decoration_survival_3x = {
     "SURVIVAL_3X", // id
     "Hard Survival Jewel 4", // name
     4, // slot_size
@@ -3663,7 +3663,7 @@ const Decoration g_decoration_survival_3x = {
     }
 };
 
-const Decoration g_decoration_mirewalker_2x = {
+static const Decoration g_decoration_mirewalker_2x = {
     "MIREWALKER_2X", // id
     "Mirewalker Jewel+ 4", // name
     4, // slot_size
@@ -3672,7 +3672,7 @@ const Decoration g_decoration_mirewalker_2x = {
     }
 };
 
-const Decoration g_decoration_specimen_2x = {
+static const Decoration g_decoration_specimen_2x = {
     "SPECIMEN_2X", // id
     "Specimen Jewel+ 4", // name
     4, // slot_size
@@ -3681,7 +3681,7 @@ const Decoration g_decoration_specimen_2x = {
     }
 };
 
-const Decoration g_decoration_sonorous_2x = {
+static const Decoration g_decoration_sonorous_2x = {
     "SONOROUS_2X", // id
     "Sonorous Jewel+ 4", // name
     4, // slot_size
@@ -3690,7 +3690,7 @@ const Decoration g_decoration_sonorous_2x = {
     }
 };
 
-const Decoration g_decoration_enduring_2x = {
+static const Decoration g_decoration_enduring_2x = {
     "ENDURING_2X", // id
     "Enduring Jewel+ 4", // name
     4, // slot_size
@@ -3699,7 +3699,7 @@ const Decoration g_decoration_enduring_2x = {
     }
 };
 
-const Decoration g_decoration_enduring_3x = {
+static const Decoration g_decoration_enduring_3x = {
     "ENDURING_3X", // id
     "Hard Enduring Jewel 4", // name
     4, // slot_size
@@ -3708,7 +3708,7 @@ const Decoration g_decoration_enduring_3x = {
     }
 };
 
-const Decoration g_decoration_defense_2x = {
+static const Decoration g_decoration_defense_2x = {
     "DEFENSE_2X", // id
     "Defense Jewel+ 4", // name
     4, // slot_size
@@ -3717,7 +3717,7 @@ const Decoration g_decoration_defense_2x = {
     }
 };
 
-const Decoration g_decoration_defense_3x = {
+static const Decoration g_decoration_defense_3x = {
     "DEFENSE_3X", // id
     "Hard Defense Jewel 4", // name
     4, // slot_size
@@ -3726,7 +3726,7 @@ const Decoration g_decoration_defense_3x = {
     }
 };
 
-const Decoration g_decoration_artillery_2x = {
+static const Decoration g_decoration_artillery_2x = {
     "ARTILLERY_2X", // id
     "Artillery Jewel+ 4", // name
     4, // slot_size
@@ -3735,7 +3735,7 @@ const Decoration g_decoration_artillery_2x = {
     }
 };
 
-const Decoration g_decoration_earplug_2x = {
+static const Decoration g_decoration_earplug_2x = {
     "EARPLUG_2X", // id
     "Earplug Jewel+ 4", // name
     4, // slot_size
@@ -3744,7 +3744,7 @@ const Decoration g_decoration_earplug_2x = {
     }
 };
 
-const Decoration g_decoration_wind_resist_2x = {
+static const Decoration g_decoration_wind_resist_2x = {
     "WIND_RESIST_2X", // id
     "Wind Resist Jewel+ 4", // name
     4, // slot_size
@@ -3753,7 +3753,7 @@ const Decoration g_decoration_wind_resist_2x = {
     }
 };
 
-const Decoration g_decoration_attack_2x = {
+static const Decoration g_decoration_attack_2x = {
     "ATTACK_2X", // id
     "Attack Jewel+ 4", // name
     4, // slot_size
@@ -3762,7 +3762,7 @@ const Decoration g_decoration_attack_2x = {
     }
 };
 
-const Decoration g_decoration_expert_2x = {
+static const Decoration g_decoration_expert_2x = {
     "EXPERT_2X", // id
     "Expert Jewel+ 4", // name
     4, // slot_size
@@ -3771,7 +3771,7 @@ const Decoration g_decoration_expert_2x = {
     }
 };
 
-const Decoration g_decoration_handicraft_2x = {
+static const Decoration g_decoration_handicraft_2x = {
     "HANDICRAFT_2X", // id
     "Handicraft Jewel+ 4", // name
     4, // slot_size
@@ -3780,7 +3780,7 @@ const Decoration g_decoration_handicraft_2x = {
     }
 };
 
-const Decoration g_decoration_throttle_2x = {
+static const Decoration g_decoration_throttle_2x = {
     "THROTTLE_2X", // id
     "Throttle Jewel+ 4", // name
     4, // slot_size
@@ -3789,7 +3789,7 @@ const Decoration g_decoration_throttle_2x = {
     }
 };
 
-const Decoration g_decoration_challenger_2x = {
+static const Decoration g_decoration_challenger_2x = {
     "CHALLENGER_2X", // id
     "Challenger Jewel+ 4", // name
     4, // slot_size
@@ -3798,7 +3798,7 @@ const Decoration g_decoration_challenger_2x = {
     }
 };
 
-const Decoration g_decoration_potential_2x = {
+static const Decoration g_decoration_potential_2x = {
     "POTENTIAL_2X", // id
     "Potential Jewel+ 4", // name
     4, // slot_size
@@ -3807,7 +3807,7 @@ const Decoration g_decoration_potential_2x = {
     }
 };
 
-const Decoration g_decoration_furor_2x = {
+static const Decoration g_decoration_furor_2x = {
     "FUROR_2X", // id
     "Furor Jewel+ 4", // name
     4, // slot_size
@@ -3816,7 +3816,7 @@ const Decoration g_decoration_furor_2x = {
     }
 };
 
-const Decoration g_decoration_physique_2x = {
+static const Decoration g_decoration_physique_2x = {
     "PHYSIQUE_2X", // id
     "Physique Jewel+ 4", // name
     4, // slot_size
@@ -3825,7 +3825,7 @@ const Decoration g_decoration_physique_2x = {
     }
 };
 
-const Decoration g_decoration_evasion_2x = {
+static const Decoration g_decoration_evasion_2x = {
     "EVASION_2X", // id
     "Evasion Jewel+ 4", // name
     4, // slot_size
@@ -3834,7 +3834,7 @@ const Decoration g_decoration_evasion_2x = {
     }
 };
 
-const Decoration g_decoration_ironwall_2x = {
+static const Decoration g_decoration_ironwall_2x = {
     "IRONWALL_2X", // id
     "Ironwall Jewel+ 4", // name
     4, // slot_size
@@ -3843,7 +3843,7 @@ const Decoration g_decoration_ironwall_2x = {
     }
 };
 
-const Decoration g_decoration_friendship_2x = {
+static const Decoration g_decoration_friendship_2x = {
     "FRIENDSHIP_2X", // id
     "Friendship Jewel+ 4", // name
     4, // slot_size

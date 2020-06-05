@@ -239,7 +239,7 @@ def generate_decos_source():
         skills_str = "\n".join(skills)
 
         deco_definitions.append(
-                    f"const Decoration {t['identifier']} = {{\n"
+                    f"static const Decoration {t['identifier']} = {{\n"
                     f"    \"{t['deco_id']}\", // id\n"
                     f"    \"{t['deco_name']}\", // name\n"
                     f"    {t['slot_size']}, // slot_size\n"

@@ -148,8 +148,8 @@ constexpr unsigned int k_MAX_DECO_SIZE = 4;
 
 
 struct Decoration {
-    const std::string id;
-    const std::string name;
+    const char* id;
+    const char* name;
     const unsigned int slot_size;
     const std::vector<std::pair<const Skill*, unsigned int>> skills; // Skill and level
 };
