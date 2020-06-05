@@ -106,9 +106,9 @@ protected:
 
 
 struct Skill {
-    const std::string  id;            // The "UPPER_SNAKE_CASE" identifier of the skill.
+    const char*        id;            // The "UPPER_SNAKE_CASE" identifier of the skill.
 
-    const std::string  name;          // Actual skill name, as it appears in-game.
+    const char*        name;          // Actual skill name, as it appears in-game.
     const unsigned int normal_limit;  // Maximum level without "secret" skills.
     const unsigned int secret_limit;  // Maximum level possible, usually only attainable with "secret" skills.
                                       // For programming convenience, normal_limit and secret_limit are equal
@@ -132,8 +132,8 @@ struct Skill {
 
 
 struct SetBonus {
-    const std::string id;
-    const std::string name;
+    const char* id;
+    const char* name;
     const std::vector<std::pair<unsigned int, const Skill*>> stages; // tuple format: (number of stages, skill)
 };
 
@@ -315,8 +315,8 @@ struct Charm {
 
 
 struct MiscBuff {
-    const std::string id;
-    const std::string name;
+    const char* id;
+    const char* name;
     //const std::string buff_class; // The class field in the database is purely for human use.
     const unsigned int added_raw;
     const double base_raw_multiplier;

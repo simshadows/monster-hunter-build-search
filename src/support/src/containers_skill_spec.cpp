@@ -127,7 +127,8 @@ std::string SkillSpec::get_humanreadable() const {
             const unsigned int  state   = this->states.at(skill);
             assert(state != 0);
 
-            ret += "\n  " + skill->name;
+            // TODO: Figure out a better solution to converting char* to std::string.
+            ret += "\n  " + std::string(skill->name);
             if (min_lvl > 0)       ret += " [Minimum level: " + std::to_string(min_lvl) + "]";
             if (skill->states > 2) ret += " [State: " + std::to_string(state) + "]";
         }
@@ -138,7 +139,8 @@ std::string SkillSpec::get_humanreadable() const {
         ret += "\n  (no skills)";
     } else {
         for (const Skill* skill : this->force_remove_skills) {
-            ret += "\n  " + skill->name;
+            // TODO: Figure out a better solution to converting char* to std::string.
+            ret += "\n  " + std::string(skill->name);
         }
     }
 
@@ -147,7 +149,8 @@ std::string SkillSpec::get_humanreadable() const {
         ret += "\n  (no set bonuses)";
     } else {
         for (const auto& e : this->set_bonus_cutoffs) {
-            ret += "\n  " + e.first->name + " @ " + std::to_string(e.second) + " or more pieces";
+            // TODO: Figure out a better solution to converting char* to std::string.
+            ret += "\n  " + std::string(e.first->name) + " @ " + std::to_string(e.second) + " or more pieces";
         }
     }
 

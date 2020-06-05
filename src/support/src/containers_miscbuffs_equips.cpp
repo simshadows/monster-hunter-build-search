@@ -24,8 +24,9 @@ MiscBuffsEquips::MiscBuffsEquips(ContainerType&& new_data)
     for (const MiscBuff * const e : this->data) {
         for (const std::string& ee : e->uniqueness_tags) {
             if (Utils::set_has_key(present_uniqueness_tags, ee)) {
-                throw std::runtime_error("Buff '" + e->id + "' cannot be applied due "
-                                         "to mutual exclusion with another buff.");
+                // TODO: Figure out a better solution to converting char* to std::string.
+                throw std::runtime_error("Buff '" + std::string(e->id) + "' cannot be applied "
+                                         "due to mutual exclusion with another buff.");
             }
             present_uniqueness_tags.emplace(ee);
         }
