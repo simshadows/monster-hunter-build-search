@@ -152,11 +152,6 @@ struct Decoration {
     const std::string name;
     const unsigned int slot_size;
     const std::vector<std::pair<const Skill*, unsigned int>> skills; // Skill and level
-
-    Decoration(std::string&& new_id,
-               std::string&& new_name,
-               unsigned int new_slot_size,
-               std::vector<std::pair<const Skill*, unsigned int>>&& new_skills) noexcept;
 };
 
 

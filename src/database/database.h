@@ -17,30 +17,6 @@ namespace MHWIBuildSearch {
 
 
 /****************************************************************************************
- * Decorations Database
- ***************************************************************************************/
-
-
-class DecorationsDatabase {
-    // TODO: Make this std::unique_ptr<...> somehow. I don't see why the compilers keep
-    //       complaining about a call to an implicitly deleted copy constructor because
-    //       I don't see why a copy constructor is even needed.
-    std::unordered_map<std::string, std::shared_ptr<Decoration>> decorations_store;
-public:
-    // Constructor
-    static const DecorationsDatabase read_db_file(const std::string& filename);
-
-    // Access
-    const Decoration* at(const std::string& deco_id) const;
-    std::vector<const Decoration*> get_all() const;
-    std::unordered_set<const Skill*> all_possible_skills_from_decos() const;
-
-private:
-    DecorationsDatabase() noexcept;
-};
-
-
-/****************************************************************************************
  * Weapons Database
  ***************************************************************************************/
 
@@ -125,7 +101,6 @@ private:
 
 
 struct Database {
-    const DecorationsDatabase decos;
     const WeaponsDatabase     weapons;
     const ArmourDatabase      armour;
     const CharmsDatabase      charms;

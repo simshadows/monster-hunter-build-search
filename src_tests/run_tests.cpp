@@ -12,6 +12,7 @@
 
 #include "../src/core/core.h"
 #include "../src/database/database.h"
+#include "../src/database/database_decorations.h"
 #include "../src/database/database_miscbuffs.h"
 #include "../src/database/database_skills.h"
 #include "../src/support/support.h"
@@ -233,19 +234,19 @@ TEST_CASE("Incrementally building up a greatsword Safi Shattersplitter build.") 
                                          "CHALLENGER_CHARM",
                                          db);
         DecoEquips decos;
-        decos.add(db.decos.at("CHARGER_VITALITY_COMPOUND"));
-        decos.add(db.decos.at("CHARGER_VITALITY_COMPOUND"));
-        decos.add(db.decos.at("CHARGER_VITALITY_COMPOUND"));
-        decos.add(db.decos.at("CRITICAL"));
-        decos.add(db.decos.at("ATTACK"));
-        decos.add(db.decos.at("ATTACK_2X"));
-        decos.add(db.decos.at("CRITICAL"));
-        decos.add(db.decos.at("HANDICRAFT_2X"));
-        decos.add(db.decos.at("CRITICAL"));
-        decos.add(db.decos.at("ATTACK"));
-        decos.add(db.decos.at("HANDICRAFT_2X"));
-        decos.add(db.decos.at("ATTACK"));
-        decos.add(db.decos.at("ATTACK"));
+        decos.add(DecorationsDatabase::get_decoration("CHARGER_VITALITY_COMPOUND"));
+        decos.add(DecorationsDatabase::get_decoration("CHARGER_VITALITY_COMPOUND"));
+        decos.add(DecorationsDatabase::get_decoration("CHARGER_VITALITY_COMPOUND"));
+        decos.add(DecorationsDatabase::get_decoration("CRITICAL"));
+        decos.add(DecorationsDatabase::get_decoration("ATTACK"));
+        decos.add(DecorationsDatabase::get_decoration("ATTACK_2X"));
+        decos.add(DecorationsDatabase::get_decoration("CRITICAL"));
+        decos.add(DecorationsDatabase::get_decoration("HANDICRAFT_2X"));
+        decos.add(DecorationsDatabase::get_decoration("CRITICAL"));
+        decos.add(DecorationsDatabase::get_decoration("ATTACK"));
+        decos.add(DecorationsDatabase::get_decoration("HANDICRAFT_2X"));
+        decos.add(DecorationsDatabase::get_decoration("ATTACK"));
+        decos.add(DecorationsDatabase::get_decoration("ATTACK"));
 
         const EffectiveDamageValues edv = calculate_edv_from_gear_lookup(weapon, armour, decos, misc_buffs, skill_spec);
         const double efr = edv.efr;
@@ -456,18 +457,18 @@ TEST_CASE("DecoEquips::fits()") {
         REQUIRE(decos.fits_in(armour, weapon.calculate_contribution()));
         REQUIRE(Utils::round_2decpl(efr) == Approx(512.28));
 
-        decos.add(db.decos.at("CHALLENGER_2X"));
-        decos.add(db.decos.at("ATTACK"));
-        decos.add(db.decos.at("PHOENIX"));
-        decos.add(db.decos.at("ATTACK_2X"));
-        decos.add(db.decos.at("ATTACK"));
-        decos.add(db.decos.at("EXPERT"));
-        decos.add(db.decos.at("EXPERT_2X"));
-        decos.add(db.decos.at("EARPLUG"));
-        decos.add(db.decos.at("PHOENIX"));
-        decos.add(db.decos.at("CHALLENGER_VITALITY_COMPOUND"));
-        decos.add(db.decos.at("CRITICAL"));
-        decos.add(db.decos.at("CRITICAL"));
+        decos.add(DecorationsDatabase::get_decoration("CHALLENGER_2X"));
+        decos.add(DecorationsDatabase::get_decoration("ATTACK"));
+        decos.add(DecorationsDatabase::get_decoration("PHOENIX"));
+        decos.add(DecorationsDatabase::get_decoration("ATTACK_2X"));
+        decos.add(DecorationsDatabase::get_decoration("ATTACK"));
+        decos.add(DecorationsDatabase::get_decoration("EXPERT"));
+        decos.add(DecorationsDatabase::get_decoration("EXPERT_2X"));
+        decos.add(DecorationsDatabase::get_decoration("EARPLUG"));
+        decos.add(DecorationsDatabase::get_decoration("PHOENIX"));
+        decos.add(DecorationsDatabase::get_decoration("CHALLENGER_VITALITY_COMPOUND"));
+        decos.add(DecorationsDatabase::get_decoration("CRITICAL"));
+        decos.add(DecorationsDatabase::get_decoration("CRITICAL"));
 
         const EffectiveDamageValues edv2 = calculate_edv_from_gear_lookup(weapon, armour, decos, misc_buffs, skill_spec);
         const double efr2 = edv2.efr;
@@ -477,19 +478,19 @@ TEST_CASE("DecoEquips::fits()") {
         // Now, we attempt to overflow the deco capacity.
 
         DecoEquips new_decos = decos;
-        new_decos.add(db.decos.at("ATTACK"));
+        new_decos.add(DecorationsDatabase::get_decoration("ATTACK"));
         REQUIRE(!new_decos.fits_in(armour, weapon.calculate_contribution()));
 
         new_decos = decos;
-        new_decos.add(db.decos.at("ELEMENTLESS"));
+        new_decos.add(DecorationsDatabase::get_decoration("ELEMENTLESS"));
         REQUIRE(!new_decos.fits_in(armour, weapon.calculate_contribution()));
 
         new_decos = decos;
-        new_decos.add(db.decos.at("HANDICRAFT"));
+        new_decos.add(DecorationsDatabase::get_decoration("HANDICRAFT"));
         REQUIRE(!new_decos.fits_in(armour, weapon.calculate_contribution()));
 
         new_decos = decos;
-        new_decos.add(db.decos.at("TENDERIZER_VITALITY_COMPOUND"));
+        new_decos.add(DecorationsDatabase::get_decoration("TENDERIZER_VITALITY_COMPOUND"));
         REQUIRE(!new_decos.fits_in(armour, weapon.calculate_contribution()));
 
     }
