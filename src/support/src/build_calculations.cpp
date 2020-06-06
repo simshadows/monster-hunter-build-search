@@ -43,7 +43,7 @@ static EffectiveDamageValues calculate_edv(const unsigned int    weapon_raw, // 
     const int affinity = weapon_aff + added_aff;
 
     const double raw_crit_modifier = [&](){
-        //double raw_crit_chance = std::clamp(((double) (weapon_aff + added_aff)) / 100, -1.0, 1.0); // C++17
+        //double raw_crit_chance = std::clamp(((double) (weapon_aff + added_aff)) / 100, -1.0, 1.0); // Could be better
         double raw_crit_chance = ((double) affinity) / 100;
         if (raw_crit_chance < 0) {
             double raw_blunder_chance = (raw_crit_chance < -1.0) ? -1.0 : -raw_crit_chance;
@@ -53,7 +53,6 @@ static EffectiveDamageValues calculate_edv(const unsigned int    weapon_raw, // 
             return (raw_crit_dmg_multiplier * raw_crit_chance) + (1 - raw_crit_chance);
         }
     }();
-
 
     /*
      * Raw

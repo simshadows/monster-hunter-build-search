@@ -765,13 +765,6 @@ static void do_search(const Database& db, const SearchParameters& params) {
                 if (!params.skill_spec.skills_meet_minimum_requirements(skills)) continue;
                 assert((!params.health_regen_required) || wc.contributions.health_regen_active);
 
-                const DecoEquips curr_decos = [&](){
-                    DecoEquips x = std::move(dc);
-                    x.merge_in(ac.decos);
-                    assert(x.fits_in(ac.armour, wc.contributions));
-                    return x;
-                }();
-
                 const EffectiveDamageValues edv = calculate_edv_from_skills_lookup(wc.instance.weapon->weapon_class,
                                                                                    wc.contributions,
                                                                                    skills,
@@ -781,6 +774,13 @@ static void do_search(const Database& db, const SearchParameters& params) {
 
                 if (efr > best_efr) {
                     best_efr = efr;
+
+                    const DecoEquips curr_decos = [&](){
+                        DecoEquips x = std::move(dc);
+                        x.merge_in(ac.decos);
+                        assert(x.fits_in(ac.armour, wc.contributions));
+                        return x;
+                    }();
 
                     const std::string build_info = wc.instance.weapon->name + "\n\n"
                                                    + wc.instance.upgrades->get_humanreadable() + "\n\n"
