@@ -28,6 +28,9 @@ namespace MHWIBuildSearch
 {
 
 
+using DecoSlots = std::vector<unsigned int>;
+
+
 struct SSBLimits {
     unsigned int operator()(const Skill * const k) const noexcept {
         return k->secret_limit;
@@ -199,6 +202,31 @@ static std::vector<WeaponInstanceExtended> prepare_weapons(const Database& db,
 }
 
 
+// TODO: Ugh, fix this style. Actually, fix the entire codebase's style. eww.
+static std::vector<std::tuple<DecoSlots, const Skill*, const SetBonus*, std::vector<WeaponInstanceExtended>>>
+group_weapons(std::vector<WeaponInstanceExtended>&& weapons) {
+    std::map<std::tuple<DecoSlots, const Skill*, const SetBonus*>, std::vector<WeaponInstanceExtended>> groups;
+
+    for (auto& wc : weapons) {
+        DecoSlots& deco_slots = wc.contributions.deco_slots;
+        const Skill* skill = wc.contributions.skill;
+        const SetBonus* setbonus = wc.contributions.set_bonus;
+        assert(std::is_sorted(deco_slots.begin(), deco_slots.end(), std::greater<unsigned int>()));
+        std::vector<WeaponInstanceExtended>& group = groups[std::make_tuple(deco_slots, skill, setbonus)];
+        group.emplace_back(std::move(wc));
+    }
+
+    std::vector<std::tuple<DecoSlots, const Skill*, const SetBonus*, std::vector<WeaponInstanceExtended>>> ret;
+    for (auto& e : groups) {
+        ret.emplace_back(std::get<0>(e.first),
+                         std::get<1>(e.first),
+                         std::get<2>(e.first),
+                         std::move(e.second) );
+    }
+    return ret;
+}
+
+
 static std::array<std::vector<const Decoration*>, k_MAX_DECO_SIZE> prepare_decos(const Database& db,
                                                                                  const SkillSpec& skill_spec) {
     std::vector<const Decoration*> all_decos = db.decos.get_all();
@@ -339,7 +367,7 @@ static std::map<ArmourSlot, std::vector<const ArmourPiece*>> prepare_armour(cons
 }
 
 
-static std::vector<std::vector<const Decoration*>> generate_deco_combos(const std::vector<unsigned int>& deco_slots,
+static std::vector<std::vector<const Decoration*>> generate_deco_combos(const DecoSlots& deco_slots,
                                                                         const std::array<std::vector<const Decoration*>,
                                                                                          k_MAX_DECO_SIZE>& sorted_decos,
                                                                         const SkillSpec& skill_spec,
@@ -350,7 +378,7 @@ static std::vector<std::vector<const Decoration*>> generate_deco_combos(const st
     // The rest of the algorithm will assume the presence of decoration slots.
 
     // We will "consume" deco slots from deco_slots by tracking the first "unconsumed" slot.
-    using DecoSlotsHead = std::vector<unsigned int>::const_iterator;
+    using DecoSlotsHead = DecoSlots::const_iterator;
 
     using WorkingCombo  = std::pair<std::vector<const Decoration*>, DecoSlotsHead>;
     using WorkingList   = std::vector<WorkingCombo>;
@@ -532,17 +560,37 @@ static void merge_in_armour_list(SSBSeenMap<ArmourSetCombo>& armour_combos,
 }
 
 
-static void refilter_weapons(std::vector<WeaponInstanceExtended>& weapons,
+static void refilter_weapons(std::vector<std::tuple<DecoSlots,
+                                                    const Skill*,
+                                                    const SetBonus*,
+                                                    std::vector<WeaponInstanceExtended>>>& weapon_groups,
                              const double max_efr,
                              const std::size_t original_weapon_count) {
-    const auto pred = [&](const WeaponInstanceExtended& x){
+
+    std::size_t new_weapon_count = 0;
+
+    // First, we prune within the individual groups
+    const auto pred1 = [&](const WeaponInstanceExtended& x){
         return x.ceiling_efr <= max_efr;
     };
-    weapons.erase(std::remove_if(weapons.begin(), weapons.end(), pred), weapons.end());
+    for (auto& weapon_group_tup : weapon_groups) {
+        auto& weapon_group = std::get<3>(weapon_group_tup);
+        weapon_group.erase(std::remove_if(weapon_group.begin(), weapon_group.end(), pred1), weapon_group.end());
+        new_weapon_count += weapon_group.size();
+    }
+
+    // Now, we prune away empty groups.
+    const auto pred2 = [&](const std::tuple<DecoSlots,
+                           const Skill*,
+                           const SetBonus*,
+                           std::vector<WeaponInstanceExtended>>& x){
+        return (!std::get<3>(x).size());
+    };
+    weapon_groups.erase(std::remove_if(weapon_groups.begin(), weapon_groups.end(), pred2), weapon_groups.end());
 
     Utils::log_stat_reduction("\n\nRepruned weapons with EFR " + std::to_string(max_efr) + ": ",
                               original_weapon_count,
-                              weapons.size());
+                              new_weapon_count);
 }
 
 
@@ -577,9 +625,13 @@ static void do_search(const Database& db, const SearchParameters& params) {
 
     std::clog << "Buffs:\n" + Utils::indent(params.misc_buffs.get_humanreadable(), 2) + "\n\n";
 
-    std::vector<WeaponInstanceExtended> weapons = prepare_weapons(db, params, set_bonus_subset);
-    const std::size_t weapons_initial_size = weapons.size();
-    assert(weapons_initial_size);
+    std::size_t weapons_initial_size; // TODO: make constant
+    std::vector<std::tuple<DecoSlots, const Skill*, const SetBonus*, std::vector<WeaponInstanceExtended>>> weapons = [&](){
+        std::vector<WeaponInstanceExtended> weapons = prepare_weapons(db, params, set_bonus_subset);
+        weapons_initial_size = weapons.size();
+        assert(weapons_initial_size);
+        return group_weapons(std::move(weapons));
+    }();
 
     auto start_t = std::chrono::steady_clock::now();
 
@@ -717,18 +769,24 @@ static void do_search(const Database& db, const SearchParameters& params) {
         const ArmourSetCombo& ac     = e.second;
 
         bool reprune_weapons = false;
-        for (const WeaponInstanceExtended& wc : weapons) {
+        for (const auto& weapon_group_tup : weapons) {
+            const DecoSlots& deco_slots = std::get<0>(weapon_group_tup);
+            const Skill * const skill = std::get<1>(weapon_group_tup);
+            const SetBonus * const setbonus = std::get<2>(weapon_group_tup);
+            const std::vector<WeaponInstanceExtended>& weapon_group = std::get<3>(weapon_group_tup);
 
+            // IMPORTANT NOTE: We are intentionally ignoring the weapon skill for now!
+            //                 We will add it later.
+            // TODO: Consider factoring in weapon skill here.
             const SkillMap wac_skills = [&](){
                 SkillMap x = std::get<0>(ac_ssb); // "Weapon-armour-combo"
-                if (wc.contributions.skill) x.increment(wc.contributions.skill, 1);
-                // TODO: Should we merge in set bonuses here?
+                if (skill) x.increment(skill, 1);
                 return x;
             }();
 
             const SetBonusMap wac_set_bonuses = [&](){
                 SetBonusMap x = ac.armour.get_set_bonuses();
-                if (wc.contributions.set_bonus) x.increment(wc.contributions.set_bonus, 1);
+                if (setbonus) x.increment(setbonus, 1);
                 return x;
             }();
             
@@ -745,13 +803,10 @@ static void do_search(const Database& db, const SearchParameters& params) {
                 continue;
             }
 
-            std::vector<std::vector<const Decoration*>> w_decos = generate_deco_combos(wc.contributions.deco_slots,
+            std::vector<std::vector<const Decoration*>> w_decos = generate_deco_combos(deco_slots,
                                                                                        grouped_sorted_decos,
                                                                                        params.skill_spec,
                                                                                        wac_skills);
-            ++stat_wa_combos_explored;
-            stat_wad_combos_explored += w_decos.size();
-
             for (std::vector<const Decoration*>& dc : w_decos) {
 
                 const SkillMap skills = [&](){
@@ -763,41 +818,49 @@ static void do_search(const Database& db, const SearchParameters& params) {
 
                 // Filter out anything that doesn't meet minimum requirements
                 if (!params.skill_spec.skills_meet_minimum_requirements(skills)) continue;
-                assert((!params.health_regen_required) || wc.contributions.health_regen_active);
 
-                const EffectiveDamageValues edv = calculate_edv_from_skills_lookup(wc.instance.weapon->weapon_class,
-                                                                                   wc.contributions,
-                                                                                   skills,
-                                                                                   params.misc_buffs,
-                                                                                   params.skill_spec);
-                const double efr = edv.efr;
+                ++stat_wa_combos_explored;
+                stat_wad_combos_explored += weapon_group.size();
 
-                if (efr > best_efr) {
-                    best_efr = efr;
+                for (const WeaponInstanceExtended& wc : weapon_group) {
 
-                    const DecoEquips curr_decos = [&](){
-                        DecoEquips x = std::move(dc);
-                        x.merge_in(ac.decos);
-                        assert(x.fits_in(ac.armour, wc.contributions));
-                        return x;
-                    }();
+                    assert((!params.health_regen_required) || wc.contributions.health_regen_active);
 
-                    const std::string build_info = wc.instance.weapon->name + "\n\n"
-                                                   + wc.instance.upgrades->get_humanreadable() + "\n\n"
-                                                   + wc.instance.augments->get_humanreadable() + "\n\n"
-                                                   + "Armour:\n"
-                                                   + Utils::indent(ac.armour.get_humanreadable(), 4) + "\n\n"
-                                                   + "Decorations:\n"
-                                                   + Utils::indent(curr_decos.get_humanreadable(), 4) + "\n\n"
-                                                   + "Skills:\n"
-                                                   + Utils::indent(skills.get_humanreadable(), 4) + "\n\n"
-                                                   + "Buffs:\n"
-                                                   + Utils::indent(params.misc_buffs.get_humanreadable(), 4) + "\n\n"
-                                                   + "Effective Damage Values:\n"
-                                                   + Utils::indent(edv.get_humanreadable(), 4);
-                    std::clog << "\n\nFound EFR: " + std::to_string(best_efr) + "\n\n"
-                              << Utils::indent(build_info, 4) + "\n";
-                    reprune_weapons = true;
+                    const EffectiveDamageValues edv = calculate_edv_from_skills_lookup(wc.instance.weapon->weapon_class,
+                                                                                       wc.contributions,
+                                                                                       skills,
+                                                                                       params.misc_buffs,
+                                                                                       params.skill_spec);
+                    const double efr = edv.efr;
+
+                    if (efr > best_efr) {
+                        best_efr = efr;
+
+                        const DecoEquips curr_decos = [&](){
+                            DecoEquips x = std::move(dc);
+                            x.merge_in(ac.decos);
+                            assert(x.fits_in(ac.armour, wc.contributions));
+                            return x;
+                        }();
+
+                        const std::string build_info = wc.instance.weapon->name + "\n\n"
+                                                       + wc.instance.upgrades->get_humanreadable() + "\n\n"
+                                                       + wc.instance.augments->get_humanreadable() + "\n\n"
+                                                       + "Armour:\n"
+                                                       + Utils::indent(ac.armour.get_humanreadable(), 4) + "\n\n"
+                                                       + "Decorations:\n"
+                                                       + Utils::indent(curr_decos.get_humanreadable(), 4) + "\n\n"
+                                                       + "Skills:\n"
+                                                       + Utils::indent(skills.get_humanreadable(), 4) + "\n\n"
+                                                       + "Buffs:\n"
+                                                       + Utils::indent(params.misc_buffs.get_humanreadable(), 4) + "\n\n"
+                                                       + "Effective Damage Values:\n"
+                                                       + Utils::indent(edv.get_humanreadable(), 4);
+                        std::clog << "\n\nFound EFR: " + std::to_string(best_efr) + "\n\n"
+                                  << Utils::indent(build_info, 4) + "\n";
+                        reprune_weapons = true;
+                    }
+
                 }
 
             }
