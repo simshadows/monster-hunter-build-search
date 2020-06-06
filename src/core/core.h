@@ -47,6 +47,9 @@ enum class EleStatType {
 };
 
 
+std::string elestattype_to_str(EleStatType);
+
+
 class InvalidChange : public std::exception {
     const char * const msg;
 public:

@@ -23,6 +23,11 @@ static constexpr double k_RAW_BLUNDER_MULTIPLIER = 0.75;
 
 static EffectiveDamageValues calculate_edv(const unsigned int    weapon_raw, // True raw, not bloated raw.
                                            const int             weapon_aff,
+
+                                           const EleStatVisibility weapon_elestat_visibility,
+                                           const EleStatType       weapon_elestat_type,
+                                           const unsigned int      weapon_elestat_value,
+
                                            const double          base_raw_multiplier,
                                            const double          frostcraft_raw_multiplier,
                                            const unsigned int    bludgeoner_added_raw,
@@ -35,19 +40,26 @@ static EffectiveDamageValues calculate_edv(const unsigned int    weapon_raw, // 
     assert(base_raw_multiplier > 0.0);
     assert(raw_crit_dmg_multiplier > 0.0);
 
-    const double raw_sharpness_modifier = final_sharpness_gauge.get_raw_sharpness_modifier();
     const int affinity = weapon_aff + added_aff;
 
-    //double raw_crit_chance = std::clamp(((double) (weapon_aff + added_aff)) / 100, -1.0, 1.0); // C++17
-    double raw_crit_chance = ((double) affinity) / 100;
-    double raw_crit_modifier;
-    if (raw_crit_chance < 0) {
-        double raw_blunder_chance = (raw_crit_chance < -1.0) ? -1.0 : -raw_crit_chance;
-        raw_crit_modifier = (k_RAW_BLUNDER_MULTIPLIER * raw_blunder_chance) + (1 - raw_blunder_chance);
-    } else {
-        raw_crit_chance = (raw_crit_chance > 1.0) ? 1.0 : raw_crit_chance;
-        raw_crit_modifier = (raw_crit_dmg_multiplier * raw_crit_chance) + (1 - raw_crit_chance);
-    }
+    const double raw_crit_modifier = [&](){
+        //double raw_crit_chance = std::clamp(((double) (weapon_aff + added_aff)) / 100, -1.0, 1.0); // C++17
+        double raw_crit_chance = ((double) affinity) / 100;
+        if (raw_crit_chance < 0) {
+            double raw_blunder_chance = (raw_crit_chance < -1.0) ? -1.0 : -raw_crit_chance;
+            return (k_RAW_BLUNDER_MULTIPLIER * raw_blunder_chance) + (1 - raw_blunder_chance);
+        } else {
+            raw_crit_chance = (raw_crit_chance > 1.0) ? 1.0 : raw_crit_chance;
+            return (raw_crit_dmg_multiplier * raw_crit_chance) + (1 - raw_crit_chance);
+        }
+    }();
+
+
+    /*
+     * Raw
+     */
+
+    const double raw_sharpness_modifier = final_sharpness_gauge.get_raw_sharpness_modifier();
 
     const unsigned int raw_cap = weapon_raw * k_RAW_CAP;
 
@@ -57,10 +69,21 @@ static EffectiveDamageValues calculate_edv(const unsigned int    weapon_raw, // 
     
     const double efr = postcap_true_raw * raw_crit_modifier * raw_sharpness_modifier * frostcraft_raw_multiplier;
 
+    /*
+     * Element/Status
+     */
+
+    // TODO: These are *very* placeholdery implementations. Improve it!
+    const double efes = (weapon_elestat_visibility == EleStatVisibility::open) ? weapon_elestat_value : 0;
+    const EleStatType elestat_type = (weapon_elestat_visibility == EleStatVisibility::open) ? weapon_elestat_type : EleStatType::none;
+
     return {affinity,
             final_sharpness_gauge,
             ((double) precap_true_raw / raw_cap),
-            efr };
+            efr,
+
+            efes,
+            elestat_type };
 }
 
 
@@ -73,6 +96,11 @@ EffectiveDamageValues calculate_edv_from_skills_lookup(const WeaponClass        
     SkillContribution sc(full_skills, skill_spec, weapon_class, wc);
     return calculate_edv(wc.weapon_raw,
                          wc.weapon_aff,
+
+                         wc.elestat_visibility,
+                         wc.elestat_type,
+                         wc.elestat_value,
+
                          sc.base_raw_multiplier * misc_buffs.get_base_raw_multiplier(),
                          sc.frostcraft_raw_multiplier,
                          sc.bludgeoner_added_raw,
@@ -105,6 +133,7 @@ EffectiveDamageValues calculate_edv_from_gear_lookup(const WeaponInstance&  weap
 
 std::string EffectiveDamageValues::get_humanreadable() const {
     return "EFR: " + std::to_string(this->efr)
+           + "\nEFE/EFS: " + std::to_string(this->efes) + " " + elestattype_to_str(this->elestat_type)
            + "\nAffinity: " + std::to_string(this->affinity)
            + "\nSharpness Gauge: " + this->final_sharpness_gauge.get_humanreadable()
            + "\nPre-Raw Cap Ratio: " + std::to_string(this->pre_raw_cap_ratio * 100) + "%";

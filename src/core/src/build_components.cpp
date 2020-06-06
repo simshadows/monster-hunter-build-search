@@ -11,12 +11,23 @@
 namespace MHWIBuildSearch
 {
 
-/****************************************************************************************
- * Basic Build Components: Skill and SetBonus
- ***************************************************************************************/
 
-
-// Nothing required!
+std::string elestattype_to_str(EleStatType v) {
+    switch (v) {
+        case EleStatType::none:      return "None";
+        case EleStatType::fire:      return "Fire";
+        case EleStatType::water:     return "Water";
+        case EleStatType::thunder:   return "Thunder";
+        case EleStatType::ice:       return "Ice";
+        case EleStatType::dragon:    return "Dragon";
+        case EleStatType::poison:    return "Poison";
+        case EleStatType::sleep:     return "Sleep";
+        case EleStatType::paralysis: return "Paralysis";
+        case EleStatType::blast:     return "Blast";
+        default:
+            throw std::logic_error("Invalid EleStatType value.");
+    }
+}
 
 
 /****************************************************************************************

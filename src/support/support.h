@@ -287,7 +287,12 @@ struct EffectiveDamageValues {
     //      If >1, then we have exceeded the raw cap.
     double pre_raw_cap_ratio; 
 
-    double efr; // "Effective Raw"
+    // "Effective Raw"
+    double efr;
+
+    // "Effective Element" or "Effective Status"
+    double efes;              // 0 if no element.
+    EleStatType elestat_type; // EleStatType::none if no element.
 
     std::string get_humanreadable() const;
 };
