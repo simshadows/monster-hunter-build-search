@@ -55,7 +55,7 @@ static EffectiveDamageValues calculate_edv(const unsigned int    weapon_raw, // 
     }();
 
     /*
-     * Raw
+     * Effective Raw
      */
 
     const double raw_sharpness_modifier = final_sharpness_gauge.get_raw_sharpness_modifier();
@@ -69,12 +69,16 @@ static EffectiveDamageValues calculate_edv(const unsigned int    weapon_raw, // 
     const double efr = postcap_true_raw * raw_crit_modifier * raw_sharpness_modifier * frostcraft_raw_multiplier;
 
     /*
-     * Element/Status
+     * Effective Element/Status
      */
 
     // TODO: These are *very* placeholdery implementations. Improve it!
     const double efes = (weapon_elestat_visibility == EleStatVisibility::open) ? weapon_elestat_value : 0;
     const EleStatType elestat_type = (weapon_elestat_visibility == EleStatVisibility::open) ? weapon_elestat_type : EleStatType::none;
+
+    /*
+     * Modelled Raw
+     */
 
     return {affinity,
             final_sharpness_gauge,
@@ -136,6 +140,34 @@ std::string EffectiveDamageValues::get_humanreadable() const {
            + "\nAffinity: " + std::to_string(this->affinity)
            + "\nSharpness Gauge: " + this->final_sharpness_gauge.get_humanreadable()
            + "\nPre-Raw Cap Ratio: " + std::to_string(this->pre_raw_cap_ratio * 100) + "%";
+}
+
+
+// TODO: Implement the special rounding function that implements special handling of values between
+//       -1.0 and 1.0 to always round away from zero.
+ModelCalculatedValues calculate_damage(const DamageModel& model,
+                                       const EffectiveDamageValues& edv) {
+
+    const double unrounded_raw_damage = (edv.efr / 100) * (double) model.raw_mv * ((double) model.raw_hzv / 100);
+    const double unrounded_total_damage = unrounded_raw_damage;
+    const unsigned int actual_total_damage = std::round(unrounded_raw_damage);
+
+    return {unrounded_raw_damage,
+            unrounded_total_damage,
+            actual_total_damage };
+}
+
+
+std::string DamageModel::get_humanreadable() const {
+    return "Raw MV: " + std::to_string(this->raw_mv)
+           + "\nRaw HZV: " + std::to_string(this->raw_hzv);
+}
+
+
+std::string ModelCalculatedValues::get_humanreadable() const {
+    return "Unrounded Raw Damage: " + std::to_string(this->unrounded_raw_damage)
+           + "\nUnrounded Total Damage: " + std::to_string(this->unrounded_total_damage)
+           + "\nActual Total Damage: " + std::to_string(this->actual_total_damage);
 }
 
 

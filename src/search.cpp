@@ -66,7 +66,7 @@ struct ArmourSetCombo {
 struct WeaponInstanceExtended {
     WeaponInstance     instance;
     WeaponContribution contributions;
-    double             ceiling_efr;
+    double             ceiling_total_damage;
 };
 
 
@@ -190,8 +190,9 @@ static std::vector<WeaponInstanceExtended> prepare_weapons(const Database& db,
                                                                            maximized_skills,
                                                                            params.misc_buffs,
                                                                            params.skill_spec);
-        const double ceiling_efr = edv.efr;
-        ret.push_back({std::move(original.first), std::move(original.second), ceiling_efr});
+        const ModelCalculatedValues mcv = calculate_damage(params.damage_model, edv);
+        const double ceiling_total_damage = mcv.unrounded_total_damage;
+        ret.push_back({std::move(original.first), std::move(original.second), ceiling_total_damage});
     }
 
     Utils::log_stat_reduction("Generated weapon augment+upgrade instances: ", stat_pre, ret.size());
@@ -564,14 +565,14 @@ static void refilter_weapons(std::vector<std::tuple<DecoSlots,
                                                     const Skill*,
                                                     const SetBonus*,
                                                     std::vector<WeaponInstanceExtended>>>& weapon_groups,
-                             const double max_efr,
+                             const double max_total_damage,
                              const std::size_t original_weapon_count) {
 
     std::size_t new_weapon_count = 0;
 
     // First, we prune within the individual groups
     const auto pred1 = [&](const WeaponInstanceExtended& x){
-        return x.ceiling_efr <= max_efr;
+        return x.ceiling_total_damage <= max_total_damage;
     };
     for (auto& weapon_group_tup : weapon_groups) {
         auto& weapon_group = std::get<3>(weapon_group_tup);
@@ -588,7 +589,7 @@ static void refilter_weapons(std::vector<std::tuple<DecoSlots,
     };
     weapon_groups.erase(std::remove_if(weapon_groups.begin(), weapon_groups.end(), pred2), weapon_groups.end());
 
-    Utils::log_stat_reduction("\n\nRepruned weapons with EFR " + std::to_string(max_efr) + ": ",
+    Utils::log_stat_reduction("\n\nRepruned weapons with Total Damage " + std::to_string(max_total_damage) + ": ",
                               original_weapon_count,
                               new_weapon_count);
 }
@@ -624,6 +625,7 @@ static void do_search(const Database& db, const SearchParameters& params) {
     }();
 
     std::clog << "Buffs:\n" + Utils::indent(params.misc_buffs.get_humanreadable(), 2) + "\n\n";
+    std::clog << "Damage Model:\n" + Utils::indent(params.damage_model.get_humanreadable(), 2) + "\n\n";
 
     std::size_t weapons_initial_size; // TODO: make constant
     std::vector<std::tuple<DecoSlots, const Skill*, const SetBonus*, std::vector<WeaponInstanceExtended>>> weapons = [&](){
@@ -758,7 +760,7 @@ static void do_search(const Database& db, const SearchParameters& params) {
     Utils::log_stat_reduction("Merged in legs+deco  combinations: ", stat_pre, armour_combos.size());
     Utils::log_stat_duration("  >>> legs combo merge: ", start_t);
 
-    double best_efr = 0;
+    double best_total_damage = 0;
 
     std::size_t stat_wa_combos_explored = 0;
     std::size_t stat_wad_combos_explored = 0;
@@ -831,10 +833,11 @@ static void do_search(const Database& db, const SearchParameters& params) {
                                                                                        skills,
                                                                                        params.misc_buffs,
                                                                                        params.skill_spec);
-                    const double efr = edv.efr;
+                    const ModelCalculatedValues mcv = calculate_damage(params.damage_model, edv);
+                    const double total_damage = mcv.unrounded_total_damage;
 
-                    if (efr > best_efr) {
-                        best_efr = efr;
+                    if (total_damage > best_total_damage) {
+                        best_total_damage = total_damage;
 
                         const DecoEquips curr_decos = [&](){
                             DecoEquips x = std::move(dc);
@@ -855,8 +858,10 @@ static void do_search(const Database& db, const SearchParameters& params) {
                                                        + "Buffs:\n"
                                                        + Utils::indent(params.misc_buffs.get_humanreadable(), 4) + "\n\n"
                                                        + "Effective Damage Values:\n"
-                                                       + Utils::indent(edv.get_humanreadable(), 4);
-                        std::clog << "\n\nFound EFR: " + std::to_string(best_efr) + "\n\n"
+                                                       + Utils::indent(edv.get_humanreadable(), 4) + "\n\n"
+                                                       + "Model Damage Values:\n"
+                                                       + Utils::indent(mcv.get_humanreadable(), 4);
+                        std::clog << "\n\nFound Total Damage: " + std::to_string(best_total_damage) + "\n\n"
                                   << Utils::indent(build_info, 4) + "\n";
                         reprune_weapons = true;
                     }
@@ -866,7 +871,7 @@ static void do_search(const Database& db, const SearchParameters& params) {
             }
 
         }
-        if (reprune_weapons) refilter_weapons(weapons, best_efr, weapons_initial_size);
+        if (reprune_weapons) refilter_weapons(weapons, best_total_damage, weapons_initial_size);
     }
 
     Utils::log_stat_expansion("\nWeapon-armour --> +decos combinations explored: ",

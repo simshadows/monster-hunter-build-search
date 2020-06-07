@@ -83,6 +83,9 @@ static SearchParameters read_json_obj(const nlohmann::json& j) {
         }
     }
 
+    const unsigned int model_raw_mv = j["model_raw_mv"];
+    const unsigned int model_raw_hzv = j["model_raw_hzv"];
+
     return {allow_low_rank,
             allow_high_rank,
             allow_master_rank,
@@ -90,7 +93,13 @@ static SearchParameters read_json_obj(const nlohmann::json& j) {
     
             weapon_class,
             std::move(skill_spec),
-            MiscBuffsEquips(std::move(miscbuffs)) };
+            MiscBuffsEquips(std::move(miscbuffs)),
+
+            {
+                model_raw_mv,
+                model_raw_hzv,
+            }
+            };
 }
 
 

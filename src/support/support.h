@@ -311,6 +311,33 @@ EffectiveDamageValues calculate_edv_from_gear_lookup(const WeaponInstance&,
                                                      const SkillSpec&);
 
 
+/****************************************************************************************
+ * DamageModel
+ ***************************************************************************************/
+
+
+struct DamageModel {
+    unsigned int raw_mv {0};
+    unsigned int raw_hzv {0};
+
+    std::string get_humanreadable() const;
+};
+
+
+struct ModelCalculatedValues {
+    double unrounded_raw_damage;
+
+    double unrounded_total_damage;
+    unsigned int actual_total_damage;
+
+    std::string get_humanreadable() const;
+};
+
+
+ModelCalculatedValues calculate_damage(const DamageModel&,
+                                       const EffectiveDamageValues&);
+
+
 } // namespace
 
 #endif // MHWIBS_SUPPORT_H

@@ -23,10 +23,10 @@ struct SearchParameters {
     bool health_regen_required;
 
     WeaponClass weapon_class;
-
     SkillSpec skill_spec;
-
     MiscBuffsEquips misc_buffs;
+
+    DamageModel damage_model;
 };
 
 

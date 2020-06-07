@@ -5,6 +5,10 @@
     "health_regen_required": true,
 
     "selected_weapon_class": "GREATSWORD",
+
+    "model_raw_mv": 264,
+    "model_raw_hzv": 60,
+
     "selected_skills": {
         "AGITATOR": 0,
         "ATTACK_BOOST": 0,
