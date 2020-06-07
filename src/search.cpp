@@ -777,21 +777,12 @@ static void do_search(const Database& db, const SearchParameters& params) {
             const SetBonus * const setbonus = std::get<2>(weapon_group_tup);
             const std::vector<WeaponInstanceExtended>& weapon_group = std::get<3>(weapon_group_tup);
 
-            // IMPORTANT NOTE: We are intentionally ignoring the weapon skill for now!
-            //                 We will add it later.
-            // TODO: Consider factoring in weapon skill here.
-            const SkillMap wac_skills = [&](){
-                SkillMap x = std::get<0>(ac_ssb); // "Weapon-armour-combo"
-                if (skill) x.increment(skill, 1);
-                return x;
-            }();
-
             const SetBonusMap wac_set_bonuses = [&](){
                 SetBonusMap x = ac.armour.get_set_bonuses();
                 if (setbonus) x.increment(setbonus, 1);
                 return x;
             }();
-            
+
             // Filter out anything that exceeds set bonus cutoffs.
             bool invalid_set_bonuses = false;
             for (const auto& e : params.skill_spec.get_set_bonus_cutoffs()) {
@@ -805,6 +796,14 @@ static void do_search(const Database& db, const SearchParameters& params) {
                 continue;
             }
 
+            // wac_skills includes all set bonus skills.
+            const SkillMap wac_skills = [&](){
+                SkillMap x = std::get<0>(ac_ssb); // "Weapon-armour-combo"
+                x.add_set_bonuses(wac_set_bonuses);
+                if (skill) x.increment(skill, 1);
+                return x;
+            }();
+            
             std::vector<std::vector<const Decoration*>> w_decos = generate_deco_combos(deco_slots,
                                                                                        grouped_sorted_decos,
                                                                                        params.skill_spec,
@@ -813,7 +812,6 @@ static void do_search(const Database& db, const SearchParameters& params) {
 
                 const SkillMap skills = [&](){
                     SkillMap x = wac_skills;
-                    x.add_set_bonuses(wac_set_bonuses);
                     x.merge_in(dc);
                     return x;
                 }();
