@@ -83,14 +83,6 @@ public:
         }
     }
 
-    // Merge in by counting keys [first, last).
-    template<class P>
-    void merge_in_by_counting(const P& first, const P& last) noexcept {
-        for (P p = first; p != last; ++p) {
-            this->increment(*p, 1);
-        }
-    }
-
     // Do not use this with v_to_add=0.
     void increment(const T& k, const N& v_to_add) noexcept {
         assert(v_to_add != 0);

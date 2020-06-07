@@ -64,7 +64,9 @@ std::string DecoEquips::get_humanreadable() const {
     if (this->data.size()) {
         // First, we fill a Counter.
         Utils::Counter<const Decoration*> counter;
-        counter.merge_in_by_counting(this->data.begin(), this->data.end());
+        for (const Decoration * const deco : this->data) {
+            counter.increment(deco, 1);
+        }
 
         // Now, we fill the intermediate data structure.
         std::set<std::pair<int, std::string>> groups;
