@@ -4,10 +4,12 @@
  */
 
 #include <assert.h>
+#include <set>
 #include <algorithm>
 
 #include "../support.h"
 #include "../../utils/utils.h"
+#include "../../utils/counter.h"
 
 
 namespace MHWIBuildSearch
@@ -60,11 +62,23 @@ DecoEquips::IteratorType DecoEquips::end() const {
 
 std::string DecoEquips::get_humanreadable() const {
     if (this->data.size()) {
+        // First, we fill a Counter.
+        Utils::Counter<const Decoration*> counter;
+        counter.merge_in_by_counting(this->data.begin(), this->data.end());
+
+        // Now, we fill the intermediate data structure.
+        std::set<std::pair<int, std::string>> groups;
+        for (const auto& e : counter) {
+            std::string s = "x" + std::to_string(e.second) + " " + e.first->name;
+            groups.emplace(-e.first->slot_size, std::move(s));
+        }
+
+        // And finally, we print it!
         std::string ret;
         bool first = true;
-        for (const Decoration * const deco : this->data) {
+        for (const auto& e : groups) {
             if (!first) ret += "\n";
-            ret += deco->name;
+            ret += e.second;
             first = false;
         }
         return ret;

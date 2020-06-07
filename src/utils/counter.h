@@ -66,18 +66,28 @@ public:
         this->data.erase(k);
     }
 
+    // Merge in another Counter
     void merge_in(const Counter<T, ValueClipFn>& other) noexcept {
         for (const auto& e : other.data) {
             this->increment(e.first, e.second);
         }
     }
 
-    // Do not have zeroes on the right side.
+    // Merge in a linear representation of a Counter, such as a vector of key-value pairs.
+    // IMPORTANT: Do not have zeroes on the right side!
     template<class P>
     void merge_in(const P& obj) noexcept {
         for (const std::pair<T, N>& e : obj) {
             assert(e.second);
             this->increment(e.first, e.second);
+        }
+    }
+
+    // Merge in by counting keys [first, last).
+    template<class P>
+    void merge_in_by_counting(const P& first, const P& last) noexcept {
+        for (P p = first; p != last; ++p) {
+            this->increment(*p, 1);
         }
     }
 
