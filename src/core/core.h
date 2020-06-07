@@ -36,8 +36,8 @@ enum class EleStatType {
 
     // Statuses
     poison,
-    sleep,
     paralysis,
+    sleep,
     blast,
 
     //// We won't include these in this enum.

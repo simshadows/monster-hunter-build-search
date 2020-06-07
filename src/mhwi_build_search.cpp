@@ -54,7 +54,7 @@ void no_args_cmd() {
      * Using values for Royal Venus Blade with only one affinity augment and Elementless Jewel 2.
      */
 
-    WeaponInstance weapon(db.weapons.at("SAFI_SHATTERSPLITTER"));
+    WeaponInstance weapon(db.weapons.at("SAFIS_SHATTERSPLITTER"));
     weapon.augments->set_augment(WeaponAugment::augment_lvl, 3);
     weapon.augments->set_augment(WeaponAugment::attack_increase, 1);
     weapon.upgrades->add_upgrade(WeaponUpgrade::ib_safi_sharpness_6);

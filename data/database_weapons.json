@@ -944,7 +944,175 @@
         "augmentation_scheme": "ICEBORNE",
         "upgrade_scheme"     : "NONE"
     },
-    "SAFI_SHATTERSPLITTER": {
+    "SAFIS_HELLSPLITTER": {
+        "class" : "GREATSWORD",
+        "rarity": 12,
+        
+        "name"    : "Safi's Hellsplitter",
+        "attack"  : 1296,
+        "affinity": 5,
+        "slots"   : [4],
+
+        "elestat_visibility": "OPEN",
+        "elestat_type"      : "FIRE",
+        "elestat_value"     : 150,
+
+        "maximum_sharpness" : [100, 50, 50, 50, 50, 90, 0],
+        "constant_sharpness": false,
+
+        "skill" : null,
+
+        "augmentation_scheme": "ICEBORNE",
+        "upgrade_scheme"     : "ICEBORNE_SAFI"
+    },
+    "SAFIS_AQUASPLITTER": {
+        "class" : "GREATSWORD",
+        "rarity": 12,
+        
+        "name"    : "Safi's Aquasplitter",
+        "attack"  : 1296,
+        "affinity": 5,
+        "slots"   : [4],
+
+        "elestat_visibility": "OPEN",
+        "elestat_type"      : "WATER",
+        "elestat_value"     : 150,
+
+        "maximum_sharpness" : [100, 50, 50, 50, 50, 90, 0],
+        "constant_sharpness": false,
+
+        "skill" : null,
+
+        "augmentation_scheme": "ICEBORNE",
+        "upgrade_scheme"     : "ICEBORNE_SAFI"
+    },
+    "SAFIS_BOLTSPLITTER": {
+        "class" : "GREATSWORD",
+        "rarity": 12,
+        
+        "name"    : "Safi's Boltsplitter",
+        "attack"  : 1296,
+        "affinity": 5,
+        "slots"   : [4],
+
+        "elestat_visibility": "OPEN",
+        "elestat_type"      : "THUNDER",
+        "elestat_value"     : 150,
+
+        "maximum_sharpness" : [100, 50, 50, 50, 50, 90, 0],
+        "constant_sharpness": false,
+
+        "skill" : null,
+
+        "augmentation_scheme": "ICEBORNE",
+        "upgrade_scheme"     : "ICEBORNE_SAFI"
+    },
+    "SAFIS_FROSTSPLITTER": {
+        "class" : "GREATSWORD",
+        "rarity": 12,
+        
+        "name"    : "Safi's Frostsplitter",
+        "attack"  : 1296,
+        "affinity": 5,
+        "slots"   : [4],
+
+        "elestat_visibility": "OPEN",
+        "elestat_type"      : "ICE",
+        "elestat_value"     : 150,
+
+        "maximum_sharpness" : [100, 50, 50, 50, 50, 90, 0],
+        "constant_sharpness": false,
+
+        "skill" : null,
+
+        "augmentation_scheme": "ICEBORNE",
+        "upgrade_scheme"     : "ICEBORNE_SAFI"
+    },
+    "SAFIS_DRAKSPLITTER": {
+        "class" : "GREATSWORD",
+        "rarity": 12,
+        
+        "name"    : "Safi's Draksplitter",
+        "attack"  : 1296,
+        "affinity": 5,
+        "slots"   : [4],
+
+        "elestat_visibility": "OPEN",
+        "elestat_type"      : "DRAGON",
+        "elestat_value"     : 150,
+
+        "maximum_sharpness" : [100, 50, 50, 50, 50, 90, 0],
+        "constant_sharpness": false,
+
+        "skill" : null,
+
+        "augmentation_scheme": "ICEBORNE",
+        "upgrade_scheme"     : "ICEBORNE_SAFI"
+    },
+    "SAFIS_VENOMSPLITTER": {
+        "class" : "GREATSWORD",
+        "rarity": 12,
+        
+        "name"    : "Safi's Venomsplitter",
+        "attack"  : 1296,
+        "affinity": 5,
+        "slots"   : [4],
+
+        "elestat_visibility": "OPEN",
+        "elestat_type"      : "POISON",
+        "elestat_value"     : 300,
+
+        "maximum_sharpness" : [100, 50, 50, 50, 50, 90, 0],
+        "constant_sharpness": false,
+
+        "skill" : null,
+
+        "augmentation_scheme": "ICEBORNE",
+        "upgrade_scheme"     : "ICEBORNE_SAFI"
+    },
+    "SAFIS_BINDSPLITTER": {
+        "class" : "GREATSWORD",
+        "rarity": 12,
+        
+        "name"    : "Safi's Bindsplitter",
+        "attack"  : 1296,
+        "affinity": 5,
+        "slots"   : [4],
+
+        "elestat_visibility": "OPEN",
+        "elestat_type"      : "PARALYSIS",
+        "elestat_value"     : 180,
+
+        "maximum_sharpness" : [100, 50, 50, 50, 50, 90, 0],
+        "constant_sharpness": false,
+
+        "skill" : null,
+
+        "augmentation_scheme": "ICEBORNE",
+        "upgrade_scheme"     : "ICEBORNE_SAFI"
+    },
+    "SAFIS_DREAMSPLITTER": {
+        "class" : "GREATSWORD",
+        "rarity": 12,
+        
+        "name"    : "Safi's Dreamsplitter",
+        "attack"  : 1296,
+        "affinity": 5,
+        "slots"   : [4],
+
+        "elestat_visibility": "OPEN",
+        "elestat_type"      : "SLEEP",
+        "elestat_value"     : 180,
+
+        "maximum_sharpness" : [100, 50, 50, 50, 50, 90, 0],
+        "constant_sharpness": false,
+
+        "skill" : null,
+
+        "augmentation_scheme": "ICEBORNE",
+        "upgrade_scheme"     : "ICEBORNE_SAFI"
+    },
+    "SAFIS_SHATTERSPLITTER": {
         "class" : "GREATSWORD",
         "rarity": 12,
         

@@ -108,7 +108,7 @@ TEST_CASE("Incrementally building up a greatsword Safi Shattersplitter build.") 
 
     SECTION("Safi Shattersplitter + 1 Armour") {
 
-        WeaponInstance weapon(db.weapons.at("SAFI_SHATTERSPLITTER"));
+        WeaponInstance weapon(db.weapons.at("SAFIS_SHATTERSPLITTER"));
         ArmourEquips armour = get_armour("Teostra", "MB",
                                          "", "",
                                          "", "",
@@ -125,7 +125,7 @@ TEST_CASE("Incrementally building up a greatsword Safi Shattersplitter build.") 
 
     SECTION("Safi Shattersplitter + 3 Armour") {
 
-        WeaponInstance weapon(db.weapons.at("SAFI_SHATTERSPLITTER"));
+        WeaponInstance weapon(db.weapons.at("SAFIS_SHATTERSPLITTER"));
         ArmourEquips armour = get_armour("Teostra",       "MB",
                                          "Raging Brachy", "MB",
                                          "Teostra",       "MB",
@@ -141,7 +141,7 @@ TEST_CASE("Incrementally building up a greatsword Safi Shattersplitter build.") 
     }
 
     SECTION("Safi Shattersplitter + 5 Armour") {
-        WeaponInstance weapon(db.weapons.at("SAFI_SHATTERSPLITTER"));
+        WeaponInstance weapon(db.weapons.at("SAFIS_SHATTERSPLITTER"));
         ArmourEquips armour = get_armour("Teostra",       "MB",
                                          "Raging Brachy", "MB",
                                          "Teostra",       "MB",
@@ -157,7 +157,7 @@ TEST_CASE("Incrementally building up a greatsword Safi Shattersplitter build.") 
     }
 
     SECTION("Safi Shattersplitter + 5 Armour + Charm") {
-        WeaponInstance weapon(db.weapons.at("SAFI_SHATTERSPLITTER"));
+        WeaponInstance weapon(db.weapons.at("SAFIS_SHATTERSPLITTER"));
         ArmourEquips armour = get_armour("Teostra",       "MB",
                                          "Raging Brachy", "MB",
                                          "Teostra",       "MB",
@@ -173,7 +173,7 @@ TEST_CASE("Incrementally building up a greatsword Safi Shattersplitter build.") 
     }
 
     SECTION("Safi Shattersplitter + Augments + 5 Armour + Charm") {
-        WeaponInstance weapon(db.weapons.at("SAFI_SHATTERSPLITTER"));
+        WeaponInstance weapon(db.weapons.at("SAFIS_SHATTERSPLITTER"));
         weapon.augments->set_augment(WeaponAugment::augment_lvl, 3);
         weapon.augments->set_augment(WeaponAugment::affinity_increase, 1);
         weapon.augments->set_augment(WeaponAugment::health_regen, 1);
@@ -192,7 +192,7 @@ TEST_CASE("Incrementally building up a greatsword Safi Shattersplitter build.") 
     }
 
     SECTION("Safi Shattersplitter + Augments + Upgrades + 5 Armour + Charm") {
-        WeaponInstance weapon(db.weapons.at("SAFI_SHATTERSPLITTER"));
+        WeaponInstance weapon(db.weapons.at("SAFIS_SHATTERSPLITTER"));
         weapon.augments->set_augment(WeaponAugment::augment_lvl, 3);
         weapon.augments->set_augment(WeaponAugment::affinity_increase, 1);
         weapon.augments->set_augment(WeaponAugment::health_regen, 1);
@@ -216,7 +216,7 @@ TEST_CASE("Incrementally building up a greatsword Safi Shattersplitter build.") 
     }
 
     SECTION("Safi Shattersplitter + Augments + Upgrades + 5 Armour + Charm + Non-elemental Boost Decoration") {
-        WeaponInstance weapon(db.weapons.at("SAFI_SHATTERSPLITTER"));
+        WeaponInstance weapon(db.weapons.at("SAFIS_SHATTERSPLITTER"));
         weapon.augments->set_augment(WeaponAugment::augment_lvl, 3);
         weapon.augments->set_augment(WeaponAugment::affinity_increase, 1);
         weapon.augments->set_augment(WeaponAugment::health_regen, 1);
@@ -241,7 +241,7 @@ TEST_CASE("Incrementally building up a greatsword Safi Shattersplitter build.") 
     }
 
     SECTION("Safi Shattersplitter + Augments + Upgrades + 5 Armour + Charm + Decorations") {
-        WeaponInstance weapon(db.weapons.at("SAFI_SHATTERSPLITTER"));
+        WeaponInstance weapon(db.weapons.at("SAFIS_SHATTERSPLITTER"));
         weapon.augments->set_augment(WeaponAugment::augment_lvl, 3);
         weapon.augments->set_augment(WeaponAugment::affinity_increase, 1);
         weapon.augments->set_augment(WeaponAugment::health_regen, 1);
@@ -458,7 +458,7 @@ TEST_CASE("DecoEquips::fits()") {
 
     SECTION("Mixed Test, Exact Fit") {
 
-        WeaponInstance weapon(db.weapons.at("SAFI_SHATTERSPLITTER"));
+        WeaponInstance weapon(db.weapons.at("SAFIS_SHATTERSPLITTER"));
         weapon.augments->set_augment(WeaponAugment::augment_lvl, 3);
         weapon.augments->set_augment(WeaponAugment::attack_increase, 1);
         weapon.augments->set_augment(WeaponAugment::slot_upgrade, 1);
