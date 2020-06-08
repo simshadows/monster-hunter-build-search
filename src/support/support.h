@@ -171,6 +171,10 @@ struct WeaponContribution {
     // Do note that it is possible for elestat_value to be zero even if the other two elestat fields
     // are not "none". This special case is never from the database, but rather from weapon filtering
     // mechanisms that disable undesirable weapon elements/statuses.
+    //
+    // elestat_visibility = none must mean elestat_type = none, and vice versa.
+    // And if they're none, then elestat_value must also be zero.
+    // elestat_value being zero when there's no possible element/status is a relied-upon property.
     EleStatVisibility         elestat_visibility {EleStatVisibility::none};
     EleStatType               elestat_type       {EleStatType::none};
     unsigned int              elestat_value      {0};

@@ -84,6 +84,45 @@ struct WeaponInstancePruneFn {
         }
 
         {
+            // Left cannot replace right if left has an inferior element/status visibility.
+            // TODO: Figure out enum ordering, and use a binary operator?
+            switch (rc.elestat_visibility) {
+                case EleStatVisibility::open:
+                    // Left cannot replace right if left is hidden or none.
+                    if (lc.elestat_visibility != EleStatVisibility::open) {
+                        assert((lc.elestat_visibility == EleStatVisibility::hidden)
+                               || (lc.elestat_visibility == EleStatVisibility::none));
+                        return false;
+                    }
+                    break;
+                case EleStatVisibility::hidden:
+                    // Left cannot replace right if left is none.
+                    if (lc.elestat_visibility == EleStatVisibility::none) {
+                        return false;
+                    }
+                    assert((lc.elestat_visibility == EleStatVisibility::open)
+                           || (lc.elestat_visibility == EleStatVisibility::hidden));
+                    break;
+                default:
+                    assert(rc.elestat_visibility == EleStatVisibility::none);
+            }
+
+            // Left might replace right if right's element is disabled.
+            if (rc.elestat_value) {
+
+                // Now, we know for sure that right has some kind of possible element.
+                assert(rc.elestat_visibility != EleStatVisibility::none);
+                assert(rc.elestat_type != EleStatType::none);
+
+                // Left cannot replace right if their elements/statuses are mismatched,
+                // OR if their elements/statuses match but right has a higher potential value.
+                if ((lc.elestat_type != rc.elestat_type) || (lc.elestat_value < rc.elestat_value)) {
+                    return false;
+                }
+            }
+        }
+
+        {
             assert(std::is_sorted(lc.deco_slots.begin(), lc.deco_slots.end(), std::greater<unsigned int>()));
             assert(std::is_sorted(rc.deco_slots.begin(), rc.deco_slots.end(), std::greater<unsigned int>()));
 

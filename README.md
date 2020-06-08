@@ -13,6 +13,10 @@ I'll write a detailed guide on how to use this thing later.
     - `core/weapon_augments.cpp`: So many case statements, magic numbers, unsafe state validation, and a generally CPU-inefficient way of doing things.
 - I will need to figure out a better way to handle weird cases where improving skills will actually reduce EFR. For now, the solution is to have the option to select skills that will be totally prevented from being added to a build.
 
+Specific plans for the future:
+
+- Elderseal filtering (similar to the health regen filtering)
+
 ## Data References
 
 - Directly from in-game UI or minor first-hand in-game testing where possible/needed
