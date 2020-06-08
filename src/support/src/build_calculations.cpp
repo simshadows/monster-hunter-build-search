@@ -34,7 +34,9 @@ static EffectiveDamageValues calculate_edv(const unsigned int    weapon_raw, // 
                                            const unsigned int    added_raw,
                                            const int             added_aff,
                                            const double          raw_crit_dmg_multiplier,
-                                           const SharpnessGauge& final_sharpness_gauge) {
+                                           const SharpnessGauge& final_sharpness_gauge,
+
+                                           const unsigned int    free_element_active_percentage ) {
 
     assert(weapon_raw > 0);
     assert(base_raw_multiplier > 0.0);
@@ -72,9 +74,27 @@ static EffectiveDamageValues calculate_edv(const unsigned int    weapon_raw, // 
      * Effective Element/Status
      */
 
-    // TODO: These are *very* placeholdery implementations. Improve it!
-    const double efes = (weapon_elestat_visibility == EleStatVisibility::open) ? weapon_elestat_value : 0;
-    const EleStatType elestat_type = (weapon_elestat_visibility == EleStatVisibility::open) ? weapon_elestat_type : EleStatType::none;
+    const double ele_sharpness_modifier = [&](){
+        if ((weapon_elestat_visibility != EleStatVisibility::none)
+                && elestattype_is_element(weapon_elestat_type)) {
+            return final_sharpness_gauge.get_elemental_sharpness_modifier();
+        } else {
+            return 1.0; // We disable the modifier.
+        }
+    }();
+
+    const unsigned int base_elestat_value = [&](){
+        if (weapon_elestat_visibility == EleStatVisibility::hidden) {
+            return (weapon_elestat_value * free_element_active_percentage) / 100;
+        } else {
+            assert((weapon_elestat_visibility == EleStatVisibility::open)
+                   || ((weapon_elestat_visibility == EleStatVisibility::none) && (!weapon_elestat_value)));
+            return weapon_elestat_value;
+        }
+    }();
+
+    const double efes = base_elestat_value * ele_sharpness_modifier;
+    const EleStatType elestat_type = weapon_elestat_type;
 
     /*
      * Modelled Raw
@@ -110,7 +130,9 @@ EffectiveDamageValues calculate_edv_from_skills_lookup(const WeaponClass        
                          sc.added_raw + misc_buffs.get_added_raw(),
                          sc.added_aff,
                          sc.raw_crit_dmg_multiplier,
-                         sc.final_sharpness_gauge);
+                         sc.final_sharpness_gauge,
+
+                         sc.free_element_active_percentage );
 }
 
 

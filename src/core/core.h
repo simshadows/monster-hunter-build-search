@@ -47,6 +47,7 @@ enum class EleStatType {
 };
 
 
+bool elestattype_is_element(EleStatType); // True if element, False if status. Undefined if EleStatType::none.
 std::string elestattype_to_str(EleStatType);
 
 
@@ -104,6 +105,8 @@ public:
 
     double get_raw_sharpness_modifier() const; // Uses the full sharpness gauge.
     double get_raw_sharpness_modifier(unsigned int handicraft_lvl) const;
+
+    double get_elemental_sharpness_modifier() const; // Uses the full sharpness gauge.
 
     SharpnessLevel get_sharpness_level() const;
 

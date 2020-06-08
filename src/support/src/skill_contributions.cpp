@@ -57,6 +57,9 @@ static constexpr int k_TRUE_DRAGONVEIN_AWAKENING_AFF = 40;
 static constexpr double k_FORTIFY_RAW_MULTIPLIER_S1 = 1.1;
 static constexpr double k_FORTIFY_RAW_MULTIPLIER_S2 = 1.2;
 
+// Free Element                                                          level: 0, 1,  2,  3
+static const std::array<unsigned int, 4> free_element_active_percentage_vals = {0, 33, 66, 100};
+
 // Frostcraft
 // Table 1: Greatsword, Hammer                              state: 0     1     2     3
 static const std::array<double, 4> frostcraft_multipliers_gs_h  = {1.00, 1.05, 1.15, 1.30};
@@ -168,6 +171,7 @@ SkillContribution::SkillContribution(const SkillMap&           skills,
     //, bludgeoner_added_raw      (0)   // We initialize later
     , raw_crit_dmg_multiplier   (calculate_raw_crit_dmg_multiplier(skills))
     , final_sharpness_gauge     (calculate_final_sharpness_gauge(skills, wc))
+    //, free_element_active_percentage (0) // We initialize later
 {
     // We calculate the remaining fields.
 
@@ -234,6 +238,9 @@ SkillContribution::SkillContribution(const SkillMap&           skills,
             this->added_aff += k_DRAGONVEIN_AWAKENING_AFF;
         }
     }
+
+    const unsigned int free_element_lvl = skills.get(&SkillsDatabase::g_skill_free_elem_ammo_up);
+    this->free_element_active_percentage = free_element_active_percentage_vals[free_element_lvl];
 
     if (skills.binary_skill_is_lvl1(&SkillsDatabase::g_skill_fortify)) {
         const unsigned int fortify_state = skills_spec.get_state(&SkillsDatabase::g_skill_fortify);

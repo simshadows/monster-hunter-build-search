@@ -22,6 +22,14 @@ static constexpr double k_RAW_SHARPNESS_MODIFIER_BLUE   = 1.20;
 static constexpr double k_RAW_SHARPNESS_MODIFIER_WHITE  = 1.32;
 static constexpr double k_RAW_SHARPNESS_MODIFIER_PURPLE = 1.39;
 
+static constexpr double k_ELEMENTAL_SHARPNESS_MODIFIER_RED    = 0.25;
+static constexpr double k_ELEMENTAL_SHARPNESS_MODIFIER_ORANGE = 0.50;
+static constexpr double k_ELEMENTAL_SHARPNESS_MODIFIER_YELLOW = 0.75;
+static constexpr double k_ELEMENTAL_SHARPNESS_MODIFIER_GREEN  = 1.00;
+static constexpr double k_ELEMENTAL_SHARPNESS_MODIFIER_BLUE   = 1.0625;
+static constexpr double k_ELEMENTAL_SHARPNESS_MODIFIER_WHITE  = 1.15;
+static constexpr double k_ELEMENTAL_SHARPNESS_MODIFIER_PURPLE = 1.25;
+
 static std::string sharpness_level_to_humanreadable(const SharpnessLevel lvl) {
     switch (lvl) {
         case SharpnessLevel::red:    return "Red";
@@ -112,6 +120,28 @@ double SharpnessGauge::get_raw_sharpness_modifier() const {
                 case 4: return k_RAW_SHARPNESS_MODIFIER_BLUE;
                 case 5: return k_RAW_SHARPNESS_MODIFIER_WHITE;
                 case 6: return k_RAW_SHARPNESS_MODIFIER_PURPLE;
+                default:
+                    throw std::logic_error("Invalid index.");
+            }
+        }
+    }
+    // If the sharpness gauge is ever empty, we will still be in red gauge.
+    return k_RAW_SHARPNESS_MODIFIER_RED;
+}
+
+
+double SharpnessGauge::get_elemental_sharpness_modifier() const {
+    // TODO: Rewrite this unsafe reverse loop.
+    for (int i = this->hits.size() - 1; i >= 0; --i) {
+        if (this->hits[i] > 0) {
+            switch (i) {
+                case 0: return k_ELEMENTAL_SHARPNESS_MODIFIER_RED;
+                case 1: return k_ELEMENTAL_SHARPNESS_MODIFIER_ORANGE;
+                case 2: return k_ELEMENTAL_SHARPNESS_MODIFIER_YELLOW;
+                case 3: return k_ELEMENTAL_SHARPNESS_MODIFIER_GREEN;
+                case 4: return k_ELEMENTAL_SHARPNESS_MODIFIER_BLUE;
+                case 5: return k_ELEMENTAL_SHARPNESS_MODIFIER_WHITE;
+                case 6: return k_ELEMENTAL_SHARPNESS_MODIFIER_PURPLE;
                 default:
                     throw std::logic_error("Invalid index.");
             }

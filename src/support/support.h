@@ -273,6 +273,8 @@ struct SkillContribution {
     double         raw_crit_dmg_multiplier;
     SharpnessGauge final_sharpness_gauge;
 
+    unsigned int   free_element_active_percentage;
+
     SkillContribution(const SkillMap&,
                       const SkillSpec&,
                       WeaponClass,

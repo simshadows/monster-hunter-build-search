@@ -12,7 +12,28 @@ namespace MHWIBuildSearch
 {
 
 
-std::string elestattype_to_str(EleStatType v) {
+bool elestattype_is_element(const EleStatType v) {
+    switch (v) {
+        //case EleStatType::none:
+        //    throw std::logic_error("Cannot be none.");
+        case EleStatType::fire:
+        case EleStatType::water:
+        case EleStatType::thunder:
+        case EleStatType::ice:
+        case EleStatType::dragon:
+            return true;
+        case EleStatType::poison:
+        case EleStatType::sleep:
+        case EleStatType::paralysis:
+        case EleStatType::blast:
+            return false;
+        default:
+            throw std::logic_error("Invalid EleStatType value.");
+    }
+}
+
+
+std::string elestattype_to_str(const EleStatType v) {
     switch (v) {
         case EleStatType::none:      return "None";
         case EleStatType::fire:      return "Fire";
