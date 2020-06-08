@@ -4,10 +4,30 @@
     "allow_master_rank":     true,
     "health_regen_required": true,
 
-    "selected_weapon_class": "GREATSWORD",
+    "weapon_selection": {
+        "class": "GREATSWORD",
+        "allow_fire":    true,
+        "allow_water":   true,
+        "allow_thunder": true,
+        "allow_ice":     true,
+        "allow_dragon":  true
+    },
 
-    "model_raw_mv": 264,
-    "model_raw_hzv": 60,
+    "damage_model": {
+        "raw_mv":          264,
+        "elemod_fire":     1.0,
+        "elemod_water":    1.0,
+        "elemod_thunder":  1.0,
+        "elemod_ice":      1.0,
+        "elemod_dragon":   1.0,
+
+        "hzv_raw":     60,
+        "hzv_fire":    30,
+        "hzv_water":   30,
+        "hzv_thunder": 30,
+        "hzv_ice":     30,
+        "hzv_dragon":  30
+    },
 
     "selected_skills": {
         "AGITATOR": 0,

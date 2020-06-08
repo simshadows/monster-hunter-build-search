@@ -152,11 +152,21 @@ static std::vector<WeaponInstanceExtended> prepare_weapons(const Database& db,
             for (const std::shared_ptr<WeaponUpgradesInstance>& u : upgrade_instances) {
                 WeaponInstance new_inst = {weapon, a, u};
                 WeaponContribution new_cont = new_inst.calculate_contribution();
+
+                // Filter
+
                 if (params.skill_spec.skill_must_be_removed(new_cont.skill)) {
                     continue;
                 }
                 if (params.health_regen_required && !new_cont.health_regen_active) {
                     continue;
+                }
+
+                // Reprocess
+
+                if (!Utils::set_has_key(params.allowed_weapon_elestat_types, new_cont.elestat_type)) {
+                    assert(new_cont.elestat_value);
+                    new_cont.erase_elestat();
                 }
                 if (!Utils::set_has_key(set_bonus_subset, new_cont.set_bonus)) {
                     new_cont.set_bonus = nullptr;
@@ -164,6 +174,7 @@ static std::vector<WeaponInstanceExtended> prepare_weapons(const Database& db,
                 if (!params.skill_spec.is_in_subset(new_cont.skill)) {
                     new_cont.skill = nullptr;
                 }
+
                 unpruned.emplace_back(std::move(new_inst), std::move(new_cont));
             }
         }

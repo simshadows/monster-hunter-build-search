@@ -15,6 +15,13 @@ namespace MHWIBuildSearch
 {
 
 
+void WeaponContribution::erase_elestat() noexcept {
+    //this->elestat_visibility = EleStatVisibility::none;
+    //this->elestat_type = EleStatType::none;
+    this->elestat_value = 0;
+}
+
+
 WeaponInstance::WeaponInstance(const Weapon * const new_weapon) noexcept
     : weapon   (new_weapon)
     , augments (WeaponAugmentsInstance::get_instance(weapon))

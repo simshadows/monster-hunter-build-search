@@ -111,9 +111,11 @@ static double calculate_non_elemental_boost_multiplier(const SkillMap& skills,
                 return true;
             case EleStatVisibility::open:
                 assert(wc.elestat_type != EleStatType::none);
-                assert(wc.elestat_value);
+                //assert(wc.elestat_value); // Do not make this assumption!
                 return false;
             case EleStatVisibility::hidden:
+                assert(wc.elestat_type != EleStatType::none);
+                //assert(wc.elestat_value); // Do not make this assumption!
                 if (skills.get(&SkillsDatabase::g_skill_free_elem_ammo_up) > 0) {
                     return false;
                 }

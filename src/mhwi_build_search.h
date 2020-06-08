@@ -23,10 +23,12 @@ struct SearchParameters {
     bool health_regen_required;
 
     WeaponClass weapon_class;
-    SkillSpec skill_spec;
-    MiscBuffsEquips misc_buffs;
+    std::unordered_set<EleStatType> allowed_weapon_elestat_types;
 
     DamageModel damage_model;
+
+    SkillSpec skill_spec;
+    MiscBuffsEquips misc_buffs;
 };
 
 

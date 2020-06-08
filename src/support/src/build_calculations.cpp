@@ -148,7 +148,7 @@ std::string EffectiveDamageValues::get_humanreadable() const {
 ModelCalculatedValues calculate_damage(const DamageModel& model,
                                        const EffectiveDamageValues& edv) {
 
-    const double unrounded_raw_damage = (edv.efr / 100) * (double) model.raw_mv * ((double) model.raw_hzv / 100);
+    const double unrounded_raw_damage = (edv.efr / 100) * (double) model.raw_mv * ((double) model.hzv_raw / 100);
     const double unrounded_total_damage = unrounded_raw_damage;
     const unsigned int actual_total_damage = std::round(unrounded_raw_damage);
 
@@ -159,8 +159,19 @@ ModelCalculatedValues calculate_damage(const DamageModel& model,
 
 
 std::string DamageModel::get_humanreadable() const {
-    return "Raw MV: " + std::to_string(this->raw_mv)
-           + "\nRaw HZV: " + std::to_string(this->raw_hzv);
+    return "Raw MV:           " + std::to_string(this->raw_mv)
+           + "\nFire Modifier:    " + std::to_string(this->elemod_fire)
+           + "\nWater Modifier:   " + std::to_string(this->elemod_water)
+           + "\nThunder Modifier: " + std::to_string(this->elemod_thunder)
+           + "\nIce Modifier:     " + std::to_string(this->elemod_ice)
+           + "\nDragon Modifier:  " + std::to_string(this->elemod_dragon)
+           + "\n"
+           + "\nRaw HZV:     " + std::to_string(this->hzv_raw)
+           + "\nFire HZV:    " + std::to_string(this->hzv_fire)
+           + "\nWater HZV:   " + std::to_string(this->hzv_water)
+           + "\nThunder HZV: " + std::to_string(this->hzv_thunder)
+           + "\nIce HZV:     " + std::to_string(this->hzv_ice)
+           + "\nDragon HZV:  " + std::to_string(this->hzv_dragon);
 }
 
 

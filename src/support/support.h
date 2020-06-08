@@ -168,6 +168,9 @@ struct WeaponContribution {
     unsigned int              weapon_raw {0};
     int                       weapon_aff {0};
 
+    // Do note that it is possible for elestat_value to be zero even if the other two elestat fields
+    // are not "none". This special case is never from the database, but rather from weapon filtering
+    // mechanisms that disable undesirable weapon elements/statuses.
     EleStatVisibility         elestat_visibility {EleStatVisibility::none};
     EleStatType               elestat_type       {EleStatType::none};
     unsigned int              elestat_value      {0};
@@ -180,6 +183,8 @@ struct WeaponContribution {
     bool                      is_constant_sharpness {false};
 
     bool                      health_regen_active {false};
+
+    void erase_elestat() noexcept;
 };
 
 
@@ -317,8 +322,19 @@ EffectiveDamageValues calculate_edv_from_gear_lookup(const WeaponInstance&,
 
 
 struct DamageModel {
-    unsigned int raw_mv {0};
-    unsigned int raw_hzv {0};
+    unsigned int raw_mv         {0};
+    double       elemod_fire    {0};
+    double       elemod_water   {0};
+    double       elemod_thunder {0};
+    double       elemod_ice     {0};
+    double       elemod_dragon  {0};
+
+    unsigned int hzv_raw     {0};
+    unsigned int hzv_fire    {0};
+    unsigned int hzv_water   {0};
+    unsigned int hzv_thunder {0};
+    unsigned int hzv_ice     {0};
+    unsigned int hzv_dragon  {0};
 
     std::string get_humanreadable() const;
 };

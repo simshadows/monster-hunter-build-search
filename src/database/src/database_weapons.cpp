@@ -122,6 +122,9 @@ const WeaponsDatabase WeaponsDatabase::read_db_file(const std::string& filename)
             const unsigned int elestat_bloat_value = jj["elestat_value"];
             elestat_value = elestat_bloat_value / k_ELESTAT_BLOAT_VALUE;
             assert((elestat_value * k_ELESTAT_BLOAT_VALUE) == elestat_bloat_value);
+            if (!elestat_value) {
+                throw std::runtime_error("Element/status values must not be zero.");
+            }
         }
 
         std::vector<unsigned int> deco_slots = jj["slots"];
