@@ -649,7 +649,8 @@ static void do_search(const Database& db, const SearchParameters& params) {
 
     auto total_start_t = std::chrono::steady_clock::now();
 
-    std::clog << params.skill_spec.get_humanreadable() << "\n\n";
+    const std::string initial_col1 = params.skill_spec.get_humanreadable();
+    std::string initial_col2;
 
     const std::unordered_set<const SetBonus*> set_bonus_subset = [&](){
         std::unordered_set<const SetBonus*> x;
@@ -664,18 +665,21 @@ static void do_search(const Database& db, const SearchParameters& params) {
         }
 
         if (x.size()) {
-            std::clog << "Set bonuses to be considered:";
+            initial_col2 += "Set bonuses to be considered:";
             for (const SetBonus * const set_bonus : x) {
-                std::clog << std::endl << "  " << set_bonus->name;
+                initial_col2 += "\n  " + set_bonus->name;
             }
-            std::clog << std::endl << std::endl;
         }
 
         return x;
     }();
 
-    std::clog << "Buffs:\n" + Utils::indent(params.misc_buffs.get_humanreadable(), 2) + "\n\n";
-    std::clog << "Damage Model:\n" + Utils::indent(params.damage_model.get_humanreadable(), 2) + "\n\n";
+    initial_col2 += "Buffs:\n"
+                    + Utils::indent(params.misc_buffs.get_humanreadable(), 2)
+                    + "\n\nDamage Model:\n"
+                    + Utils::indent(params.damage_model.get_humanreadable(), 2);
+
+    std::clog << Utils::two_column_text(initial_col1, initial_col2, "   |    ") + "\n\n";
 
     std::size_t weapons_initial_size; // TODO: make constant
     std::vector<std::tuple<DecoSlots, const Skill*, const SetBonus*, std::vector<WeaponInstanceExtended>>> weapons = [&](){
@@ -894,23 +898,26 @@ static void do_search(const Database& db, const SearchParameters& params) {
                             return x;
                         }();
 
-                        const std::string build_info = wc.instance.weapon->name + "\n\n"
-                                                       + wc.instance.upgrades->get_humanreadable() + "\n\n"
-                                                       + wc.instance.augments->get_humanreadable() + "\n\n"
-                                                       + "Armour:\n"
-                                                       + Utils::indent(ac.armour.get_humanreadable(), 4) + "\n\n"
-                                                       + "Decorations:\n"
-                                                       + Utils::indent(curr_decos.get_humanreadable(), 4) + "\n\n"
-                                                       + "Skills:\n"
-                                                       + Utils::indent(skills.get_humanreadable(), 4) + "\n\n"
-                                                       + "Buffs:\n"
-                                                       + Utils::indent(params.misc_buffs.get_humanreadable(), 4) + "\n\n"
-                                                       + "Effective Damage Values:\n"
-                                                       + Utils::indent(edv.get_humanreadable(), 4) + "\n\n"
-                                                       + "Model Damage Values:\n"
-                                                       + Utils::indent(mcv.get_humanreadable(), 4);
+                        const std::string col1 = wc.instance.weapon->name + "\n\n"
+                                                 + wc.instance.upgrades->get_humanreadable() + "\n\n"
+                                                 + wc.instance.augments->get_humanreadable() + "\n\n"
+                                                 + "Armour:\n"
+                                                 + Utils::indent(ac.armour.get_humanreadable(), 4) + "\n\n"
+                                                 + "Decorations:\n"
+                                                 + Utils::indent(curr_decos.get_humanreadable(), 4) + "\n\n"
+                                                 + "Buffs:\n"
+                                                 + Utils::indent(params.misc_buffs.get_humanreadable(), 4);
+
+                        const std::string col2 = "Skills:\n"
+                                                 + Utils::indent(skills.get_humanreadable(), 4) + "\n\n"
+                                                 + "Effective Damage Values:\n"
+                                                 + Utils::indent(edv.get_humanreadable(), 4) + "\n\n"
+                                                 + "Model Damage Values:\n"
+                                                 + Utils::indent(mcv.get_humanreadable(), 4);
+
                         std::clog << "\n\nFound Total Damage: " + std::to_string(best_total_damage) + "\n\n"
-                                  << Utils::indent(build_info, 4) + "\n";
+                                  << Utils::indent(Utils::two_column_text(col1, col2, "  |   "), 4) + "\n";
+
                         reprune_weapons = true;
                     }
 

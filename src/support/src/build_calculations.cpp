@@ -169,11 +169,11 @@ ModelCalculatedValues calculate_damage(const DamageModel& model,
 
     const double unrounded_raw_damage = (edv.efr / 100) * (double) model.raw_motion_value * ((double) model.hzv_raw / 100);
 
-    const double unrounded_elestat_damage = model.elemental_modifier * [&](){
+    const double unrounded_elestat_damage = [&](){
         if (edv.efes == 0) {
             return 0.0; // Zero EFE/EFS always means zero damage.
         } else {
-            const double elemod_hzvperc_product = [&](){
+            const double ele_hzv = [&](){
                 switch (edv.elestat_type) {
                     case EleStatType::fire:    return (double) model.hzv_fire    / 100;
                     case EleStatType::water:   return (double) model.hzv_water   / 100;
@@ -184,7 +184,7 @@ ModelCalculatedValues calculate_damage(const DamageModel& model,
                         throw std::logic_error("Unexpected EleStatType value.");
                 }
             }();
-            return edv.efes * elemod_hzvperc_product;
+            return model.elemental_modifier * edv.efes * ele_hzv;
         }
     }();
 
