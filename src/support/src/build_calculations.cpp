@@ -4,6 +4,7 @@
  */
 
 #include <assert.h>
+#include <stdexcept>
 #include <cmath>
 
 #include "../support.h"
@@ -96,10 +97,6 @@ static EffectiveDamageValues calculate_edv(const unsigned int    weapon_raw, // 
     const double efes = base_elestat_value * ele_sharpness_modifier;
     const EleStatType elestat_type = weapon_elestat_type;
 
-    /*
-     * Modelled Raw
-     */
-
     return {affinity,
             final_sharpness_gauge,
             ((double) precap_true_raw / raw_cap),
@@ -171,10 +168,34 @@ ModelCalculatedValues calculate_damage(const DamageModel& model,
                                        const EffectiveDamageValues& edv) {
 
     const double unrounded_raw_damage = (edv.efr / 100) * (double) model.raw_mv * ((double) model.hzv_raw / 100);
-    const double unrounded_total_damage = unrounded_raw_damage;
-    const unsigned int actual_total_damage = std::round(unrounded_raw_damage);
+
+    const double unrounded_elestat_damage = [&](){
+        if (edv.efes == 0) {
+            return 0.0; // Zero EFE/EFS always means zero damage.
+        } else {
+            const double elemod_hzvperc_product = [&](){
+                switch (edv.elestat_type) {
+                    case EleStatType::fire:    return model.elemod_fire    * ((double) model.hzv_fire    / 100);
+                    case EleStatType::water:   return model.elemod_water   * ((double) model.hzv_water   / 100);
+                    case EleStatType::thunder: return model.elemod_thunder * ((double) model.hzv_thunder / 100);
+                    case EleStatType::ice:     return model.elemod_ice     * ((double) model.hzv_ice     / 100);
+                    case EleStatType::dragon:  return model.elemod_dragon  * ((double) model.hzv_dragon  / 100);
+                    default:
+                        throw std::logic_error("Unexpected EleStatType value.");
+                }
+            }();
+            return edv.efes * elemod_hzvperc_product;
+        }
+    }();
+
+    assert(unrounded_raw_damage >= 0.0);
+    assert(unrounded_elestat_damage >= 0.0);
+
+    const double unrounded_total_damage = unrounded_raw_damage + unrounded_elestat_damage;
+    const unsigned int actual_total_damage = std::round(unrounded_raw_damage) + std::round(unrounded_elestat_damage);
 
     return {unrounded_raw_damage,
+            unrounded_elestat_damage,
             unrounded_total_damage,
             actual_total_damage };
 }
@@ -199,6 +220,7 @@ std::string DamageModel::get_humanreadable() const {
 
 std::string ModelCalculatedValues::get_humanreadable() const {
     return "Unrounded Raw Damage: " + std::to_string(this->unrounded_raw_damage)
+           + "\nUnrounded Elemental/Status Damage: " + std::to_string(this->unrounded_elestat_damage)
            + "\nUnrounded Total Damage: " + std::to_string(this->unrounded_total_damage)
            + "\nActual Total Damage: " + std::to_string(this->actual_total_damage);
 }

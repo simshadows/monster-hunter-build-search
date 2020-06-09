@@ -22,11 +22,11 @@
         "elemod_dragon":   1.0,
 
         "hzv_raw":     60,
-        "hzv_fire":    30,
-        "hzv_water":   30,
-        "hzv_thunder": 30,
-        "hzv_ice":     30,
-        "hzv_dragon":  30
+        "hzv_fire":    25,
+        "hzv_water":   25,
+        "hzv_thunder": 25,
+        "hzv_ice":     25,
+        "hzv_dragon":  25
     },
 
     "selected_skills": {

@@ -348,6 +348,7 @@ struct DamageModel {
 
 struct ModelCalculatedValues {
     double unrounded_raw_damage;
+    double unrounded_elestat_damage;
 
     double unrounded_total_damage;
     unsigned int actual_total_damage;
