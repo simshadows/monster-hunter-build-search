@@ -167,19 +167,19 @@ std::string EffectiveDamageValues::get_humanreadable() const {
 ModelCalculatedValues calculate_damage(const DamageModel& model,
                                        const EffectiveDamageValues& edv) {
 
-    const double unrounded_raw_damage = (edv.efr / 100) * (double) model.raw_mv * ((double) model.hzv_raw / 100);
+    const double unrounded_raw_damage = (edv.efr / 100) * (double) model.raw_motion_value * ((double) model.hzv_raw / 100);
 
-    const double unrounded_elestat_damage = [&](){
+    const double unrounded_elestat_damage = model.elemental_modifier * [&](){
         if (edv.efes == 0) {
             return 0.0; // Zero EFE/EFS always means zero damage.
         } else {
             const double elemod_hzvperc_product = [&](){
                 switch (edv.elestat_type) {
-                    case EleStatType::fire:    return model.elemod_fire    * ((double) model.hzv_fire    / 100);
-                    case EleStatType::water:   return model.elemod_water   * ((double) model.hzv_water   / 100);
-                    case EleStatType::thunder: return model.elemod_thunder * ((double) model.hzv_thunder / 100);
-                    case EleStatType::ice:     return model.elemod_ice     * ((double) model.hzv_ice     / 100);
-                    case EleStatType::dragon:  return model.elemod_dragon  * ((double) model.hzv_dragon  / 100);
+                    case EleStatType::fire:    return (double) model.hzv_fire    / 100;
+                    case EleStatType::water:   return (double) model.hzv_water   / 100;
+                    case EleStatType::thunder: return (double) model.hzv_thunder / 100;
+                    case EleStatType::ice:     return (double) model.hzv_ice     / 100;
+                    case EleStatType::dragon:  return (double) model.hzv_dragon  / 100;
                     default:
                         throw std::logic_error("Unexpected EleStatType value.");
                 }
@@ -202,12 +202,8 @@ ModelCalculatedValues calculate_damage(const DamageModel& model,
 
 
 std::string DamageModel::get_humanreadable() const {
-    return "Raw MV:           " + std::to_string(this->raw_mv)
-           + "\nFire Modifier:    " + std::to_string(this->elemod_fire)
-           + "\nWater Modifier:   " + std::to_string(this->elemod_water)
-           + "\nThunder Modifier: " + std::to_string(this->elemod_thunder)
-           + "\nIce Modifier:     " + std::to_string(this->elemod_ice)
-           + "\nDragon Modifier:  " + std::to_string(this->elemod_dragon)
+    return "Raw Motion Value:   " + std::to_string(this->raw_motion_value)
+           + "\nElemental Modifier: " + std::to_string(this->elemental_modifier)
            + "\n"
            + "\nRaw HZV:     " + std::to_string(this->hzv_raw)
            + "\nFire HZV:    " + std::to_string(this->hzv_fire)

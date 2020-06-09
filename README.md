@@ -17,7 +17,7 @@ Specific plans for the future:
 
 - Elderseal filtering (similar to the health regen filtering)
 
-## Data References
+## Data and Educational References
 
 - Directly from in-game UI or minor first-hand in-game testing where possible/needed
 - MHWI Damage Formula ([link for v13.50.00](https://docs.google.com/spreadsheets/d/e/2PACX-1vSuFIUfe5Sp9k6sqKvPSPbO2xcClt1WaYMf_xGocWDIkgaSDi0nBLbOKAd8GScLQRjfxbljhPO4Bjf7/pubhtml#))
@@ -25,4 +25,5 @@ Specific plans for the future:
 - MHWI Weapon Attack Tables ([link for v13.50.00](https://docs.google.com/spreadsheets/d/e/2PACX-1vTEYb4wGpijtIpFVopiYl1V83m48d7g1AHmTwOBKJ5RXdlz1sfxCyEmnhbgHLWQsGiXnodyBsUlPzc3/pubhtml#))
 - Honey Hunter World MHWI Builder ([link](https://honeyhunterworld.com/mhwbi/))
 - Kiranico ([link](https://mhworld.kiranico.com/))
+- JinJinx and Tuna ([link](https://www.youtube.com/channel/UCEU2FbTBYxAETGH4sqqzhPA))
 

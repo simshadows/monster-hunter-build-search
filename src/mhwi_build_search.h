@@ -20,10 +20,10 @@ struct SearchParameters {
     bool allow_low_rank;
     bool allow_high_rank;
     bool allow_master_rank;
-    bool health_regen_required;
 
     WeaponClass weapon_class;
     std::unordered_set<EleStatType> allowed_weapon_elestat_types;
+    bool health_regen_required;
 
     DamageModel damage_model;
 

@@ -28,7 +28,6 @@ static SearchParameters read_json_obj(const nlohmann::json& j) {
     const bool allow_low_rank        = j["allow_low_rank"];
     const bool allow_high_rank       = j["allow_high_rank"];
     const bool allow_master_rank     = j["allow_master_rank"];
-    const bool health_regen_required = j["health_regen_required"];
 
     WeaponClass weapon_class = upper_snake_case_to_weaponclass(j["weapon_selection"]["class"]);
     std::unordered_set<EleStatType> allowed_weapon_elestat_types = [&](){
@@ -38,6 +37,7 @@ static SearchParameters read_json_obj(const nlohmann::json& j) {
         const bool allow_ice     = j["weapon_selection"]["allow_ice"    ];
         const bool allow_dragon  = j["weapon_selection"]["allow_dragon" ];
 
+
         std::unordered_set<EleStatType> x;
         if (allow_fire)    x.emplace(EleStatType::fire   );
         if (allow_water)   x.emplace(EleStatType::water  );
@@ -46,14 +46,11 @@ static SearchParameters read_json_obj(const nlohmann::json& j) {
         if (allow_dragon)  x.emplace(EleStatType::dragon );
         return x;
     }();
+    const bool health_regen_required = j["weapon_selection"]["health_regen_required"];
 
     DamageModel damage_model = [&](){
-        const unsigned int raw_mv         = j["damage_model"]["raw_mv"        ];
-        const double       elemod_fire    = j["damage_model"]["elemod_fire"   ];
-        const double       elemod_water   = j["damage_model"]["elemod_water"  ];
-        const double       elemod_thunder = j["damage_model"]["elemod_thunder"];
-        const double       elemod_ice     = j["damage_model"]["elemod_ice"    ];
-        const double       elemod_dragon  = j["damage_model"]["elemod_dragon" ];
+        const unsigned int raw_motion_value   = j["damage_model"]["raw_motion_value"  ];
+        const double       elemental_modifier = j["damage_model"]["elemental_modifier"];
 
         const unsigned int hzv_raw     = j["damage_model"]["hzv_raw"    ];
         const unsigned int hzv_fire    = j["damage_model"]["hzv_fire"   ];
@@ -62,12 +59,8 @@ static SearchParameters read_json_obj(const nlohmann::json& j) {
         const unsigned int hzv_ice     = j["damage_model"]["hzv_ice"    ];
         const unsigned int hzv_dragon  = j["damage_model"]["hzv_dragon" ];
 
-        DamageModel x = {raw_mv,
-                         elemod_fire,
-                         elemod_water,
-                         elemod_thunder,
-                         elemod_ice,
-                         elemod_dragon,
+        DamageModel x = {raw_motion_value,
+                         elemental_modifier,
 
                          hzv_raw,
                          hzv_fire,
@@ -133,10 +126,10 @@ static SearchParameters read_json_obj(const nlohmann::json& j) {
     return {allow_low_rank,
             allow_high_rank,
             allow_master_rank,
-            health_regen_required,
     
             weapon_class,
             std::move(allowed_weapon_elestat_types),
+            health_regen_required,
 
             std::move(damage_model),
 

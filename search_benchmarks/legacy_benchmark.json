@@ -2,24 +2,20 @@
     "allow_low_rank":        false,
     "allow_high_rank":       false,
     "allow_master_rank":     true,
-    "health_regen_required": true,
 
     "weapon_selection": {
-        "class": "GREATSWORD",
+        "class":         "GREATSWORD",
         "allow_fire":    true,
         "allow_water":   true,
         "allow_thunder": true,
         "allow_ice":     true,
-        "allow_dragon":  true
+        "allow_dragon":  true,
+        "health_regen_required": true
     },
 
     "damage_model": {
-        "raw_mv":          264,
-        "elemod_fire":     1.0,
-        "elemod_water":    1.0,
-        "elemod_thunder":  1.0,
-        "elemod_ice":      1.0,
-        "elemod_dragon":   1.0,
+        "raw_motion_value":   264,
+        "elemental_modifier": 1.0,
 
         "hzv_raw":     60,
         "hzv_fire":    25,
