@@ -1,0 +1,869 @@
+% This file provides all shared infrastructure to be provided to this repository's latex documents.
+% This will also include common packages.
+
+\NeedsTeXFormat{LaTeX2e}[1994/06/01]
+\ProvidesPackage{../_latex_includes/sharedpkg}[unknown version]
+
+%%%%%%%%%%%%
+% Packages %
+%%%%%%%%%%%%
+
+\usepackage[utf8]{inputenc}
+%\usepackage[T1]{fontenc}
+\usepackage{xparse}
+
+\usepackage{calc}
+\usepackage[backend=biber]{biblatex}
+\usepackage{epigraph}
+\usepackage{listings}
+\usepackage{lstautogobble}
+\usepackage[table]{xcolor} % table option loads colortbl for coloring tables
+\usepackage{nameref}
+\usepackage{multicol}
+\usepackage[raggedright]{titlesec}
+\usepackage{graphicx}
+\usepackage{float}
+% \usepackage{wrapfig}
+\usepackage{subfigure}
+\usepackage{setspace}
+\usepackage{titletoc} % Must be before tocloft due to weird conflict
+\usepackage[subfigure]{tocloft} % subfigure option for conflict resolution
+\usepackage{changepage}
+\usepackage[framemethod=pgf]{mdframed}
+\usepackage[ampersand]{easylist}
+\usepackage{enumitem}
+% \usepackage{rotating}
+\usepackage{ulem}
+% \usepackage{svg} % How to use this?
+\usepackage{soul} % Similar package to ulem
+
+\usepackage{lipsum}
+
+% Core Global Formatting
+\usepackage[hypertexnames=false]{hyperref}
+\usepackage{parskip}
+\usepackage{fancyhdr}
+\usepackage[font={small},labelfont={bf},justification=centering]{caption}
+
+% Language
+%\usepackage[english,greek]{babel}
+%\usepackage{teubner} % Classical greek. Mainly just used for capital Digamma.
+
+% Tables
+\usepackage{tabularx}
+
+% Core Mathematics
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+%\usepackage{unicode-math} % Doesn't work with pdfLaTeX
+%\usepackage{stix} % This broke my distribution...
+\usepackage{mathtools}
+%\usepackage{nccmath} % Too buggy, breaks minipages, please don't use.
+\usepackage{xfrac}
+\usepackage{siunitx}
+\usepackage{cancel}
+\usepackage{bm} % Bold math symbols
+\usepackage{steinmetz} % Steinmetz notation for phasors. Only provides one command: \phase{}
+
+% Core Algorithmics
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{algorithmicx}
+
+% PGF/TikZ
+\usepackage{tikz}
+%\usepackage{tkz-euclide} % Not going to use, documentation is in French.
+%\usetkzobj{all} % Loads all tkz-euclide objects
+\usepackage{xstring} % CIRCUITIKZ DEPENDENCY
+\usepackage[american]{circuitikz}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%
+% Heading Constants %
+%%%%%%%%%%%%%%%%%%%%%
+
+\providecommand\TITLE{please overwrite this constant thx}
+\providecommand\AUTHOR{Author: simshadows \texttt{<contact@simshadows.com>}}
+\providecommand\DATE{\today}
+
+\title{\TITLE{}}
+\author{\AUTHOR{}}
+\date{\DATE{}}
+
+
+%%%%%%%%%%%%%%%%%%
+% Custom Colours %
+%%%%%%%%%%%%%%%%%%
+
+\definecolor{verylightgray}{rgb}{0.88,0.88,0.88}
+\definecolor{lightgray}{rgb}{0.7,0.7,0.7}
+
+\definecolor{darkgreen}{rgb}{0,0.6,0}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+% Theme colours taken from Google Sheets.
+\definecolor{myblue}{RGB}{66,133,244}
+\definecolor{myteal}{RGB}{70,189,198}
+\definecolor{mygreen}{RGB}{52,168,83}
+\definecolor{myyellow}{RGB}{251,188,4}
+\definecolor{myorange}{RGB}{255,109,1}
+\definecolor{myred}{RGB}{234,67,53}
+\definecolor{mypurple}{HTML}{9900FF}
+
+\definecolor{mycontrastblue}{HTML}{0000FF}
+\definecolor{mycontrastred}{HTML}{FF0000}
+\definecolor{mycontrastpurple}{HTML}{9900FF} % The same as mypurple... for now.
+
+\colorlet{mylightblue}{myblue!50!white}
+\colorlet{mylightteal}{myteal!50!white}
+\colorlet{mylightgreen}{mygreen!50!white}
+\colorlet{mylightyellow}{myyellow!50!white}
+\colorlet{mylightorange}{myorange!50!white}
+\colorlet{mylightred}{myred!50!white}
+\colorlet{mylightpurple}{mypurple!50!white}
+
+\definecolor{extranotecolor}{rgb}{0.65,0.65,0.65}
+\colorlet{suppnotecolor}{orange}
+\colorlet{questionassumptionscolor}{red}
+
+% Colour of magnetic coupling arrows in circuitikz
+\colorlet{magneticcouplingcolor}{lightgray}
+
+% Coloured emphasis in math environments.
+% I made these macros because I use it a lot...
+% NOTE: These commands can't be nested into each other for some reason, probably due to a bug.
+\newcommand{\memph}[2][myred]{{\color{#1}\bm{#2}}}
+\newcommand{\memphR}[1]{\memph[myred]{#1}}
+\newcommand{\memphRC}[1]{\memph[mycontrastred]{#1}}
+\newcommand{\memphO}[1]{\memph[myorange]{#1}}
+\newcommand{\memphG}[1]{\memph[mygreen]{#1}}
+\newcommand{\memphB}[1]{\memph[myblue]{#1}}
+\newcommand{\memphBC}[1]{\memph[mycontrastblue]{#1}}
+\newcommand{\memphP}[1]{\memph[mypurple]{#1}}
+\newcommand{\memphPC}[1]{\memph[mycontrastpurple]{#1}}
+% Alternatives if boldfacing is a problem
+\newcommand{\xmemph}[2][myred]{{\color{#1}{#2}}}
+\newcommand{\xmemphR}[1]{\xmemph[myred]{#1}}
+\newcommand{\xmemphG}[1]{\xmemph[mygreen]{#1}}
+\newcommand{\xmemphB}[1]{\xmemph[myblue]{#1}}
+\newcommand{\xmemphP}[1]{\xmemph[mypurple]{#1}}
+
+% Similar for text environments
+\newcommand{\temph}[2][myred]{{\color{#1}\textbf{#2}}}
+\newcommand{\temphR}[1]{\temph[myred]{#1}}
+\newcommand{\temphG}[1]{\temph[mygreen]{#1}}
+\newcommand{\temphB}[1]{\temph[myblue]{#1}}
+\newcommand{\temphP}[1]{\temph[mypurple]{#1}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Other Style (some may be overwritten again in the document preamble) %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\setcounter{tocdepth}{2}
+\setcounter{secnumdepth}{2}
+
+% Adjusts the offset of the underline command \ul{} from the soul package to be a bit higher.
+% The argument "x" is an arbitrary character without descenders as often are in the letters "y", "g", and "j".
+% This macro sets the line to be very close, but avoiding the lowest letter. In this case, without descenders,
+% it will indeed be very close to the base of text.
+\setuldepth{x}
+
+\def\arraystretch{1.3} % Makes spaces between rows wider.
+
+\hypersetup{
+    colorlinks = true,
+    citecolor  = lightgray
+}
+
+\let\OldCite\cite
+\RenewDocumentCommand{\cite}{O{} m}{\ExtraNotes{\textsuperscript{\OldCite[#1]{#2}}}}
+
+\renewcommand\thepart{\arabic{part}}
+\renewcommand\partname{Part}
+% \newcommand\sectionbreak{\clearpage} % This behaves weirdly...
+
+% \setlength{\abovecaptionskip}{-0.5mm} % TODO: Find something more robust.
+% \setlength{\belowcaptionskip}{-3.0mm} % TODO: Find something more robust.
+
+\sisetup{
+    per-mode = reciprocal,
+}
+
+\renewcommand{\lstlistingname}{Snippet}
+
+\lstset{
+    frame             = tblr,
+    autogobble,
+    columns           = fullflexible,
+    keepspaces        = true,
+    aboveskip         = 3mm,
+    belowskip         = 3mm,
+    showstringspaces  = false,
+    columns           = flexible,
+    basicstyle        = {\small\ttfamily},
+    numberstyle       = \tiny\color{gray},
+    keywordstyle      = \color{blue},
+    commentstyle      = \color{darkgreen},
+    stringstyle       = \color{mauve},
+    % TODO: More fine-grained syntax highlighting?? This is extremely limited.
+    breaklines        = true,
+    breakatwhitespace = false,
+    tabsize           = 4,
+    % This option below makes ASCII quotes appear instead of special Unicode quotes.
+    upquote           = true,
+    % This option below puts the tilde at the midline rather than above.
+    % Or, at least it should, if we were using a modern font.
+    %literate          = {~} {\texttildelow}{1}
+}
+
+% This Javascript syntax highlighting definition is a modified version taken from secondary source:
+% https://tex.stackexchange.com/questions/89574/language-option-supported-in-listings
+% The original source, which doesn't appear to be available anymore, is:
+% http://lenaherrmann.net/2010/05/20/javascript-syntax-highlighting-in-the-latex-listings-package
+\lstdefinelanguage{JavaScript}{
+    keywords={typeof, new, true, false, catch, function, return, null, catch, switch, var, if, in, while, do, else, case, break},
+    ndkeywords={class, export, boolean, throw, implements, import, this},
+    ndkeywordstyle=\color{darkgray}\bfseries,
+    identifierstyle=\color{black},
+    sensitive=false,
+    comment=[l]{//},
+    morecomment=[s]{/*}{*/},
+    morestring=[b]',
+    morestring=[b]"
+}
+
+
+% TikZ Libraries
+\usetikzlibrary{calc}
+\usetikzlibrary{backgrounds}
+
+% Custom Circuitikz options
+\ctikzset{tripoles/mos style/arrows} % Adds arrows to MOSFETs
+\ctikzset{label/align=straight} % Straightens diagonal labels
+
+% Circuitikz part proportions
+% Based on: https://github.com/circuitikz/circuitikz/blob/4feb150ba25cd7ad80c94a56f5d5d516200bfbf0/tex/circuitikz.sty#L258
+
+\ctikzset{monopoles/ground/width/.initial=.15}
+
+\ctikzset{bipoles/resistor/height/.initial=.23}
+\ctikzset{bipoles/resistor/width/.initial=.6}
+\ctikzset{bipoles/capacitor/height/.initial=.4}
+\ctikzset{bipoles/capacitor/width/.initial=.1}
+\ctikzset{bipoles/potentiometer/height/.initial=.6}
+\ctikzset{bipoles/potentiometer/height 2/.initial=.23}
+\ctikzset{bipoles/potentiometer/width/.initial=.6}
+\ctikzset{bipoles/photoresistor/height/.initial=.6}
+\ctikzset{bipoles/photoresistor/height 2/.initial=.23}
+\ctikzset{bipoles/photoresistor/width/.initial=.6}
+\ctikzset{bipoles/thermistor/main/.initial=.7}
+\ctikzset{bipoles/thermistor/height/.initial=.328}%.23/.7
+\ctikzset{bipoles/thermistor/width/.initial=.6}
+\ctikzset{bipoles/thermistorntc/width/.initial=.6}
+\ctikzset{bipoles/thermistorntc/main/.initial=.7}
+\ctikzset{bipoles/thermistorntc/height/.initial=.328}%.23/.7
+\ctikzset{bipoles/thermistorntc/height 2/.initial=.75}%.23/.7
+\ctikzset{bipoles/thermistorptc/width/.initial=.6}
+\ctikzset{bipoles/thermistorptc/main/.initial=.7}
+\ctikzset{bipoles/thermistorptc/height/.initial=.328}%.23/.7
+\ctikzset{bipoles/varistor/main/.initial=.7}
+\ctikzset{bipoles/varistor/height/.initial=.328}%.23/.7
+\ctikzset{bipoles/varistor/width/.initial=.6}
+\ctikzset{bipoles/vresistor/height/.initial=.45}
+\ctikzset{bipoles/vresistor/width/.initial=.6}
+\ctikzset{bipoles/generic/height/.initial=.23}
+\ctikzset{bipoles/generic/width/.initial=.6}
+\ctikzset{bipoles/generic potentiometer/height/.initial=.6}
+\ctikzset{bipoles/generic potentiometer/height 2/.initial=.23}
+\ctikzset{bipoles/generic potentiometer/width/.initial=.6}
+\ctikzset{bipoles/ageneric/height/.initial=.23}
+\ctikzset{bipoles/ageneric/width/.initial=.6}
+\ctikzset{bipoles/memristor/height/.initial=.23}
+\ctikzset{bipoles/memristor/wave height/.initial=.375}
+\ctikzset{bipoles/memristor/width/.initial=.60}
+\ctikzset{bipoles/tgeneric/height/.initial=.525}
+\ctikzset{bipoles/tgeneric/width/.initial=.6}
+\ctikzset{bipoles/tfullgeneric/height/.initial=.525}
+\ctikzset{bipoles/tfullgeneric/width/.initial=.60}
+\ctikzset{bipoles/fullgeneric/height/.initial=.23}
+\ctikzset{bipoles/fullgeneric/width/.initial=.6}
+\ctikzset{bipoles/diode/height/.initial=.3}
+\ctikzset{bipoles/diode/width/.initial=.25}
+\ctikzset{bipoles/bidirectionaldiode/height/.initial=.66}
+\ctikzset{bipoles/bidirectionaldiode/width/.initial=.6}
+\ctikzset{bipoles/bidirectionaldiode/diode width left/.initial=.3}
+\ctikzset{bipoles/bidirectionaldiode/diode width right/.initial=.3}
+
+\ctikzset{tripoles/thyristor/height/.initial=.66}
+\ctikzset{tripoles/thyristor/height 2/.initial=.3}
+\ctikzset{tripoles/thyristor/width/.initial=.6}
+\ctikzset{tripoles/thyristor/diode height/.initial=.3}
+\ctikzset{tripoles/thyristor/diode width left/.initial=.4}
+\ctikzset{tripoles/thyristor/diode width right/.initial=.3}
+
+\ctikzset{tripoles/triac/height/.initial=.66}
+\ctikzset{tripoles/triac/width/.initial=.6}
+\ctikzset{tripoles/triac/diode width left/.initial=.3}
+\ctikzset{tripoles/triac/diode width right/.initial=.3}
+
+% Custom Proportions
+
+\ctikzset{bipoles/crossing/size=.5}
+
+% Reusable Style Macros
+
+% Used for magnetic coupling arrows in electrical circuit diagrams.
+\tikzset{simshadows/style/ee/magneticcouplingarrow/.style={latex-latex, magneticcouplingcolor, line width=1.2pt}}
+
+% Used for iron/ferrite cores in electrical circuit diagrams.
+\tikzset{simshadows/style/ee/ironcore/.style={line width=2.0pt}}
+
+% Generic soft gray style
+% Example:
+%     \draw[simshadows/style/softgray]
+%         (0,0) rectangle (1,1)
+%     ;
+\tikzset{
+    simshadows/style/softgray/.style={
+        lightgray,
+        line width=3.0pt,
+        fill=verylightgray,
+    }
+}
+
+% Custom TikZ Graphics
+
+% Mesh current indicators
+% Example:
+%     \draw
+%         (0,0) pic {simshadows/ee/meshcw} node {$i_1$}
+%     ;
+\tikzset{
+    simshadows/ee/meshcw/.pic={
+        \draw[thick, stealth-]
+            (0,0) ++(-70:0.35) arc (-70:190:0.35)
+        ;
+    },
+    simshadows/ee/meshcc/.pic={
+        \draw[thick, -stealth]
+            (0,0) ++(-10:0.35) arc (-10:250:0.35)
+        ;
+    },
+}
+
+% Transformer core
+% (Note: This will need to be drawn manually if a longer/shorter core is desired. In which case, use this pic as a template.)
+% Example:
+%     \draw
+%         (0,0) pic {simshadows/ee/ironcore}
+%     ;
+\tikzset{
+    simshadows/ee/ironcore/.pic={
+        \draw[simshadows/style/ee/ironcore]
+            ( 0.08,0.55) -- ++(0,-1.1)
+            (-0.08,0.55) -- ++(0,-1.1)
+        ;
+    },
+}
+
+% Generic arrows
+% Example:
+%     \node[simshadows/GenericBlockArrow] {};
+%     \node[simshadows/GenericArrow] {};
+\tikzset{
+    simshadows/GenericBlockArrow/.style={
+        single arrow,
+        draw,
+        minimum width=4ex,
+        minimum height=5ex,
+        single arrow head extend=1.0ex,
+    },
+    simshadows/GenericGrayBlockArrow/.style={
+        single arrow,
+        draw,
+        minimum width=4.5ex,
+        minimum height=5.5ex,
+        single arrow head extend=1.1ex,
+        simshadows/style/softgray,
+    }
+}
+
+\newcommand{\DrawnDownArrow}[1][]{%
+    \begin{tikzpicture}[scale=1, transform shape]
+        \node[simshadows/GenericBlockArrow, rotate=-90, #1] {};
+    \end{tikzpicture}%
+}
+
+\newcommand{\DrawnRightArrow}[1][]{%
+    \begin{tikzpicture}[scale=1, transform shape]
+        \node[simshadows/GenericBlockArrow, #1] {};
+    \end{tikzpicture}%
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%
+% Headers and Footers %
+%%%%%%%%%%%%%%%%%%%%%%%
+
+% These are the defaults, to be overridden within each document as required.
+
+\lhead{}
+\rhead{}
+
+\pagestyle{fancy}
+\renewcommand{\headrulewidth}{0pt}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Section Declaration Macros %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\InvisiblePart}[1]{%
+    \phantomsection
+    \addcontentsline{toc}{part}{#1}
+}
+
+\newcommand{\UnnumberedPart}[1]{%
+    \phantomsection
+    \addcontentsline{toc}{part}{#1}
+    \part*{#1}
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Major Document Element Macros %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\MakeCustomTitle}{%
+    \begin{center}
+        %\begin{large}
+        %   \COURSETITLE{}
+        %\end{large}
+        %\\[2mm]
+        \begin{Huge}
+            \textbf{\TITLE{}}
+        \end{Huge}
+        \\[2mm]
+        \begin{large}
+            \AUTHOR{}\\[2mm]
+            Last Updated: \DATE
+        \end{large}
+    \end{center}
+}
+
+%%%%%%%%%%%%%%%%%%
+% Custom Lengths %
+%%%%%%%%%%%%%%%%%%
+
+% This length is used where additional vertical spacing between equations in a gather/align environment
+% is needed to better-organize equations.
+% Use as a line break parameter, e.g.: \\[\EqExtraSkip]
+\newlength{\EqExtraSkip}
+\setlength{\EqExtraSkip}{\abovedisplayskip}
+
+% This length is used where additional vertical spacing between paragraphs is needed.
+% Use in vspace, e.g.: \vspace{\TextExtraSkip}
+\newlength{\TextExtraSkip}
+\setlength{\TextExtraSkip}{1.8\parskip}
+
+%%%%%%%%%%%%%%%
+% Math Macros %
+%%%%%%%%%%%%%%%
+
+% (HACK)
+% This implements a hack to left-align a single equation.
+% If a better solution is found, please replace all instances of this hack with the new solution.
+\newenvironment{HackEquationLeftAlign}{
+        \setbool{@fleqn}{true}
+    } {
+}
+%\newcommand\HackEquationLeftAlign{ \setbool{@fleqn}{true} } % Command variant, though this is clunky to use.
+
+\newcommand{\Nth}[2]{\ensuremath{{#1}^\textit{#2}}}
+\newcommand{\diff}{\ensuremath{\mathrm{d}}}
+\newcommand{\parallelsum}{\mathbin{\|}}
+
+\DeclarePairedDelimiter\parens{(}{)}
+\DeclarePairedDelimiter\brackets{[}{]}
+\DeclarePairedDelimiter\braces{\{}{\}}
+
+\DeclarePairedDelimiter\abs{\lvert{}}{\rvert{}}
+\DeclarePairedDelimiter\inte{[}{]}
+
+% Common math structures
+%\newcommand{\setdef}[2]{\left\{{#1} \,\middle|\, {#2}\right\}} % Bar version. TODO: If this is used, fix the spacing around bar.
+%\newcommand{\setdef}[2]{\left\{{#1} : {#2}\right\}}
+\newcommand{\setdef}[2]{\left\{{#1} \mid {#2}\right\}}
+\newcommand{\eqsystem}[1]{\left\{\:{#1}\right.}
+
+\DeclarePairedDelimiter\ceil{\lceil{}}{\rceil{}}
+\DeclarePairedDelimiter\floor{\lfloor{}}{\rfloor{}}
+
+\newcommand{\complexconjugate}[1]{\overline{#1}}
+
+\newcommand\evalat[2]{{\left.#1\right\rvert{}}_{#2}}
+
+\newcommand\rhs{\textit{RHS}}
+\newcommand\lhs{\textit{LHS}}
+
+% \newcommand*\Let[2]{\State #1 $\gets$ #2}% THERE MUST BE A BETTER WAY!!!
+
+\DeclareMathOperator{\dom}{Dom} % Domain of a function
+
+% Custom versions of the Re() and Im() functions in complex analysis
+\DeclareMathOperator{\MyRe}{Re}
+\DeclareMathOperator{\MyIm}{Im}
+%\DeclareMathOperator{\MyRe}{\Re} % If these are ever used, they don't space well.
+%\DeclareMathOperator{\MyIm}{\Im} % Should figure out how to fix this...
+
+% Other common math functions that aren't in-built
+\DeclareMathOperator{\sech}{sech}
+\DeclareMathOperator{\csch}{csch}
+\DeclareMathOperator{\cis}{cis}
+
+% Relational algebra functions
+\DeclareMathOperator{\relselect}{\sigma}
+\DeclareMathOperator{\relproject}{\pi}
+\DeclareMathOperator{\relrename}{\rho}
+\DeclareMathOperator{\relgroup}{\gamma}
+
+% Relational algebra null symbol
+\newcommand{\relnullvalue}{\mathord{\bot}}
+% Preferred null value symbol is a matter of personal taste.
+% I prefer the upside-down "T" (\bot), as introduced to me in David Maier's The Theory of Relational Databases.
+% Omega is a common greek letter, while \emptyset (or \varnothing) should just denote an empty set (or empty relation).
+
+% Relational Algebra outer join symbols
+% (Packages that contain these symbols don't seem to work...)
+%     original source: https://tex.stackexchange.com/questions/20740/symbols-for-outer-joins/20749#20749
+%     answer original author: egreg (https://tex.stackexchange.com/users/4427/egreg)
+\newcommand\TmpOJoin{\setbox0=\hbox{$\bowtie$} \rule[-.02ex]{.25em}{.4pt}\llap{\rule[\ht0]{.25em}{.4pt}}}
+\newcommand\relleftouterjoin{\mathbin{\TmpOJoin\mkern-5.8mu\bowtie}}
+\newcommand\relrightouterjoin{\mathbin{\bowtie\mkern-5.8mu\TmpOJoin}}
+\newcommand\relfullouterjoin{\mathbin{\TmpOJoin\mkern-5.8mu\bowtie\mkern-5.8mu\TmpOJoin}}
+
+% Electrical Engineering Conventions
+\DeclareSIUnit\voltampere{VA} % Apparent Power
+\DeclareSIUnit\var{VAR} % Reactive Power
+
+% Adding small text over things at a more comfortable distance.
+% TODO: My implementation is actually a hack. I should find a better way of doing it...
+%       Though in the process, I may need to rework formatting where this command is being used.
+\newcommand{\MathOverLabel}[2]{\overset{\substack{#1\\\phantom{x}}}{#2}}
+
+% Crossing out and replacing a value
+\newcommand{\xcancelto}[2]{\underbracket{\xcancel{#2}}_{#1}}
+
+% Fraction in display mode
+\newcommand\DisplayFrac[2]{\displaystyle \frac{\displaystyle {#1}}{\displaystyle {#2}}}
+
+% My implementations of math mode Greek letters where no command is available due to similarity with Latin letters.
+% These commands are used where needed to intentionally keep typographically consistent.
+\DeclareMathSymbol{\myAlpha  }{\mathalpha}{operators}{"41}
+\DeclareMathSymbol{\myBeta   }{\mathalpha}{operators}{"42}
+\DeclareMathSymbol{\myEpsilon}{\mathalpha}{operators}{"45}
+\DeclareMathSymbol{\myZeta   }{\mathalpha}{operators}{"5A}
+\DeclareMathSymbol{\myEta    }{\mathalpha}{operators}{"48}
+\DeclareMathSymbol{\myIota   }{\mathalpha}{operators}{"49}
+\DeclareMathSymbol{\myKappa  }{\mathalpha}{operators}{"4B}
+\DeclareMathSymbol{\myMu     }{\mathalpha}{operators}{"4D}
+\DeclareMathSymbol{\myNu     }{\mathalpha}{operators}{"4E}
+\DeclareMathSymbol{\myOmicron}{\mathalpha}{operators}{"4F}
+\DeclareMathSymbol{\myRho    }{\mathalpha}{operators}{"50}
+\DeclareMathSymbol{\myTau    }{\mathalpha}{operators}{"54}
+\DeclareMathSymbol{\myChi    }{\mathalpha}{operators}{"58}
+\DeclareMathSymbol{\myomicron}{\mathord  }{letters}{"6F}
+\DeclareMathSymbol{\myDigamma}{\mathalpha}{operators}{"46} % TODO: Find a better version.
+%% My original commands
+%\newcommand{\myAlpha  }{\mathrm{A}}
+%\newcommand{\myBeta   }{\mathrm{B}}
+%\newcommand{\myEpsilon}{\mathrm{E}}
+%\newcommand{\myZeta   }{\mathrm{Z}}
+%\newcommand{\myEta    }{\mathrm{H}}
+%\newcommand{\myIota   }{\mathrm{I}}
+%\newcommand{\myKappa  }{\mathrm{K}}
+%\newcommand{\myMu     }{\mathrm{M}}
+%\newcommand{\myNu     }{\mathrm{N}}
+%\newcommand{\myOmicron}{\mathrm{O}}
+%\newcommand{\myomicron}{\mathnormal{o}} % I have no idea what this should be, but the other lower-case letters are italicized...
+%\newcommand{\myRho    }{\mathrm{P}}
+%\newcommand{\myTau    }{\mathrm{T}}
+%\newcommand{\myChi    }{\mathrm{X}}
+
+%%%%%%%%%%%%%%%%
+% Redefinables %
+%%%%%%%%%%%%%%%%
+
+% General-purpose anonymous length variable that I use throughout my documents.
+\newlength{\anonlength}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Other General Utility Macros %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\MonoBox}[1]{\framebox[1.05\width]{\texttt{#1}}}
+\newcommand{\myul}[1]{\ul{#1}} % A proxy for the preferred underline command.
+\newcommand{\textbu}[1]{\textbf{\ul{#1}}} % Bold + Underline
+\newcommand{\ttd}[1]{\texttt{\detokenize{#1}}} % Teletype, Detokenized
+
+\newcommand{\espace}{\hspace{5mm}}
+
+\newcommand{\SectionBreak}{\newpage}
+\newcommand{\MulticolsBreak}{\vfill\null\columnbreak} % For use in the multicols environment.
+\newcommand{\MulticolsPhantomPlaceholder}{\phantom{x}} % An arbitrary box to occupy a multicols column.
+
+% Table Column Types
+\newcolumntype{C}{>{\centering\arraybackslash}X} % Centered version of tabularx's X column type
+\newcolumntype{R}{>{\raggedleft\arraybackslash}X} % Right-aligned version of tabularx's X column type
+
+\newcommand{\CommonFigureFormat}[1]{%
+    \centering
+    #1
+}
+
+\newcommand{\CommonFigureFormatBordered}[1]{%
+    \CommonFigureFormat
+    \fcolorbox{lightgray}{white}{#1}
+}
+
+\newcommand{\CustomListHole}[2]{%
+    \end{CustomList}
+    {#2}
+    \begin{CustomList}{#1}
+}
+
+% (HACK)
+% Deeper lists
+\newcommand{\DeeperCustomList}[2]{%
+    \CustomListHole{#1}{%
+        \begin{adjustwidth}{9\the\itemindent}{} % TODO: Use something robust.
+        \begin{minipage}{\linewidth}
+        \begin{CustomList}{itemize}
+        \ListProperties(Space*=1.25mm, Space=1.25mm) % TODO: Use something more robust.
+        #2
+        \end{CustomList}
+        \end{minipage}
+        \end{adjustwidth}
+    }
+}
+
+% Paragraph Indentation
+\newenvironment{pindent}{
+    \begin{adjustwidth}{1cm}{}
+    } {
+    \end{adjustwidth}
+}
+\newenvironment{psmallindent}{
+    \begin{adjustwidth}{0.5cm}{}
+    } {
+    \end{adjustwidth}
+}
+
+% Common easylist environments
+\newenvironment{CustomList}[1]{
+    \begin{easylist}[#1] \ListProperties(Space*=-1.25mm, Space=-1.25mm)
+    } {
+    \end{easylist}
+}
+
+\newcommand{\TwoColumnsMinipages}[3][0]{% \TwoColumnsTextSeparated[Skew factor between -1 and 1]{col1}{col2}
+    \setlength{\AnonMinipageWidthA}{0.5\columnwidth}%
+    \setlength{\AnonMinipageWidthB}{\AnonMinipageWidthA - #1\AnonMinipageWidthA}%
+    \setlength{\AnonMinipageWidthA}{\AnonMinipageWidthA + #1\AnonMinipageWidthA}%
+    %\fbox{ % fboxes used for debugging
+    \begin{myminipage}[c]{\AnonMinipageWidthA}%
+        \centering%
+        #2
+    \end{myminipage}%
+    %}%
+    %\fbox{
+    \begin{myminipage}[c]{\AnonMinipageWidthB}%
+        \centering%
+        #3
+    \end{myminipage}
+    %}
+}
+
+\newlength{\AnonSepLen}%
+\newlength{\AnonMinipageWidthA}%
+\newlength{\AnonMinipageWidthB}%
+\newcommand{\TwoColumnsTextSeparated}[4][0]{% \TwoColumnsTextSeparated[Skew factor between -1 and 1]{separator}{col1}{col2}
+    \setlength{\AnonSepLen}{\widthof{#2}}%
+    \setlength{\AnonMinipageWidthA}{0.5\columnwidth - 0.5\AnonSepLen}%
+    \setlength{\AnonMinipageWidthB}{\AnonMinipageWidthA - #1\AnonMinipageWidthA}%
+    \setlength{\AnonMinipageWidthA}{\AnonMinipageWidthA + #1\AnonMinipageWidthA}%
+    \begin{myminipage}[c]{\AnonMinipageWidthA}%
+        \centering%
+        #3
+    \end{myminipage}%
+    \begin{minipage}[c]{\AnonSepLen}%
+        \centering%
+        #2
+    \end{minipage}%
+    \begin{myminipage}[c]{\AnonMinipageWidthB}%
+        \centering%
+        #4
+    \end{myminipage}
+}
+
+\newcommand{\ThreeColumnsMinipages}[3]{% \ThreeColumnsTextSeparated{col1}{col2}{col3}
+    \begin{center}
+    \begin{myminipage}[c]{0.33\columnwidth}%
+        \centering%
+        #1
+    \end{myminipage}%
+    \begin{myminipage}[c]{0.33\columnwidth}%
+        \centering%
+        #2
+    \end{myminipage}%
+    \begin{myminipage}[c]{0.33\columnwidth}%
+        \centering%
+        #3
+    \end{myminipage}
+    \end{center}
+}
+
+\newcommand{\FourColumnsMinipages}[4]{% \FourColumnsTextSeparated{col1}{col2}{col3}{col4}
+    \begin{center}
+    \begin{myminipage}[c]{0.25\columnwidth}%
+        \centering%
+        #1
+    \end{myminipage}%
+    \begin{myminipage}[c]{0.25\columnwidth}%
+        \centering%
+        #2
+    \end{myminipage}%
+    \begin{myminipage}[c]{0.25\columnwidth}%
+        \centering%
+        #3
+    \end{myminipage}%
+    \begin{myminipage}[c]{0.25\columnwidth}%
+        \centering%
+        #4
+    \end{myminipage}
+    \end{center}
+}
+
+\newenvironment{SimpleFrame}{
+    \begin{mdframed}[
+            innerbottommargin=2\mdflength{innertopmargin},
+            %roundcorner=4pt
+        ]
+        \raggedright
+    } {
+    \end{mdframed}
+}
+
+\newenvironment{SubsectionFrame}{
+    \begin{mdframed}[
+            innerbottommargin=2\mdflength{innertopmargin},
+            roundcorner=4pt
+        ]
+        \raggedright
+    } {
+    \end{mdframed}
+}
+
+\newenvironment{QuestionFrame}{
+    \begin{mdframed}[
+            innerbottommargin=\mdflength{innertopmargin},
+            roundcorner=4pt
+        ]
+        \raggedright
+    } {
+    \end{mdframed}
+}
+
+\newcommand{\SupplementaryNotes}[1]{{\color{suppnotecolor}#1}}
+\newcommand{\ExtraNotes}[1]{{\color{extranotecolor}#1}}
+\let\Exn\ExtraNotes % Alias
+\newcommand{\QuestionAssumptions}[1]{{\color{questionassumptionscolor}#1}}
+
+\newcommand{\FilenameRef}[1]{\textit{\color{blue}\texttt{\detokenize{#1}}}}
+\newcommand{\Todo}[1]{\textbf{\textit{\color{red}TODO: #1}}}
+\newcommand{\MissingFig}[1]{\textbf{\textit{\color{purple}TODO, MISSING FIGURE: #1}}}
+
+\newcommand{\LargeEpigraph}[2]{%
+    \begin{center}
+    \begin{minipage}{0.85\linewidth}
+    \begin{flushright}
+        \textit{``#1"}\\[2mm]
+        \textsc{---#2}
+    \end{flushright}
+    \end{minipage}
+    \end{center}
+}
+
+\newcommand{\PageEpigraph}[1]{%
+    \newpage
+    \thispagestyle{empty}
+    \begin{center}
+        \vspace*{\stretch{1}}
+        \textit{#1}
+        \vspace{\stretch{3}}
+    \end{center}
+    \newpage
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Command/Environment Reimplementations %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% These commands/environments are for fixing issues with the original ones.
+%
+% All reimplementations will use the my- prefix rather than totally replacing the
+% command, to signify a difference in behaviour.
+
+
+% (HACK)
+% This minipage wrapper to implement a hack to restore the document's parskip in the minipage.
+% Minipage will normally always set parskip to zero, and restore it after the minipage.
+\newlength{\anonparskip} % Temporary variable
+\newenvironment{myminipage}[2][]{%
+        \setlength{\anonparskip}{\parskip}%
+        \begin{minipage}[#1]{#2}%
+        \setlength{\parskip}{\anonparskip}%
+    }{%
+        \end{minipage}%
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Report Compilation Macros %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\BeginReport}[1]{%
+    \stopcontents[inner]
+    
+    \SectionBreak
+    
+    \setcounter{section}{0}
+    \UnnumberedPart{#1}
+    \vspace{1mm}
+    \startcontents[inner]
+}
+
+\newcommand{\ReportTableOfContents}{%
+{
+    \hypersetup{linkcolor=black}
+    \begin{spacing}{0}
+    \setcounter{tocdepth}{2}
+    \printcontents[inner]{}{}{\section*{Contents}}
+    \end{spacing}
+    \SectionBreak
+}
+}
+
+
+%%%%%%%%%%%%%%%%%%%
+% AtBeginDocument %
+%%%%%%%%%%%%%%%%%%%
+
+\AtBeginDocument{%
+    \raggedright
+}
+
+
+\endinput

@@ -916,7 +916,7 @@ static void do_search(const Database& db, const SearchParameters& params) {
                                                  + Utils::indent(mcv.get_humanreadable(), 4);
 
                         std::clog << "\n\nFound Total Damage: " + std::to_string(best_total_damage) + "\n\n"
-                                  << Utils::indent(Utils::two_column_text(col1, col2, "  |   "), 4) + "\n";
+                                  << Utils::indent(Utils::two_column_text(col1, col2, "   |   "), 4) + "\n";
 
                         reprune_weapons = true;
                     }
