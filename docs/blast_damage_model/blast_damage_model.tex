@@ -151,8 +151,11 @@ Our model will attempt to find the average blast damage per attack.
 
 The following two equations are given for arithmetic progressions:
 \begin{gather}
-    a_n = a_1 + \parens*{n - 1} d \\
+    a_n = a_1 + \parens*{n - 1} d
+        \label{eq:arithmetic_progression_element}
+    \\
     S_n = \frac{n}{2} \parens*{a_1 + a_n}
+        \label{eq:arithmetic_progression_sum}
 \end{gather}
 where $a_1$ is the first element of the sequence, $a_n$ is the $\Nth{n}{th}$ element, $d = a_{i+1} - a_{i}$, and $S_n$ is the sum of the first $n$ elements.
 
@@ -195,6 +198,7 @@ Thus, we can calculate $B$ as:
 Since we know that we apply $\sigma$ status for every $\rho$ raw damage, it is trivial to calculate $R_n$ using:
 \begin{equation}
     \frac{\rho}{\sigma} = \frac{R_n}{S_n}
+    \label{eq:rs_ratio}
 \end{equation}
 
 Thus, we can introduce $R_n$ into our equation. Additionally, we no longer care about counting blast procs, so we can simplify the notation of total raw and blast damage to $R$ and $B$:
@@ -205,6 +209,7 @@ Thus, we can introduce $R_n$ into our equation. Additionally, we no longer care 
 In order to slay the monster, total raw and blast damage must add to equal the total health pool $H$:
 \begin{equation}
     H = R + B
+    \label{eq:h_eq_r_b}
 \end{equation}
 
 Substituting into $R$:
@@ -278,6 +283,159 @@ Thus, we get an expression for $\beta$ in terms of $B$, $H$, and $\rho$:
 \end{equation}
 
 Since we can use \eqref{eq:total_blast} to calculate $B$ in terms of model input values, we now have an expression for calculating average blast damage per attack, given only our model input values.
+
+
+\subsection{Model Blast Cap Derivation}%
+\label{sub:model_blast_cap_derivation}
+
+The blast cap can be expressed as:
+\begin{equation}
+    a_n \le c
+    \label{eq:blast_cap}
+\end{equation}
+
+So to find where the pre-cap portion of the model stops, we must find the range of $H$ in which \eqref{eq:blast_cap} is true.
+
+We start by substituting \eqref{eq:arithmetic_progression_element} into \eqref{eq:arithmetic_progression_sum} via. $n$:
+\begin{gather}
+    a_n - a_1 = \parens*{n - 1} d \\
+    n = \frac{a_n - a_1}{d} + 1
+\end{gather}
+\begin{equation}
+    S_n = \parens*{\frac{a_n - a_1}{d} + 1} \frac{1}{2} \parens*{a_1 + a_n}
+    \label{eq:blast_cap_work1}
+\end{equation}
+
+Substituting \eqref{eq:rs_ratio} into \eqref{eq:blast_cap_work1} via. $S_n$:
+\begin{gather}
+    R_n \frac{\sigma}{\rho} = \parens*{\frac{a_n - a_1}{d} + 1} \frac{1}{2} \parens*{a_1 + a_n}
+    \\
+    2 R_n \frac{\sigma}{\rho} = \parens*{\frac{a_n - a_1}{d} + 1} \parens*{a_1 + a_n}
+    \\
+    2 R_n \frac{\sigma}{\rho} = \frac{a_n^2 - a_1^2}{d} + a_1 + a_n
+    \\
+    0 = \frac{a_n^2}{d} - \frac{a_1^2}{d} + a_1 + a_n - 2 R_n \frac{\sigma}{\rho}
+    \\
+    0 = a_n^2 + a_n d + \parens*{a_1 d - a_1^2 - 2 R_n \frac{\sigma}{\rho} d}
+\end{gather}
+
+Since $a_n \ge 0$:
+\begin{gather}
+    a_n = \frac{-d + \sqrt{d^2 - 4 \parens*{a_1 d - a_1^2 - 2 R_n \frac{\sigma}{\rho} d}}}{2} 
+    \\
+    a_n = \frac{-d + \sqrt{d^2 + 4 \parens*{a_1^2 - a_1 d + 2 R_n \frac{\sigma}{\rho} d}}}{2} 
+\end{gather}
+
+We can now introduce $B$ and $H$ using \eqref{eq:h_eq_r_b}, and substitute it into the blast cap condition \eqref{eq:blast_cap}:
+\begin{gather}
+    c \ge \frac{-d + \sqrt{d^2 + 4 \parens*{a_1^2 - a_1 d + 2 \parens*{H - B} \frac{\sigma}{\rho} d}}}{2} 
+    \\
+    2 c + d \ge \sqrt{d^2 + 4 \parens*{a_1^2 - a_1 d + 2 \parens*{H - B} \frac{\sigma}{\rho} d}}
+    \\
+    \parens*{2 c + d}^2 \ge d^2 + 4 \parens*{a_1^2 - a_1 d + 2 \parens*{H - B} \frac{\sigma}{\rho} d}
+    \\
+    \frac{\parens*{2 c + d}^2 - d^2}{4} \ge a_1^2 - a_1 d + 2 \parens*{H - B} \frac{\sigma}{\rho} d
+    \\
+    \frac{\parens*{2 c + d}^2 - d^2}{4} - a_1^2 + a_1 d \ge 2 \parens*{H - B} \frac{\sigma}{\rho} d
+    \\
+    \frac{\rho}{2 \sigma d} \parens*{\frac{\parens*{2 c + d}^2 - d^2}{4} - a_1^2 + a_1 d} \ge H - B
+    \\
+    \frac{\rho}{2 \sigma d} \parens*{\frac{4 c^2 + 4 c d}{4} - a_1^2 + a_1 d} \ge H - B
+    \\
+    \frac{\rho}{2 \sigma d} \parens*{c^2 + c d + a_1 d - a_1^2} \ge H - B
+    \label{eq:blast_cap_work2}
+\end{gather}
+
+Substituting \eqref{eq:total_blast} into \eqref{eq:blast_cap_work2} via. $B$:
+\begin{gather}
+    \frac{\rho}{2 \sigma d} \parens*{c^2 + c d + a_1 d - a_1^2}
+    \ge
+    H
+    - \parens*{
+        P \sqrt{
+            \frac{2 H \sigma}{\rho d}
+            + \parens*{\frac{1}{2d} \parens*{\frac{2 a_1 - d}{P} + \frac{2 \sigma}{\rho}}}^2
+        }
+        - \frac{P^2}{2d} \parens*{\frac{2 a_1 - d}{P} + \frac{2 \sigma}{\rho}}
+    }
+    \\
+    \frac{\rho}{2 \sigma d} \parens*{c^2 + c d + a_1 d - a_1^2}
+    - \frac{P^2}{2d} \parens*{\frac{2 a_1 - d}{P} + \frac{2 \sigma}{\rho}}
+    \ge
+    H
+    - P \sqrt{
+        \frac{2 H \sigma}{\rho d}
+        + \parens*{\frac{1}{2d} \parens*{\frac{2 a_1 - d}{P} + \frac{2 \sigma}{\rho}}}^2
+    }
+    \label{eq:blast_cap_work3}
+\end{gather}
+
+Let $X$ be the left side of \eqref{eq:blast_cap_work3}:
+\begin{equation}
+    X
+    \coloneqq
+    \frac{\rho}{2 \sigma d} \parens*{c^2 + c d + a_1 d - a_1^2}
+    - \frac{P^2}{2d} \parens*{\frac{2 a_1 - d}{P} + \frac{2 \sigma}{\rho}}
+\end{equation}
+
+Isolating $H$ in \eqref{eq:blast_cap_work3}:
+\begin{gather}
+    X
+    \ge
+    H
+    - P \sqrt{
+        \frac{2 H \sigma}{\rho d}
+        + \parens*{\frac{1}{2d} \parens*{\frac{2 a_1 - d}{P} + \frac{2 \sigma}{\rho}}}^2
+    }
+    \\
+    \frac{H - X}{P} 
+    \le
+    \sqrt{
+        \frac{2 H \sigma}{\rho d}
+        + \parens*{\frac{1}{2d} \parens*{\frac{2 a_1 - d}{P} + \frac{2 \sigma}{\rho}}}^2
+    }
+    \\
+    \frac{\parens*{H - X}^2}{P^2} 
+    \le
+    \frac{2 H \sigma}{\rho d}
+    + \parens*{\frac{1}{2d} \parens*{\frac{2 a_1 - d}{P} + \frac{2 \sigma}{\rho}}}^2
+    \\
+    H^2 - X^2
+    \le
+    H \frac{2 P^2 \sigma}{\rho d}
+    + \parens*{\frac{P}{2d} \parens*{\frac{2 a_1 - d}{P} + \frac{2 \sigma}{\rho}}}^2
+    \\
+    H^2
+    - H \frac{2 P^2 \sigma}{\rho d}
+    \le
+    \parens*{\frac{P}{2d} \parens*{\frac{2 a_1 - d}{P} + \frac{2 \sigma}{\rho}}}^2
+    + X^2
+    \\
+    H^2
+    - H \frac{2 P^2 \sigma}{\rho d}
+    + \parens*{\frac{P^2 \sigma}{\rho d}}^2
+    \le
+    \parens*{\frac{P}{2d} \parens*{\frac{2 a_1 - d}{P} + \frac{2 \sigma}{\rho}}}^2
+    + X^2
+    + \parens*{\frac{P^2 \sigma}{\rho d}}^2
+    \\
+    \parens*{H - \frac{P^2 \sigma}{\rho d}}^2
+    \le
+    \parens*{\frac{P}{2d} \parens*{\frac{2 a_1 - d}{P} + \frac{2 \sigma}{\rho}}}^2
+    + X^2
+    + \parens*{\frac{P^2 \sigma}{\rho d}}^2
+    \\
+    H
+    \le
+    \frac{P^2 \sigma}{\rho d}
+    + \sqrt{
+        \parens*{\frac{P}{2d} \parens*{\frac{2 a_1 - d}{P} + \frac{2 \sigma}{\rho}}}^2
+        + X^2
+        + \parens*{\frac{P^2 \sigma}{\rho d}}^2
+    }
+\end{gather}
+
+Thus, we have our range for $H$ in which the pre-cap part of the model (derived in \autoref{sub:pre_cap_model_derivation}) is valid.
 
 
 \section{Model Extensions}%
