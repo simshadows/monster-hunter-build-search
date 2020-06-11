@@ -8,12 +8,28 @@ I'll write a detailed guide on how to use this thing later.
 
 ## Issues
 
+### General
+
 - Will I need to change to different string types to properly use unicode?
 - There's a lot of gnarly code in here, though I tried to keep the issues as localized as possible, such as having all relevant issues be localized into a single `.cpp` file. Particularly problematic areas though include:
     - `core/weapon_augments.cpp`: So many case statements, magic numbers, unsafe state validation, and a generally CPU-inefficient way of doing things.
 - I will need to figure out a better way to handle weird cases where improving skills will actually reduce EFR. For now, the solution is to have the option to select skills that will be totally prevented from being added to a build.
 
-Specific plans for the future:
+### Missing Data
+
+- Only greatswords have been added to the database (with a few minor additions from other weapon classes, for debugging purposes).
+- All Master Rank armour up until (and including) Guildwork has been added. Anything beyond that is a bit patchy (though I do try to add all of the important pieces of armour).
+- In the interest of simplicity, full armour sets will NOT be added to the database for now. At the time of writing, these are:
+    - Geralt Alpha
+    - Ciri Alpha
+    - Leon Alpha+
+    - Claire Alpha+
+- In the interest of validity, I will only add things that appear in the PC version of Monster Hunter World. All console exclusives will be left out (at least until I can figure out a good way to allow the user to filter things out).
+- Other notable sets that should hopefully be added in the near future:
+    - Acrobat Earrings
+    - Showman Earrings
+
+### Specific plans for the future:
 
 - Elderseal filtering (similar to the health regen filtering)
 - The specification of a sequence of attacks (i.e. a *combo*) rather than just a single attack. (You can technically just add the motion values and elemental/status modifiers for now, but there will be no facility to correct for rounding if exact values is ever desired.)

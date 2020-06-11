@@ -111,6 +111,9 @@ Other than that, blast base/buildup/cap values work as expected.
 A blast proc deals fixed damage, regardless of monster (100 in Low Rank, 120 in High Rank, and 300 in Master Rank). The damage is dealt instantly, and the status can immediately continue being built-up.
 
 
+\newpage
+
+
 \section{The Continuous Blast Damage Model}%
 \label{sec:the_continuous_blast_damage_model}
 
@@ -142,6 +145,8 @@ The variables related to blast are:
     \item $c$ (blast cap)
     \item $P$ (blast damage \textit{per proc})
 \end{itemize}
+
+Blast does not decay and blast procs do not cause status-application downtime (like how you cannot apply poison status if a monster is actively suffering from poison). This means that blast damage prediction can be completely independent of time, and dependent onnly on parameters relating to the sequence of attacks performed on the monster.
 
 Our model will attempt to find the average blast damage per attack.
 
@@ -268,24 +273,31 @@ Thus, we now have an expression for total blast damage, given the monster's tota
 
 Now, we want to find out the average amount of blast damage dealt per attack, given the attack's raw damage.
 
-Let $\beta$ denote the average blast damage per attack.
+Let $\beta_p$ denote the average blast damage per attack, \textit{before hitting the blast cap}.
 
 It is trivial to use the ratio between $R$ and $B$:
 \begin{equation}
-    \frac{\beta}{\rho}
+    \frac{\beta_p}{\rho}
     = \frac{B}{R}
     = \frac{B}{H - B} 
 \end{equation}
 
-Thus, we get an expression for $\beta$ in terms of $B$, $H$, and $\rho$:
+Thus, we get an expression for $\beta_p$ in terms of $B$, $H$, and $\rho$:
 \begin{equation}
-    \beta = \rho \frac{B}{H - B}
+    \beta_p = \rho \frac{B}{H - B}
 \end{equation}
 
 Since we can use \eqref{eq:total_blast} to calculate $B$ in terms of model input values, we now have an expression for calculating average blast damage per attack, given only our model input values.
 
+For this model, it is useful to think of average blast damage per attack as a function of $H$, so we shall rewrite $\beta_P$ as a function $[0, \infty) \to \mathbb{R}$ such that:
+\begin{equation}
+    \beta_p (H) = \rho \frac{B(H)}{H - B(H)}
+\end{equation}
 
-\subsection{Model Blast Cap Derivation}%
+$\beta_p (H)$ is only valid up until $H$ reaches the blast cap.
+
+
+\subsection{Blast Cap Derivation}%
 \label{sub:model_blast_cap_derivation}
 
 The blast cap can be expressed as:
@@ -376,6 +388,7 @@ Let $X$ be the left side of \eqref{eq:blast_cap_work3}:
     \coloneqq
     \frac{\rho}{2 \sigma d} \parens*{c^2 + c d + a_1 d - a_1^2}
     - \frac{P^2}{2d} \parens*{\frac{2 a_1 - d}{P} + \frac{2 \sigma}{\rho}}
+    \label{eq:anonymous_capitalx}
 \end{equation}
 
 Isolating $H$ in \eqref{eq:blast_cap_work3}:
@@ -437,28 +450,152 @@ Isolating $H$ in \eqref{eq:blast_cap_work3}:
 
 Thus, we have our range for $H$ in which the pre-cap part of the model (derived in \autoref{sub:pre_cap_model_derivation}) is valid.
 
+We shall define $C$ to be the exact value of $H$ where we hit the blast cap:
+\begin{equation}
+    C
+    \coloneqq
+    \frac{P^2 \sigma}{\rho d}
+    + \sqrt{
+        \parens*{\frac{P}{2d} \parens*{\frac{2 a_1 - d}{P} + \frac{2 \sigma}{\rho}}}^2
+        + X^2
+        + \parens*{\frac{P^2 \sigma}{\rho d}}^2
+    }
+    \label{eq:health_blast_cap}
+\end{equation}
 
-\section{Model Extensions}%
-\label{sec:model_extensions}
 
-\subsection{Combos}%
-\label{sub:combos}
+\subsection{Post-Cap Model Derivation}%
+\label{sub:post_cap_model_derivation}
+
+At this point, the status buildup threshold remains constant at $c$.
+
+Since we have a constant threshold, then if we ignore pre-cap damage, any status buildup dealt will be linearly proportional to the damage it deals.
+
+We will start by forming a relation between some number of hits $k$, average status per hit $\sigma$, and a blast threshold $c$:
+\begin{equation}
+    k \coloneqq \frac{c}{\sigma}
+\end{equation}
+
+Thus, $k$ hits is required to cause a blast proc.
+
+Let $\beta'_c$ be the effective average blast damage dealt per hit, but \textit{only valid to damage dealt after $C$ damage has been dealt to the monster}:
+\begin{equation}
+    \beta'_c \coloneqq \frac{P}{k} = \frac{\sigma P}{c}
+\end{equation}
+
+Note that $\beta'_c$ does not depend on monster health.
+
+We know that each hit after reaching blast cap deals an average of $\rho + \beta'_c$ damage, and we must distribute this damage in the remaining $H - C$ health of the monster.
+
+This allows us to construct an expression involving the actual effective average blast damage dealt per hit $\beta_c$, which \textit{includes damage dealt before $C$ damage was dealt to the monster}. This expression is simply a weighted average:
+\begin{gather}
+    \rho + \beta_c = \frac{C \parens*{\rho + \beta_p(C)} + \parens*{H - C} \parens*{\rho + \beta'_c}}{H} 
+    \\
+    \beta_c = \frac{C}{H} \parens*{\rho + \beta_p(C)} + \frac{H - C}{H} \parens*{\rho + \frac{\sigma P}{c}} - \rho
+\end{gather}
+
+Rewriting $\beta_c$ as a function $[C, \infty) \to \mathbb{R}$ such that:
+\begin{equation}
+    \beta_c (H) = \frac{C}{H} \parens*{\rho + \beta_p(C)} + \frac{H - C}{H} \parens*{\rho + \frac{\sigma P}{c}} - \rho
+\end{equation}
+
+
+\subsection{Summary}%
+\label{sub:continuous_model_summary}
+
+Our model takes the following input variables:
+\begin{itemize}
+    \item $\rho$ (average raw damage of an attack)
+    \item $\sigma$ (average status application of an attack)
+    \item $H$ (monster total health)
+    \item $a_1$ (blast base)
+    \item $d$ (blast buildup)
+    \item $c$ (blast cap)
+    \item $P$ (blast damage \textit{per proc})
+\end{itemize}
+
+The \textit{effective average blast damage per hit} can be calculated as a function of monster health $\beta : [0, \infty) \to \mathbb{R}$ such that:
+\begin{equation}
+    \beta (H) =
+        \begin{cases}
+            \beta_p (H) & \text{if } H \le C \\
+            \beta_c (H) & \text{if } H > C
+        \end{cases}
+\end{equation}
+
+Functions $\beta_p : [0, \infty) \to \mathbb{R}$ and $\beta_c : [C, \infty) \to \mathbb{R}$ are defined as:
+\begin{gather}
+    \beta_p (H) = \rho \frac{B(H)}{H - B(H)}
+    \\
+    \beta_c (H) = \frac{C}{H} \parens*{\rho + \beta_p(C)} + \frac{H - C}{H} \parens*{\rho + \frac{\sigma P}{c}} - \rho
+\end{gather}
+
+$C$ is the maximum amount of health before reaching the blast cap, and $X$ is an anonymous helper variable:
+\begin{gather}
+    C
+    =
+    \frac{P^2 \sigma}{\rho d}
+    + \sqrt{
+        \parens*{\frac{P}{2d} \parens*{\frac{2 a_1 - d}{P} + \frac{2 \sigma}{\rho}}}^2
+        + X^2
+        + \parens*{\frac{P^2 \sigma}{\rho d}}^2
+    }
+    \\
+    X
+    =
+    \frac{\rho}{2 \sigma d} \parens*{c^2 + c d + a_1 d - a_1^2}
+    - \frac{P^2}{2d} \parens*{\frac{2 a_1 - d}{P} + \frac{2 \sigma}{\rho}}
+\end{gather}
+
+
+$B(H)$ is the total blast damage dealt when we've dealt a total of $H$ damage to the monster:
+\begin{equation}
+    B (H)
+        = P \sqrt{
+            \frac{2 H \sigma}{\rho d}
+            + \parens*{\frac{1}{2d} \parens*{\frac{2 a_1 - d}{P} + \frac{2 \sigma}{\rho}}}^2
+        }
+        - \frac{P^2}{2d} \parens*{\frac{2 a_1 - d}{P} + \frac{2 \sigma}{\rho}}
+\end{equation}
+
+
+\subsection{Model Extensions}%
+\label{sub:model_extensions}
+
+I left out certain interpretations of the model in order to keep discussion as simple as possible. Now that the model has been introduced, we shall expand on these additional interpretations.
+
+\subsubsection{Combos}%
+\label{ssub:combos}
 
 It turns out that if you can predict the average amount of raw damage and status application of a single attack, you can also do it for a given sequence of attacks.
 
-Thus, $\rho$ and $\sigma$ can instead be used as values for a given sequence attacks rather than just a single attack.
+Thus, $\rho$ and $\sigma$ can instead be interpreted as values for a given sequence attacks rather than just a single attack.
 
-
-\subsection{Target Health}%
-\label{sub:target_health}
+\subsubsection{Target Health}%
+\label{ssub:target_health}
 
 $H$ doesn't actually have to be the monster's total health pool if we don't intend on slaying it. For example, we can instead make $H$ the damage required in order to capture the monster.
 
 Multiplayer might also be considered here since multiple players share the full health pool of the monster. For example, if we assume four perfectly equal players, then we might want to divide the full 4-player health pool by 4.
 
 
-\subsection{An Exact Blast Model}%
-\label{sub:exact_blast_model}
+\subsection{Do we ever hit blast cap?}%
+\label{sub:do_we_ever_hit_blast_cap_}
+
+\textit{(This section will be written later!)}
+
+
+\subsection{Limitations}%
+\label{sub:limitations}
+
+\textit{(This section will be written later!)}
+
+
+\newpage
+
+
+\section{The Discrete-Blasts Model}%
+\label{sec:the_discrete_blasts_model}
 
 \textit{(This section will be written later!)}
 
