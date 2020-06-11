@@ -18,6 +18,7 @@ namespace MHWIBuildSearch
 // Weapon base raw multiplied by this number is the raw cap.
 static constexpr unsigned int k_RAW_CAP = 2;
 
+static constexpr double k_NORMAL_STATUS_APPL_PROBABILITY = 1.0/3;
 
 static constexpr double k_RAW_BLUNDER_MULTIPLIER = 0.75;
 
@@ -75,12 +76,17 @@ static EffectiveDamageValues calculate_edv(const unsigned int    weapon_raw, // 
      * Effective Element/Status
      */
 
-    const double ele_sharpness_modifier = [&](){
-        if ((weapon_elestat_visibility != EleStatVisibility::none)
-                && elestattype_is_element(weapon_elestat_type)) {
+    const double elestat_combined_modifier = [&](){
+        if (weapon_elestat_visibility == EleStatVisibility::none) {
+            return 1.0; // Disabled modifier
+        } else if (elestattype_is_element(weapon_elestat_type)) {
+            // Weapon is elemental.
+            // We just return the sharpness modifier.
             return final_sharpness_gauge.get_elemental_sharpness_modifier();
         } else {
-            return 1.0; // We disable the modifier.
+            // Weapon is status.
+            // We will need to factor in average status proc probability.
+            return k_NORMAL_STATUS_APPL_PROBABILITY;
         }
     }();
 
@@ -94,7 +100,7 @@ static EffectiveDamageValues calculate_edv(const unsigned int    weapon_raw, // 
         }
     }();
 
-    const double efes = base_elestat_value * ele_sharpness_modifier;
+    const double efes = base_elestat_value * elestat_combined_modifier;
     const EleStatType elestat_type = weapon_elestat_type;
 
     return {affinity,
@@ -162,6 +168,69 @@ std::string EffectiveDamageValues::get_humanreadable() const {
 }
 
 
+// raw_damage_per_iter can be raw damage per hit
+static double calculate_blast_damage(const DamageModel& md,
+                                     const EffectiveDamageValues& edv,
+                                     const double raw_damage_per_iter) {
+
+    // The variable names here will reflect the variable names used in the blast damage model document
+    // at (<{REPOSITORY_ROOT}/docs/blast_damage_model/blast_damage_model.pdf>).
+
+    // This implementation is the simplified "continuous model".
+
+    if (!edv.efes) {
+        return 0.0; // Zero blast damage because we never build status
+    }
+
+    // Player attack parameters
+    const double rho   = raw_damage_per_iter;
+    const double sigma = edv.efes * md.status_modifier;
+    assert(rho);
+    assert(sigma);
+
+    // Target misc parameters
+    const double cap_h = md.target_health;
+    assert(cap_h);
+
+    // Target blast parameters
+    const double a1    = md.blast_base;
+    const double d     = md.blast_buildup;
+    const double c     = md.blast_cap;
+    const double cap_p = md.blast_proc_dmg;
+    assert(a1);
+    assert(d);
+    assert(c);
+    assert(cap_p);
+
+    // Anonymous variables.
+    const double cap_z = (std::pow(cap_p,2) * sigma) / (rho*d);
+    const double cap_y = (cap_p / (2*d)) * ( ((2*a1 - d) / cap_p) + (2*sigma / rho) );
+    const double cap_x = (rho / (2*sigma*d)) * (std::pow(c,2) + (c*d) + (a1*d) - std::pow(a1,2)) - (cap_p*cap_y);
+
+    // cap_c is the maximum amount of health before reaching the blast cap.
+    const double cap_c = cap_z + std::sqrt(std::pow(cap_y,2) + std::pow(cap_x,2) + std::pow(cap_z,2));
+    assert(cap_c);
+
+    // cap_b is a function of health to total blast damage.
+    const auto cap_b = [&](const double tmp_h){return std::sqrt((2*tmp_h*cap_z) + std::pow(cap_y,2)) - (cap_p*cap_y);};
+    const auto beta_p = [&](const double tmp_h){const double eval_cap_b = cap_b(cap_h);
+                                                assert(eval_cap_b);
+                                                return rho * (eval_cap_b / (tmp_h - eval_cap_b)); };
+
+    if (cap_h <= cap_c) {
+        // We don't reach blast cap
+        const double ret = beta_p(cap_h);
+        assert(ret);
+        return ret;
+    } else {
+        // We must now account for blast cap
+        const double ret = (cap_c/cap_h) * (rho+beta_p(cap_c)) + ((cap_h-cap_c)/cap_h) * (rho + ((sigma*cap_p)/c)) - rho;
+        assert(ret);
+        return ret;
+    }
+}
+
+
 // TODO: Implement the special rounding function that implements special handling of values between
 //       -1.0 and 1.0 to always round away from zero.
 ModelCalculatedValues calculate_damage(const DamageModel& model,
@@ -172,7 +241,8 @@ ModelCalculatedValues calculate_damage(const DamageModel& model,
     const double unrounded_elestat_damage = [&](){
         if (edv.efes == 0) {
             return 0.0; // Zero EFE/EFS always means zero damage.
-        } else {
+        } else if (elestattype_is_element(edv.elestat_type)) {
+            assert(edv.elestat_type != EleStatType::none);
             const double ele_hzv = [&](){
                 switch (edv.elestat_type) {
                     case EleStatType::fire:    return (double) model.hzv_fire    / 100;
@@ -181,10 +251,22 @@ ModelCalculatedValues calculate_damage(const DamageModel& model,
                     case EleStatType::ice:     return (double) model.hzv_ice     / 100;
                     case EleStatType::dragon:  return (double) model.hzv_dragon  / 100;
                     default:
-                        throw std::logic_error("Unexpected EleStatType value.");
+                        throw std::logic_error("Unexpected EleStatType value. Expected an elemental.");
                 }
             }();
             return model.elemental_modifier * edv.efes * ele_hzv;
+        } else {
+            switch (edv.elestat_type) {
+                case EleStatType::poison:
+                    throw std::logic_error("Poison damage not yet implemented.");
+                case EleStatType::paralysis:
+                case EleStatType::sleep:
+                    return 0.0; // Sleep and paralysis do no damage.
+                case EleStatType::blast:
+                    return calculate_blast_damage(model, edv, unrounded_raw_damage);
+                default:
+                    throw std::logic_error("Unexpected EleStatType value. Expected a status.");
+            }
         }
     }();
 
@@ -192,6 +274,8 @@ ModelCalculatedValues calculate_damage(const DamageModel& model,
     assert(unrounded_elestat_damage >= 0.0);
 
     const double unrounded_total_damage = unrounded_raw_damage + unrounded_elestat_damage;
+
+    // TODO: Damage from status effects shouldn't be rounded. Fix this.
     const unsigned int actual_total_damage = std::round(unrounded_raw_damage) + std::round(unrounded_elestat_damage);
 
     return {unrounded_raw_damage,
@@ -210,7 +294,14 @@ std::string DamageModel::get_humanreadable() const {
            + "\nWater HZV:   " + std::to_string(this->hzv_water)
            + "\nThunder HZV: " + std::to_string(this->hzv_thunder)
            + "\nIce HZV:     " + std::to_string(this->hzv_ice)
-           + "\nDragon HZV:  " + std::to_string(this->hzv_dragon);
+           + "\nDragon HZV:  " + std::to_string(this->hzv_dragon)
+           + "\n"
+           + "\nBlast Base:        " + std::to_string(this->blast_base)
+           + "\nBlast Buildup:     " + std::to_string(this->blast_buildup)
+           + "\nBlast Cap:         " + std::to_string(this->blast_cap)
+           + "\nBlast Proc Damage: " + std::to_string(this->blast_proc_dmg)
+           + "\n"
+           + "\nTarget Health: " + std::to_string(this->target_health);
 }
 
 

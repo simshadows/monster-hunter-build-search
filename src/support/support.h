@@ -330,6 +330,7 @@ EffectiveDamageValues calculate_edv_from_gear_lookup(const WeaponInstance&,
 struct DamageModel {
     unsigned int raw_motion_value   {0};
     double       elemental_modifier {0};
+    double       status_modifier    {0};
 
     unsigned int hzv_raw     {0};
     unsigned int hzv_fire    {0};
@@ -337,6 +338,13 @@ struct DamageModel {
     unsigned int hzv_thunder {0};
     unsigned int hzv_ice     {0};
     unsigned int hzv_dragon  {0};
+
+    unsigned int blast_base     {0};
+    unsigned int blast_buildup  {0};
+    unsigned int blast_cap      {0};
+    unsigned int blast_proc_dmg {0};
+
+    unsigned int target_health {0};
 
     std::string get_humanreadable() const;
 };

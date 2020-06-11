@@ -36,7 +36,7 @@ static SearchParameters read_json_obj(const nlohmann::json& j) {
         const bool allow_thunder = j["weapon_selection"]["allow_thunder"];
         const bool allow_ice     = j["weapon_selection"]["allow_ice"    ];
         const bool allow_dragon  = j["weapon_selection"]["allow_dragon" ];
-
+        const bool allow_blast   = j["weapon_selection"]["allow_blast"  ];
 
         std::unordered_set<EleStatType> x;
         if (allow_fire)    x.emplace(EleStatType::fire   );
@@ -44,6 +44,7 @@ static SearchParameters read_json_obj(const nlohmann::json& j) {
         if (allow_thunder) x.emplace(EleStatType::thunder);
         if (allow_ice)     x.emplace(EleStatType::ice    );
         if (allow_dragon)  x.emplace(EleStatType::dragon );
+        if (allow_blast)   x.emplace(EleStatType::blast  );
         return x;
     }();
     const bool health_regen_required = j["weapon_selection"]["health_regen_required"];
@@ -51,6 +52,7 @@ static SearchParameters read_json_obj(const nlohmann::json& j) {
     DamageModel damage_model = [&](){
         const unsigned int raw_motion_value   = j["damage_model"]["raw_motion_value"  ];
         const double       elemental_modifier = j["damage_model"]["elemental_modifier"];
+        const double       status_modifier    = j["damage_model"]["status_modifier"   ];
 
         const unsigned int hzv_raw     = j["damage_model"]["hzv_raw"    ];
         const unsigned int hzv_fire    = j["damage_model"]["hzv_fire"   ];
@@ -59,15 +61,30 @@ static SearchParameters read_json_obj(const nlohmann::json& j) {
         const unsigned int hzv_ice     = j["damage_model"]["hzv_ice"    ];
         const unsigned int hzv_dragon  = j["damage_model"]["hzv_dragon" ];
 
+        unsigned int blast_base     = j["damage_model"]["blast_base"    ];
+        unsigned int blast_buildup  = j["damage_model"]["blast_buildup" ];
+        unsigned int blast_cap      = j["damage_model"]["blast_cap"     ];
+        unsigned int blast_proc_dmg = j["damage_model"]["blast_proc_dmg"];
+
+        unsigned int target_health = j["damage_model"]["target_health"];
+
         DamageModel x = {raw_motion_value,
                          elemental_modifier,
+                         status_modifier,
 
                          hzv_raw,
                          hzv_fire,
                          hzv_water,
                          hzv_thunder,
                          hzv_ice,
-                         hzv_dragon };
+                         hzv_dragon,
+
+                         blast_base,
+                         blast_buildup,
+                         blast_cap,
+                         blast_proc_dmg,
+
+                         target_health };
         return x;
     }();
 

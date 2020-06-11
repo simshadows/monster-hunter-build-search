@@ -649,7 +649,7 @@ static void do_search(const Database& db, const SearchParameters& params) {
 
     auto total_start_t = std::chrono::steady_clock::now();
 
-    const std::string initial_col1 = params.skill_spec.get_humanreadable();
+    std::string initial_col1 = params.skill_spec.get_humanreadable();
     std::string initial_col2;
 
     const std::unordered_set<const SetBonus*> set_bonus_subset = [&](){
@@ -665,9 +665,9 @@ static void do_search(const Database& db, const SearchParameters& params) {
         }
 
         if (x.size()) {
-            initial_col2 += "Set bonuses to be considered:";
+            initial_col1 += "\n\nSet bonuses to be considered:";
             for (const SetBonus * const set_bonus : x) {
-                initial_col2 += "\n  " + set_bonus->name;
+                initial_col1 += "\n  " + set_bonus->name;
             }
         }
 
