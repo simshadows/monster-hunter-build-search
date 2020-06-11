@@ -525,38 +525,42 @@ The \textit{effective average blast damage per hit} can be calculated as a funct
 \end{equation}
 
 Functions $\beta_p : [0, \infty) \to \mathbb{R}$ and $\beta_c : [C, \infty) \to \mathbb{R}$ are defined as:
-\begin{gather}
+\begin{equation}
     \beta_p (H) = \rho \frac{B(H)}{H - B(H)}
-    \\
+\end{equation}
+\begin{equation}
     \beta_c (H) = \frac{C}{H} \parens*{\rho + \beta_p(C)} + \frac{H - C}{H} \parens*{\rho + \frac{\sigma P}{c}} - \rho
-\end{gather}
+\end{equation}
 
-$C$ is the maximum amount of health before reaching the blast cap, and $X$ is an anonymous helper variable:
-\begin{gather}
-    C
-    =
-    \frac{P^2 \sigma}{\rho d}
-    + \sqrt{
-        \parens*{\frac{P}{2d} \parens*{\frac{2 a_1 - d}{P} + \frac{2 \sigma}{\rho}}}^2
-        + X^2
-        + \parens*{\frac{P^2 \sigma}{\rho d}}^2
-    }
-    \\
-    X
-    =
-    \frac{\rho}{2 \sigma d} \parens*{c^2 + c d + a_1 d - a_1^2}
-    - \frac{P^2}{2d} \parens*{\frac{2 a_1 - d}{P} + \frac{2 \sigma}{\rho}}
-\end{gather}
-
+$C$ is the maximum amount of health before reaching the blast cap:
+\begin{equation}
+    C = Z + \sqrt{Y^2 + X^2 + Z^2}
+\end{equation}
 
 $B(H)$ is the total blast damage dealt when we've dealt a total of $H$ damage to the monster:
 \begin{equation}
-    B (H)
-        = P \sqrt{
-            \frac{2 H \sigma}{\rho d}
-            + \parens*{\frac{1}{2d} \parens*{\frac{2 a_1 - d}{P} + \frac{2 \sigma}{\rho}}}^2
-        }
-        - \frac{P^2}{2d} \parens*{\frac{2 a_1 - d}{P} + \frac{2 \sigma}{\rho}}
+    B (H) = \sqrt{2 H Z + Y^2} - PY
+\end{equation}
+
+Anonymous helper variables:
+\begin{equation}
+    X
+    =
+    \frac{\rho}{2 \sigma d} \parens*{c^2 + c d + a_1 d - a_1^2}
+    - PY
+\end{equation}
+\begin{equation}
+    Y
+    =
+    \frac{P}{2 d} 
+    \parens*{
+        \frac{2 a_1 - d}{P}
+        + \frac{2 \sigma}{\rho} 
+    }
+    \qquad\qquad
+    Z
+    =
+    \frac{P^2 \sigma}{\rho d} 
 \end{equation}
 
 
@@ -606,13 +610,14 @@ If one wishes to model the DPS fluctuations that are associated with this effect
 \subsection{Pre-Cap Model Derivation}%
 \label{sub:dbm_pre_cap_model_derivation}
 
-Taking our expression for number of blast procs $n$ from the continuous model \eqref{eq:continuous_num_procs}, we simply floor it to get our discrete-procs version $n'$:
+To enforce integer blast procs, we floor the number of blast procs $n$ from \eqref{eq:continuous_num_procs}:
 \begin{equation}
-    n' = \floor*{n} = \floor*{\frac{d - 3 a_1 + \sqrt{\parens*{2 a_1 - d}^2 + 8 d S_n}}{2 d}}
+    \frac{B}{P}
+    = \floor*{n}
+    = \floor*{\frac{d - 3 a_1 + \sqrt{\parens*{2 a_1 - d}^2 + 8 \parens*{H - B} d \frac{\sigma}{\rho}}}{2 d}}
 \end{equation}
 
-\textit{(TODO: Work the rest out!)}
-
+\textit{(TODO: I don't really know how to work with this equation. We should find a different approach.)}
 
 
 \end{document}
