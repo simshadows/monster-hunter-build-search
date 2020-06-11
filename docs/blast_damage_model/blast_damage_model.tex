@@ -146,7 +146,7 @@ The variables related to blast are:
     \item $P$ (blast damage \textit{per proc})
 \end{itemize}
 
-Blast does not decay and blast procs do not cause status-application downtime (like how you cannot apply poison status if a monster is actively suffering from poison). This means that blast damage prediction can be completely independent of time, and dependent onnly on parameters relating to the sequence of attacks performed on the monster.
+Blast does not decay and blast procs do not cause status-application downtime (like how you cannot apply poison status if a monster is actively suffering from poison). This means that blast damage prediction can be completely independent of time, and dependent only on parameters relating to the sequence of attacks performed on the monster.
 
 Our model will attempt to find the average blast damage per attack.
 
@@ -186,6 +186,7 @@ Since $n \ge 0$:
 \begin{align}
     n &= \frac{- \parens*{2 a_1 - d} + \sqrt{\parens*{2 a_1 - d}^2 - 4 d \times \parens*{- 2 S_n}}}{2 d} \\
       &= \frac{d - 2 a_1 + \sqrt{\parens*{2 a_1 - d}^2 + 8 d S_n}}{2 d}
+    \label{eq:continuous_num_procs}
 \end{align}
 
 Let $R_n$ and $B_n$ denote the total raw and blast damage (respectively), given $n$ blast procs.
@@ -289,7 +290,7 @@ Thus, we get an expression for $\beta_p$ in terms of $B$, $H$, and $\rho$:
 
 Since we can use \eqref{eq:total_blast} to calculate $B$ in terms of model input values, we now have an expression for calculating average blast damage per attack, given only our model input values.
 
-For this model, it is useful to think of average blast damage per attack as a function of $H$, so we shall rewrite $\beta_P$ as a function $[0, \infty) \to \mathbb{R}$ such that:
+For this model, it is useful to think of average blast damage per attack as a function of $H$, so we shall rewrite $\beta_p$ as a function $[0, \infty) \to \mathbb{R}$ such that:
 \begin{equation}
     \beta_p (H) = \rho \frac{B(H)}{H - B(H)}
 \end{equation}
@@ -585,19 +586,33 @@ Multiplayer might also be considered here since multiple players share the full 
 \textit{(This section will be written later!)}
 
 
-\subsection{Limitations}%
-\label{sub:limitations}
-
-\textit{(This section will be written later!)}
-
-
 \newpage
 
 
-\section{The Discrete-Blasts Model}%
-\label{sec:the_discrete_blasts_model}
+\section{The Discrete-Procs Blast Damage Model}%
+\label{sec:the_discrete_procs_blast_damage_model}
 
-\textit{(This section will be written later!)}
+
+\subsection{Motivation}%
+\label{sub:motivation}
+
+In reality, blast damage is done on the monster only every now and then (though in a predictable manner).
+
+For example, the continuous model might calculate the total number of blast procs as the non-integer number of 25.7, leading to a total blast damage calculation of $25.7 \times 300 = 7710$.
+
+If one wishes to model the DPS fluctuations that are associated with this effect, then this total number of blast procs must be floored. In this case, the continuous model calculation of 25.7 must be floored down to 25, leading to a total blast calculation of $25 \times 300 = 7500$.
+
+
+\subsection{Pre-Cap Model Derivation}%
+\label{sub:dbm_pre_cap_model_derivation}
+
+Taking our expression for number of blast procs $n$ from the continuous model \eqref{eq:continuous_num_procs}, we simply floor it to get our discrete-procs version $n'$:
+\begin{equation}
+    n' = \floor*{n} = \floor*{\frac{d - 3 a_1 + \sqrt{\parens*{2 a_1 - d}^2 + 8 d S_n}}{2 d}}
+\end{equation}
+
+\textit{(TODO: Work the rest out!)}
+
 
 
 \end{document}
