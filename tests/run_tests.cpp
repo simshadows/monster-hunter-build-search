@@ -6,7 +6,7 @@
  */
 
 #define CATCH_CONFIG_MAIN
-#include "../dependencies/catch-2-12-1/catch.hpp"
+#include "../dependencies/catch-2-12-2/catch.hpp"
 
 #include <unordered_map>
 
