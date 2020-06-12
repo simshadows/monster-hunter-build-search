@@ -36,6 +36,7 @@ static SearchParameters read_json_obj(const nlohmann::json& j) {
         const bool allow_thunder = j["weapon_selection"]["allow_thunder"];
         const bool allow_ice     = j["weapon_selection"]["allow_ice"    ];
         const bool allow_dragon  = j["weapon_selection"]["allow_dragon" ];
+        const bool allow_poison  = j["weapon_selection"]["allow_poison" ];
         const bool allow_blast   = j["weapon_selection"]["allow_blast"  ];
 
         std::unordered_set<EleStatType> x;
@@ -44,6 +45,7 @@ static SearchParameters read_json_obj(const nlohmann::json& j) {
         if (allow_thunder) x.emplace(EleStatType::thunder);
         if (allow_ice)     x.emplace(EleStatType::ice    );
         if (allow_dragon)  x.emplace(EleStatType::dragon );
+        if (allow_poison)  x.emplace(EleStatType::poison );
         if (allow_blast)   x.emplace(EleStatType::blast  );
         return x;
     }();
@@ -60,6 +62,9 @@ static SearchParameters read_json_obj(const nlohmann::json& j) {
         const unsigned int hzv_thunder = j["damage_model"]["hzv_thunder"];
         const unsigned int hzv_ice     = j["damage_model"]["hzv_ice"    ];
         const unsigned int hzv_dragon  = j["damage_model"]["hzv_dragon" ];
+
+        const double       poison_total_procs = j["damage_model"]["poison_total_procs_per_quest"];
+        const unsigned int poison_proc_dmg    = j["damage_model"]["poison_proc_dmg"             ];
 
         unsigned int blast_base     = j["damage_model"]["blast_base"    ];
         unsigned int blast_buildup  = j["damage_model"]["blast_buildup" ];
@@ -78,6 +83,9 @@ static SearchParameters read_json_obj(const nlohmann::json& j) {
                          hzv_thunder,
                          hzv_ice,
                          hzv_dragon,
+
+                         poison_total_procs,
+                         poison_proc_dmg,
 
                          blast_base,
                          blast_buildup,

@@ -10,6 +10,7 @@
         "allow_thunder": true,
         "allow_ice":     true,
         "allow_dragon":  true,
+        "allow_poison":  true,
         "allow_blast":   true,
         "health_regen_required": true
     },
@@ -25,6 +26,9 @@
         "hzv_thunder": 25,
         "hzv_ice":     25,
         "hzv_dragon":  25,
+
+        "poison_total_procs_per_quest": 2,
+        "poison_proc_dmg": 160,
 
         "blast_base":     102,
         "blast_buildup":  69,

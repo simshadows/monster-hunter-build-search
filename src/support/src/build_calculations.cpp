@@ -168,6 +168,13 @@ std::string EffectiveDamageValues::get_humanreadable() const {
 }
 
 
+static double calculate_poison_damage(const DamageModel& md,
+                                      const double raw_damage_per_iter) {
+    const double total_poison_damage = ((double)md.poison_proc_dmg) * md.poison_total_procs;
+    return (raw_damage_per_iter * total_poison_damage) / (((double)md.target_health) - total_poison_damage);
+}
+
+
 // raw_damage_per_iter can be raw damage per hit
 static double calculate_blast_damage(const DamageModel& md,
                                      const EffectiveDamageValues& edv,
@@ -258,7 +265,7 @@ ModelCalculatedValues calculate_damage(const DamageModel& model,
         } else {
             switch (edv.elestat_type) {
                 case EleStatType::poison:
-                    throw std::logic_error("Poison damage not yet implemented.");
+                    return calculate_poison_damage(model, unrounded_raw_damage);
                 case EleStatType::paralysis:
                 case EleStatType::sleep:
                     return 0.0; // Sleep and paralysis do no damage.
@@ -295,6 +302,9 @@ std::string DamageModel::get_humanreadable() const {
            + "\nThunder HZV: " + std::to_string(this->hzv_thunder)
            + "\nIce HZV:     " + std::to_string(this->hzv_ice)
            + "\nDragon HZV:  " + std::to_string(this->hzv_dragon)
+           + "\n"
+           + "\nPoison Total Procs Per Quest: " + std::to_string(this->poison_total_procs)
+           + "\nPoison Damage Per Proc:       " + std::to_string(this->poison_proc_dmg)
            + "\n"
            + "\nBlast Base:        " + std::to_string(this->blast_base)
            + "\nBlast Buildup:     " + std::to_string(this->blast_buildup)

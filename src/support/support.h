@@ -339,6 +339,9 @@ struct DamageModel {
     unsigned int hzv_ice     {0};
     unsigned int hzv_dragon  {0};
 
+    double       poison_total_procs {0}; // Floating point since we may want in-between estimates.
+    unsigned int poison_proc_dmg    {0};
+
     unsigned int blast_base     {0};
     unsigned int blast_buildup  {0};
     unsigned int blast_cap      {0};
