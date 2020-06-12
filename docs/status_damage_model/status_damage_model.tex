@@ -10,7 +10,7 @@
 
 \usepackage{../_latex_includes/sharedpkg}
 
-\def\TITLE{MHWI Blast Damage Model}
+\def\TITLE{MHWI Status Damage Model}
 
 \setcounter{tocdepth}{3}
 \setcounter{secnumdepth}{3}
@@ -34,14 +34,20 @@
 \section{Introduction}%
 \label{sec:introduction}
 
-The mathematical description of how status effects such as blast is well-described in \textit{How Status Works: Definitive Status Guide MHW/Iceborne} (\href{link}{https://www.youtube.com/watch?v=iIPfkvvbGwY}). However, I will attempt to summarize it here, in addition to clarifying some features of this game mechanic not mentioned in the video.
+The mathematical description of how status effects such as blast is well-described in \textit{How Status Works: Definitive Status Guide MHW/Iceborne} (\href{https://www.youtube.com/watch?v=iIPfkvvbGwY}{link}). However, I will attempt to summarize it here, in addition to clarifying some features of this game mechanic not mentioned in the video.
 
-Status effects can be applied to monsters in a variety of ways, such as attacking while using a weapon with a poison/paralysis/sleep/blast stat.
-
-When a status is applied to a monster, that status is ``built-up". Only when this internal status application counter reaches certain thresholds does the status effect trigger (or \textit{proc}).
+This document will focus on modelling the damage done by the following status effects:
+\begin{itemize}
+    \item Poison
+    \item Blast
+\end{itemize}
 
 \subsection{Status Application}%
 \label{sub:blast_application}
+
+Status effects can be applied to monsters in a variety of ways, such as attacking while using a weapon with a poison/paralysis/sleep/blast value.
+
+When a status is applied to a monster, that status is ``built-up". Only when this internal status application counter reaches certain thresholds does the status effect trigger (or \textit{proc}).
 
 All monsters have unique tables regarding status effect application. Buildup usually involves four particular values:
 
@@ -98,17 +104,73 @@ This follows an arithmetic progression up until the cap, where it is clipped:
 
 \textit{IMPORTANT: This is a draft. I actually don't know how the rounding works, or other variables that status decay depends on, but my blast model is a continuous model, and blast doesn't decay, so it doesn't affect the remainder of this document.}
 
-\subsection{Blast Buildup}%
-\label{sub:blast_buildup}
+\subsection{Poison}%
+\label{sub:poison}
+
+\textit{(This section will be written later!)}
+
+\subsection{Blast}%
+\label{sub:blast}
 
 Blast is a status effect that \textit{does not decay} (i.e. decay is 0 blast per second).
 
-Other than that, blast base/buildup/cap values work as expected.
-
-\subsection{Blast Procs}%
-\label{sub:blast_procs}
-
 A blast proc deals fixed damage, regardless of monster (100 in Low Rank, 120 in High Rank, and 300 in Master Rank). The damage is dealt instantly, and the status can immediately continue being built-up.
+
+\subsection{Model Design Goals}%
+\label{sub:model_design_goals}
+
+Raw damage and elemental damage have been shown to be easily and effectively compared by determining a representative raw and elemental damage per hit. Such methods are totally independent of time and player skill as each and every hit has the same average raw and elemental damage.
+
+The goal of each damage model is to find similar numbers for status damage, estimating the effective average damage done by a status effect, per weapon hit.
+
+Unfortunately, status effects are not as easy to model in the same way since the rate of status procs decreases as more status is applied on the monster. Status damage can also depend on player competence due to status buildup being disabled while a monster is suffering from a status effect.
+
+
+\newpage
+
+
+\section{The Simplified Poison Damage Model}%
+\label{sec:the_simplified_poison_damage_model}
+
+The model is described and discussed in \href{https://www.youtube.com/watch?v=RwvUfNbLJPU}{\textit{How Poison Works: Poison Guide \& Math MHW Iceborne}}.
+
+\subsection{Input Variables}%
+\label{sub:poison_input_variables}
+
+We require three input variables:
+\begin{itemize}
+    \item $\rho$ (average raw damage of an attack)
+    \item $Q$ (total damage per poison proc)
+    \item $n$ (expected number of procs per hunt)
+    \item $H$ (monster total health)
+\end{itemize}
+
+While $Q$ and $H$ are very easy to finding depending on the quest, $n$ must be found through experimentation.
+
+This model is used due to the relatively low number of procs per hunt that can usually be determined.
+
+Do note that this model assumes that poison status applied is already factored into $n$ by the player, therefore all poison weapons will behave the same under this model.
+
+
+\subsection{Model Derivation}%
+\label{sub:simplified_poison_model_derivation}
+
+Let $R$ be the total raw damage done during the quest. $Q n$ is the total poison damage, so:
+\begin{equation}
+    R = H - Q n
+\end{equation}
+
+Let $k$ be the total number of hits required to kill the monster. Then:
+\begin{equation}
+    k = \frac{R}{\rho} = \frac{H - Q n}{\rho} 
+\end{equation}
+
+Let $\psi$ be the effective poison damage per hit. This can be easily found:
+\begin{equation}
+    \psi = \frac{Q n}{k} = \frac{\rho Q n}{H - Q n} 
+\end{equation}
+
+Thus, we have found our damage model.
 
 
 \newpage
@@ -564,26 +626,6 @@ Anonymous helper variables:
 \end{equation}
 
 
-\subsection{Model Extensions}%
-\label{sub:model_extensions}
-
-I left out certain interpretations of the model in order to keep discussion as simple as possible. Now that the model has been introduced, we shall expand on these additional interpretations.
-
-\subsubsection{Combos}%
-\label{ssub:combos}
-
-It turns out that if you can predict the average amount of raw damage and status application of a single attack, you can also do it for a given sequence of attacks.
-
-Thus, $\rho$ and $\sigma$ can instead be interpreted as values for a given sequence attacks rather than just a single attack.
-
-\subsubsection{Target Health}%
-\label{ssub:target_health}
-
-$H$ doesn't actually have to be the monster's total health pool if we don't intend on slaying it. For example, we can instead make $H$ the damage required in order to capture the monster.
-
-Multiplayer might also be considered here since multiple players share the full health pool of the monster. For example, if we assume four perfectly equal players, then we might want to divide the full 4-player health pool by 4.
-
-
 \subsection{Do we ever hit blast cap?}%
 \label{sub:do_we_ever_hit_blast_cap_}
 
@@ -607,7 +649,7 @@ For example, the continuous model might calculate the total number of blast proc
 If one wishes to model the DPS fluctuations that are associated with this effect, then this total number of blast procs must be floored. In this case, the continuous model calculation of 25.7 must be floored down to 25, leading to a total blast calculation of $25 \times 300 = 7500$.
 
 
-\subsection{Pre-Cap Model Derivation}%
+\subsection{Incomplete Pre-Cap Model Derivation}%
 \label{sub:dbm_pre_cap_model_derivation}
 
 To enforce integer blast procs, we floor the number of blast procs $n$ from \eqref{eq:continuous_num_procs}:
@@ -618,6 +660,31 @@ To enforce integer blast procs, we floor the number of blast procs $n$ from \eqr
 \end{equation}
 
 \textit{(TODO: I don't really know how to work with this equation. We should find a different approach.)}
+
+
+\newpage
+
+
+\section{Model Extensions}%
+\label{sec:model_extensions}
+
+I left out certain interpretations of the models in order to keep discussion as simple as possible. Now that the model has been introduced, we shall expand on these additional interpretations.
+
+\subsection{Combos}%
+\label{sub:combos}
+
+It turns out that if you can predict the average amount of raw damage and status application of a single attack, you can also do it for a given sequence of attacks.
+
+Thus, $\rho$ and $\sigma$ can instead be interpreted as values for a given sequence attacks rather than just a single attack.
+
+\subsection{Target Health}%
+\label{sub:target_health}
+
+$H$ doesn't actually have to be the monster's total health pool if we don't intend on slaying it. For example, we can instead make $H$ the damage required in order to capture the monster.
+
+Multiplayer might also be considered here since multiple players share the full health pool of the monster. For example, if we assume four perfectly equal players, then we might want to divide the full 4-player health pool by 4.
+
+
 
 
 \end{document}
