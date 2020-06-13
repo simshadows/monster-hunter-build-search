@@ -193,12 +193,14 @@ def generate_skills_source():
     setbonus_array_elements = []
     num_setbonuses          = len(setbonuses)
 
+    next_nid = 0
     for (_, skill) in skills.items():
         skill_declarations.append(
                     f"extern const Skill {skill['identifier']};"
                 )
         skill_definitions.append(
                     f"const Skill {skill['identifier']} = {{\n"
+                    f"    {next_nid}, // nid\n"
                     f"    \"{skill['skill_id']}\", // id\n"
                     f"    \"{skill['skill_name']}\", // name\n"
                     f"    {skill['normal_limit']}, // normal_limit\n"
@@ -209,6 +211,7 @@ def generate_skills_source():
         skill_map_elements.append(
                     f"    {{ \"{skill['skill_id']}\", &{skill['identifier']} }},"
                 )
+        next_nid += 1
 
     for (_, setbonus) in setbonuses.items():
         stages = []

@@ -13,6 +13,7 @@ namespace SkillsDatabase
 
 
 const Skill g_skill_adrenaline = {
+    0, // nid
     "ADRENALINE", // id
     "Adrenaline", // name
     1, // normal_limit
@@ -21,6 +22,7 @@ const Skill g_skill_adrenaline = {
 };
 
 const Skill g_skill_affinity_sliding = {
+    1, // nid
     "AFFINITY_SLIDING", // id
     "Affinity Sliding", // name
     1, // normal_limit
@@ -29,6 +31,7 @@ const Skill g_skill_affinity_sliding = {
 };
 
 const Skill g_skill_agitator = {
+    2, // nid
     "AGITATOR", // id
     "Agitator", // name
     5, // normal_limit
@@ -37,6 +40,7 @@ const Skill g_skill_agitator = {
 };
 
 const Skill g_skill_agitator_secret = {
+    3, // nid
     "AGITATOR_SECRET", // id
     "Agitator Secret", // name
     1, // normal_limit
@@ -45,6 +49,7 @@ const Skill g_skill_agitator_secret = {
 };
 
 const Skill g_skill_airborne = {
+    4, // nid
     "AIRBORNE", // id
     "Airborne", // name
     1, // normal_limit
@@ -53,6 +58,7 @@ const Skill g_skill_airborne = {
 };
 
 const Skill g_skill_aquatic_polar_mobility = {
+    5, // nid
     "AQUATIC_POLAR_MOBILITY", // id
     "Aquatic/Polar Mobility", // name
     3, // normal_limit
@@ -61,6 +67,7 @@ const Skill g_skill_aquatic_polar_mobility = {
 };
 
 const Skill g_skill_artillery = {
+    6, // nid
     "ARTILLERY", // id
     "Artillery", // name
     3, // normal_limit
@@ -69,6 +76,7 @@ const Skill g_skill_artillery = {
 };
 
 const Skill g_skill_artillery_secret = {
+    7, // nid
     "ARTILLERY_SECRET", // id
     "Artillery Secret", // name
     1, // normal_limit
@@ -77,6 +85,7 @@ const Skill g_skill_artillery_secret = {
 };
 
 const Skill g_skill_attack_boost = {
+    8, // nid
     "ATTACK_BOOST", // id
     "Attack Boost", // name
     7, // normal_limit
@@ -85,6 +94,7 @@ const Skill g_skill_attack_boost = {
 };
 
 const Skill g_skill_bbq_master = {
+    9, // nid
     "BBQ_MASTER", // id
     "BBQ Master", // name
     1, // normal_limit
@@ -93,6 +103,7 @@ const Skill g_skill_bbq_master = {
 };
 
 const Skill g_skill_blast_attack = {
+    10, // nid
     "BLAST_ATTACK", // id
     "Blast Attack", // name
     4, // normal_limit
@@ -101,6 +112,7 @@ const Skill g_skill_blast_attack = {
 };
 
 const Skill g_skill_blast_functionality = {
+    11, // nid
     "BLAST_FUNCTIONALITY", // id
     "Blast Functionality", // name
     1, // normal_limit
@@ -109,6 +121,7 @@ const Skill g_skill_blast_functionality = {
 };
 
 const Skill g_skill_blast_resistance = {
+    12, // nid
     "BLAST_RESISTANCE", // id
     "Blast Resistance", // name
     3, // normal_limit
@@ -117,6 +130,7 @@ const Skill g_skill_blast_resistance = {
 };
 
 const Skill g_skill_bleeding_resistance = {
+    13, // nid
     "BLEEDING_RESISTANCE", // id
     "Bleeding Resistance", // name
     3, // normal_limit
@@ -125,6 +139,7 @@ const Skill g_skill_bleeding_resistance = {
 };
 
 const Skill g_skill_blight_resistance = {
+    14, // nid
     "BLIGHT_RESISTANCE", // id
     "Blight Resistance", // name
     3, // normal_limit
@@ -133,6 +148,7 @@ const Skill g_skill_blight_resistance = {
 };
 
 const Skill g_skill_blindsider = {
+    15, // nid
     "BLINDSIDER", // id
     "Blindsider", // name
     1, // normal_limit
@@ -141,6 +157,7 @@ const Skill g_skill_blindsider = {
 };
 
 const Skill g_skill_bludgeoner = {
+    16, // nid
     "BLUDGEONER", // id
     "Bludgeoner", // name
     1, // normal_limit
@@ -149,6 +166,7 @@ const Skill g_skill_bludgeoner = {
 };
 
 const Skill g_skill_bombardier = {
+    17, // nid
     "BOMBARDIER", // id
     "Bombardier", // name
     3, // normal_limit
@@ -157,6 +175,7 @@ const Skill g_skill_bombardier = {
 };
 
 const Skill g_skill_bombardier_secret = {
+    18, // nid
     "BOMBARDIER_SECRET", // id
     "Bombardier Secret", // name
     1, // normal_limit
@@ -165,6 +184,7 @@ const Skill g_skill_bombardier_secret = {
 };
 
 const Skill g_skill_botanist = {
+    19, // nid
     "BOTANIST", // id
     "Botanist", // name
     4, // normal_limit
@@ -173,6 +193,7 @@ const Skill g_skill_botanist = {
 };
 
 const Skill g_skill_bow_charge_plus = {
+    20, // nid
     "BOW_CHARGE_PLUS", // id
     "Bow Charge Plus", // name
     1, // normal_limit
@@ -181,6 +202,7 @@ const Skill g_skill_bow_charge_plus = {
 };
 
 const Skill g_skill_capacity_boost = {
+    21, // nid
     "CAPACITY_BOOST", // id
     "Capacity Boost", // name
     1, // normal_limit
@@ -189,6 +211,7 @@ const Skill g_skill_capacity_boost = {
 };
 
 const Skill g_skill_capture_master = {
+    22, // nid
     "CAPTURE_MASTER", // id
     "Capture Master", // name
     1, // normal_limit
@@ -197,6 +220,7 @@ const Skill g_skill_capture_master = {
 };
 
 const Skill g_skill_carving_master = {
+    23, // nid
     "CARVING_MASTER", // id
     "Carving Master", // name
     1, // normal_limit
@@ -205,6 +229,7 @@ const Skill g_skill_carving_master = {
 };
 
 const Skill g_skill_carving_pro = {
+    24, // nid
     "CARVING_PRO", // id
     "Carving Pro", // name
     1, // normal_limit
@@ -213,6 +238,7 @@ const Skill g_skill_carving_pro = {
 };
 
 const Skill g_skill_cliffhanger = {
+    25, // nid
     "CLIFFHANGER", // id
     "Cliffhanger", // name
     1, // normal_limit
@@ -221,6 +247,7 @@ const Skill g_skill_cliffhanger = {
 };
 
 const Skill g_skill_coalescence = {
+    26, // nid
     "COALESCENCE", // id
     "Coalescence", // name
     3, // normal_limit
@@ -229,6 +256,7 @@ const Skill g_skill_coalescence = {
 };
 
 const Skill g_skill_coldproof = {
+    27, // nid
     "COLDPROOF", // id
     "Coldproof", // name
     1, // normal_limit
@@ -237,6 +265,7 @@ const Skill g_skill_coldproof = {
 };
 
 const Skill g_skill_constitution = {
+    28, // nid
     "CONSTITUTION", // id
     "Constitution", // name
     5, // normal_limit
@@ -245,6 +274,7 @@ const Skill g_skill_constitution = {
 };
 
 const Skill g_skill_critical_boost = {
+    29, // nid
     "CRITICAL_BOOST", // id
     "Critical Boost", // name
     3, // normal_limit
@@ -253,6 +283,7 @@ const Skill g_skill_critical_boost = {
 };
 
 const Skill g_skill_critical_draw = {
+    30, // nid
     "CRITICAL_DRAW", // id
     "Critical Draw", // name
     3, // normal_limit
@@ -261,6 +292,7 @@ const Skill g_skill_critical_draw = {
 };
 
 const Skill g_skill_critical_element = {
+    31, // nid
     "CRITICAL_ELEMENT", // id
     "Critical Element", // name
     1, // normal_limit
@@ -269,6 +301,7 @@ const Skill g_skill_critical_element = {
 };
 
 const Skill g_skill_critical_eye = {
+    32, // nid
     "CRITICAL_EYE", // id
     "Critical Eye", // name
     7, // normal_limit
@@ -277,6 +310,7 @@ const Skill g_skill_critical_eye = {
 };
 
 const Skill g_skill_critical_status = {
+    33, // nid
     "CRITICAL_STATUS", // id
     "Critical Status", // name
     1, // normal_limit
@@ -285,6 +319,7 @@ const Skill g_skill_critical_status = {
 };
 
 const Skill g_skill_defense_boost = {
+    34, // nid
     "DEFENSE_BOOST", // id
     "Defense Boost", // name
     7, // normal_limit
@@ -293,6 +328,7 @@ const Skill g_skill_defense_boost = {
 };
 
 const Skill g_skill_detector = {
+    35, // nid
     "DETECTOR", // id
     "Detector", // name
     1, // normal_limit
@@ -301,6 +337,7 @@ const Skill g_skill_detector = {
 };
 
 const Skill g_skill_divine_blessing = {
+    36, // nid
     "DIVINE_BLESSING", // id
     "Divine Blessing", // name
     3, // normal_limit
@@ -309,6 +346,7 @@ const Skill g_skill_divine_blessing = {
 };
 
 const Skill g_skill_divine_blessing_secret = {
+    37, // nid
     "DIVINE_BLESSING_SECRET", // id
     "Divine Blessing Secret", // name
     1, // normal_limit
@@ -317,6 +355,7 @@ const Skill g_skill_divine_blessing_secret = {
 };
 
 const Skill g_skill_dragon_attack = {
+    38, // nid
     "DRAGON_ATTACK", // id
     "Dragon Attack", // name
     6, // normal_limit
@@ -325,6 +364,7 @@ const Skill g_skill_dragon_attack = {
 };
 
 const Skill g_skill_dragon_resistance = {
+    39, // nid
     "DRAGON_RESISTANCE", // id
     "Dragon Resistance", // name
     3, // normal_limit
@@ -333,6 +373,7 @@ const Skill g_skill_dragon_resistance = {
 };
 
 const Skill g_skill_dragonvein_awakening = {
+    40, // nid
     "DRAGONVEIN_AWAKENING", // id
     "Dragonvein Awakening", // name
     1, // normal_limit
@@ -341,6 +382,7 @@ const Skill g_skill_dragonvein_awakening = {
 };
 
 const Skill g_skill_dungmaster = {
+    41, // nid
     "DUNGMASTER", // id
     "Dungmaster", // name
     1, // normal_limit
@@ -349,6 +391,7 @@ const Skill g_skill_dungmaster = {
 };
 
 const Skill g_skill_earplugs = {
+    42, // nid
     "EARPLUGS", // id
     "Earplugs", // name
     5, // normal_limit
@@ -357,6 +400,7 @@ const Skill g_skill_earplugs = {
 };
 
 const Skill g_skill_effluvia_resistance = {
+    43, // nid
     "EFFLUVIA_RESISTANCE", // id
     "Effluvia Resistance", // name
     3, // normal_limit
@@ -365,6 +409,7 @@ const Skill g_skill_effluvia_resistance = {
 };
 
 const Skill g_skill_effluvial_expert = {
+    44, // nid
     "EFFLUVIAL_EXPERT", // id
     "Effluvial Expert", // name
     1, // normal_limit
@@ -373,6 +418,7 @@ const Skill g_skill_effluvial_expert = {
 };
 
 const Skill g_skill_elderseal_boost = {
+    45, // nid
     "ELDERSEAL_BOOST", // id
     "Elderseal Boost", // name
     1, // normal_limit
@@ -381,6 +427,7 @@ const Skill g_skill_elderseal_boost = {
 };
 
 const Skill g_skill_element_acceleration = {
+    46, // nid
     "ELEMENT_ACCELERATION", // id
     "Element Acceleration", // name
     1, // normal_limit
@@ -389,6 +436,7 @@ const Skill g_skill_element_acceleration = {
 };
 
 const Skill g_skill_elemental_airborne = {
+    47, // nid
     "ELEMENTAL_AIRBORNE", // id
     "Elemental Airborne", // name
     1, // normal_limit
@@ -397,6 +445,7 @@ const Skill g_skill_elemental_airborne = {
 };
 
 const Skill g_skill_entomologist = {
+    48, // nid
     "ENTOMOLOGIST", // id
     "Entomologist", // name
     3, // normal_limit
@@ -405,6 +454,7 @@ const Skill g_skill_entomologist = {
 };
 
 const Skill g_skill_evade_extender = {
+    49, // nid
     "EVADE_EXTENDER", // id
     "Evade Extender", // name
     3, // normal_limit
@@ -413,6 +463,7 @@ const Skill g_skill_evade_extender = {
 };
 
 const Skill g_skill_evade_window = {
+    50, // nid
     "EVADE_WINDOW", // id
     "Evade Window", // name
     5, // normal_limit
@@ -421,6 +472,7 @@ const Skill g_skill_evade_window = {
 };
 
 const Skill g_skill_fire_attack = {
+    51, // nid
     "FIRE_ATTACK", // id
     "Fire Attack", // name
     6, // normal_limit
@@ -429,6 +481,7 @@ const Skill g_skill_fire_attack = {
 };
 
 const Skill g_skill_fire_resistance = {
+    52, // nid
     "FIRE_RESISTANCE", // id
     "Fire Resistance", // name
     3, // normal_limit
@@ -437,6 +490,7 @@ const Skill g_skill_fire_resistance = {
 };
 
 const Skill g_skill_flinch_free = {
+    53, // nid
     "FLINCH_FREE", // id
     "Flinch Free", // name
     3, // normal_limit
@@ -445,6 +499,7 @@ const Skill g_skill_flinch_free = {
 };
 
 const Skill g_skill_focus = {
+    54, // nid
     "FOCUS", // id
     "Focus", // name
     3, // normal_limit
@@ -453,6 +508,7 @@ const Skill g_skill_focus = {
 };
 
 const Skill g_skill_foragers_luck = {
+    55, // nid
     "FORAGERS_LUCK", // id
     "Forager's Luck", // name
     1, // normal_limit
@@ -461,6 +517,7 @@ const Skill g_skill_foragers_luck = {
 };
 
 const Skill g_skill_fortify = {
+    56, // nid
     "FORTIFY", // id
     "Fortify", // name
     1, // normal_limit
@@ -469,6 +526,7 @@ const Skill g_skill_fortify = {
 };
 
 const Skill g_skill_free_elem_ammo_up = {
+    57, // nid
     "FREE_ELEM_AMMO_UP", // id
     "Free Elem/Ammo Up", // name
     3, // normal_limit
@@ -477,6 +535,7 @@ const Skill g_skill_free_elem_ammo_up = {
 };
 
 const Skill g_skill_free_meal = {
+    58, // nid
     "FREE_MEAL", // id
     "Free Meal", // name
     1, // normal_limit
@@ -485,6 +544,7 @@ const Skill g_skill_free_meal = {
 };
 
 const Skill g_skill_free_meal_secret = {
+    59, // nid
     "FREE_MEAL_SECRET", // id
     "Free Meal Secret", // name
     1, // normal_limit
@@ -493,6 +553,7 @@ const Skill g_skill_free_meal_secret = {
 };
 
 const Skill g_skill_frostcraft = {
+    60, // nid
     "FROSTCRAFT", // id
     "Frostcraft", // name
     1, // normal_limit
@@ -501,6 +562,7 @@ const Skill g_skill_frostcraft = {
 };
 
 const Skill g_skill_full_bloom_gratitude = {
+    61, // nid
     "FULL_BLOOM_GRATITUDE", // id
     "Full Bloom's Gratitude", // name
     1, // normal_limit
@@ -509,6 +571,7 @@ const Skill g_skill_full_bloom_gratitude = {
 };
 
 const Skill g_skill_full_blooms_gift = {
+    62, // nid
     "FULL_BLOOMS_GIFT", // id
     "Full Bloom's Gift", // name
     1, // normal_limit
@@ -517,6 +580,7 @@ const Skill g_skill_full_blooms_gift = {
 };
 
 const Skill g_skill_gaias_veil = {
+    63, // nid
     "GAIAS_VEIL", // id
     "Gaia's Veil", // name
     1, // normal_limit
@@ -525,6 +589,7 @@ const Skill g_skill_gaias_veil = {
 };
 
 const Skill g_skill_geologist = {
+    64, // nid
     "GEOLOGIST", // id
     "Geologist", // name
     3, // normal_limit
@@ -533,6 +598,7 @@ const Skill g_skill_geologist = {
 };
 
 const Skill g_skill_good_luck = {
+    65, // nid
     "GOOD_LUCK", // id
     "Good Luck", // name
     1, // normal_limit
@@ -541,6 +607,7 @@ const Skill g_skill_good_luck = {
 };
 
 const Skill g_skill_gratitudes_blessing = {
+    66, // nid
     "GRATITUDES_BLESSING", // id
     "Gratitude's Blessing", // name
     1, // normal_limit
@@ -549,6 +616,7 @@ const Skill g_skill_gratitudes_blessing = {
 };
 
 const Skill g_skill_gratitudes_gift = {
+    67, // nid
     "GRATITUDES_GIFT", // id
     "Gratitude's Gift", // name
     1, // normal_limit
@@ -557,6 +625,7 @@ const Skill g_skill_gratitudes_gift = {
 };
 
 const Skill g_skill_great_luck = {
+    68, // nid
     "GREAT_LUCK", // id
     "Great Luck", // name
     1, // normal_limit
@@ -565,6 +634,7 @@ const Skill g_skill_great_luck = {
 };
 
 const Skill g_skill_guard = {
+    69, // nid
     "GUARD", // id
     "Guard", // name
     5, // normal_limit
@@ -573,6 +643,7 @@ const Skill g_skill_guard = {
 };
 
 const Skill g_skill_guard_up = {
+    70, // nid
     "GUARD_UP", // id
     "Guard Up", // name
     1, // normal_limit
@@ -581,6 +652,7 @@ const Skill g_skill_guard_up = {
 };
 
 const Skill g_skill_guts = {
+    71, // nid
     "GUTS", // id
     "Guts", // name
     1, // normal_limit
@@ -589,6 +661,7 @@ const Skill g_skill_guts = {
 };
 
 const Skill g_skill_handicraft = {
+    72, // nid
     "HANDICRAFT", // id
     "Handicraft", // name
     5, // normal_limit
@@ -597,6 +670,7 @@ const Skill g_skill_handicraft = {
 };
 
 const Skill g_skill_hasten_recovery = {
+    73, // nid
     "HASTEN_RECOVERY", // id
     "Hasten Recovery", // name
     1, // normal_limit
@@ -605,6 +679,7 @@ const Skill g_skill_hasten_recovery = {
 };
 
 const Skill g_skill_health_boost = {
+    74, // nid
     "HEALTH_BOOST", // id
     "Health Boost", // name
     3, // normal_limit
@@ -613,6 +688,7 @@ const Skill g_skill_health_boost = {
 };
 
 const Skill g_skill_heat_guard = {
+    75, // nid
     "HEAT_GUARD", // id
     "Heat Guard", // name
     1, // normal_limit
@@ -621,6 +697,7 @@ const Skill g_skill_heat_guard = {
 };
 
 const Skill g_skill_heavy_artillery = {
+    76, // nid
     "HEAVY_ARTILLERY", // id
     "Heavy Artillery", // name
     2, // normal_limit
@@ -629,6 +706,7 @@ const Skill g_skill_heavy_artillery = {
 };
 
 const Skill g_skill_heroics = {
+    77, // nid
     "HEROICS", // id
     "Heroics", // name
     5, // normal_limit
@@ -637,6 +715,7 @@ const Skill g_skill_heroics = {
 };
 
 const Skill g_skill_heroics_secret = {
+    78, // nid
     "HEROICS_SECRET", // id
     "Heroics Secret", // name
     1, // normal_limit
@@ -645,6 +724,7 @@ const Skill g_skill_heroics_secret = {
 };
 
 const Skill g_skill_honey_hunter = {
+    79, // nid
     "HONEY_HUNTER", // id
     "Honey Hunter", // name
     1, // normal_limit
@@ -653,6 +733,7 @@ const Skill g_skill_honey_hunter = {
 };
 
 const Skill g_skill_horn_maestro = {
+    80, // nid
     "HORN_MAESTRO", // id
     "Horn Maestro", // name
     2, // normal_limit
@@ -661,6 +742,7 @@ const Skill g_skill_horn_maestro = {
 };
 
 const Skill g_skill_hunger_resistance = {
+    81, // nid
     "HUNGER_RESISTANCE", // id
     "Hunger Resistance", // name
     3, // normal_limit
@@ -669,6 +751,7 @@ const Skill g_skill_hunger_resistance = {
 };
 
 const Skill g_skill_ice_attack = {
+    82, // nid
     "ICE_ATTACK", // id
     "Ice Attack", // name
     6, // normal_limit
@@ -677,6 +760,7 @@ const Skill g_skill_ice_attack = {
 };
 
 const Skill g_skill_ice_resistance = {
+    83, // nid
     "ICE_RESISTANCE", // id
     "Ice Resistance", // name
     3, // normal_limit
@@ -685,6 +769,7 @@ const Skill g_skill_ice_resistance = {
 };
 
 const Skill g_skill_intimidator = {
+    84, // nid
     "INTIMIDATOR", // id
     "Intimidator", // name
     3, // normal_limit
@@ -693,6 +778,7 @@ const Skill g_skill_intimidator = {
 };
 
 const Skill g_skill_iron_skin = {
+    85, // nid
     "IRON_SKIN", // id
     "Iron Skin", // name
     3, // normal_limit
@@ -701,6 +787,7 @@ const Skill g_skill_iron_skin = {
 };
 
 const Skill g_skill_item_prolonger = {
+    86, // nid
     "ITEM_PROLONGER", // id
     "Item Prolonger", // name
     3, // normal_limit
@@ -709,6 +796,7 @@ const Skill g_skill_item_prolonger = {
 };
 
 const Skill g_skill_joys_gift = {
+    87, // nid
     "JOYS_GIFT", // id
     "Joy's Gift", // name
     1, // normal_limit
@@ -717,6 +805,7 @@ const Skill g_skill_joys_gift = {
 };
 
 const Skill g_skill_joys_gratitude = {
+    88, // nid
     "JOYS_GRATITUDE", // id
     "Joy's Gratitude", // name
     1, // normal_limit
@@ -725,6 +814,7 @@ const Skill g_skill_joys_gratitude = {
 };
 
 const Skill g_skill_jump_master = {
+    89, // nid
     "JUMP_MASTER", // id
     "Jump Master", // name
     1, // normal_limit
@@ -733,6 +823,7 @@ const Skill g_skill_jump_master = {
 };
 
 const Skill g_skill_latent_power = {
+    90, // nid
     "LATENT_POWER", // id
     "Latent Power", // name
     5, // normal_limit
@@ -741,6 +832,7 @@ const Skill g_skill_latent_power = {
 };
 
 const Skill g_skill_latent_power_secret = {
+    91, // nid
     "LATENT_POWER_SECRET", // id
     "Latent Power Secret", // name
     1, // normal_limit
@@ -749,6 +841,7 @@ const Skill g_skill_latent_power_secret = {
 };
 
 const Skill g_skill_leap_of_faith = {
+    92, // nid
     "LEAP_OF_FAITH", // id
     "Leap of Faith", // name
     1, // normal_limit
@@ -757,6 +850,7 @@ const Skill g_skill_leap_of_faith = {
 };
 
 const Skill g_skill_marathon_runner = {
+    93, // nid
     "MARATHON_RUNNER", // id
     "Marathon Runner", // name
     3, // normal_limit
@@ -765,6 +859,7 @@ const Skill g_skill_marathon_runner = {
 };
 
 const Skill g_skill_master_fisher = {
+    94, // nid
     "MASTER_FISHER", // id
     "Master Fisher", // name
     1, // normal_limit
@@ -773,6 +868,7 @@ const Skill g_skill_master_fisher = {
 };
 
 const Skill g_skill_master_gatherer = {
+    95, // nid
     "MASTER_GATHERER", // id
     "Master Gatherer", // name
     1, // normal_limit
@@ -781,6 +877,7 @@ const Skill g_skill_master_gatherer = {
 };
 
 const Skill g_skill_master_mounter = {
+    96, // nid
     "MASTER_MOUNTER", // id
     "Master Mounter", // name
     1, // normal_limit
@@ -789,6 +886,7 @@ const Skill g_skill_master_mounter = {
 };
 
 const Skill g_skill_masters_touch = {
+    97, // nid
     "MASTERS_TOUCH", // id
     "Master's Touch", // name
     1, // normal_limit
@@ -797,6 +895,7 @@ const Skill g_skill_masters_touch = {
 };
 
 const Skill g_skill_maximum_might = {
+    98, // nid
     "MAXIMUM_MIGHT", // id
     "Maximum Might", // name
     3, // normal_limit
@@ -805,6 +904,7 @@ const Skill g_skill_maximum_might = {
 };
 
 const Skill g_skill_maximum_might_secret = {
+    99, // nid
     "MAXIMUM_MIGHT_SECRET", // id
     "Maximum Might Secret", // name
     1, // normal_limit
@@ -813,6 +913,7 @@ const Skill g_skill_maximum_might_secret = {
 };
 
 const Skill g_skill_minds_eye_ballistics = {
+    100, // nid
     "MINDS_EYE_BALLISTICS", // id
     "Mind's Eye/Ballistics", // name
     1, // normal_limit
@@ -821,6 +922,7 @@ const Skill g_skill_minds_eye_ballistics = {
 };
 
 const Skill g_skill_muck_resistance = {
+    101, // nid
     "MUCK_RESISTANCE", // id
     "Muck Resistance", // name
     1, // normal_limit
@@ -829,6 +931,7 @@ const Skill g_skill_muck_resistance = {
 };
 
 const Skill g_skill_mushroomancer = {
+    102, // nid
     "MUSHROOMANCER", // id
     "Mushroomancer", // name
     3, // normal_limit
@@ -837,6 +940,7 @@ const Skill g_skill_mushroomancer = {
 };
 
 const Skill g_skill_non_elemental_boost = {
+    103, // nid
     "NON_ELEMENTAL_BOOST", // id
     "Non-elemental Boost", // name
     1, // normal_limit
@@ -845,6 +949,7 @@ const Skill g_skill_non_elemental_boost = {
 };
 
 const Skill g_skill_normal_shots = {
+    104, // nid
     "NORMAL_SHOTS", // id
     "Normal Shots", // name
     2, // normal_limit
@@ -853,6 +958,7 @@ const Skill g_skill_normal_shots = {
 };
 
 const Skill g_skill_nullify_wind_pressure = {
+    105, // nid
     "NULLIFY_WIND_PRESSURE", // id
     "Nullify Wind Pressure", // name
     1, // normal_limit
@@ -861,6 +967,7 @@ const Skill g_skill_nullify_wind_pressure = {
 };
 
 const Skill g_skill_offensive_guard = {
+    106, // nid
     "OFFENSIVE_GUARD", // id
     "Offensive Guard", // name
     3, // normal_limit
@@ -869,6 +976,7 @@ const Skill g_skill_offensive_guard = {
 };
 
 const Skill g_skill_palico_rally = {
+    107, // nid
     "PALICO_RALLY", // id
     "Palico Rally", // name
     5, // normal_limit
@@ -877,6 +985,7 @@ const Skill g_skill_palico_rally = {
 };
 
 const Skill g_skill_paralysis_attack = {
+    108, // nid
     "PARALYSIS_ATTACK", // id
     "Paralysis Attack", // name
     4, // normal_limit
@@ -885,6 +994,7 @@ const Skill g_skill_paralysis_attack = {
 };
 
 const Skill g_skill_paralysis_functionality = {
+    109, // nid
     "PARALYSIS_FUNCTIONALITY", // id
     "Para Functionality", // name
     1, // normal_limit
@@ -893,6 +1003,7 @@ const Skill g_skill_paralysis_functionality = {
 };
 
 const Skill g_skill_paralysis_resistance = {
+    110, // nid
     "PARALYSIS_RESISTANCE", // id
     "Paralysis Resistance", // name
     3, // normal_limit
@@ -901,6 +1012,7 @@ const Skill g_skill_paralysis_resistance = {
 };
 
 const Skill g_skill_partbreaker = {
+    111, // nid
     "PARTBREAKER", // id
     "Partbreaker", // name
     3, // normal_limit
@@ -909,6 +1021,7 @@ const Skill g_skill_partbreaker = {
 };
 
 const Skill g_skill_peak_performance = {
+    112, // nid
     "PEAK_PERFORMANCE", // id
     "Peak Performance", // name
     3, // normal_limit
@@ -917,6 +1030,7 @@ const Skill g_skill_peak_performance = {
 };
 
 const Skill g_skill_piercing_shots = {
+    113, // nid
     "PIERCING_SHOTS", // id
     "Piercing Shots", // name
     2, // normal_limit
@@ -925,6 +1039,7 @@ const Skill g_skill_piercing_shots = {
 };
 
 const Skill g_skill_poison_attack = {
+    114, // nid
     "POISON_ATTACK", // id
     "Poison Attack", // name
     4, // normal_limit
@@ -933,6 +1048,7 @@ const Skill g_skill_poison_attack = {
 };
 
 const Skill g_skill_poison_duration_up = {
+    115, // nid
     "POISON_DURATION_UP", // id
     "Poison Duration Up", // name
     1, // normal_limit
@@ -941,6 +1057,7 @@ const Skill g_skill_poison_duration_up = {
 };
 
 const Skill g_skill_poison_functionality = {
+    116, // nid
     "POISON_FUNCTIONALITY", // id
     "Poison Functionality", // name
     1, // normal_limit
@@ -949,6 +1066,7 @@ const Skill g_skill_poison_functionality = {
 };
 
 const Skill g_skill_poison_resistance = {
+    117, // nid
     "POISON_RESISTANCE", // id
     "Poison Resistance", // name
     3, // normal_limit
@@ -957,6 +1075,7 @@ const Skill g_skill_poison_resistance = {
 };
 
 const Skill g_skill_power_prolonger = {
+    118, // nid
     "POWER_PROLONGER", // id
     "Power Prolonger", // name
     3, // normal_limit
@@ -965,6 +1084,7 @@ const Skill g_skill_power_prolonger = {
 };
 
 const Skill g_skill_pro_transporter = {
+    119, // nid
     "PRO_TRANSPORTER", // id
     "Pro Transporter", // name
     1, // normal_limit
@@ -973,6 +1093,7 @@ const Skill g_skill_pro_transporter = {
 };
 
 const Skill g_skill_protective_polish = {
+    120, // nid
     "PROTECTIVE_POLISH", // id
     "Protective Polish", // name
     1, // normal_limit
@@ -981,6 +1102,7 @@ const Skill g_skill_protective_polish = {
 };
 
 const Skill g_skill_provoker = {
+    121, // nid
     "PROVOKER", // id
     "Provoker", // name
     1, // normal_limit
@@ -989,6 +1111,7 @@ const Skill g_skill_provoker = {
 };
 
 const Skill g_skill_punishing_draw = {
+    122, // nid
     "PUNISHING_DRAW", // id
     "Punishing Draw", // name
     1, // normal_limit
@@ -997,6 +1120,7 @@ const Skill g_skill_punishing_draw = {
 };
 
 const Skill g_skill_quick_sheath = {
+    123, // nid
     "QUICK_SHEATH", // id
     "Quick Sheath", // name
     3, // normal_limit
@@ -1005,6 +1129,7 @@ const Skill g_skill_quick_sheath = {
 };
 
 const Skill g_skill_razor_sharp_spare_shot = {
+    124, // nid
     "RAZOR_SHARP_SPARE_SHOT", // id
     "Razor Sharp/Spare Shot", // name
     1, // normal_limit
@@ -1013,6 +1138,7 @@ const Skill g_skill_razor_sharp_spare_shot = {
 };
 
 const Skill g_skill_recovery_speed = {
+    125, // nid
     "RECOVERY_SPEED", // id
     "Recovery Speed", // name
     3, // normal_limit
@@ -1021,6 +1147,7 @@ const Skill g_skill_recovery_speed = {
 };
 
 const Skill g_skill_recovery_up = {
+    126, // nid
     "RECOVERY_UP", // id
     "Recovery Up", // name
     3, // normal_limit
@@ -1029,6 +1156,7 @@ const Skill g_skill_recovery_up = {
 };
 
 const Skill g_skill_resentment = {
+    127, // nid
     "RESENTMENT", // id
     "Resentment", // name
     5, // normal_limit
@@ -1037,6 +1165,7 @@ const Skill g_skill_resentment = {
 };
 
 const Skill g_skill_resuscitate = {
+    128, // nid
     "RESUSCITATE", // id
     "Resuscitate", // name
     1, // normal_limit
@@ -1045,6 +1174,7 @@ const Skill g_skill_resuscitate = {
 };
 
 const Skill g_skill_safe_landing = {
+    129, // nid
     "SAFE_LANDING", // id
     "Safe Landing", // name
     1, // normal_limit
@@ -1053,6 +1183,7 @@ const Skill g_skill_safe_landing = {
 };
 
 const Skill g_skill_scenthound = {
+    130, // nid
     "SCENTHOUND", // id
     "Scenthound", // name
     1, // normal_limit
@@ -1061,6 +1192,7 @@ const Skill g_skill_scenthound = {
 };
 
 const Skill g_skill_scholar = {
+    131, // nid
     "SCHOLAR", // id
     "Scholar", // name
     1, // normal_limit
@@ -1069,6 +1201,7 @@ const Skill g_skill_scholar = {
 };
 
 const Skill g_skill_scoutfly_range_up = {
+    132, // nid
     "SCOUTFLY_RANGE_UP", // id
     "Scoutfly Range Up", // name
     1, // normal_limit
@@ -1077,6 +1210,7 @@ const Skill g_skill_scoutfly_range_up = {
 };
 
 const Skill g_skill_sleep_attack = {
+    133, // nid
     "SLEEP_ATTACK", // id
     "Sleep Attack", // name
     4, // normal_limit
@@ -1085,6 +1219,7 @@ const Skill g_skill_sleep_attack = {
 };
 
 const Skill g_skill_sleep_functionality = {
+    134, // nid
     "SLEEP_FUNCTIONALITY", // id
     "Sleep Functionality", // name
     1, // normal_limit
@@ -1093,6 +1228,7 @@ const Skill g_skill_sleep_functionality = {
 };
 
 const Skill g_skill_sleep_resistance = {
+    135, // nid
     "SLEEP_RESISTANCE", // id
     "Sleep Resistance", // name
     3, // normal_limit
@@ -1101,6 +1237,7 @@ const Skill g_skill_sleep_resistance = {
 };
 
 const Skill g_skill_slinger_ammo_secret = {
+    136, // nid
     "SLINGER_AMMO_SECRET", // id
     "Slinger Ammo Secret", // name
     1, // normal_limit
@@ -1109,6 +1246,7 @@ const Skill g_skill_slinger_ammo_secret = {
 };
 
 const Skill g_skill_slinger_capacity = {
+    137, // nid
     "SLINGER_CAPACITY", // id
     "Slinger Capacity", // name
     3, // normal_limit
@@ -1117,6 +1255,7 @@ const Skill g_skill_slinger_capacity = {
 };
 
 const Skill g_skill_slugger = {
+    138, // nid
     "SLUGGER", // id
     "Slugger", // name
     3, // normal_limit
@@ -1125,6 +1264,7 @@ const Skill g_skill_slugger = {
 };
 
 const Skill g_skill_slugger_secret = {
+    139, // nid
     "SLUGGER_SECRET", // id
     "Slugger Secret", // name
     1, // normal_limit
@@ -1133,6 +1273,7 @@ const Skill g_skill_slugger_secret = {
 };
 
 const Skill g_skill_special_ammo_boost = {
+    140, // nid
     "SPECIAL_AMMO_BOOST", // id
     "Special Ammo Boost", // name
     2, // normal_limit
@@ -1141,6 +1282,7 @@ const Skill g_skill_special_ammo_boost = {
 };
 
 const Skill g_skill_speed_crawler = {
+    141, // nid
     "SPEED_CRAWLER", // id
     "Speed Crawler", // name
     1, // normal_limit
@@ -1149,6 +1291,7 @@ const Skill g_skill_speed_crawler = {
 };
 
 const Skill g_skill_speed_eating = {
+    142, // nid
     "SPEED_EATING", // id
     "Speed Eating", // name
     3, // normal_limit
@@ -1157,6 +1300,7 @@ const Skill g_skill_speed_eating = {
 };
 
 const Skill g_skill_speed_sharpening = {
+    143, // nid
     "SPEED_SHARPENING", // id
     "Speed Sharpening", // name
     3, // normal_limit
@@ -1165,6 +1309,7 @@ const Skill g_skill_speed_sharpening = {
 };
 
 const Skill g_skill_spread_power_shots = {
+    144, // nid
     "SPREAD_POWER_SHOTS", // id
     "Spread/Power Shots", // name
     2, // normal_limit
@@ -1173,6 +1318,7 @@ const Skill g_skill_spread_power_shots = {
 };
 
 const Skill g_skill_stamina_cap_up = {
+    145, // nid
     "STAMINA_CAP_UP", // id
     "Stamina Cap Up", // name
     1, // normal_limit
@@ -1181,6 +1327,7 @@ const Skill g_skill_stamina_cap_up = {
 };
 
 const Skill g_skill_stamina_surge = {
+    146, // nid
     "STAMINA_SURGE", // id
     "Stamina Surge", // name
     3, // normal_limit
@@ -1189,6 +1336,7 @@ const Skill g_skill_stamina_surge = {
 };
 
 const Skill g_skill_stamina_thief = {
+    147, // nid
     "STAMINA_THIEF", // id
     "Stamina Thief", // name
     3, // normal_limit
@@ -1197,6 +1345,7 @@ const Skill g_skill_stamina_thief = {
 };
 
 const Skill g_skill_stamina_thief_secret = {
+    148, // nid
     "STAMINA_THIEF_SECRET", // id
     "Stamina Thief Secret", // name
     1, // normal_limit
@@ -1205,6 +1354,7 @@ const Skill g_skill_stamina_thief_secret = {
 };
 
 const Skill g_skill_stealth = {
+    149, // nid
     "STEALTH", // id
     "Stealth", // name
     3, // normal_limit
@@ -1213,6 +1363,7 @@ const Skill g_skill_stealth = {
 };
 
 const Skill g_skill_stun_resistance = {
+    150, // nid
     "STUN_RESISTANCE", // id
     "Stun Resistance", // name
     3, // normal_limit
@@ -1221,6 +1372,7 @@ const Skill g_skill_stun_resistance = {
 };
 
 const Skill g_skill_super_recovery = {
+    151, // nid
     "SUPER_RECOVERY", // id
     "Super Recovery", // name
     1, // normal_limit
@@ -1229,6 +1381,7 @@ const Skill g_skill_super_recovery = {
 };
 
 const Skill g_skill_survival_expert = {
+    152, // nid
     "SURVIVAL_EXPERT", // id
     "Survival Expert", // name
     3, // normal_limit
@@ -1237,6 +1390,7 @@ const Skill g_skill_survival_expert = {
 };
 
 const Skill g_skill_thunder_attack = {
+    153, // nid
     "THUNDER_ATTACK", // id
     "Thunder Attack", // name
     6, // normal_limit
@@ -1245,6 +1399,7 @@ const Skill g_skill_thunder_attack = {
 };
 
 const Skill g_skill_thunder_resistance = {
+    154, // nid
     "THUNDER_RESISTANCE", // id
     "Thunder Resistance", // name
     3, // normal_limit
@@ -1253,6 +1408,7 @@ const Skill g_skill_thunder_resistance = {
 };
 
 const Skill g_skill_tool_specialist = {
+    155, // nid
     "TOOL_SPECIALIST", // id
     "Tool Specialist", // name
     3, // normal_limit
@@ -1261,6 +1417,7 @@ const Skill g_skill_tool_specialist = {
 };
 
 const Skill g_skill_tool_specialist_secret = {
+    156, // nid
     "TOOL_SPECIALIST_SECRET", // id
     "Tool Specialist Secret", // name
     1, // normal_limit
@@ -1269,6 +1426,7 @@ const Skill g_skill_tool_specialist_secret = {
 };
 
 const Skill g_skill_tremor_resistance = {
+    157, // nid
     "TREMOR_RESISTANCE", // id
     "Tremor Resistance", // name
     3, // normal_limit
@@ -1277,6 +1435,7 @@ const Skill g_skill_tremor_resistance = {
 };
 
 const Skill g_skill_true_critical_element = {
+    158, // nid
     "TRUE_CRITICAL_ELEMENT", // id
     "True Critical Element", // name
     1, // normal_limit
@@ -1285,6 +1444,7 @@ const Skill g_skill_true_critical_element = {
 };
 
 const Skill g_skill_true_critical_status = {
+    159, // nid
     "TRUE_CRITICAL_STATUS", // id
     "True Critical Status", // name
     1, // normal_limit
@@ -1293,6 +1453,7 @@ const Skill g_skill_true_critical_status = {
 };
 
 const Skill g_skill_true_dragonvein_awakening = {
+    160, // nid
     "TRUE_DRAGONVEIN_AWAKENING", // id
     "True Dragonvein Awakening", // name
     1, // normal_limit
@@ -1301,6 +1462,7 @@ const Skill g_skill_true_dragonvein_awakening = {
 };
 
 const Skill g_skill_true_element_acceleration = {
+    161, // nid
     "TRUE_ELEMENT_ACCELERATION", // id
     "True Element Acceleration", // name
     1, // normal_limit
@@ -1309,6 +1471,7 @@ const Skill g_skill_true_element_acceleration = {
 };
 
 const Skill g_skill_true_gaias_veil = {
+    162, // nid
     "TRUE_GAIAS_VEIL", // id
     "True Gaia's Veil", // name
     1, // normal_limit
@@ -1317,6 +1480,7 @@ const Skill g_skill_true_gaias_veil = {
 };
 
 const Skill g_skill_true_razor_sharp_spare_shot = {
+    163, // nid
     "TRUE_RAZOR_SHARP_SPARE_SHOT", // id
     "True Razor Sharp/Spare Shot", // name
     1, // normal_limit
@@ -1325,6 +1489,7 @@ const Skill g_skill_true_razor_sharp_spare_shot = {
 };
 
 const Skill g_skill_water_attack = {
+    164, // nid
     "WATER_ATTACK", // id
     "Water Attack", // name
     6, // normal_limit
@@ -1333,6 +1498,7 @@ const Skill g_skill_water_attack = {
 };
 
 const Skill g_skill_water_resistance = {
+    165, // nid
     "WATER_RESISTANCE", // id
     "Water Resistance", // name
     3, // normal_limit
@@ -1341,6 +1507,7 @@ const Skill g_skill_water_resistance = {
 };
 
 const Skill g_skill_weakness_exploit = {
+    166, // nid
     "WEAKNESS_EXPLOIT", // id
     "Weakness Exploit", // name
     3, // normal_limit
@@ -1349,6 +1516,7 @@ const Skill g_skill_weakness_exploit = {
 };
 
 const Skill g_skill_wide_range = {
+    167, // nid
     "WIDE_RANGE", // id
     "Wide-Range", // name
     5, // normal_limit
@@ -1357,6 +1525,7 @@ const Skill g_skill_wide_range = {
 };
 
 const Skill g_skill_windproof = {
+    168, // nid
     "WINDPROOF", // id
     "Windproof", // name
     5, // normal_limit

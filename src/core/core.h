@@ -134,7 +134,11 @@ protected:
 
 
 struct Skill {
-    const std::string  id;            // The "UPPER_SNAKE_CASE" identifier of the skill.
+    const std::size_t  nid;           // Unique numerical ID used internally for algorithmic purposes.
+                                      // NIDs must be guaranteed to be "as low as possible", allowing for
+                                      // use in jump tables.
+
+    const std::string  id;            // The official UPPER_SNAKE_CASE unique identifier of the skill.
 
     const std::string  name;          // Actual skill name, as it appears in-game.
     const unsigned int normal_limit;  // Maximum level without "secret" skills.
