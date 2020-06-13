@@ -51,7 +51,11 @@ static const std::array<int, 8> critical_eye_added_aff = {0, 5, 10, 15, 20, 25, 
 
 // Dragonvein Awakening (and True Dragonvein Awakening)
 static constexpr int k_DRAGONVEIN_AWAKENING_AFF      = 20;
-static constexpr int k_TRUE_DRAGONVEIN_AWAKENING_AFF = 20; // This adds on top of k_DRAGONVEIN_AWAKENING_AFF!
+static constexpr int k_TRUE_DRAGONVEIN_AWAKENING_AFF = 20; // This adds on top of the non-True version.
+
+// Element Acceleration (and True Element Acceleration)
+static constexpr unsigned int k_ELEMENT_ACCELERATION_FREEELEM_LVL      = 2;
+static constexpr unsigned int k_TRUE_ELEMENT_ACCELERATION_FREEELEM_LVL = 1; // This adds on top of the non-True version.
 
 // Fortify
 static constexpr double k_FORTIFY_RAW_MULTIPLIER_S1 = 1.1;
@@ -81,8 +85,7 @@ static const std::array<int, 6> maximum_might_added_aff = {0, 10, 20, 30, 40, 40
 static const std::array<double, 4> offensive_guard_raw_multiplier = {1.00, 1.05, 1.10, 1.15};
 
 // Non-elemental Boost
-static constexpr double k_NON_ELEMENTAL_BOOST_MULTIPLIER_DISABLED = 1.00;
-static constexpr double k_NON_ELEMENTAL_BOOST_MULTIPLIER_ACTIVE   = 1.05;
+static constexpr double k_NON_ELEMENTAL_BOOST_MULTIPLIER = 1.05;
 
 // Peak Performance                                             level: 0, 1,  2,  3
 static const std::array<unsigned int, 4> peak_performance_added_raw = {0, 5, 10, 20};
@@ -96,57 +99,6 @@ static const std::array<unsigned int, 6> resentment_added_raw = {0, 5, 10, 15, 2
 // Weakness Exploit                                     level: 0,  1,  2,  3
 static constexpr std::array<int, 4> weakness_exploit_s1_aff = {0, 10, 15, 30};
 static constexpr std::array<int, 4> weakness_exploit_s2_aff = {0, 15, 30, 50};
-
-
-static double calculate_non_elemental_boost_multiplier(const SkillMap& skills,
-                                                       const SkillSpec& skills_spec,
-                                                       const WeaponContribution& wc) {
-
-    if (!skills.binary_skill_is_lvl1(&SkillsDatabase::g_skill_non_elemental_boost)) {
-        return k_NON_ELEMENTAL_BOOST_MULTIPLIER_DISABLED;
-    }
-
-    // We can now assume the Non-elemental Boost skill is active.
-
-    const bool is_raw = [&](){
-        switch (wc.elestat_visibility) {
-            case EleStatVisibility::none:
-                return true;
-            case EleStatVisibility::open:
-                assert(wc.elestat_type != EleStatType::none);
-                //assert(wc.elestat_value); // Do not make this assumption!
-                return false;
-            case EleStatVisibility::hidden:
-                assert(wc.elestat_type != EleStatType::none);
-                //assert(wc.elestat_value); // Do not make this assumption!
-                if (skills.get(&SkillsDatabase::g_skill_free_elem_ammo_up) > 0) {
-                    return false;
-                }
-                if ((!skills_spec.get_state_for_binary_skill(&SkillsDatabase::g_skill_element_acceleration))
-                        && (!skills_spec.get_state_for_binary_skill(&SkillsDatabase::g_skill_true_element_acceleration))) {
-                    return true;
-                }
-                return skills.binary_skill_is_lvl1(&SkillsDatabase::g_skill_element_acceleration)
-                       || skills.binary_skill_is_lvl1(&SkillsDatabase::g_skill_true_element_acceleration);
-            default:
-                throw std::logic_error("Unexpected EleStatVisibility value.");
-        }
-    }();
-
-    return (is_raw) ? k_NON_ELEMENTAL_BOOST_MULTIPLIER_ACTIVE : k_NON_ELEMENTAL_BOOST_MULTIPLIER_DISABLED;
-}
-
-
-static double calculate_raw_crit_dmg_multiplier(const SkillMap& skills) {
-    switch (skills.get(&SkillsDatabase::g_skill_critical_boost)) {
-        case 0: return k_RAW_CRIT_DMG_MULTIPLIER_CB0;
-        case 1: return k_RAW_CRIT_DMG_MULTIPLIER_CB1;
-        case 2: return k_RAW_CRIT_DMG_MULTIPLIER_CB2;
-        default:
-            assert(skills.get(&SkillsDatabase::g_skill_critical_boost) == 3);
-            return k_RAW_CRIT_DMG_MULTIPLIER_CB3;
-    }
-}
 
 
 static SharpnessGauge calculate_final_sharpness_gauge(const SkillMap& skills,
@@ -166,14 +118,17 @@ SkillContribution::SkillContribution(const SkillMap&           skills,
                                      const WeaponContribution& wc ) noexcept
     : added_raw                 (0)
     , added_aff                 (0)
-    , base_raw_multiplier       (calculate_non_elemental_boost_multiplier(skills, skills_spec, wc))
+    , base_raw_multiplier       (1.0)
     , frostcraft_raw_multiplier (1.0)
     , bludgeoner_added_raw      (0)
-    , raw_crit_dmg_multiplier   (calculate_raw_crit_dmg_multiplier(skills))
+    , raw_crit_dmg_multiplier   (k_RAW_CRIT_DMG_MULTIPLIER_CB0)
     , final_sharpness_gauge     (calculate_final_sharpness_gauge(skills, wc))
-    , free_element_active_percentage (0)
+    //, free_element_active_percentage (0) // We will initialize this later!
 {
     // We calculate the remaining fields.
+
+    bool non_elemental_boost_is_present = false;
+    unsigned int effective_free_element_lvl = 0;
 
     for (const auto& skill_pair : skills) {
         const Skill * const skill = skill_pair.first;
@@ -246,6 +201,20 @@ SkillContribution::SkillContribution(const SkillMap&           skills,
                     }
                 } break;
 
+            case SkillsDatabase::g_skillnid_critical_boost: {
+                    switch (lvl) {
+                        case 1:
+                            this->raw_crit_dmg_multiplier = k_RAW_CRIT_DMG_MULTIPLIER_CB1;
+                            break;
+                        case 2:
+                            this->raw_crit_dmg_multiplier = k_RAW_CRIT_DMG_MULTIPLIER_CB2;
+                            break;
+                        default:
+                            assert(lvl == 3);
+                            this->raw_crit_dmg_multiplier = k_RAW_CRIT_DMG_MULTIPLIER_CB3;
+                    }
+                } break;
+
             case SkillsDatabase::g_skillnid_critical_draw: {
                     if (skills_spec.get_state_for_binary_skill(&SkillsDatabase::g_skill_critical_draw)) {
                         this->added_aff += critical_draw_added_aff[lvl];
@@ -268,16 +237,32 @@ SkillContribution::SkillContribution(const SkillMap&           skills,
                     assert(lvl == 1);
                     assert(skills_spec.get_state_for_binary_skill(&SkillsDatabase::g_skill_dragonvein_awakening)
                            == skills_spec.get_state_for_binary_skill(&SkillsDatabase::g_skill_true_dragonvein_awakening));
+                    assert(skills.get(&SkillsDatabase::g_skill_dragonvein_awakening) == 1);
                     if (skills_spec.get_state_for_binary_skill(&SkillsDatabase::g_skill_dragonvein_awakening)) {
                         this->added_aff += k_TRUE_DRAGONVEIN_AWAKENING_AFF;
                     }
                 } break;
 
-            case SkillsDatabase::g_skillnid_free_elem_ammo_up: {
-                    const unsigned int new_val = free_element_active_percentage_vals[lvl];
-                    if (new_val > this->free_element_active_percentage) {
-                        this->free_element_active_percentage = new_val;
+            case SkillsDatabase::g_skillnid_element_acceleration: {
+                    assert(lvl == 1);
+                    assert(skills_spec.get_state_for_binary_skill(&SkillsDatabase::g_skill_element_acceleration)
+                           == skills_spec.get_state_for_binary_skill(&SkillsDatabase::g_skill_true_element_acceleration));
+                    if (skills_spec.get_state_for_binary_skill(&SkillsDatabase::g_skill_element_acceleration)) {
+                        effective_free_element_lvl += k_ELEMENT_ACCELERATION_FREEELEM_LVL;
                     }
+                } break;
+            case SkillsDatabase::g_skillnid_true_element_acceleration: {
+                    assert(lvl == 1);
+                    assert(skills_spec.get_state_for_binary_skill(&SkillsDatabase::g_skill_element_acceleration)
+                           == skills_spec.get_state_for_binary_skill(&SkillsDatabase::g_skill_true_element_acceleration));
+                    assert(skills.get(&SkillsDatabase::g_skill_element_acceleration) == 1);
+                    if (skills_spec.get_state_for_binary_skill(&SkillsDatabase::g_skill_true_element_acceleration)) {
+                        effective_free_element_lvl += k_TRUE_ELEMENT_ACCELERATION_FREEELEM_LVL;
+                    }
+                } break;
+
+            case SkillsDatabase::g_skillnid_free_elem_ammo_up: {
+                    effective_free_element_lvl += lvl;
                 } break;
 
             case SkillsDatabase::g_skillnid_fortify: {
@@ -334,6 +319,10 @@ SkillContribution::SkillContribution(const SkillMap&           skills,
                     }
                 } break;
 
+            case SkillsDatabase::g_skillnid_non_elemental_boost: {
+                    non_elemental_boost_is_present = true;
+                } break;
+
             case SkillsDatabase::g_skillnid_offensive_guard: {
                     if (skills_spec.get_state_for_binary_skill(&SkillsDatabase::g_skill_offensive_guard)) {
                         this->base_raw_multiplier *= offensive_guard_raw_multiplier[lvl];
@@ -372,6 +361,19 @@ SkillContribution::SkillContribution(const SkillMap&           skills,
 
             default:
                 ; // Do nothing
+        }
+    }
+
+    if (effective_free_element_lvl) {
+        // Clip the level
+        effective_free_element_lvl = (effective_free_element_lvl > 3) ? 3 : effective_free_element_lvl;
+        // Calculate the final value
+        this->free_element_active_percentage = free_element_active_percentage_vals[effective_free_element_lvl];
+    } else {
+        this->free_element_active_percentage = 0;
+        // Since we know that Free Element is not active, we just need to test if the element is open.
+        if (wc.elestat_visibility != EleStatVisibility::open) {
+            this->base_raw_multiplier *= k_NON_ELEMENTAL_BOOST_MULTIPLIER;
         }
     }
 }
