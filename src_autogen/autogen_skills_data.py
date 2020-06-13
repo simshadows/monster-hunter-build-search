@@ -38,6 +38,8 @@ using MHWIBuildSearch::SetBonus;
 
 {skill_declarations}
 
+{skill_nids}
+
 {setbonus_declarations}
 
 extern const std::array<const SetBonus*, {num_setbonuses}> g_all_setbonuses;
@@ -111,7 +113,8 @@ def parse_skills(j):
     for (skill_id, skill_json) in j.items():
         t = {
                 # Name to bind globally in the C++ source code
-                "identifier": "g_skill_" + skill_id.lower(),
+                "identifier":     "g_skill_" + skill_id.lower(),
+                "nid_identifier": "g_skillnid_" + skill_id.lower(),
 
                 # Struct data
                 "skill_id":     skill_id,
@@ -184,6 +187,7 @@ def generate_skills_source():
     setbonuses = parse_setbonuses(j["set_bonuses"])
 
     skill_declarations = []
+    skill_nids         = []
     skill_definitions  = []
     skill_map_elements = []
 
@@ -197,6 +201,9 @@ def generate_skills_source():
     for (_, skill) in skills.items():
         skill_declarations.append(
                     f"extern const Skill {skill['identifier']};"
+                )
+        skill_nids.append(
+                    f"constexpr std::size_t {skill['nid_identifier']} = {next_nid};"
                 )
         skill_definitions.append(
                     f"const Skill {skill['identifier']} = {{\n"
@@ -240,6 +247,7 @@ def generate_skills_source():
 
     h_file_data = SKILLS_H_BASE.format(
             skill_declarations="\n".join(skill_declarations),
+            skill_nids="\n".join(skill_nids),
             setbonus_declarations="\n".join(setbonus_declarations),
             num_setbonuses=num_setbonuses,
         )

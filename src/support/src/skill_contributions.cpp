@@ -51,7 +51,7 @@ static const std::array<int, 8> critical_eye_added_aff = {0, 5, 10, 15, 20, 25, 
 
 // Dragonvein Awakening (and True Dragonvein Awakening)
 static constexpr int k_DRAGONVEIN_AWAKENING_AFF      = 20;
-static constexpr int k_TRUE_DRAGONVEIN_AWAKENING_AFF = 40;
+static constexpr int k_TRUE_DRAGONVEIN_AWAKENING_AFF = 20; // This adds on top of k_DRAGONVEIN_AWAKENING_AFF!
 
 // Fortify
 static constexpr double k_FORTIFY_RAW_MULTIPLIER_S1 = 1.1;
@@ -167,163 +167,212 @@ SkillContribution::SkillContribution(const SkillMap&           skills,
     : added_raw                 (0)
     , added_aff                 (0)
     , base_raw_multiplier       (calculate_non_elemental_boost_multiplier(skills, skills_spec, wc))
-    //, frostcraft_raw_multiplier (1.0) // We initialize later
-    //, bludgeoner_added_raw      (0)   // We initialize later
+    , frostcraft_raw_multiplier (1.0)
+    , bludgeoner_added_raw      (0)
     , raw_crit_dmg_multiplier   (calculate_raw_crit_dmg_multiplier(skills))
     , final_sharpness_gauge     (calculate_final_sharpness_gauge(skills, wc))
-    //, free_element_active_percentage (0) // We initialize later
+    , free_element_active_percentage (0)
 {
     // We calculate the remaining fields.
 
-    if (skills_spec.get_state_for_binary_skill(&SkillsDatabase::g_skill_affinity_sliding)
-            && skills.binary_skill_is_lvl1(&SkillsDatabase::g_skill_affinity_sliding)) {
-        this->added_aff += k_AFFINITY_SLIDING_AFF;
-    }
+    for (const auto& skill_pair : skills) {
+        const Skill * const skill = skill_pair.first;
+        const unsigned int lvl = skill_pair.second;
 
-    if (skills_spec.get_state_for_binary_skill(&SkillsDatabase::g_skill_agitator)) {
-        const unsigned int agitator_lvl = skills.get_non_secret(&SkillsDatabase::g_skill_agitator,
-                                                                &SkillsDatabase::g_skill_agitator_secret);
-        this->added_raw += agitator_added_raw[agitator_lvl];
-        this->added_aff += agitator_added_aff[agitator_lvl];
-    }
+        // We guarantee that skills we see here have at least one level.
+        assert(lvl);
 
-    if (skills_spec.get_state_for_binary_skill(&SkillsDatabase::g_skill_airborne)
-            && skills.binary_skill_is_lvl1(&SkillsDatabase::g_skill_airborne)) {
-        this->base_raw_multiplier *= k_AIRBORNE_RAW_MULTIPLIER;
-    }
+        // This function will return the actual effective level, depending on whether the "secret skill" is active.
+        const auto apply_secret = [&](const Skill * const associated_secret){
+            if ((lvl <= skill->normal_limit) || skills.binary_skill_is_lvl1(associated_secret)) {
+                return lvl;
+            } else {
+                return skill->normal_limit;
+            }
+        };
 
-    const unsigned int attack_boost_lvl = skills.get(&SkillsDatabase::g_skill_attack_boost);
-    this->added_raw += attack_boost_added_raw[attack_boost_lvl];
-    this->added_aff += attack_boost_added_aff[attack_boost_lvl];
+        switch (skill->nid) {
 
-    if (skills.binary_skill_is_lvl1(&SkillsDatabase::g_skill_bludgeoner)) {
-        switch (this->final_sharpness_gauge.get_sharpness_level()) {
-            case SharpnessLevel::red:
-                this->bludgeoner_added_raw = k_BLUDGEONER_ADDED_RAW_RED;
-                break;
-            case SharpnessLevel::orange:
-                this->bludgeoner_added_raw = k_BLUDGEONER_ADDED_RAW_ORANGE;
-                break;
-            case SharpnessLevel::yellow:
-                this->bludgeoner_added_raw = k_BLUDGEONER_ADDED_RAW_YELLOW;
-                break;
-            case SharpnessLevel::green:
-                this->bludgeoner_added_raw = k_BLUDGEONER_ADDED_RAW_GREEN;
-                break;
+            case SkillsDatabase::g_skillnid_affinity_sliding: {
+                    assert(lvl == 1);
+                    if (skills_spec.get_state_for_binary_skill(&SkillsDatabase::g_skill_affinity_sliding)) {
+                        this->added_aff += k_AFFINITY_SLIDING_AFF;
+                    }
+                } break;
+
+            case SkillsDatabase::g_skillnid_agitator: {
+                    if (skills_spec.get_state_for_binary_skill(&SkillsDatabase::g_skill_agitator)) {
+                        const unsigned int effective_lvl = apply_secret(&SkillsDatabase::g_skill_agitator_secret);
+                        this->added_raw += agitator_added_raw[effective_lvl];
+                        this->added_aff += agitator_added_aff[effective_lvl];
+                    }
+                } break;
+
+            case SkillsDatabase::g_skillnid_airborne: {
+                    assert(lvl == 1);
+                    if (skills_spec.get_state_for_binary_skill(&SkillsDatabase::g_skill_airborne)) {
+                        this->base_raw_multiplier *= k_AIRBORNE_RAW_MULTIPLIER;
+                    }
+                } break;
+
+            case SkillsDatabase::g_skillnid_attack_boost: {
+                    this->added_raw += attack_boost_added_raw[lvl];
+                    this->added_aff += attack_boost_added_aff[lvl];
+                } break;
+
+            case SkillsDatabase::g_skillnid_bludgeoner: {
+                    assert(lvl == 1);
+                    switch (this->final_sharpness_gauge.get_sharpness_level()) {
+                        case SharpnessLevel::red:
+                            this->bludgeoner_added_raw = k_BLUDGEONER_ADDED_RAW_RED;
+                            break;
+                        case SharpnessLevel::orange:
+                            this->bludgeoner_added_raw = k_BLUDGEONER_ADDED_RAW_ORANGE;
+                            break;
+                        case SharpnessLevel::yellow:
+                            this->bludgeoner_added_raw = k_BLUDGEONER_ADDED_RAW_YELLOW;
+                            break;
+                        case SharpnessLevel::green:
+                            this->bludgeoner_added_raw = k_BLUDGEONER_ADDED_RAW_GREEN;
+                            break;
+                        default:
+                            this->bludgeoner_added_raw = k_BLUDGEONER_ADDED_RAW_OTHER;
+                    }
+                } break;
+
+            case SkillsDatabase::g_skillnid_coalescence: {
+                    if (skills_spec.get_state_for_binary_skill(&SkillsDatabase::g_skill_coalescence)) {
+                        this->added_raw += coalescence_added_raw[lvl];
+                    }
+                } break;
+
+            case SkillsDatabase::g_skillnid_critical_draw: {
+                    if (skills_spec.get_state_for_binary_skill(&SkillsDatabase::g_skill_critical_draw)) {
+                        this->added_aff += critical_draw_added_aff[lvl];
+                    }
+                } break;
+
+            case SkillsDatabase::g_skillnid_critical_eye: {
+                    this->added_aff += critical_eye_added_aff[lvl];
+                } break;
+
+            case SkillsDatabase::g_skillnid_dragonvein_awakening: {
+                    assert(lvl == 1);
+                    assert(skills_spec.get_state_for_binary_skill(&SkillsDatabase::g_skill_dragonvein_awakening)
+                           == skills_spec.get_state_for_binary_skill(&SkillsDatabase::g_skill_true_dragonvein_awakening));
+                    if (skills_spec.get_state_for_binary_skill(&SkillsDatabase::g_skill_dragonvein_awakening)) {
+                        this->added_aff += k_DRAGONVEIN_AWAKENING_AFF;
+                    }
+                } break;
+            case SkillsDatabase::g_skillnid_true_dragonvein_awakening: {
+                    assert(lvl == 1);
+                    assert(skills_spec.get_state_for_binary_skill(&SkillsDatabase::g_skill_dragonvein_awakening)
+                           == skills_spec.get_state_for_binary_skill(&SkillsDatabase::g_skill_true_dragonvein_awakening));
+                    if (skills_spec.get_state_for_binary_skill(&SkillsDatabase::g_skill_dragonvein_awakening)) {
+                        this->added_aff += k_TRUE_DRAGONVEIN_AWAKENING_AFF;
+                    }
+                } break;
+
+            case SkillsDatabase::g_skillnid_free_elem_ammo_up: {
+                    const unsigned int new_val = free_element_active_percentage_vals[lvl];
+                    if (new_val > this->free_element_active_percentage) {
+                        this->free_element_active_percentage = new_val;
+                    }
+                } break;
+
+            case SkillsDatabase::g_skillnid_fortify: {
+                    const unsigned int fortify_state = skills_spec.get_state(&SkillsDatabase::g_skill_fortify);
+                    switch (fortify_state) {
+                        case 1:
+                            this->base_raw_multiplier *= k_FORTIFY_RAW_MULTIPLIER_S1;
+                            break;
+                        case 2:
+                            this->base_raw_multiplier *= k_FORTIFY_RAW_MULTIPLIER_S2;
+                            break;
+                        default:
+                            assert(fortify_state == 0);
+                    }
+                } break;
+
+            case SkillsDatabase::g_skillnid_frostcraft: {
+                    assert(lvl == 1);
+                    const unsigned int frostcraft_state = skills_spec.get_state(&SkillsDatabase::g_skill_frostcraft);
+                    assert(frostcraft_state < frostcraft_multipliers_gs_h.size());
+                    assert(frostcraft_state < frostcraft_multipliers_hbg.size());
+                    assert(frostcraft_state < frostcraft_multipliers_else.size());
+                    switch (weapon_class) {
+                        case WeaponClass::greatsword:
+                        case WeaponClass::hammer:
+                            this->frostcraft_raw_multiplier = frostcraft_multipliers_gs_h[frostcraft_state];
+                            break;
+                        case WeaponClass::heavy_bowgun:
+                            this->frostcraft_raw_multiplier = frostcraft_multipliers_hbg[frostcraft_state];
+                            break;
+                        default:
+                            this->frostcraft_raw_multiplier = frostcraft_multipliers_else[frostcraft_state];
+                    }
+                } break;
+
+            case SkillsDatabase::g_skillnid_heroics: {
+                    if (skills_spec.get_state_for_binary_skill(&SkillsDatabase::g_skill_heroics)) {
+                        const unsigned int effective_lvl = apply_secret(&SkillsDatabase::g_skill_heroics_secret);
+                        this->base_raw_multiplier *= heroics_raw_multiplier[effective_lvl];
+                    }
+                } break;
+
+            case SkillsDatabase::g_skillnid_latent_power: {
+                    if (skills_spec.get_state_for_binary_skill(&SkillsDatabase::g_skill_latent_power)) {
+                        const unsigned int effective_lvl = apply_secret(&SkillsDatabase::g_skill_latent_power_secret);
+                        this->added_aff += latent_power_added_aff[effective_lvl];
+                    }
+                } break;
+
+            case SkillsDatabase::g_skillnid_maximum_might: {
+                    if (skills_spec.get_state_for_binary_skill(&SkillsDatabase::g_skill_maximum_might)) {
+                        const unsigned int effective_lvl = apply_secret(&SkillsDatabase::g_skill_maximum_might_secret);
+                        this->added_aff += maximum_might_added_aff[effective_lvl];
+                    }
+                } break;
+
+            case SkillsDatabase::g_skillnid_offensive_guard: {
+                    if (skills_spec.get_state_for_binary_skill(&SkillsDatabase::g_skill_offensive_guard)) {
+                        this->base_raw_multiplier *= offensive_guard_raw_multiplier[lvl];
+                    }
+                } break;
+
+            case SkillsDatabase::g_skillnid_peak_performance: {
+                    if (skills_spec.get_state_for_binary_skill(&SkillsDatabase::g_skill_peak_performance)) {
+                        this->added_raw += peak_performance_added_raw[lvl];
+                    }
+                } break;
+
+            case SkillsDatabase::g_skillnid_punishing_draw: {
+                    assert(lvl == 1);
+                    if (skills_spec.get_state_for_binary_skill(&SkillsDatabase::g_skill_punishing_draw)) {
+                        this->added_raw += k_PUNISHING_DRAW_ADDED_RAW;
+                    }
+                } break;
+
+            case SkillsDatabase::g_skillnid_resentment: {
+                    if (skills_spec.get_state_for_binary_skill(&SkillsDatabase::g_skill_resentment)) {
+                        this->added_raw += resentment_added_raw[lvl];
+                    }
+                } break;
+
+            case SkillsDatabase::g_skillnid_weakness_exploit: {
+                    const unsigned int wex_state = skills_spec.get_state(&SkillsDatabase::g_skill_weakness_exploit);
+                    assert(SkillsDatabase::g_skill_weakness_exploit.states == 3);
+                    assert(wex_state <= 2);
+                    if (wex_state == 1) {
+                        this->added_aff += weakness_exploit_s1_aff[lvl];
+                    } else if (wex_state == 2) {
+                        this->added_aff += weakness_exploit_s2_aff[lvl];
+                    }
+                } break;
+
             default:
-                this->bludgeoner_added_raw = k_BLUDGEONER_ADDED_RAW_OTHER;
+                ; // Do nothing
         }
-    } else {
-        this->bludgeoner_added_raw = k_BLUDGEONER_ADDED_RAW_OTHER;
-    }
-
-    if (skills_spec.get_state_for_binary_skill(&SkillsDatabase::g_skill_coalescence)) {
-        const unsigned int coalescence_lvl = skills.get(&SkillsDatabase::g_skill_coalescence);
-        this->added_raw += coalescence_added_raw[coalescence_lvl];
-    }
-
-    if (skills_spec.get_state_for_binary_skill(&SkillsDatabase::g_skill_critical_draw)) {
-        const unsigned int critical_draw_lvl = skills.get(&SkillsDatabase::g_skill_critical_draw);
-        this->added_aff += critical_draw_added_aff[critical_draw_lvl];
-    }
-
-    const unsigned int critical_eye_lvl = skills.get(&SkillsDatabase::g_skill_critical_eye);
-    this->added_aff += critical_eye_added_aff[critical_eye_lvl];
-
-    if (skills_spec.get_state_for_binary_skill(&SkillsDatabase::g_skill_dragonvein_awakening)
-            || skills_spec.get_state_for_binary_skill(&SkillsDatabase::g_skill_true_dragonvein_awakening)) {
-        if (skills.binary_skill_is_lvl1(&SkillsDatabase::g_skill_true_dragonvein_awakening)) {
-            this->added_aff += k_TRUE_DRAGONVEIN_AWAKENING_AFF;
-        } else if (skills.binary_skill_is_lvl1(&SkillsDatabase::g_skill_dragonvein_awakening)) {
-            this->added_aff += k_DRAGONVEIN_AWAKENING_AFF;
-        }
-    }
-
-    const unsigned int free_element_lvl = skills.get(&SkillsDatabase::g_skill_free_elem_ammo_up);
-    this->free_element_active_percentage = free_element_active_percentage_vals[free_element_lvl];
-
-    if (skills.binary_skill_is_lvl1(&SkillsDatabase::g_skill_fortify)) {
-        const unsigned int fortify_state = skills_spec.get_state(&SkillsDatabase::g_skill_fortify);
-        switch (fortify_state) {
-            case 1:
-                this->base_raw_multiplier *= k_FORTIFY_RAW_MULTIPLIER_S1;
-                break;
-            case 2:
-                this->base_raw_multiplier *= k_FORTIFY_RAW_MULTIPLIER_S2;
-                break;
-            default:
-                assert(fortify_state == 0);
-        }
-    }
-
-    if (skills.binary_skill_is_lvl1(&SkillsDatabase::g_skill_frostcraft)) {
-        const unsigned int frostcraft_state = skills_spec.get_state(&SkillsDatabase::g_skill_frostcraft);
-        //assert(frostcraft_state > 0); // TODO: Should we add an if-statement for the zero-state?
-        assert(frostcraft_state < frostcraft_multipliers_gs_h.size());
-        assert(frostcraft_state < frostcraft_multipliers_hbg.size());
-        assert(frostcraft_state < frostcraft_multipliers_else.size());
-        switch (weapon_class) {
-            case WeaponClass::greatsword:
-            case WeaponClass::hammer:
-                this->frostcraft_raw_multiplier = frostcraft_multipliers_gs_h[frostcraft_state];
-                break;
-            case WeaponClass::heavy_bowgun:
-                this->frostcraft_raw_multiplier = frostcraft_multipliers_hbg[frostcraft_state];
-                break;
-            default:
-                this->frostcraft_raw_multiplier = frostcraft_multipliers_else[frostcraft_state];
-        }
-    } else {
-        this->frostcraft_raw_multiplier = 1.0;
-    }
-
-    if (skills_spec.get_state_for_binary_skill(&SkillsDatabase::g_skill_heroics)) {
-        const unsigned int heroics_lvl = skills.get_non_secret(&SkillsDatabase::g_skill_heroics,
-                                                               &SkillsDatabase::g_skill_heroics_secret);
-        this->base_raw_multiplier *= heroics_raw_multiplier[heroics_lvl];
-    }
-
-    if (skills_spec.get_state_for_binary_skill(&SkillsDatabase::g_skill_latent_power)) {
-        const unsigned int latent_power_lvl = skills.get_non_secret(&SkillsDatabase::g_skill_latent_power,
-                                                                    &SkillsDatabase::g_skill_latent_power_secret);
-        this->added_aff += latent_power_added_aff[latent_power_lvl];
-    }
-
-    if (skills_spec.get_state_for_binary_skill(&SkillsDatabase::g_skill_maximum_might)) {
-        const unsigned int maximum_might_lvl = skills.get_non_secret(&SkillsDatabase::g_skill_maximum_might,
-                                                                     &SkillsDatabase::g_skill_maximum_might_secret);
-        this->added_aff += maximum_might_added_aff[maximum_might_lvl];
-    }
-
-    if (skills_spec.get_state_for_binary_skill(&SkillsDatabase::g_skill_offensive_guard)) {
-        const unsigned int offensive_guard_lvl = skills.get(&SkillsDatabase::g_skill_offensive_guard);
-        this->base_raw_multiplier *= offensive_guard_raw_multiplier[offensive_guard_lvl];
-    }
-
-    if (skills_spec.get_state_for_binary_skill(&SkillsDatabase::g_skill_peak_performance)) {
-        const unsigned int peak_performance_lvl = skills.get(&SkillsDatabase::g_skill_peak_performance);
-        this->added_raw += peak_performance_added_raw[peak_performance_lvl];
-    }
-
-    if (skills_spec.get_state_for_binary_skill(&SkillsDatabase::g_skill_punishing_draw)
-            && skills.binary_skill_is_lvl1(&SkillsDatabase::g_skill_punishing_draw)) {
-        this->added_raw += k_PUNISHING_DRAW_ADDED_RAW;
-    }
-
-    if (skills_spec.get_state_for_binary_skill(&SkillsDatabase::g_skill_resentment)) {
-        const unsigned int resentment_lvl = skills.get(&SkillsDatabase::g_skill_resentment);
-        this->added_raw += resentment_added_raw[resentment_lvl];
-    }
-
-    const unsigned int wex_state = skills_spec.get_state(&SkillsDatabase::g_skill_weakness_exploit);
-    assert(SkillsDatabase::g_skill_weakness_exploit.states == 3);
-    assert(wex_state <= 2);
-    if (wex_state == 1) {
-        const unsigned int wex_lvl = skills.get(&SkillsDatabase::g_skill_weakness_exploit);
-        this->added_aff += weakness_exploit_s1_aff[wex_lvl];
-    } else if (wex_state == 2) {
-        const unsigned int wex_lvl = skills.get(&SkillsDatabase::g_skill_weakness_exploit); // Redundant?
-        this->added_aff += weakness_exploit_s2_aff[wex_lvl];
     }
 }
 
