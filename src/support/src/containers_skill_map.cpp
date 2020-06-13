@@ -129,7 +129,7 @@ bool SkillMap::binary_skill_is_lvl1(const Skill* skill) const {
 std::string SkillMap::get_humanreadable() const {
     std::vector<std::string> buf;
     for (const auto& e : *this) {
-        buf.emplace_back(e.first->name + " = " + std::to_string(e.second));
+        buf.emplace_back(std::string(e.first->name) + " = " + std::to_string(e.second));
     }
     std::sort(buf.begin(), buf.end());
     return Utils::str_join(buf.begin(), buf.end(), "\n");

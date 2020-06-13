@@ -140,7 +140,7 @@ struct Skill {
 
     const std::string  id;            // The official UPPER_SNAKE_CASE unique identifier of the skill.
 
-    const std::string  name;          // Actual skill name, as it appears in-game.
+    const char*        name;          // Actual skill name, as it appears in-game.
     const unsigned int normal_limit;  // Maximum level without "secret" skills.
     const unsigned int secret_limit;  // Maximum level possible, usually only attainable with "secret" skills.
                                       // For programming convenience, normal_limit and secret_limit are equal
