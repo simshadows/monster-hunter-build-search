@@ -32,7 +32,7 @@ public:
     }
 
     WeaponUpgradesContribution calculate_contribution() const {
-        return {0, 0, 0, weapon->maximum_sharpness, nullptr};
+        return {0, 0, 0, 0, weapon->maximum_sharpness, nullptr};
     }
 
     std::string get_humanreadable() const {
@@ -72,9 +72,20 @@ static const std::unordered_map<unsigned int, int> ib_custom_affinity = {
     {6, 3},
 };
 
-static const std::array<WeaponUpgrade, 2> ibc_supported_upgrades_v = {
+static const std::unordered_map<unsigned int, int> ib_custom_elestat_value = {
+    {0, 1},
+    {1, 1},
+    {2, 1},
+    {3, 1},
+    {4, 1},
+    //{5, 0}, // Not Present
+    //{6, 0}, // Not Present
+};
+
+static const std::array<WeaponUpgrade, 3> ibc_supported_upgrades_v = {
     WeaponUpgrade::ib_cust_attack,
     WeaponUpgrade::ib_cust_affinity,
+    WeaponUpgrade::ib_cust_element_status,
 };
 
 
@@ -122,7 +133,7 @@ public:
     }
 
     WeaponUpgradesContribution calculate_contribution() const {
-        WeaponUpgradesContribution ret = {0, 0, 0, weapon->maximum_sharpness, nullptr};
+        WeaponUpgradesContribution ret = {0, 0, 0, 0, weapon->maximum_sharpness, nullptr};
 
         for (std::size_t i = 0; i < this->upgrades.size(); ++i) {
             switch (this->upgrades[i]) {
@@ -131,6 +142,9 @@ public:
                     break;
                 case WeaponUpgrade::ib_cust_affinity:
                     ret.added_aff += ib_custom_affinity.at(i);
+                    break;
+                case WeaponUpgrade::ib_cust_element_status:
+                    ret.added_elestat_value += ib_custom_elestat_value.at(i);
                     break;
                 default:
                     throw std::logic_error("Attempted to use an unsupported upgrade.");
@@ -153,6 +167,9 @@ public:
                     case WeaponUpgrade::ib_cust_affinity:
                         ret += "\n    Affinity ";
                         break;
+                    case WeaponUpgrade::ib_cust_element_status:
+                        ret += "\n    Element/Status ";
+                        break;
                     default:
                         throw std::logic_error("Attempted to use an unsupported upgrade.");
                 }
@@ -174,6 +191,11 @@ public:
             case WeaponUpgrade::ib_cust_affinity:
                 if (!Utils::map_has_key(ib_custom_affinity, next_index)) {
                     throw InvalidChange("Affinity upgrade cannot be applied at this time..");
+                }
+                break;
+            case WeaponUpgrade::ib_cust_element_status:
+                if (!Utils::map_has_key(ib_custom_elestat_value, next_index)) {
+                    throw InvalidChange("Element/status upgrade cannot be applied at this time..");
                 }
                 break;
             default:
@@ -368,6 +390,7 @@ public:
     WeaponUpgradesContribution calculate_contribution() const {
         unsigned int    added_raw = 0;
         int             added_aff = 0;
+        double          added_elestat_value = 0;
         unsigned int    extra_deco_slot_size = 0;
         const SetBonus* set_bonus = nullptr;
 
@@ -408,6 +431,7 @@ public:
         return {
             added_raw,
             added_aff,
+            added_elestat_value,
             extra_deco_slot_size,
             SharpnessGauge(k_BASE_SHARPNESS_RED,
                            k_BASE_SHARPNESS_ORANGE,

@@ -423,7 +423,7 @@ enum class WeaponUpgrade {
     // IB Custom Augments
     ib_cust_attack,
     ib_cust_affinity,
-    //ib_cust_element_status, // Not yet supported.
+    ib_cust_element_status,
     //ib_cust_defense,        // Not yet supported.
     //ib_cust_sharpness,      // Not yet supported.
 
@@ -479,6 +479,7 @@ enum class WeaponUpgrade {
 struct WeaponUpgradesContribution {
     unsigned int    added_raw;
     int             added_aff;
+    double          added_elestat_value;
     unsigned int    extra_deco_slot_size;
     SharpnessGauge  sharpness_gauge_override;
     const SetBonus* set_bonus;
