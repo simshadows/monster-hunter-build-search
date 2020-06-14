@@ -216,12 +216,16 @@ public:
 static const std::vector<WeaponUpgrade> ib_safi_nondeco_lvl5_awakenings = {
     WeaponUpgrade::ib_safi_attack_5,
     WeaponUpgrade::ib_safi_affinity_5,
+    WeaponUpgrade::ib_safi_element_5,
+    WeaponUpgrade::ib_safi_status_5,
     WeaponUpgrade::ib_safi_sharpness_5,
 };
 
 static const std::unordered_set<WeaponUpgrade> ib_safi_lvl6_awakenings = {
     WeaponUpgrade::ib_safi_attack_6,
     WeaponUpgrade::ib_safi_affinity_6,
+    WeaponUpgrade::ib_safi_element_6,
+    WeaponUpgrade::ib_safi_status_6,
     WeaponUpgrade::ib_safi_sharpness_6,
     WeaponUpgrade::ib_safi_deco_slot_6,
 };
@@ -266,19 +270,25 @@ static const std::unordered_map<WeaponUpgrade, const SetBonus*> ib_safi_set_bonu
 };
 
 static const std::unordered_map<WeaponUpgrade, std::string> ib_safi_supported_upgrades = {
-    {WeaponUpgrade::ib_safi_attack_4   , "Attack Increase IV"},
-    {WeaponUpgrade::ib_safi_attack_5   , "Attack Increase V"},
-    {WeaponUpgrade::ib_safi_attack_6   , "Attack Increase VI"},
-    {WeaponUpgrade::ib_safi_affinity_4 , "Affinity Increase IV"},
-    {WeaponUpgrade::ib_safi_affinity_5 , "Affinity Increase V"},
-    {WeaponUpgrade::ib_safi_affinity_6 , "Affinity Increase VI"},
+    {WeaponUpgrade::ib_safi_attack_4   , "Attack Increase IV"   },
+    {WeaponUpgrade::ib_safi_attack_5   , "Attack Increase V"    },
+    {WeaponUpgrade::ib_safi_attack_6   , "Attack Increase VI"   },
+    {WeaponUpgrade::ib_safi_affinity_4 , "Affinity Increase IV" },
+    {WeaponUpgrade::ib_safi_affinity_5 , "Affinity Increase V"  },
+    {WeaponUpgrade::ib_safi_affinity_6 , "Affinity Increase VI" },
+    {WeaponUpgrade::ib_safi_element_4  , "Element Up IV"        },
+    {WeaponUpgrade::ib_safi_element_5  , "Element Up V"         },
+    {WeaponUpgrade::ib_safi_element_6  , "Element Up VI"        },
+    {WeaponUpgrade::ib_safi_status_4   , "Status Effect Up IV"  },
+    {WeaponUpgrade::ib_safi_status_5   , "Status Effect Up V"   },
+    {WeaponUpgrade::ib_safi_status_6   , "Status Effect Up VI"  },
     {WeaponUpgrade::ib_safi_sharpness_4, "Sharpness Increase IV"},
-    {WeaponUpgrade::ib_safi_sharpness_5, "Sharpness Increase V"},
+    {WeaponUpgrade::ib_safi_sharpness_5, "Sharpness Increase V" },
     {WeaponUpgrade::ib_safi_sharpness_6, "Sharpness Increase VI"},
-    {WeaponUpgrade::ib_safi_deco_slot_1, "Slot Upgrade I"},
-    {WeaponUpgrade::ib_safi_deco_slot_2, "Slot Upgrade II"},
-    {WeaponUpgrade::ib_safi_deco_slot_3, "Slot Upgrade III"},
-    {WeaponUpgrade::ib_safi_deco_slot_6, "Slot Upgrade VI"},
+    {WeaponUpgrade::ib_safi_deco_slot_1, "Slot Upgrade I"       },
+    {WeaponUpgrade::ib_safi_deco_slot_2, "Slot Upgrade II"      },
+    {WeaponUpgrade::ib_safi_deco_slot_3, "Slot Upgrade III"     },
+    {WeaponUpgrade::ib_safi_deco_slot_6, "Slot Upgrade VI"      },
 
     {WeaponUpgrade::ib_safi_sb_ancient_divinity       , "Ancient Divinity"       },
     {WeaponUpgrade::ib_safi_sb_anjanath_dominance     , "Anjanath Dominance"     },
@@ -311,6 +321,18 @@ static const std::unordered_map<WeaponUpgrade, std::string> ib_safi_supported_up
     {WeaponUpgrade::ib_safi_sb_zorah_magdaros_essence , "Zorah Magdaros Essence" },
 };
 
+static const std::unordered_set<WeaponUpgrade> ib_safi_unsupported_by_elemental_weapons = {
+    WeaponUpgrade::ib_safi_status_4,
+    WeaponUpgrade::ib_safi_status_5,
+    WeaponUpgrade::ib_safi_status_6,
+};
+
+static const std::unordered_set<WeaponUpgrade> ib_safi_unsupported_by_status_weapons = {
+    WeaponUpgrade::ib_safi_element_4,
+    WeaponUpgrade::ib_safi_element_5,
+    WeaponUpgrade::ib_safi_element_6,
+};
+
 
 static constexpr std::size_t k_MAX_AWAKENINGS = 5;
 
@@ -327,12 +349,14 @@ static constexpr unsigned int k_MAX_WHITE_SHARPNESS_BEFORE_PURPLE = 120;
 class IBSafiAwakenings : public WeaponUpgradesInstance {
     //const Weapon * const weapon;
     std::vector<WeaponUpgrade> awakenings;
+    const EleStatType weapon_elestat_type;
 public:
     IBSafiAwakenings(const Weapon * const new_weapon) noexcept
         //: weapon     (new_weapon)
         : awakenings {}
+        , weapon_elestat_type (new_weapon->elestat_type)
     {
-        (void)new_weapon;
+        assert(this->weapon_elestat_type != EleStatType::none);
     }
 
     static std::vector<std::shared_ptr<WeaponUpgradesInstance>> generate_maximized_instances(const Weapon * const new_weapon) {
@@ -396,25 +420,40 @@ public:
 
         unsigned int white_sharpness = k_BASE_SHARPNESS_WHITE;
 
+        const auto req_ele = [&](){
+            assert(this->weapon_elestat_type != EleStatType::none);
+            assert(elestattype_is_element(this->weapon_elestat_type));
+        };
+        const auto req_stat = [&](){
+            assert(this->weapon_elestat_type != EleStatType::none);
+            assert(!elestattype_is_element(this->weapon_elestat_type));
+        };
+
         for (const WeaponUpgrade& e : this->awakenings) {
             if (Utils::map_has_key(ib_safi_set_bonus_map, e)) {
                 assert(!set_bonus);
                 set_bonus = ib_safi_set_bonus_map.at(e);
             } else {
                 switch (e) {
-                    case WeaponUpgrade::ib_safi_attack_4:    added_raw += 7;           break;
-                    case WeaponUpgrade::ib_safi_attack_5:    added_raw += 9;           break;
-                    case WeaponUpgrade::ib_safi_attack_6:    added_raw += 14;          break;
-                    case WeaponUpgrade::ib_safi_affinity_4:  added_aff += 8;           break;
-                    case WeaponUpgrade::ib_safi_affinity_5:  added_aff += 10;          break;
-                    case WeaponUpgrade::ib_safi_affinity_6:  added_aff += 15;          break;
-                    case WeaponUpgrade::ib_safi_sharpness_4: white_sharpness += 40;    break;
-                    case WeaponUpgrade::ib_safi_sharpness_5: white_sharpness += 50;    break;
-                    case WeaponUpgrade::ib_safi_sharpness_6: white_sharpness += 70;    break;
-                    case WeaponUpgrade::ib_safi_deco_slot_1: extra_deco_slot_size = 1; break;
-                    case WeaponUpgrade::ib_safi_deco_slot_2: extra_deco_slot_size = 2; break;
-                    case WeaponUpgrade::ib_safi_deco_slot_3: extra_deco_slot_size = 3; break;
-                    case WeaponUpgrade::ib_safi_deco_slot_6: extra_deco_slot_size = 4; break;
+                    case WeaponUpgrade::ib_safi_attack_4:                added_raw += 7;            break;
+                    case WeaponUpgrade::ib_safi_attack_5:                added_raw += 9;            break;
+                    case WeaponUpgrade::ib_safi_attack_6:                added_raw += 14;           break;
+                    case WeaponUpgrade::ib_safi_affinity_4:              added_aff += 8;            break;
+                    case WeaponUpgrade::ib_safi_affinity_5:              added_aff += 10;           break;
+                    case WeaponUpgrade::ib_safi_affinity_6:              added_aff += 15;           break;
+                    case WeaponUpgrade::ib_safi_element_4:   req_ele();  added_elestat_value += 9;  break;
+                    case WeaponUpgrade::ib_safi_element_5:   req_ele();  added_elestat_value += 12; break;
+                    case WeaponUpgrade::ib_safi_element_6:   req_ele();  added_elestat_value += 15; break;
+                    case WeaponUpgrade::ib_safi_status_4:    req_stat(); added_elestat_value += 4;  break;
+                    case WeaponUpgrade::ib_safi_status_5:    req_stat(); added_elestat_value += 5;  break;
+                    case WeaponUpgrade::ib_safi_status_6:    req_stat(); added_elestat_value += 7;  break;
+                    case WeaponUpgrade::ib_safi_sharpness_4:             white_sharpness += 40;     break;
+                    case WeaponUpgrade::ib_safi_sharpness_5:             white_sharpness += 50;     break;
+                    case WeaponUpgrade::ib_safi_sharpness_6:             white_sharpness += 70;     break;
+                    case WeaponUpgrade::ib_safi_deco_slot_1:             extra_deco_slot_size = 1;  break;
+                    case WeaponUpgrade::ib_safi_deco_slot_2:             extra_deco_slot_size = 2;  break;
+                    case WeaponUpgrade::ib_safi_deco_slot_3:             extra_deco_slot_size = 3;  break;
+                    case WeaponUpgrade::ib_safi_deco_slot_6:             extra_deco_slot_size = 4;  break;
                     default:
                         throw std::logic_error("Attempted to use an unsupported upgrade.");
                 }
@@ -459,6 +498,13 @@ public:
     void add_upgrade(WeaponUpgrade awakening) {
         if (!Utils::map_has_key(ib_safi_supported_upgrades, awakening)) {
             throw InvalidChange("Attempted to apply an unsupported awakening.");
+        }
+        assert(this->weapon_elestat_type != EleStatType::none);
+        if (elestattype_is_element(this->weapon_elestat_type)
+                        && Utils::set_has_key(ib_safi_unsupported_by_elemental_weapons, awakening) ) {
+            throw InvalidChange("Attempted to apply an awakening that is not supported by elemental weapons.");
+        } else if (Utils::set_has_key(ib_safi_unsupported_by_status_weapons, awakening)) {
+            throw InvalidChange("Attempted to apply an awakening that is not supported by status weapons.");
         }
 
         std::vector<WeaponUpgrade> new_awakenings = this->awakenings;
