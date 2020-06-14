@@ -383,13 +383,14 @@ enum class WeaponAugment {
     //defense_increase, // Not yet supported.
     slot_upgrade,
     health_regen,
-    //element_status_effect_up, // Not yet supported.
+    element_status_effect_up,
 };
 
 
 struct WeaponAugmentsContribution {
     unsigned int added_raw            {0};
     int          added_aff            {0};
+    double       added_elestat_value  {0};
     unsigned int extra_deco_slot_size {0};
     bool         health_regen_active  {false};
 };

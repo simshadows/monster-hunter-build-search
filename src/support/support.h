@@ -177,7 +177,7 @@ struct WeaponContribution {
     // elestat_value being zero when there's no possible element/status is a relied-upon property.
     EleStatVisibility         elestat_visibility {EleStatVisibility::none};
     EleStatType               elestat_type       {EleStatType::none};
-    unsigned int              elestat_value      {0};
+    double                    elestat_value      {0};
 
     std::vector<unsigned int> deco_slots {};
     const Skill*              skill      {nullptr};

@@ -10,6 +10,13 @@ I'll write a detailed guide on how to use this thing later.
 
 ### General
 
+Major:
+
+- I don't know the order of operations for Free Element. For now, I take the element/status value of the weapon with augments/customs/Safi included, and I multiply it by the Free Element multiplier.
+- We're not yet 
+
+Minor:
+
 - Will I need to change to different string types to properly use unicode?
 - There's a lot of gnarly code in here, though I tried to keep the issues as localized as possible, such as having all relevant issues be localized into a single `.cpp` file. Particularly problematic areas though include:
     - `core/weapon_augments.cpp`: So many case statements, magic numbers, unsafe state validation, and a generally CPU-inefficient way of doing things.

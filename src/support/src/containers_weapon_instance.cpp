@@ -50,7 +50,7 @@ WeaponContribution WeaponInstance::calculate_contribution() const {
 
         this->weapon->elestat_visibility,
         this->weapon->elestat_type,
-        this->weapon->elestat_value,
+        ((double)this->weapon->elestat_value) + ac.added_elestat_value,
 
         this->weapon->deco_slots,
         this->weapon->skill,

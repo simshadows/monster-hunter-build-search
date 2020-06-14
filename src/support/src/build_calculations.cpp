@@ -17,6 +17,8 @@ namespace MHWIBuildSearch
 
 // Weapon base raw multiplied by this number is the raw cap.
 static constexpr unsigned int k_RAW_CAP = 2;
+//static constexpr double k_ELEMENTAL_CAP_STANDARD_MULTIPLY = 1.60;
+//static constexpr double k_ELEMENTAL_CAP_STANDARD_ADD      = 15;
 
 static constexpr double k_NORMAL_STATUS_APPL_PROBABILITY = 1.0/3;
 
@@ -28,7 +30,7 @@ static EffectiveDamageValues calculate_edv(const unsigned int    weapon_raw, // 
 
                                            const EleStatVisibility weapon_elestat_visibility,
                                            const EleStatType       weapon_elestat_type,
-                                           const unsigned int      weapon_elestat_value,
+                                           const double            weapon_elestat_value,
 
                                            const double          base_raw_multiplier,
                                            const double          frostcraft_raw_multiplier,
@@ -76,7 +78,7 @@ static EffectiveDamageValues calculate_edv(const unsigned int    weapon_raw, // 
      * Effective Element/Status
      */
 
-    const double elestat_combined_modifier = [&](){
+    const double elestat_combined_postround_modifier = [&](){
         if (weapon_elestat_visibility == EleStatVisibility::none) {
             return 1.0; // Disabled modifier
         } else if (elestattype_is_element(weapon_elestat_type)) {
@@ -90,9 +92,9 @@ static EffectiveDamageValues calculate_edv(const unsigned int    weapon_raw, // 
         }
     }();
 
-    const unsigned int base_elestat_value = [&](){
+    const double base_elestat_value = [&](){
         if (weapon_elestat_visibility == EleStatVisibility::hidden) {
-            return (weapon_elestat_value * free_element_active_percentage) / 100;
+            return (weapon_elestat_value * ((double)free_element_active_percentage)) / 100;
         } else {
             assert((weapon_elestat_visibility == EleStatVisibility::open)
                    || ((weapon_elestat_visibility == EleStatVisibility::none) && (!weapon_elestat_value)));
@@ -100,7 +102,10 @@ static EffectiveDamageValues calculate_edv(const unsigned int    weapon_raw, // 
         }
     }();
 
-    const double efes = base_elestat_value * elestat_combined_modifier;
+    // TODO: The rounding is accurate for elemental, but idk about status.
+    //       Although, it just happens to be ok for status since I haven't
+    //       implemented anything fractional for status yet here.
+    const double efes = std::round(base_elestat_value) * elestat_combined_postround_modifier;
     const EleStatType elestat_type = weapon_elestat_type;
 
     return {affinity,

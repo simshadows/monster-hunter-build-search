@@ -32,14 +32,17 @@ static const std::unordered_set<WeaponAugment> ib_supported_augments = {
     //WeaponAugment::defense_increase, // Not yet supported.
     WeaponAugment::slot_upgrade,
     WeaponAugment::health_regen,
-    //WeaponAugment::element_status_effect_up, // Not yet supported.
+    WeaponAugment::element_status_effect_up,
 };
 static const std::vector<WeaponAugment> ib_supported_augments_v (ib_supported_augments.begin(),
                                                                  ib_supported_augments.end() );
 
-//                                                             level: 0,  1,  2,  3,  4
-static const std::array<unsigned int, 5> ib_attack_aug_added_raw   = {0,  5, 10, 15, 20};
-static const std::array<unsigned int, 5> ib_affinity_aug_added_aff = {0, 10, 15, 20, 25};
+//                                                                             level: 0,   1,   2,    3,    4
+static const std::array<unsigned int, 5> ib_attack_aug_added_raw                   = {0,   5,  10,   15,   20};
+static const std::array<unsigned int, 5> ib_affinity_aug_added_aff                 = {0,  10,  15,   20,   25};
+static const std::array<double, 5>       ib_elestat_aug_added_elestat_value_gs     = {0, 3.6, 7.2, 10.8, 14.4};
+static const std::array<double, 5>       ib_elestat_aug_added_elestat_value_hhgl   = {0, 3.3, 6.6,  9.9, 13.2};
+static const std::array<double, 5>       ib_elestat_aug_added_elestat_value_others = {0,   3,   6,    9,   12};
 
 
 class NoWeaponAugments : public WeaponAugmentsInstance {
@@ -69,13 +72,15 @@ class IBWeaponAugments : public WeaponAugmentsInstance {
     using AugmentLvls = Utils::Counter<WeaponAugment>;
 
     const unsigned int rarity;
+    const WeaponClass weapon_class;
     unsigned int augment_lvl;
     AugmentLvls augments; // Augment levels
 public:
     IBWeaponAugments(const Weapon * const weapon) noexcept
-        : rarity      (weapon->rarity)
-        , augment_lvl (0)
-        , augments    ()
+        : rarity       (weapon->rarity)
+        , weapon_class (weapon->weapon_class)
+        , augment_lvl  (0)
+        , augments     ()
     {
         assert(this->rarity >= k_IB_MIN_RARITY); // Not allowed any other rarity.
         assert(this->rarity <= k_IB_MAX_RARITY);
@@ -126,7 +131,36 @@ public:
                 case WeaponAugment::health_regen:
                     ret.health_regen_active = lvl; // Will be "true" as long as lvl is not zero.
                     break;
-                //case WeaponAugment::element_status_effect_up: // Not yet supported.
+                case WeaponAugment::element_status_effect_up: {
+                        switch (this->weapon_class) {
+                            case WeaponClass::greatsword:
+                                ret.added_elestat_value += ib_elestat_aug_added_elestat_value_gs[lvl];
+                                break;
+                            case WeaponClass::hunting_horn:
+                            case WeaponClass::gunlance:
+                                ret.added_elestat_value += ib_elestat_aug_added_elestat_value_hhgl[lvl];
+                                break;
+                            case WeaponClass::longsword:
+                            case WeaponClass::sword_and_shield:
+                            case WeaponClass::dual_blades:
+                            case WeaponClass::hammer:
+                            case WeaponClass::lance:
+                            case WeaponClass::switchaxe:
+                            case WeaponClass::charge_blade:
+                            case WeaponClass::insect_glaive:
+                                ret.added_elestat_value += ib_elestat_aug_added_elestat_value_others[lvl];
+                                break;
+                            case WeaponClass::bow:
+                                ret.added_elestat_value += ib_elestat_aug_added_elestat_value_others[lvl];
+                                // TODO: Implement status coating increase.
+                                break;
+                            case WeaponClass::heavy_bowgun:
+                            case WeaponClass::light_bowgun:
+                                throw std::logic_error("Bowguns are currently unsupported.");
+                            default:
+                                throw std::logic_error("Invalid weapon class.");
+                        }
+                    } break;
                 default:
                     throw std::logic_error("Invalid augment for IBWeaponAugments.");
             }
@@ -268,15 +302,15 @@ private:
                     case 4: return 3 + 2 + 2 + 2;
                     default: throw std::logic_error("Invalid Health Regen level.");
                 }
-            //case WeaponAugment::element_status_effect_up: // Not yet supported.
-            //    switch (lvl) {
-            //        case 0: return 0;
-            //        case 1: return 1;
-            //        case 2: return 1 + 2;
-            //        case 3: return 1 + 2 + 2;
-            //        case 4: return 1 + 2 + 2 + 2;
-            //        default: throw std::logic_error("Invalid Element/Status Effect Up level.");
-            //    }
+            case WeaponAugment::element_status_effect_up:
+                switch (lvl) {
+                    case 0: return 0;
+                    case 1: return 1;
+                    case 2: return 1 + 2;
+                    case 3: return 1 + 2 + 2;
+                    case 4: return 1 + 2 + 2 + 2;
+                    default: throw std::logic_error("Invalid Element/Status Effect Up level.");
+                }
             default:
                 throw std::logic_error("Invalid augment for IBWeaponAugments.");
         }
@@ -289,7 +323,7 @@ private:
             //case WeaponAugment::defense_increase:         return "Defense Increase"; // Not yet supported.
             case WeaponAugment::slot_upgrade:               return "Slot Upgrade";
             case WeaponAugment::health_regen:               return "Health Regen";
-            //case WeaponAugment::element_status_effect_up: return "Element/Status Effect Up"; // Not yet supported.
+            case WeaponAugment::element_status_effect_up:   return "Element/Status Effect Up";
             default:
                 throw std::logic_error("Invalid augment for IBWeaponAugments.");
         }
