@@ -148,6 +148,16 @@ private:
 };
 
 
+constexpr std::size_t k_SEEN_TREE_ELEMENT_SIZE = 2;
+// SEEN_FLAG
+// Elements are true if they're known to be seen, but not necessarily cleared.
+constexpr std::size_t k_SEEN_TREE_SEEN_FLAG_INDEX = 0;
+// CLEARED_FLAG
+// Elements are true if they're known to be cleared.
+// All cleared elements have also been seen.
+constexpr std::size_t k_SEEN_TREE_CLEARED_FLAG_INDEX = 1;
+
+
 // Bit Tree Counter-Subset-Seen Map
 //
 // Advantages:
@@ -179,9 +189,9 @@ class BitTreeCounterSubsetSeenMap {
     // When we traverse the tree, each level corresponds to keys in this order.
     O key_order;
 
-    std::vector<bool> seen_tree;    // Elements are true if they're known to be seen, but not necessarily cleared.
-    std::vector<bool> cleared_tree; // Elements are true if they're known to be cleared.
-                                    // All cleared elements have also been seen.
+    // See build_tree() for the size of this vector.
+    // See k_SEEN_TREE_ELEMENT_SIZE and the other constants for tree access.
+    std::vector<bool> seen_tree;
 
     std::unordered_map<T, D, H> data;
 
@@ -191,7 +201,6 @@ public:
     BitTreeCounterSubsetSeenMap(Args&&... args) noexcept
         : key_order    {std::make_tuple(std::forward<Args>(args)...)}
         , seen_tree    {build_tree(key_order)}
-        , cleared_tree {build_tree(key_order)}
         , data         {}
     {
     }
@@ -231,7 +240,8 @@ public:
 private:
 
     static std::vector<bool> build_tree(const O& new_key_order) noexcept {
-        std::size_t vec_size = 1;
+        static_assert(k_SEEN_TREE_ELEMENT_SIZE);
+        std::size_t vec_size = k_SEEN_TREE_ELEMENT_SIZE;
 
         const auto op1 = [&vec_size](auto& x){
             for (const auto& e : x) {
@@ -252,8 +262,8 @@ private:
                              const T& k,
                              T& w,
                              const O_iter<I>& p ) {
-        assert(tree_lo < tree_hi);
-        if (this->cleared_tree[tree_hi - 1]) {
+        assert(tree_lo + k_SEEN_TREE_ELEMENT_SIZE <= tree_hi);
+        if (this->seen_tree[tree_hi - k_SEEN_TREE_ELEMENT_SIZE + k_SEEN_TREE_CLEARED_FLAG_INDEX]) {
             return false;
         } else if (p == std::get<I>(this->key_order).end()) {
             if constexpr (I + 1 < T_size::value) {
@@ -289,20 +299,20 @@ private:
                                 const T& k,
                                 T& w ) {
         (void)tree_hi;
-        assert(tree_lo == tree_hi - 1); // We must have already found the element we're interested in.
-        assert(tree_lo < this->seen_tree.size());
-        assert(!this->cleared_tree[tree_lo]); // This was already tested.
-        if (this->seen_tree[tree_lo]) {
+        assert(tree_lo + k_SEEN_TREE_ELEMENT_SIZE == tree_hi); // We must have already found the element we're interested in.
+        assert(tree_lo + k_SEEN_TREE_ELEMENT_SIZE <= this->seen_tree.size());
+        assert(!this->seen_tree[tree_lo + k_SEEN_TREE_CLEARED_FLAG_INDEX]); // This was already tested.
+        if (this->seen_tree[tree_lo + k_SEEN_TREE_SEEN_FLAG_INDEX]) {
             if (k != w) {
                 // We need this to avoid accidentally deleting data for an input that was already seen.
                 this->data.erase(w);
-                this->cleared_tree[tree_lo] = true;
+                this->seen_tree[tree_lo + k_SEEN_TREE_CLEARED_FLAG_INDEX] = true;
             }
             return false;
         } else {
-            this->seen_tree[tree_lo] = true;
+            this->seen_tree[tree_lo + k_SEEN_TREE_SEEN_FLAG_INDEX] = true;
             if (k != w) {
-                this->cleared_tree[tree_lo] = true;
+                this->seen_tree[tree_lo + k_SEEN_TREE_CLEARED_FLAG_INDEX] = true;
             }
             return true;
         }
