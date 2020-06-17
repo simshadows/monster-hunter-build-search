@@ -67,8 +67,12 @@ fast : all
 asserts : CXXFLAGS=$(CXXFLAGSBASE) -O3
 asserts : all
 
+.PHONY : profiling
+profiling : CXXFLAGS=$(CXXFLAGSBASE) -g -O3 -fno-omit-frame-pointer
+profiling : all
+
 .PHONY : debug
-debug : CXXFLAGS=$(CXXFLAGSBASE) -fsanitize=address -g -Og
+debug : CXXFLAGS=$(CXXFLAGSBASE) -fsanitize=address -g -O3
 debug : all
 
 ##########################################################################################
@@ -123,6 +127,10 @@ fast2 : fast
 .PHONY : asserts2
 asserts2 : CXX=$(CXX2)
 asserts2 : asserts
+
+.PHONY : profiling2
+profiling2 : CXX=$(CXX2)
+profiling2 : profiling
 
 .PHONY : debug2
 debug2 : CXX=$(CXX2)

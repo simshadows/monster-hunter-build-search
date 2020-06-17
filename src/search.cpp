@@ -220,6 +220,9 @@ static std::vector<WeaponInstanceExtended> prepare_weapons(const Database& db,
     }
     const std::size_t stat_pre = unpruned.size();
 
+    Utils::log_stat_duration("  >>> weapon augment+upgrade instance generation: ", start_t);
+    start_t = std::chrono::steady_clock::now();
+
     Utils::PruningVector<std::pair<WeaponInstance, WeaponContribution>, WeaponInstancePruneFn> pruned;
 
     //std::size_t i = 0;
@@ -246,7 +249,7 @@ static std::vector<WeaponInstanceExtended> prepare_weapons(const Database& db,
     }
 
     Utils::log_stat_reduction("Generated weapon augment+upgrade instances: ", stat_pre, ret.size());
-    Utils::log_stat_duration("  >>> weapon augment+upgrade instances: ", start_t);
+    Utils::log_stat_duration("  >>> weapon augment+upgrade instance pruning: ", start_t);
     Utils::log_stat();
 
     return ret;

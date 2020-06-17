@@ -55,6 +55,30 @@ public:
     // TODO: Initialize the entire class instance with these variadic arguments somehow.
     void try_push_back(T&& t) {
 
+        // Figure out if existing data prunes out t.
+        for (const T& d : data) {
+            if (CanReplaceFn()(d, t)) return;
+        }
+
+        // Prune away all existing data that t is able to replace.
+        const auto pred = [&](const T& d) {
+            return CanReplaceFn()(t, d);
+        };
+        const typename C::iterator new_end = std::remove_if(this->data.begin(), this->data.end(), pred);
+
+        //if (new_end != this->data.end()) {
+        this->data.erase(new_end, this->data.end());
+        //}
+
+        // Add data
+        this->data.push_back(std::move(t));
+    }
+
+    // This version changes some internal order of operations, but runs slower (except possibly in
+    // some very rare use-cases).
+    // This can be useful for further verification that a CanReplaceFn is permissible.
+    void try_push_back_altimpl(T&& t) {
+
         // Prune away all existing data that t is able to replace.
         const auto pred = [&](const T& d) {
             return CanReplaceFn()(t, d);
