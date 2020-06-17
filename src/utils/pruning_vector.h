@@ -56,7 +56,12 @@ public:
     void try_push_back(T&& t) {
 
         // Figure out if existing data prunes out t.
-        for (const T& d : data) {
+        // NOTE: We use a reverse-iterator because new elements are appended to the end, and those
+        //       new elements tend to prune away incoming data better.
+        //       Testing shows a VERY SIGNIFICANT runtime improvement.
+        //       For MHWIBS, it tends to be of the order of x30 or better!
+        for (auto e = data.rbegin(); e != data.rend(); ++e) {
+            const auto& d = *e;
             if (CanReplaceFn()(d, t)) return;
         }
 
