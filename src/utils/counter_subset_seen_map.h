@@ -179,7 +179,9 @@ class BitTreeCounterSubsetSeenMap {
     // When we traverse the tree, each level corresponds to keys in this order.
     O key_order;
 
-    std::vector<bool> seen_tree; 
+    std::vector<bool> seen_tree;    // Elements are true if they're known to be seen, but not necessarily cleared.
+    std::vector<bool> cleared_tree; // Elements are true if they're known to be cleared.
+                                    // All cleared elements have also been seen.
 
     std::unordered_map<T, D, H> data;
 
@@ -187,9 +189,10 @@ public:
 
     template<class... Args>
     BitTreeCounterSubsetSeenMap(Args&&... args) noexcept
-        : key_order {std::make_tuple(std::forward<Args>(args)...)}
-        , seen_tree {build_tree(key_order)}
-        , data      {}
+        : key_order    {std::make_tuple(std::forward<Args>(args)...)}
+        , seen_tree    {build_tree(key_order)}
+        , cleared_tree {build_tree(key_order)}
+        , data         {}
     {
     }
 
@@ -250,7 +253,9 @@ private:
                              T& w,
                              const O_iter<I>& p ) {
         assert(tree_lo < tree_hi);
-        if (p == std::get<I>(this->key_order).end()) {
+        if (this->cleared_tree[tree_hi - 1]) {
+            return false;
+        } else if (p == std::get<I>(this->key_order).end()) {
             if constexpr (I + 1 < T_size::value) {
                 return this->add_power_set_inode<I + 1>(tree_lo, tree_hi, k, w, std::get<I + 1>(this->key_order).begin());
             } else {
@@ -286,14 +291,19 @@ private:
         (void)tree_hi;
         assert(tree_lo == tree_hi - 1); // We must have already found the element we're interested in.
         assert(tree_lo < this->seen_tree.size());
+        assert(!this->cleared_tree[tree_lo]); // This was already tested.
         if (this->seen_tree[tree_lo]) {
             if (k != w) {
                 // We need this to avoid accidentally deleting data for an input that was already seen.
                 this->data.erase(w);
+                this->cleared_tree[tree_lo] = true;
             }
             return false;
         } else {
             this->seen_tree[tree_lo] = true;
+            if (k != w) {
+                this->cleared_tree[tree_lo] = true;
+            }
             return true;
         }
     }
