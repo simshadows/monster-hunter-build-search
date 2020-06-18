@@ -274,20 +274,22 @@ private:
         } else {
             const unsigned int max_v = ValueHardLimitFn()(*p);
             const unsigned int v = std::get<I>(k).get(*p);
+            const std::size_t next_width = (tree_hi - tree_lo) / (max_v + 1);
             assert(v <= max_v);
-            // TODO: Having to use signed int here is weird. Change it?
-            for (int i = v; i >= 0; --i) {
-                std::get<I>(w).set_or_remove(*p, i); // TODO: Somehow use explicit set/remove?
-                const std::size_t next_width = (tree_hi - tree_lo) / (max_v + 1);
-                const std::size_t next_tree_lo = tree_lo + (i * next_width);
-                const std::size_t next_tree_hi = next_tree_lo + next_width;
-                assert(tree_lo <= next_tree_lo);
-                assert(next_tree_lo <= next_tree_hi);
-                assert(next_tree_hi <= tree_hi);
-                const bool success = this->add_power_set_inode<I>(next_tree_lo, next_tree_hi, k, w, p + 1);
-                if (!success) {
-                    return ((unsigned int) i != v) && (v > 0);
-                }
+            {
+                unsigned int i = v;
+                do {
+                    std::get<I>(w).set_or_remove(*p, i); // TODO: Somehow use explicit set/remove?
+                    const std::size_t next_tree_lo = tree_lo + (i * next_width);
+                    const std::size_t next_tree_hi = next_tree_lo + next_width;
+                    assert(tree_lo <= next_tree_lo);
+                    assert(next_tree_lo <= next_tree_hi);
+                    assert(next_tree_hi <= tree_hi);
+                    const bool success = this->add_power_set_inode<I>(next_tree_lo, next_tree_hi, k, w, p + 1);
+                    if (!success) {
+                        return (i != v) && (v > 0);
+                    }
+                } while (i-- > 0);
             }
             assert(!std::get<I>(w).contains(*p));
             return true;
