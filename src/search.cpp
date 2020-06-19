@@ -589,9 +589,12 @@ static void merge_in_charms(SSBSeenMap<ArmourSetCombo>& armour_combos,
         assert(!set_combo.armour.charm_slot_is_filled());
 
         for (const Charm * const charm : charms) {
-            ArmourSetCombo new_set_combo = set_combo;
 
-            new_set_combo.armour.add(charm);
+            const auto op1 = [&](){
+                ArmourSetCombo x = set_combo;
+                x.armour.add(charm);
+                return x;
+            };
 
             const auto op2 = [&](){
                 SSBTuple x = set_combo_ssb;
@@ -599,7 +602,7 @@ static void merge_in_charms(SSBSeenMap<ArmourSetCombo>& armour_combos,
                 return x;
             };
             
-            armour_combos.add(std::move(new_set_combo), op2());
+            armour_combos.add_using_callback(op1, op2());
         }
     }
 }
@@ -660,7 +663,7 @@ static void merge_in_armour_list(SSBSeenMap<ArmourSetCombo>& armour_combos,
                 return x;
             };
 
-            armour_combos.add(op1(), op2());
+            armour_combos.add_using_callback(op1, op2());
         }
     }
 }

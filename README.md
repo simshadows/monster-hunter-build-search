@@ -13,7 +13,6 @@ I'll write a detailed guide on how to use this thing later.
 Major:
 
 - I don't know the order of operations for Free Element. For now, I take the element/status value of the weapon with augments/customs/Safi included, and I multiply it by the Free Element multiplier.
-- We're not yet 
 
 Minor:
 

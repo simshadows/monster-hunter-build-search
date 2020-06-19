@@ -217,6 +217,21 @@ public:
         }
     }
 
+    // Use this if the data object is expensive to construct.
+    // This will only call the data object constructor function if needed.
+    template<class StoredDataConstructorFn>
+    void add_using_callback(const StoredDataConstructorFn& d, T&& k) noexcept {
+        T w;
+        const bool success = this->add_power_set_inode<0>(0,
+                                                          this->seen_tree.size(),
+                                                          k,
+                                                          w,
+                                                          std::get<0>(this->key_order).begin() );
+        if (success) {
+            this->data.emplace(std::make_pair(std::move(k), d()));
+        }
+    }
+
     std::vector<std::pair<T, D>> get_data_as_vector() const noexcept {
         std::vector<std::pair<T, D>> ret;
         for (const std::pair<T, D>& e : this->data) {
