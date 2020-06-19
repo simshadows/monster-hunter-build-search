@@ -811,25 +811,17 @@ static void do_search(const Database& db, const SearchParameters& params) {
         assert(armour_combos.size() == 1);
     }
 
-    start_t = std::chrono::steady_clock::now();
-    //
-    merge_in_charms(armour_combos, charms, params.skill_spec);
-    //
-    Utils::log_stat("Merged in charms: ", armour_combos.size());
-    Utils::log_stat_duration("  >>> charms merge: ", start_t);
-
     // And now, we merge in our slot combinations!
 
     start_t = std::chrono::steady_clock::now();
-    unsigned long long stat_pre = armour_combos.size() * head_combos.size();
     //
     merge_in_armour_list(armour_combos, head_combos, params.skill_spec);
     //
-    Utils::log_stat_reduction("Merged in head+deco  combinations: ", stat_pre, armour_combos.size());
+    Utils::log_stat("Merged in head+deco combinations:  ", armour_combos.size());
     Utils::log_stat_duration("  >>> head combo merge: ", start_t);
 
     start_t = std::chrono::steady_clock::now();
-    stat_pre = armour_combos.size() * chest_combos.size();
+    unsigned long long stat_pre = armour_combos.size() * head_combos.size();
     //
     merge_in_armour_list(armour_combos, chest_combos, params.skill_spec);
     //
@@ -841,7 +833,7 @@ static void do_search(const Database& db, const SearchParameters& params) {
     //
     merge_in_armour_list(armour_combos, arms_combos, params.skill_spec);
     //
-    Utils::log_stat_reduction("Merged in arms+deco  combinations: ", stat_pre, armour_combos.size());
+    Utils::log_stat_reduction("Merged in arms+deco combinations:  ", stat_pre, armour_combos.size());
     Utils::log_stat_duration("  >>> arms combo merge: ", start_t);
 
     start_t = std::chrono::steady_clock::now();
@@ -857,8 +849,16 @@ static void do_search(const Database& db, const SearchParameters& params) {
     //
     merge_in_armour_list(armour_combos, legs_combos, params.skill_spec);
     //
-    Utils::log_stat_reduction("Merged in legs+deco  combinations: ", stat_pre, armour_combos.size());
+    Utils::log_stat_reduction("Merged in legs+deco combinations:  ", stat_pre, armour_combos.size());
     Utils::log_stat_duration("  >>> legs combo merge: ", start_t);
+
+    start_t = std::chrono::steady_clock::now();
+    stat_pre = armour_combos.size() * legs_combos.size();
+    //
+    merge_in_charms(armour_combos, charms, params.skill_spec);
+    //
+    Utils::log_stat_reduction("Merged in charms:                  ", stat_pre, armour_combos.size());
+    Utils::log_stat_duration("  >>> charms merge: ", start_t);
 
     double best_total_damage = 0;
 
