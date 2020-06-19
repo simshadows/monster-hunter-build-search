@@ -63,6 +63,8 @@ struct ArmourPieceCombo {
 struct ArmourSetCombo {
     ArmourEquips armour;
     DecoEquips decos;
+
+    SetBonusMap unfiltered_setbonuses;
 };
 
 
@@ -618,18 +620,18 @@ static void merge_in_armour_list(SSBSeenMap<ArmourSetCombo>& armour_combos,
             const SSBTuple&         piece_combo_ssb = e2.first;
             const ArmourPieceCombo& piece_combo     = e2.second;
 
-            ArmourSetCombo set_combo_to_add = [&](){
-                ArmourSetCombo x = set_combo;
-                x.armour.add(piece_combo.armour_piece);
-                x.decos.merge_in(piece_combo.decos);
+            SetBonusMap unfiltered_setbonuses = [&](){
+                SetBonusMap x = set_combo.unfiltered_setbonuses;
+                if (piece_combo.armour_piece->set_bonus) {
+                    x.increment(piece_combo.armour_piece->set_bonus, 1);
+                }
                 return x;
             }();
 
             // We first need to check if the set bonuses exceed our limits.
             bool skip = false;
-            const SetBonusMap tmp_setbonuses = set_combo_to_add.armour.get_set_bonuses();
             for (const auto& e : skill_spec.get_set_bonus_cutoffs()) {
-                if (tmp_setbonuses.get(e.first) >= e.second) {
+                if (unfiltered_setbonuses.get(e.first) >= e.second) {
                     skip = true;
                     break;
                 }
@@ -640,6 +642,16 @@ static void merge_in_armour_list(SSBSeenMap<ArmourSetCombo>& armour_combos,
 
             // Now, we may continue to add it!
 
+            const auto op1 = [&](){
+                ArmourSetCombo x = {set_combo.armour,
+                                    set_combo.decos,
+                                    std::move(unfiltered_setbonuses)};
+                x.armour.add(piece_combo.armour_piece);
+                x.decos.merge_in(piece_combo.decos);
+                assert(x.unfiltered_setbonuses == x.armour.get_set_bonuses());
+                return x;
+            };
+
             const auto op2 = [&](){
                 SSBTuple x = set_combo_ssb;
                 std::get<0>(x).merge_in(std::get<0>(piece_combo_ssb));
@@ -648,7 +660,7 @@ static void merge_in_armour_list(SSBSeenMap<ArmourSetCombo>& armour_combos,
                 return x;
             };
 
-            armour_combos.add(std::move(set_combo_to_add), op2());
+            armour_combos.add(op1(), op2());
         }
     }
 }
@@ -804,12 +816,8 @@ static void do_search(const Database& db, const SearchParameters& params) {
     std::clog << "\n";
     
     // Seed the seen set with a single empty combination.
-    {
-        SSBTuple initial_set_combo_ssb;
-        ArmourSetCombo initial_set_combo;
-        armour_combos.add(std::move(initial_set_combo), std::move(initial_set_combo_ssb));
-        assert(armour_combos.size() == 1);
-    }
+    armour_combos.add({}, {});
+    assert(armour_combos.size() == 1);
 
     start_t = std::chrono::steady_clock::now();
     //
