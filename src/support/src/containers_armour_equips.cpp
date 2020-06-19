@@ -51,6 +51,11 @@ bool ArmourEquips::slot_is_filled(const ArmourSlot& slot) const {
 }
 
 
+bool ArmourEquips::charm_slot_is_filled() const {
+    return this->charm;
+}
+
+
 SkillMap ArmourEquips::get_skills_without_set_bonuses() const {
     SkillMap ret;
     for (const ArmourPiece * const & armour_piece : this->data) {

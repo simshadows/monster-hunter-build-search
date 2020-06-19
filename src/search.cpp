@@ -50,6 +50,9 @@ using SSBSeenMapSmall = Utils::NaiveCounterSubsetSeenMap<StoredData, SkillMap, S
 template<class StoredData>
 using SSBSeenMap = Utils::BitTreeCounterSubsetSeenMap<StoredData, SSBLimits, SkillMap, SetBonusMap>;
 
+template<class StoredData>
+using SkillsSeenMapSmall = Utils::NaiveCounterSubsetSeenMap<StoredData, SkillMap>;
+
 
 struct ArmourPieceCombo {
     const ArmourPiece* armour_piece;
@@ -348,22 +351,30 @@ static std::array<std::vector<const Decoration*>, k_MAX_DECO_SIZE> prepare_decos
 
 
 static std::vector<const Charm*> prepare_charms(const Database& db, const SkillSpec& skill_spec) {
-    std::vector<const Charm*> ret = db.charms.get_all();
+    std::vector<const Charm*> all_charms = db.charms.get_all();
 
-    const std::size_t stat_pre = ret.size();
+    SkillsSeenMapSmall<const Charm*> seen_set;
 
-    const auto pred = [&](const Charm* x){
-        for (const Skill* s : x->skills) {
-            if (skill_spec.skill_must_be_removed(s)) return true;
-            if (skill_spec.is_in_subset(s)) return false;
-        }
-        return true;
-    };
-    ret.erase(std::remove_if(ret.begin(), ret.end(), pred), ret.end());
+    // TODO: How can we reintroduce *const?
+    for (const Charm* charm : all_charms) {
 
-    const std::size_t stat_post = ret.size();
+        const auto filtered_skills = [&](){
+            std::tuple<SkillMap> x;
+            std::get<0>(x).add_skills_filtered(*charm, charm->max_charm_lvl, skill_spec);
+            return x;
+        };
 
-    Utils::log_stat_reduction("Charms filtering:    ", stat_pre, stat_post);
+        // TODO: Feels weird to have a std::move(charm) here.
+        seen_set.add(std::move(charm), filtered_skills());
+    }
+
+    Utils::log_stat_reduction("Charms pruning:      ", all_charms.size(), seen_set.size());
+
+    std::vector<const Charm*> ret;
+    ret.reserve(seen_set.size());
+    for (const auto& e : seen_set) {
+        ret.push_back(e.second);
+    }
 
     return ret;
 }
@@ -560,6 +571,35 @@ static std::vector<const Skill*> get_skills_in_subset_servable_without_sb_or_wea
     ret.erase(std::remove_if(ret.begin(), ret.end(), pred), ret.end());
 
     return ret;
+}
+
+
+static void merge_in_charms(SSBSeenMap<ArmourSetCombo>& armour_combos,
+                            const std::vector<const Charm*>& charms,
+                            const SkillSpec& skill_spec) {
+    auto prev_armour_combos = armour_combos.get_data_as_vector();
+
+    for (const auto& e1 : prev_armour_combos) {
+        const SSBTuple&       set_combo_ssb = e1.first;
+        const ArmourSetCombo& set_combo     = e1.second;
+
+        assert(std::get<0>(set_combo_ssb).only_contains_skills_in_spec(skill_spec));(void)skill_spec;
+        assert(!set_combo.armour.charm_slot_is_filled());
+
+        for (const Charm * const charm : charms) {
+            ArmourSetCombo new_set_combo = set_combo;
+
+            new_set_combo.armour.add(charm);
+
+            const auto op2 = [&](){
+                SSBTuple x = set_combo_ssb;
+                std::get<0>(x).add_skills_filtered(*charm, charm->max_charm_lvl, skill_spec);
+                return x;
+            };
+            
+            armour_combos.add(std::move(new_set_combo), op2());
+        }
+    }
 }
 
 
@@ -763,17 +803,20 @@ static void do_search(const Database& db, const SearchParameters& params) {
     Utils::log_stat_duration("  >>> Combining seen set initialization: ", start_t);
     std::clog << "\n";
     
-    //SSBSeenMap<ArmourSetCombo> armour_combos;
-    for (const Charm* charm : charms) {
-        ArmourSetCombo combo;
-        SSBTuple ssb;
-
-        combo.armour.add(charm);
-        std::get<0>(ssb).add_skills_filtered(*charm, charm->max_charm_lvl, params.skill_spec);
-        assert(std::get<0>(ssb).only_contains_skills_in_spec(params.skill_spec));
-
-        armour_combos.add(std::move(combo), std::move(ssb));
+    // Seed the seen set with a single empty combination.
+    {
+        SSBTuple initial_set_combo_ssb;
+        ArmourSetCombo initial_set_combo;
+        armour_combos.add(std::move(initial_set_combo), std::move(initial_set_combo_ssb));
+        assert(armour_combos.size() == 1);
     }
+
+    start_t = std::chrono::steady_clock::now();
+    //
+    merge_in_charms(armour_combos, charms, params.skill_spec);
+    //
+    Utils::log_stat("Merged in charms: ", armour_combos.size());
+    Utils::log_stat_duration("  >>> charms merge: ", start_t);
 
     // And now, we merge in our slot combinations!
 

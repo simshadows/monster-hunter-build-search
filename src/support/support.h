@@ -143,6 +143,7 @@ public:
     void add(const Charm*);
 
     bool slot_is_filled(const ArmourSlot&) const;
+    bool charm_slot_is_filled() const;
     SkillMap get_skills_without_set_bonuses() const;
     SkillMap get_skills_without_set_bonuses_filtered(const SkillSpec&) const;
     SetBonusMap get_set_bonuses() const;
