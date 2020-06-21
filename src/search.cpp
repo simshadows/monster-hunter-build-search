@@ -550,29 +550,14 @@ static SSBSeenMapSmall<ArmourPieceCombo> generate_slot_combos(const std::vector<
 }
 
 
-// TODO: I need a better name lmao
-static std::vector<const Skill*> get_skills_in_subset_servable_without_sb_or_weapons(const Database& db,
-                                                                                     const SkillSpec& skill_spec) {
-    const std::unordered_set<const Skill*> possible_skills = [&db](){
-        // Initial set is just armour skills
-        std::unordered_set<const Skill*> x = db.armour.all_possible_skills_from_armour_without_set_bonuses();
-        // Now we get the other skills
-        std::unordered_set<const Skill*> deco_skills = db.decos.all_possible_skills_from_decos();
-        std::unordered_set<const Skill*> charm_skills = db.charms.all_possible_skills_from_charms();
-        // And now, we merge them in.
-        x.insert(deco_skills.begin(), deco_skills.end());
-        x.insert(charm_skills.begin(), charm_skills.end());
-        return x;
-    }();
-
-    std::vector<const Skill*> ret = skill_spec.get_skill_subset_as_vector();
-
-    const auto pred = [&possible_skills](const Skill* x){
-        return !Utils::set_has_key(possible_skills, x);
-    };
-    ret.erase(std::remove_if(ret.begin(), ret.end(), pred), ret.end());
-
-    return ret;
+static void count_skills_from_piece_combos(Utils::Counter<const Skill*>& out,
+                                           const SSBSeenMapSmall<ArmourPieceCombo>& piece_combos) {
+    for (const auto& e1 : piece_combos) {
+        const std::tuple<SkillMap, SetBonusMap>& ssb = e1.first;
+        for (const std::pair<const Skill*, unsigned int>& e2 : std::get<0>(ssb)) {
+            out.increment(e2.first, e2.second);
+        }
+    }
 }
 
 
@@ -800,8 +785,30 @@ static void do_search(const Database& db, const SearchParameters& params) {
     
     start_t = std::chrono::steady_clock::now();
     SSBSeenMap<ArmourSetCombo> armour_combos = [&](){
-        std::vector<const Skill*> sk_vec = get_skills_in_subset_servable_without_sb_or_weapons(db, params.skill_spec);
+        Utils::Counter<const Skill*> skill_count;
+        for (const Charm * const charm : charms) {
+            for (const Skill * const skill : charm->skills) {
+                if (params.skill_spec.is_in_subset(skill)) {
+                    skill_count.increment(skill, charm->max_charm_lvl);
+                }
+            }
+        }
+        count_skills_from_piece_combos(skill_count, head_combos);
+        count_skills_from_piece_combos(skill_count, chest_combos);
+        count_skills_from_piece_combos(skill_count, arms_combos);
+        count_skills_from_piece_combos(skill_count, waist_combos);
+        count_skills_from_piece_combos(skill_count, legs_combos);
+        std::vector<std::pair<const Skill*, unsigned int>> skill_count_vec = skill_count.as_vector();
+        std::sort(skill_count_vec.begin(),
+                  skill_count_vec.end(),
+                  [](const auto& a, const auto& b){return a.second < b.second;});
+        std::vector<const Skill*> sk_vec;
+        for (const std::pair<const Skill*, unsigned int>& e : skill_count_vec) {
+            //std::cerr << e.first->name << " " << e.second << "\n"; // Useful debugging tool
+            sk_vec.push_back(e.first);
+        }
         Utils::log_stat("Skills to be considered by the combining seen set: ", sk_vec.size());
+
         std::unordered_set<const SetBonus*> sb_set;
         for (const auto& e : armour) {
             for (const ArmourPiece * const piece : e.second) {
