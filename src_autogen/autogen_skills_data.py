@@ -222,8 +222,11 @@ def generate_skills_source():
 
     for (_, setbonus) in setbonuses.items():
         stages = []
+        highest_stage = 0
         for (parts, skill_id) in setbonus["stages"]:
             stages.append(f"        {{ {parts}, &{skills[skill_id]['identifier']} }},")
+            if parts > highest_stage:
+                highest_stage = parts
         stages_str = "\n".join(stages)
 
         setbonus_declarations.append(
@@ -235,7 +238,8 @@ def generate_skills_source():
                     f"    \"{setbonus['sb_name']}\", // name\n"
                     f"    {{ // stages\n"
                     f"{stages_str}\n"
-                    f"    }}\n"
+                    f"    }},\n"
+                    f"    {highest_stage}\n"
                     f"}};"
                 )
         setbonus_map_elements.append(

@@ -166,7 +166,9 @@ struct Skill {
 struct SetBonus {
     const std::string id;
     const std::string name;
-    const std::vector<std::pair<unsigned int, const Skill*>> stages; // tuple format: (number of stages, skill)
+    const std::vector<std::pair<unsigned int, const Skill*>> stages; // tuple format: (number of pieces, skill)
+
+    const unsigned int highest_stage; // Convenience field. The number of pieces required to obtain all stages of the set bonus.
 };
 
 

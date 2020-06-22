@@ -36,8 +36,7 @@ struct SSBLimits {
         return k->secret_limit;
     }
     unsigned int operator()(const SetBonus * const k) const noexcept {
-        (void)k;
-        return 5; // 1 for each armour piece. This is true since we don't consider the weapon.
+        return k->highest_stage;
     }
 };
 

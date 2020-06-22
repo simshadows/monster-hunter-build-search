@@ -39,8 +39,9 @@ Minor:
 
 - Elderseal filtering (similar to the health regen filtering)
 - The specification of a sequence of attacks (i.e. a *combo*) rather than just a single attack. (You can technically just add the motion values and elemental/status modifiers for now, but there will be no facility to correct for rounding if exact values is ever desired.)
+- Multicore support! (I'm not implementing yet because I'm focusing on improving the algorithm first.)
 
-## Data and Educational References
+## Data Sources
 
 - Directly from in-game UI or minor first-hand in-game testing where possible/needed
 - MHWI Damage Formula ([link for v13.50.00](https://docs.google.com/spreadsheets/d/e/2PACX-1vSuFIUfe5Sp9k6sqKvPSPbO2xcClt1WaYMf_xGocWDIkgaSDi0nBLbOKAd8GScLQRjfxbljhPO4Bjf7/pubhtml#))

@@ -73,7 +73,14 @@ public:
  ***************************************************************************************/
 
 
-using SetBonusMap = Utils::CounterPKSV<const SetBonus*>;
+struct HardClipSetBonusPieces {
+    unsigned int operator()(const SetBonus * const setbonus, const unsigned int pieces) const noexcept {
+        return (pieces > setbonus->highest_stage) ? setbonus->highest_stage : pieces;
+    }
+};
+
+
+using SetBonusMap = Utils::CounterPKSV<const SetBonus*, HardClipSetBonusPieces>;
 
 
 /****************************************************************************************
