@@ -239,7 +239,7 @@ def generate_skills_source():
                     f"    {{ // stages\n"
                     f"{stages_str}\n"
                     f"    }},\n"
-                    f"    {highest_stage}\n"
+                    f"    {highest_stage} // highest_stage\n"
                     f"}};"
                 )
         setbonus_map_elements.append(

@@ -1540,7 +1540,7 @@ const SetBonus g_setbonus_ancient_divinity = {
     { // stages
         { 2, &g_skill_critical_status },
     },
-    2
+    2 // highest_stage
 };
 
 const SetBonus g_setbonus_anjanath_dominance = {
@@ -1549,7 +1549,7 @@ const SetBonus g_setbonus_anjanath_dominance = {
     { // stages
         { 2, &g_skill_stamina_cap_up },
     },
-    2
+    2 // highest_stage
 };
 
 const SetBonus g_setbonus_appreciation_blessing = {
@@ -1559,7 +1559,7 @@ const SetBonus g_setbonus_appreciation_blessing = {
         { 3, &g_skill_gratitudes_gift },
         { 5, &g_skill_gratitudes_blessing },
     },
-    5
+    5 // highest_stage
 };
 
 const SetBonus g_setbonus_barioth_hidden_art = {
@@ -1568,7 +1568,7 @@ const SetBonus g_setbonus_barioth_hidden_art = {
     { // stages
         { 2, &g_skill_punishing_draw },
     },
-    2
+    2 // highest_stage
 };
 
 const SetBonus g_setbonus_bazelgeuse_ambition = {
@@ -1577,7 +1577,7 @@ const SetBonus g_setbonus_bazelgeuse_ambition = {
     { // stages
         { 2, &g_skill_guts },
     },
-    2
+    2 // highest_stage
 };
 
 const SetBonus g_setbonus_brachydios_essence = {
@@ -1586,7 +1586,7 @@ const SetBonus g_setbonus_brachydios_essence = {
     { // stages
         { 3, &g_skill_agitator_secret },
     },
-    3
+    3 // highest_stage
 };
 
 const SetBonus g_setbonus_brachydios_will = {
@@ -1596,7 +1596,7 @@ const SetBonus g_setbonus_brachydios_will = {
         { 2, &g_skill_agitator_secret },
         { 4, &g_skill_artillery_secret },
     },
-    4
+    4 // highest_stage
 };
 
 const SetBonus g_setbonus_commission_alchemy = {
@@ -1605,7 +1605,7 @@ const SetBonus g_setbonus_commission_alchemy = {
     { // stages
         { 3, &g_skill_bombardier_secret },
     },
-    3
+    3 // highest_stage
 };
 
 const SetBonus g_setbonus_deviljho_essence = {
@@ -1614,7 +1614,7 @@ const SetBonus g_setbonus_deviljho_essence = {
     { // stages
         { 3, &g_skill_stamina_thief_secret },
     },
-    3
+    3 // highest_stage
 };
 
 const SetBonus g_setbonus_diablos_ambition = {
@@ -1623,7 +1623,7 @@ const SetBonus g_setbonus_diablos_ambition = {
     { // stages
         { 3, &g_skill_slugger_secret },
     },
-    3
+    3 // highest_stage
 };
 
 const SetBonus g_setbonus_full_bloom_blessing = {
@@ -1633,7 +1633,7 @@ const SetBonus g_setbonus_full_bloom_blessing = {
         { 3, &g_skill_full_blooms_gift },
         { 5, &g_skill_full_bloom_gratitude },
     },
-    5
+    5 // highest_stage
 };
 
 const SetBonus g_setbonus_glavenus_essence = {
@@ -1642,7 +1642,7 @@ const SetBonus g_setbonus_glavenus_essence = {
     { // stages
         { 3, &g_skill_maximum_might_secret },
     },
-    3
+    3 // highest_stage
 };
 
 const SetBonus g_setbonus_gold_rathian_essence = {
@@ -1652,7 +1652,7 @@ const SetBonus g_setbonus_gold_rathian_essence = {
         { 2, &g_skill_divine_blessing_secret },
         { 4, &g_skill_true_critical_status },
     },
-    4
+    4 // highest_stage
 };
 
 const SetBonus g_setbonus_guild_pride = {
@@ -1662,7 +1662,7 @@ const SetBonus g_setbonus_guild_pride = {
         { 2, &g_skill_good_luck },
         { 4, &g_skill_carving_master },
     },
-    4
+    4 // highest_stage
 };
 
 const SetBonus g_setbonus_instructors_guidance = {
@@ -1671,7 +1671,7 @@ const SetBonus g_setbonus_instructors_guidance = {
     { // stages
         { 2, &g_skill_capture_master },
     },
-    2
+    2 // highest_stage
 };
 
 const SetBonus g_setbonus_joyful_blessing = {
@@ -1681,7 +1681,7 @@ const SetBonus g_setbonus_joyful_blessing = {
         { 3, &g_skill_joys_gift },
         { 5, &g_skill_joys_gratitude },
     },
-    5
+    5 // highest_stage
 };
 
 const SetBonus g_setbonus_kirin_divinity = {
@@ -1690,7 +1690,7 @@ const SetBonus g_setbonus_kirin_divinity = {
     { // stages
         { 3, &g_skill_great_luck },
     },
-    3
+    3 // highest_stage
 };
 
 const SetBonus g_setbonus_kulve_taroth_essence = {
@@ -1700,7 +1700,7 @@ const SetBonus g_setbonus_kulve_taroth_essence = {
         { 2, &g_skill_guts },
         { 4, &g_skill_free_meal_secret },
     },
-    4
+    4 // highest_stage
 };
 
 const SetBonus g_setbonus_kushala_daora_flight = {
@@ -1709,7 +1709,7 @@ const SetBonus g_setbonus_kushala_daora_flight = {
     { // stages
         { 3, &g_skill_nullify_wind_pressure },
     },
-    3
+    3 // highest_stage
 };
 
 const SetBonus g_setbonus_legiana_ambition = {
@@ -1718,7 +1718,7 @@ const SetBonus g_setbonus_legiana_ambition = {
     { // stages
         { 3, &g_skill_bow_charge_plus },
     },
-    3
+    3 // highest_stage
 };
 
 const SetBonus g_setbonus_lunastra_essence = {
@@ -1727,7 +1727,7 @@ const SetBonus g_setbonus_lunastra_essence = {
     { // stages
         { 3, &g_skill_tool_specialist_secret },
     },
-    3
+    3 // highest_stage
 };
 
 const SetBonus g_setbonus_namielle_divinity = {
@@ -1737,7 +1737,7 @@ const SetBonus g_setbonus_namielle_divinity = {
         { 2, &g_skill_element_acceleration },
         { 4, &g_skill_true_element_acceleration },
     },
-    4
+    4 // highest_stage
 };
 
 const SetBonus g_setbonus_nargacuga_essence = {
@@ -1746,7 +1746,7 @@ const SetBonus g_setbonus_nargacuga_essence = {
     { // stages
         { 3, &g_skill_true_razor_sharp_spare_shot },
     },
-    3
+    3 // highest_stage
 };
 
 const SetBonus g_setbonus_nergigante_ambition = {
@@ -1755,7 +1755,7 @@ const SetBonus g_setbonus_nergigante_ambition = {
     { // stages
         { 2, &g_skill_hasten_recovery },
     },
-    2
+    2 // highest_stage
 };
 
 const SetBonus g_setbonus_odogaron_essence = {
@@ -1764,7 +1764,7 @@ const SetBonus g_setbonus_odogaron_essence = {
     { // stages
         { 3, &g_skill_protective_polish },
     },
-    3
+    3 // highest_stage
 };
 
 const SetBonus g_setbonus_rajangs_rage = {
@@ -1774,7 +1774,7 @@ const SetBonus g_setbonus_rajangs_rage = {
         { 2, &g_skill_minds_eye_ballistics },
         { 4, &g_skill_protective_polish },
     },
-    4
+    4 // highest_stage
 };
 
 const SetBonus g_setbonus_rajang_will = {
@@ -1784,7 +1784,7 @@ const SetBonus g_setbonus_rajang_will = {
         { 2, &g_skill_maximum_might_secret },
         { 4, &g_skill_heroics_secret },
     },
-    4
+    4 // highest_stage
 };
 
 const SetBonus g_setbonus_rathalos_essence = {
@@ -1793,7 +1793,7 @@ const SetBonus g_setbonus_rathalos_essence = {
     { // stages
         { 3, &g_skill_minds_eye_ballistics },
     },
-    3
+    3 // highest_stage
 };
 
 const SetBonus g_setbonus_rathian_essence = {
@@ -1802,7 +1802,7 @@ const SetBonus g_setbonus_rathian_essence = {
     { // stages
         { 2, &g_skill_poison_duration_up },
     },
-    2
+    2 // highest_stage
 };
 
 const SetBonus g_setbonus_safi_jiiva_seal = {
@@ -1812,7 +1812,7 @@ const SetBonus g_setbonus_safi_jiiva_seal = {
         { 3, &g_skill_dragonvein_awakening },
         { 5, &g_skill_true_dragonvein_awakening },
     },
-    5
+    5 // highest_stage
 };
 
 const SetBonus g_setbonus_shara_ishvalda_divinity = {
@@ -1822,7 +1822,7 @@ const SetBonus g_setbonus_shara_ishvalda_divinity = {
         { 4, &g_skill_gaias_veil },
         { 5, &g_skill_true_gaias_veil },
     },
-    5
+    5 // highest_stage
 };
 
 const SetBonus g_setbonus_silver_rathalos_essence = {
@@ -1832,7 +1832,7 @@ const SetBonus g_setbonus_silver_rathalos_essence = {
         { 2, &g_skill_slinger_ammo_secret },
         { 4, &g_skill_true_critical_element },
     },
-    4
+    4 // highest_stage
 };
 
 const SetBonus g_setbonus_soul_of_the_dragoon = {
@@ -1842,7 +1842,7 @@ const SetBonus g_setbonus_soul_of_the_dragoon = {
         { 2, &g_skill_elemental_airborne },
         { 4, &g_skill_masters_touch },
     },
-    4
+    4 // highest_stage
 };
 
 const SetBonus g_setbonus_teostra_technique = {
@@ -1851,7 +1851,7 @@ const SetBonus g_setbonus_teostra_technique = {
     { // stages
         { 3, &g_skill_masters_touch },
     },
-    3
+    3 // highest_stage
 };
 
 const SetBonus g_setbonus_tigrex_essence = {
@@ -1860,7 +1860,7 @@ const SetBonus g_setbonus_tigrex_essence = {
     { // stages
         { 3, &g_skill_free_meal_secret },
     },
-    3
+    3 // highest_stage
 };
 
 const SetBonus g_setbonus_uragaan_ambition = {
@@ -1869,7 +1869,7 @@ const SetBonus g_setbonus_uragaan_ambition = {
     { // stages
         { 2, &g_skill_guard_up },
     },
-    2
+    2 // highest_stage
 };
 
 const SetBonus g_setbonus_vaal_soulvein = {
@@ -1878,7 +1878,7 @@ const SetBonus g_setbonus_vaal_soulvein = {
     { // stages
         { 2, &g_skill_super_recovery },
     },
-    2
+    2 // highest_stage
 };
 
 const SetBonus g_setbonus_velkhana_divinity = {
@@ -1888,7 +1888,7 @@ const SetBonus g_setbonus_velkhana_divinity = {
         { 2, &g_skill_critical_element },
         { 4, &g_skill_frostcraft },
     },
-    4
+    4 // highest_stage
 };
 
 const SetBonus g_setbonus_zinogre_essence = {
@@ -1897,7 +1897,7 @@ const SetBonus g_setbonus_zinogre_essence = {
     { // stages
         { 3, &g_skill_latent_power_secret },
     },
-    3
+    3 // highest_stage
 };
 
 const SetBonus g_setbonus_zorah_magdaros_essence = {
@@ -1906,7 +1906,7 @@ const SetBonus g_setbonus_zorah_magdaros_essence = {
     { // stages
         { 3, &g_skill_artillery_secret },
     },
-    3
+    3 // highest_stage
 };
 
 

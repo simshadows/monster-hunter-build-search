@@ -724,7 +724,8 @@ static void do_search(const Database& db, const SearchParameters& params) {
         if (x.size()) {
             initial_col1 += "\n\nSet bonuses to be considered:";
             for (const SetBonus * const set_bonus : x) {
-                initial_col1 += "\n  " + set_bonus->name;
+                initial_col1 += "\n  ";
+                initial_col1 += set_bonus->name;
             }
         }
 

@@ -138,7 +138,7 @@ struct Skill {
                                       // NIDs must be guaranteed to be "as low as possible", allowing for
                                       // use in jump tables.
 
-    const std::string  id;            // The official UPPER_SNAKE_CASE unique identifier of the skill.
+    const char*        id;            // The official UPPER_SNAKE_CASE unique identifier of the skill.
 
     const char*        name;          // Actual skill name, as it appears in-game.
     const unsigned int normal_limit;  // Maximum level without "secret" skills.
@@ -164,8 +164,8 @@ struct Skill {
 
 
 struct SetBonus {
-    const std::string id;
-    const std::string name;
+    const char*       id;
+    const char*       name;
     const std::vector<std::pair<unsigned int, const Skill*>> stages; // tuple format: (number of pieces, skill)
 
     const unsigned int highest_stage; // Convenience field. The number of pieces required to obtain all stages of the set bonus.
