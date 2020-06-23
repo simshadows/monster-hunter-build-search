@@ -56,6 +56,8 @@ using SkillsSeenMapSmall = Utils::NaiveCounterSubsetSeenMap<StoredData, SkillMap
 struct ArmourPieceCombo {
     const ArmourPiece* armour_piece;
     DecoEquips decos;
+
+    const SetBonus* setbonus;
 };
 
 
@@ -178,7 +180,8 @@ struct WeaponInstancePruneFn {
 
 static std::vector<WeaponInstanceExtended> prepare_weapons(const Database& db,
                                                            const SearchParameters& params,
-                                                           const std::unordered_set<const SetBonus*>& set_bonus_subset) {
+                                                           const std::unordered_map<const SetBonus*,
+                                                                                    unsigned int>& set_bonus_subset) {
 
     auto start_t = std::chrono::steady_clock::now();
 
@@ -211,7 +214,7 @@ static std::vector<WeaponInstanceExtended> prepare_weapons(const Database& db,
                     assert(new_cont.elestat_value);
                     new_cont.erase_elestat();
                 }
-                if (!Utils::set_has_key(set_bonus_subset, new_cont.set_bonus)) {
+                if (!Utils::map_has_key(set_bonus_subset, new_cont.set_bonus)) {
                     new_cont.set_bonus = nullptr;
                 }
                 if (!params.skill_spec.is_in_subset(new_cont.skill)) {
@@ -509,7 +512,8 @@ static SSBSeenMapSmall<ArmourPieceCombo> generate_slot_combos(const std::vector<
                                                               const std::array<std::vector<const Decoration*>,
                                                                                k_MAX_DECO_SIZE>& sorted_decos,
                                                               const SkillSpec& skill_spec,
-                                                              const std::unordered_set<const SetBonus*>& set_bonus_subset,
+                                                              const std::unordered_map<const SetBonus*,
+                                                                                       unsigned int>& set_bonus_subset,
                                                               const std::string& debug_msg) {
     // We will assume decorations are sorted.
     // TODO: Add a runtime assert.
@@ -535,11 +539,15 @@ static SSBSeenMapSmall<ArmourPieceCombo> generate_slot_combos(const std::vector<
             SSBTuple ssb = {armour_skills, {}};
 
             std::get<0>(ssb).add_skills_filtered(decos, skill_spec);
-            if (Utils::set_has_key(set_bonus_subset, piece->set_bonus)) {
+            const SetBonus* setbonus;
+            if (Utils::map_has_key(set_bonus_subset, piece->set_bonus)) {
                 std::get<1>(ssb).set(piece->set_bonus, 1);
+                setbonus = piece->set_bonus;
+            } else {
+                setbonus = nullptr;
             }
 
-            seen_set.add({piece, std::move(decos)}, std::move(ssb));
+            seen_set.add({piece, std::move(decos), setbonus}, std::move(ssb));
         }
     }
 
@@ -609,6 +617,7 @@ static void merge_in_charms(SSBSeenMap<ArmourSetCombo>& armour_combos,
 
 static void merge_in_armour_list(SSBSeenMap<ArmourSetCombo>& armour_combos,
                                  const SSBSeenMapSmall<ArmourPieceCombo>& piece_combos,
+                                 const std::unordered_map<const SetBonus*, unsigned int>& set_bonus_subset,
                                  const SkillSpec& skill_spec) {
     auto prev_armour_combos = armour_combos.get_data_as_vector();
 
@@ -657,7 +666,13 @@ static void merge_in_armour_list(SSBSeenMap<ArmourSetCombo>& armour_combos,
             const auto op2 = [&](){
                 SSBTuple x = set_combo_ssb;
                 std::get<0>(x).merge_in(std::get<0>(piece_combo_ssb));
-                std::get<1>(x).merge_in(std::get<1>(piece_combo_ssb));
+                if (piece_combo.setbonus) {
+                    const unsigned int curr_setbonus_pieces = std::get<1>(x).get(piece_combo.setbonus);
+                    if (curr_setbonus_pieces < set_bonus_subset.at(piece_combo.setbonus)) {
+                        // TODO: Use something faster?
+                        std::get<1>(x).set(piece_combo.setbonus, curr_setbonus_pieces + 1);
+                    }
+                }
                 assert(std::get<0>(x).only_contains_skills_in_spec(skill_spec));(void)skill_spec;
                 return x;
             };
@@ -709,21 +724,22 @@ static void do_search(const Database& db, const SearchParameters& params) {
     std::string initial_col1 = params.skill_spec.get_humanreadable();
     std::string initial_col2;
 
-    const std::unordered_set<const SetBonus*> set_bonus_subset = [&](){
-        std::unordered_set<const SetBonus*> x;
+    const std::unordered_map<const SetBonus*, unsigned int> set_bonus_subset = [&](){
+        std::unordered_map<const SetBonus*, unsigned int> x;
 
         for (const SetBonus * const set_bonus : SkillsDatabase::g_all_setbonuses) {
             for (const auto& e : set_bonus->stages) {
-                if (params.skill_spec.is_in_subset(e.second)) {
-                    x.emplace(set_bonus);
-                    break;
+                if (params.skill_spec.is_in_subset(e.second)
+                                && ((!Utils::map_has_key(x, set_bonus)) || (e.first > x[set_bonus])) ) {
+                    x[set_bonus] = e.first;
                 }
             }
         }
 
         if (x.size()) {
             initial_col1 += "\n\nSet bonuses to be considered:";
-            for (const SetBonus * const set_bonus : x) {
+            for (const auto& e : x) {
+                const SetBonus * const set_bonus = e.first;
                 initial_col1 += "\n  ";
                 initial_col1 += set_bonus->name;
             }
@@ -805,7 +821,7 @@ static void do_search(const Database& db, const SearchParameters& params) {
         std::unordered_set<const SetBonus*> sb_set;
         for (const auto& e : armour) {
             for (const ArmourPiece * const piece : e.second) {
-                if (Utils::set_has_key(set_bonus_subset, piece->set_bonus)) {
+                if (Utils::map_has_key(set_bonus_subset, piece->set_bonus)) {
                     sb_set.emplace(piece->set_bonus);
                 }
             }
@@ -834,7 +850,7 @@ static void do_search(const Database& db, const SearchParameters& params) {
     start_t = std::chrono::steady_clock::now();
     unsigned long long stat_pre = armour_combos.size() * head_combos.size();
     //
-    merge_in_armour_list(armour_combos, head_combos, params.skill_spec);
+    merge_in_armour_list(armour_combos, head_combos, set_bonus_subset, params.skill_spec);
     //
     Utils::log_stat_reduction("Merged in head+deco  combinations: ", stat_pre, armour_combos.size());
     Utils::log_stat_duration("  >>> head combo merge: ", start_t);
@@ -842,7 +858,7 @@ static void do_search(const Database& db, const SearchParameters& params) {
     start_t = std::chrono::steady_clock::now();
     stat_pre = armour_combos.size() * chest_combos.size();
     //
-    merge_in_armour_list(armour_combos, chest_combos, params.skill_spec);
+    merge_in_armour_list(armour_combos, chest_combos, set_bonus_subset, params.skill_spec);
     //
     Utils::log_stat_reduction("Merged in chest+deco combinations: ", stat_pre, armour_combos.size());
     Utils::log_stat_duration("  >>> chest combo merge: ", start_t);
@@ -850,7 +866,7 @@ static void do_search(const Database& db, const SearchParameters& params) {
     start_t = std::chrono::steady_clock::now();
     stat_pre = armour_combos.size() * arms_combos.size();
     //
-    merge_in_armour_list(armour_combos, arms_combos, params.skill_spec);
+    merge_in_armour_list(armour_combos, arms_combos, set_bonus_subset, params.skill_spec);
     //
     Utils::log_stat_reduction("Merged in arms+deco  combinations: ", stat_pre, armour_combos.size());
     Utils::log_stat_duration("  >>> arms combo merge: ", start_t);
@@ -858,7 +874,7 @@ static void do_search(const Database& db, const SearchParameters& params) {
     start_t = std::chrono::steady_clock::now();
     stat_pre = armour_combos.size() * waist_combos.size();
     //
-    merge_in_armour_list(armour_combos, waist_combos, params.skill_spec);
+    merge_in_armour_list(armour_combos, waist_combos, set_bonus_subset, params.skill_spec);
     //
     Utils::log_stat_reduction("Merged in waist+deco combinations: ", stat_pre, armour_combos.size());
     Utils::log_stat_duration("  >>> waist combo merge: ", start_t);
@@ -866,7 +882,7 @@ static void do_search(const Database& db, const SearchParameters& params) {
     start_t = std::chrono::steady_clock::now();
     stat_pre = armour_combos.size() * legs_combos.size();
     //
-    merge_in_armour_list(armour_combos, legs_combos, params.skill_spec);
+    merge_in_armour_list(armour_combos, legs_combos, set_bonus_subset, params.skill_spec);
     //
     Utils::log_stat_reduction("Merged in legs+deco  combinations: ", stat_pre, armour_combos.size());
     Utils::log_stat_duration("  >>> legs combo merge: ", start_t);
