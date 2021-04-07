@@ -1,6 +1,6 @@
 # Clang 9 is the best-performing compiler in my experience on my machine,
 # even beating out Clang 10 and GCC 10.
-CXX2=clang++-9
+CXX2=clang++#-9
 
 CXXFLAGSBASE= \
 	-Wall \
@@ -72,7 +72,8 @@ profiling : CXXFLAGS=$(CXXFLAGSBASE) -g -O3 -fno-omit-frame-pointer
 profiling : all
 
 .PHONY : debug
-debug : CXXFLAGS=$(CXXFLAGSBASE) -fsanitize=address -g -O3
+#debug : CXXFLAGS=$(CXXFLAGSBASE) -fsanitize=address -g -O3
+debug : CXXFLAGS=$(CXXFLAGSBASE) -g -O3
 debug : all
 
 ##########################################################################################

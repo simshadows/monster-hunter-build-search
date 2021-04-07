@@ -376,6 +376,8 @@ SkillContribution::SkillContribution(const SkillMap&           skills,
             this->base_raw_multiplier *= k_NON_ELEMENTAL_BOOST_MULTIPLIER;
         }
     }
+
+    (void)non_elemental_boost_is_present; // Silence compiler warning temporarily
 }
 
 

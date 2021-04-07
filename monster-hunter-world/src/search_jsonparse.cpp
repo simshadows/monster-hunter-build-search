@@ -12,7 +12,7 @@
 #include "database/database_skills.h"
 #include "utils/utils.h"
 
-#include "../dependencies/json-3-7-3/json.hpp"
+#include "../dependencies/json-3-9-1/json.hpp"
 
 
 namespace MHWIBuildSearch
