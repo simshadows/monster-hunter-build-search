@@ -9,7 +9,7 @@ I'm only implementing searches for the games I play, and so far, these are:
 - *Monster Hunter World* (and its expansion *Monster Hunter World: Iceborne*), and
 - *Monster Hunter Rise*.
 
-(A Monster Hunter Rise codebase will be started in the next commit.)
+**NOTE:** The Rise codebase is mostly the World codebase and is still being adapted for Rise.
 
 ## Planned Changes
 

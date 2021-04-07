@@ -1,0 +1,690 @@
+\documentclass{article}
+
+\usepackage[margin=2.5cm, bottom=3.0cm]{geometry}
+\usepackage[
+    type={CC},
+    modifier={by-sa},
+    version={4.0},
+    hyphenation={RaggedRight},
+    ]{doclicense}
+
+\usepackage{../_latex_includes/sharedpkg}
+
+\def\TITLE{MHWI Status Damage Model}
+
+\setcounter{tocdepth}{3}
+\setcounter{secnumdepth}{3}
+
+\begin{document}
+
+\thispagestyle{plain}
+\MakeCustomTitle
+\bigskip
+
+
+
+\begin{center}%
+\begin{minipage}[c]{12cm}%
+    \doclicenseThis%
+\end{minipage}%
+\end{center}%
+\bigskip
+
+
+\section{Introduction}%
+\label{sec:introduction}
+
+The mathematical description of how status effects such as blast is well-described in \textit{How Status Works: Definitive Status Guide MHW/Iceborne} (\href{https://www.youtube.com/watch?v=iIPfkvvbGwY}{link}). However, I will attempt to summarize it here, in addition to clarifying some features of this game mechanic not mentioned in the video.
+
+This document will focus on modelling the damage done by the following status effects:
+\begin{itemize}
+    \item Poison
+    \item Blast
+\end{itemize}
+
+\subsection{Status Application}%
+\label{sub:blast_application}
+
+Status effects can be applied to monsters in a variety of ways, such as attacking while using a weapon with a poison/paralysis/sleep/blast value.
+
+When a status is applied to a monster, that status is ``built-up". Only when this internal status application counter reaches certain thresholds does the status effect trigger (or \textit{proc}).
+
+All monsters have unique tables regarding status effect application. Buildup usually involves four particular values:
+
+\begin{itemize}
+    \item \textit{Base Tolerance} (or simply \textit{base}): The threshold before the first proc.
+    \item \textit{Tolerance Buildup} (or simply \textit{buildup}): Every time we hit the threshold, we increase the new threshold by this value.
+    \item \textit{Tolerance Cap} (or simply \textit{cap}): The maximum threshold.
+    \item \textit{Decay}: The internal status application counter decays at a constant rate over time.
+\end{itemize}
+
+To illustrate how these values work, let's consider Dodogama's sleep values:
+
+\begin{itemize}
+    \item Base:    $150$
+    \item Buildup: $100$
+    \item Cap:     $550$
+    \item Decay:   $-\frac{5}{10} \text{ per second}$
+\end{itemize}
+
+Additionally, let's specifically consider the following quest values:
+
+\begin{itemize}
+    \item Base Multiplier: $1.25$
+    \item Buildup/Cap Multiplier: $1.90$
+\end{itemize}
+
+Thus, our effective sleep values for that particular quest are:
+
+\begin{itemize}
+    \item Base:    $150 \times 1.25 = 187.5$
+    \item Buildup: $100 \times 1.90 = 190$
+    \item Cap:     $550 \times 1.90 = 1045$
+    \item Decay:   $-\frac{5}{10} \text{ per second}$
+\end{itemize}
+
+Our first threshold is $188$, so we must apply $188$ sleep in order to get the first sleep proc.
+
+After the first sleep proc, our new threshold is $188+190=378$, so we must apply $378$ sleep for the second proc.
+
+After the second sleep proc, our new threshold is $378+190=568$, so we must apply $568$ sleep for the third proc.
+
+This follows an arithmetic progression up until the cap, where it is clipped:
+\begin{equation*}
+    188
+    \longrightarrow 378
+    \longrightarrow 568
+    \longrightarrow 758
+    \longrightarrow 948
+    \longrightarrow \cancel{1138} \; 1045
+    \longrightarrow 1045
+    \longrightarrow 1045
+    \longrightarrow \cdots
+\end{equation*}
+
+\textit{IMPORTANT: This is a draft. I actually don't know how the rounding works, or other variables that status decay depends on, but my blast model is a continuous model, and blast doesn't decay, so it doesn't affect the remainder of this document.}
+
+\subsection{Poison}%
+\label{sub:poison}
+
+\textit{(This section will be written later!)}
+
+\subsection{Blast}%
+\label{sub:blast}
+
+Blast is a status effect that \textit{does not decay} (i.e. decay is 0 blast per second).
+
+A blast proc deals fixed damage, regardless of monster (100 in Low Rank, 120 in High Rank, and 300 in Master Rank). The damage is dealt instantly, and the status can immediately continue being built-up.
+
+\subsection{Model Design Goals}%
+\label{sub:model_design_goals}
+
+Raw damage and elemental damage have been shown to be easily and effectively compared by determining a representative raw and elemental damage per hit. Such methods are totally independent of time and player skill as each and every hit has the same average raw and elemental damage.
+
+The goal of each damage model is to find similar numbers for status damage, estimating the effective average damage done by a status effect, per weapon hit.
+
+Unfortunately, status effects are not as easy to model in the same way since the rate of status procs decreases as more status is applied on the monster. Status damage can also depend on player competence due to status buildup being disabled while a monster is suffering from a status effect.
+
+
+\newpage
+
+
+\section{The Simplified Poison Damage Model}%
+\label{sec:the_simplified_poison_damage_model}
+
+The model is described and discussed in \href{https://www.youtube.com/watch?v=RwvUfNbLJPU}{\textit{How Poison Works: Poison Guide \& Math MHW Iceborne}}.
+
+\subsection{Input Variables}%
+\label{sub:poison_input_variables}
+
+We require three input variables:
+\begin{itemize}
+    \item $\rho$ (average raw damage of an attack)
+    \item $Q$ (total damage per poison proc)
+    \item $n$ (expected number of procs per hunt)
+    \item $H$ (monster total health)
+\end{itemize}
+
+While $Q$ and $H$ are very easy to finding depending on the quest, $n$ must be found through experimentation.
+
+This model is used due to the relatively low number of procs per hunt that can usually be determined.
+
+Do note that this model assumes that poison status applied is already factored into $n$ by the player, therefore all poison weapons will behave the same under this model.
+
+
+\subsection{Model Derivation}%
+\label{sub:simplified_poison_model_derivation}
+
+Let $R$ be the total raw damage done during the quest. $Q n$ is the total poison damage, so:
+\begin{equation}
+    R = H - Q n
+\end{equation}
+
+Let $k$ be the total number of hits required to kill the monster. Then:
+\begin{equation}
+    k = \frac{R}{\rho} = \frac{H - Q n}{\rho} 
+\end{equation}
+
+Let $\psi$ be the effective poison damage per hit. This can be easily found:
+\begin{equation}
+    \psi = \frac{Q n}{k} = \frac{\rho Q n}{H - Q n} 
+\end{equation}
+
+Thus, we have found our damage model.
+
+
+\newpage
+
+
+\section{The Continuous Blast Damage Model}%
+\label{sec:the_continuous_blast_damage_model}
+
+
+\subsection{Input Variables}%
+\label{sub:input_variables}
+
+Our model is based on the idea that a single specified attack always deals a predictable amount of average damage and blast application each time the attack is performed.
+
+For example, if a greatsword draw attack dealt 100 raw damage and 5 status buildup on average, we can expect that using the attack $n$-times would deal $n \times 100$ raw damage and $n \times 5$ status buildup on average.
+
+These variables shall be:
+\begin{itemize}
+    \item $\rho$ (average raw damage of an attack)
+    \item $\sigma$ (average status application of an attack)
+\end{itemize}
+
+Conceptually, we can try counting how many of the specified attack (such as the greatsword draw attack) we have to deal before we slay the monster, so we consider monster health to be another variable:
+\begin{itemize}
+    \item $H$ (monster total health)
+\end{itemize}
+
+If we ignore blast damage and assume all our damage comes from raw, it is trivial to see that we'd require $\frac{H}{\rho}$ uses of the specified attack in order to kill the monster. However, it gets tricky when we factor in blast.
+
+The variables related to blast are:
+\begin{itemize}
+    \item $a_1$ (blast base)
+    \item $d$ (blast buildup)
+    \item $c$ (blast cap)
+    \item $P$ (blast damage \textit{per proc})
+\end{itemize}
+
+Blast does not decay and blast procs do not cause status-application downtime (like how you cannot apply poison status if a monster is actively suffering from poison). This means that blast damage prediction can be completely independent of time, and dependent only on parameters relating to the sequence of attacks performed on the monster.
+
+Our model will attempt to find the average blast damage per attack.
+
+
+\subsection{Pre-Cap Model Derivation}%
+\label{sub:pre_cap_model_derivation}
+
+The following two equations are given for arithmetic progressions:
+\begin{gather}
+    a_n = a_1 + \parens*{n - 1} d
+        \label{eq:arithmetic_progression_element}
+    \\
+    S_n = \frac{n}{2} \parens*{a_1 + a_n}
+        \label{eq:arithmetic_progression_sum}
+\end{gather}
+where $a_1$ is the first element of the sequence, $a_n$ is the $\Nth{n}{th}$ element, $d = a_{i+1} - a_{i}$, and $S_n$ is the sum of the first $n$ elements.
+
+Equivalently, $a_n$ is the threshold for the $\Nth{n}{th}$ blast proc, and $S_n$ is the total blast that must be applied to reach the $\Nth{n}{th}$ blast proc.
+
+Eliminating $a_n$:
+\begin{align}
+    S_n &= \frac{n}{2} \parens*{a_1 + a_1 + \parens*{n - 1} d} \\
+        &= \frac{n}{2} \parens*{2 a_1 + \parens*{n - 1} d}
+\end{align}
+
+Solving for number of procs $n$:
+\begin{align}
+    2 S_n &= n \parens*{2 a_1 + \parens*{n - 1} d} \\
+          &= 2 n a_1 + n^2 d - n d
+\end{align}
+\begin{align}
+    0 &= 2 n a_1 + n^2 d - n d - 2 S_n \\
+      &= n^2 d + n \parens*{2 a_1 - d} - 2 S_n
+\end{align}
+
+Since $n \ge 0$:
+\begin{align}
+    n &= \frac{- \parens*{2 a_1 - d} + \sqrt{\parens*{2 a_1 - d}^2 - 4 d \times \parens*{- 2 S_n}}}{2 d} \\
+      &= \frac{d - 2 a_1 + \sqrt{\parens*{2 a_1 - d}^2 + 8 d S_n}}{2 d}
+    \label{eq:continuous_num_procs}
+\end{align}
+
+Let $R_n$ and $B_n$ denote the total raw and blast damage (respectively), given $n$ blast procs.
+
+Since $P$ is blast damage per proc, total blast damage is simply:
+\begin{equation}
+    B_n = Pn
+\end{equation}
+
+Thus, we can calculate $B$ as:
+\begin{equation}
+    B_n = P \frac{d - 2 a_1 + \sqrt{\parens*{2 a_1 - d}^2 + 8 d S_n}}{2 d}
+\end{equation}
+
+Since we know that we apply $\sigma$ status for every $\rho$ raw damage, it is trivial to calculate $R_n$ using:
+\begin{equation}
+    \frac{\rho}{\sigma} = \frac{R_n}{S_n}
+    \label{eq:rs_ratio}
+\end{equation}
+
+Thus, we can introduce $R_n$ into our equation. Additionally, we no longer care about counting blast procs, so we can simplify the notation of total raw and blast damage to $R$ and $B$:
+\begin{equation}
+    B = P \frac{d - 2 a_1 + \sqrt{\parens*{2 a_1 - d}^2 + 8 R d \frac{\sigma}{\rho} }}{2 d}
+\end{equation}
+
+In order to slay the monster, total raw and blast damage must add to equal the total health pool $H$:
+\begin{equation}
+    H = R + B
+    \label{eq:h_eq_r_b}
+\end{equation}
+
+Substituting into $R$:
+\begin{gather}
+    B = P \frac{d - 2 a_1 + \sqrt{\parens*{2 a_1 - d}^2 + 8 \parens*{H - B} d \frac{\sigma}{\rho} }}{2 d}
+    \\
+    \frac{2Bd}{P} = d - 2 a_1 + \sqrt{\parens*{2 a_1 - d}^2 + 8 \parens*{H - B} d \frac{\sigma}{\rho} }
+    \\
+    \frac{2Bd}{P} + 2 a_1 - d = \sqrt{\parens*{2 a_1 - d}^2 + 8 \parens*{H - B} d \frac{\sigma}{\rho} }
+    \\
+    \parens*{\frac{2Bd}{P} + 2 a_1 - d}^2 = \parens*{2 a_1 - d}^2 + 8 \parens*{H - B} d \frac{\sigma}{\rho}
+    \\
+    B^2 \frac{4 d^2}{P^2} + 2 \frac{2Bd}{P} \parens*{2 a_1 - d} + \cancel{\parens*{2 a_1 - d}^2}
+        = \cancel{\parens*{2 a_1 - d}^2} + 8 H d \frac{\sigma}{\rho} - 8 B d \frac{\sigma}{\rho}
+    \\
+    B^2 \frac{4 d^2}{P^2} + B \frac{4 d}{P} \parens*{2 a_1 - d}
+        = 8 H d \frac{\sigma}{\rho} - 8 B d \frac{\sigma}{\rho}
+    \\
+    B^2 \frac{4 d^2}{P^2} + B \parens*{\frac{4 d}{P} \parens*{2 a_1 - d} + 8 d \frac{\sigma}{\rho}}
+        = 8 H d \frac{\sigma}{\rho}
+    \\
+    B^2 \frac{4 d^2}{P^2} + B 4 d \parens*{\frac{2 a_1 - d}{P} + \frac{2 \sigma}{\rho}}
+        = \frac{8 H \sigma d}{\rho}
+    \\
+    B^2 + B \frac{P^2}{d} \parens*{\frac{2 a_1 - d}{P} + \frac{2 \sigma}{\rho}}
+        = \frac{2 H P^2 \sigma}{\rho d}
+    \\
+    B^2 + 2 B \frac{P^2}{2d} \parens*{\frac{2 a_1 - d}{P} + \frac{2 \sigma}{\rho}}
+        = \frac{2 H P^2 \sigma}{\rho d}
+    \\
+    B^2 + 2 B \frac{P^2}{2d} \parens*{\frac{2 a_1 - d}{P} + \frac{2 \sigma}{\rho}}
+        + \parens*{\frac{P^2}{2d} \parens*{\frac{2 a_1 - d}{P} + \frac{2 \sigma}{\rho}}}^2
+        = \frac{2 H P^2 \sigma}{\rho d}
+        + \parens*{\frac{P^2}{2d} \parens*{\frac{2 a_1 - d}{P} + \frac{2 \sigma}{\rho}}}^2
+    \\
+    \parens*{B + \frac{P^2}{2d} \parens*{\frac{2 a_1 - d}{P} + \frac{2 \sigma}{\rho}}}^2
+        = \frac{2 H P^2 \sigma}{\rho d}
+        + \parens*{\frac{P^2}{2d} \parens*{\frac{2 a_1 - d}{P} + \frac{2 \sigma}{\rho}}}^2
+    \\
+    B + \frac{P^2}{2d} \parens*{\frac{2 a_1 - d}{P} + \frac{2 \sigma}{\rho}}
+        = P \sqrt{
+            \frac{2 H \sigma}{\rho d}
+            + \parens*{\frac{1}{2d} \parens*{\frac{2 a_1 - d}{P} + \frac{2 \sigma}{\rho}}}^2
+        }
+    \\
+    B
+        = P \sqrt{
+            \frac{2 H \sigma}{\rho d}
+            + \parens*{\frac{1}{2d} \parens*{\frac{2 a_1 - d}{P} + \frac{2 \sigma}{\rho}}}^2
+        }
+        - \frac{P^2}{2d} \parens*{\frac{2 a_1 - d}{P} + \frac{2 \sigma}{\rho}}
+        \label{eq:total_blast}
+\end{gather}
+
+Thus, we now have an expression for total blast damage, given the monster's total health pool.
+
+Now, we want to find out the average amount of blast damage dealt per attack, given the attack's raw damage.
+
+Let $\beta_p$ denote the average blast damage per attack, \textit{before hitting the blast cap}.
+
+It is trivial to use the ratio between $R$ and $B$:
+\begin{equation}
+    \frac{\beta_p}{\rho}
+    = \frac{B}{R}
+    = \frac{B}{H - B} 
+\end{equation}
+
+Thus, we get an expression for $\beta_p$ in terms of $B$, $H$, and $\rho$:
+\begin{equation}
+    \beta_p = \rho \frac{B}{H - B}
+\end{equation}
+
+Since we can use \eqref{eq:total_blast} to calculate $B$ in terms of model input values, we now have an expression for calculating average blast damage per attack, given only our model input values.
+
+For this model, it is useful to think of average blast damage per attack as a function of $H$, so we shall rewrite $\beta_p$ as a function $[0, \infty) \to \mathbb{R}$ such that:
+\begin{equation}
+    \beta_p (H) = \rho \frac{B(H)}{H - B(H)}
+\end{equation}
+
+$\beta_p (H)$ is only valid up until $H$ reaches the blast cap.
+
+
+\subsection{Blast Cap Derivation}%
+\label{sub:model_blast_cap_derivation}
+
+The blast cap can be expressed as:
+\begin{equation}
+    a_n \le c
+    \label{eq:blast_cap}
+\end{equation}
+
+So to find where the pre-cap portion of the model stops, we must find the range of $H$ in which \eqref{eq:blast_cap} is true.
+
+We start by substituting \eqref{eq:arithmetic_progression_element} into \eqref{eq:arithmetic_progression_sum} via. $n$:
+\begin{gather}
+    a_n - a_1 = \parens*{n - 1} d \\
+    n = \frac{a_n - a_1}{d} + 1
+\end{gather}
+\begin{equation}
+    S_n = \parens*{\frac{a_n - a_1}{d} + 1} \frac{1}{2} \parens*{a_1 + a_n}
+    \label{eq:blast_cap_work1}
+\end{equation}
+
+Substituting \eqref{eq:rs_ratio} into \eqref{eq:blast_cap_work1} via. $S_n$:
+\begin{gather}
+    R_n \frac{\sigma}{\rho} = \parens*{\frac{a_n - a_1}{d} + 1} \frac{1}{2} \parens*{a_1 + a_n}
+    \\
+    2 R_n \frac{\sigma}{\rho} = \parens*{\frac{a_n - a_1}{d} + 1} \parens*{a_1 + a_n}
+    \\
+    2 R_n \frac{\sigma}{\rho} = \frac{a_n^2 - a_1^2}{d} + a_1 + a_n
+    \\
+    0 = \frac{a_n^2}{d} - \frac{a_1^2}{d} + a_1 + a_n - 2 R_n \frac{\sigma}{\rho}
+    \\
+    0 = a_n^2 + a_n d + \parens*{a_1 d - a_1^2 - 2 R_n \frac{\sigma}{\rho} d}
+\end{gather}
+
+Since $a_n \ge 0$:
+\begin{gather}
+    a_n = \frac{-d + \sqrt{d^2 - 4 \parens*{a_1 d - a_1^2 - 2 R_n \frac{\sigma}{\rho} d}}}{2} 
+    \\
+    a_n = \frac{-d + \sqrt{d^2 + 4 \parens*{a_1^2 - a_1 d + 2 R_n \frac{\sigma}{\rho} d}}}{2} 
+\end{gather}
+
+We can now introduce $B$ and $H$ using \eqref{eq:h_eq_r_b}, and substitute it into the blast cap condition \eqref{eq:blast_cap}:
+\begin{gather}
+    c \ge \frac{-d + \sqrt{d^2 + 4 \parens*{a_1^2 - a_1 d + 2 \parens*{H - B} \frac{\sigma}{\rho} d}}}{2} 
+    \\
+    2 c + d \ge \sqrt{d^2 + 4 \parens*{a_1^2 - a_1 d + 2 \parens*{H - B} \frac{\sigma}{\rho} d}}
+    \\
+    \parens*{2 c + d}^2 \ge d^2 + 4 \parens*{a_1^2 - a_1 d + 2 \parens*{H - B} \frac{\sigma}{\rho} d}
+    \\
+    \frac{\parens*{2 c + d}^2 - d^2}{4} \ge a_1^2 - a_1 d + 2 \parens*{H - B} \frac{\sigma}{\rho} d
+    \\
+    \frac{\parens*{2 c + d}^2 - d^2}{4} - a_1^2 + a_1 d \ge 2 \parens*{H - B} \frac{\sigma}{\rho} d
+    \\
+    \frac{\rho}{2 \sigma d} \parens*{\frac{\parens*{2 c + d}^2 - d^2}{4} - a_1^2 + a_1 d} \ge H - B
+    \\
+    \frac{\rho}{2 \sigma d} \parens*{\frac{4 c^2 + 4 c d}{4} - a_1^2 + a_1 d} \ge H - B
+    \\
+    \frac{\rho}{2 \sigma d} \parens*{c^2 + c d + a_1 d - a_1^2} \ge H - B
+    \label{eq:blast_cap_work2}
+\end{gather}
+
+Substituting \eqref{eq:total_blast} into \eqref{eq:blast_cap_work2} via. $B$:
+\begin{gather}
+    \frac{\rho}{2 \sigma d} \parens*{c^2 + c d + a_1 d - a_1^2}
+    \ge
+    H
+    - \parens*{
+        P \sqrt{
+            \frac{2 H \sigma}{\rho d}
+            + \parens*{\frac{1}{2d} \parens*{\frac{2 a_1 - d}{P} + \frac{2 \sigma}{\rho}}}^2
+        }
+        - \frac{P^2}{2d} \parens*{\frac{2 a_1 - d}{P} + \frac{2 \sigma}{\rho}}
+    }
+    \\
+    \frac{\rho}{2 \sigma d} \parens*{c^2 + c d + a_1 d - a_1^2}
+    - \frac{P^2}{2d} \parens*{\frac{2 a_1 - d}{P} + \frac{2 \sigma}{\rho}}
+    \ge
+    H
+    - P \sqrt{
+        \frac{2 H \sigma}{\rho d}
+        + \parens*{\frac{1}{2d} \parens*{\frac{2 a_1 - d}{P} + \frac{2 \sigma}{\rho}}}^2
+    }
+    \label{eq:blast_cap_work3}
+\end{gather}
+
+Let $X$ be the left side of \eqref{eq:blast_cap_work3}:
+\begin{equation}
+    X
+    \coloneqq
+    \frac{\rho}{2 \sigma d} \parens*{c^2 + c d + a_1 d - a_1^2}
+    - \frac{P^2}{2d} \parens*{\frac{2 a_1 - d}{P} + \frac{2 \sigma}{\rho}}
+    \label{eq:anonymous_capitalx}
+\end{equation}
+
+Isolating $H$ in \eqref{eq:blast_cap_work3}:
+\begin{gather}
+    X
+    \ge
+    H
+    - P \sqrt{
+        \frac{2 H \sigma}{\rho d}
+        + \parens*{\frac{1}{2d} \parens*{\frac{2 a_1 - d}{P} + \frac{2 \sigma}{\rho}}}^2
+    }
+    \\
+    \frac{H - X}{P} 
+    \le
+    \sqrt{
+        \frac{2 H \sigma}{\rho d}
+        + \parens*{\frac{1}{2d} \parens*{\frac{2 a_1 - d}{P} + \frac{2 \sigma}{\rho}}}^2
+    }
+    \\
+    \frac{\parens*{H - X}^2}{P^2} 
+    \le
+    \frac{2 H \sigma}{\rho d}
+    + \parens*{\frac{1}{2d} \parens*{\frac{2 a_1 - d}{P} + \frac{2 \sigma}{\rho}}}^2
+    \\
+    H^2 - X^2
+    \le
+    H \frac{2 P^2 \sigma}{\rho d}
+    + \parens*{\frac{P}{2d} \parens*{\frac{2 a_1 - d}{P} + \frac{2 \sigma}{\rho}}}^2
+    \\
+    H^2
+    - H \frac{2 P^2 \sigma}{\rho d}
+    \le
+    \parens*{\frac{P}{2d} \parens*{\frac{2 a_1 - d}{P} + \frac{2 \sigma}{\rho}}}^2
+    + X^2
+    \\
+    H^2
+    - H \frac{2 P^2 \sigma}{\rho d}
+    + \parens*{\frac{P^2 \sigma}{\rho d}}^2
+    \le
+    \parens*{\frac{P}{2d} \parens*{\frac{2 a_1 - d}{P} + \frac{2 \sigma}{\rho}}}^2
+    + X^2
+    + \parens*{\frac{P^2 \sigma}{\rho d}}^2
+    \\
+    \parens*{H - \frac{P^2 \sigma}{\rho d}}^2
+    \le
+    \parens*{\frac{P}{2d} \parens*{\frac{2 a_1 - d}{P} + \frac{2 \sigma}{\rho}}}^2
+    + X^2
+    + \parens*{\frac{P^2 \sigma}{\rho d}}^2
+    \\
+    H
+    \le
+    \frac{P^2 \sigma}{\rho d}
+    + \sqrt{
+        \parens*{\frac{P}{2d} \parens*{\frac{2 a_1 - d}{P} + \frac{2 \sigma}{\rho}}}^2
+        + X^2
+        + \parens*{\frac{P^2 \sigma}{\rho d}}^2
+    }
+\end{gather}
+
+Thus, we have our range for $H$ in which the pre-cap part of the model (derived in \autoref{sub:pre_cap_model_derivation}) is valid.
+
+We shall define $C$ to be the exact value of $H$ where we hit the blast cap:
+\begin{equation}
+    C
+    \coloneqq
+    \frac{P^2 \sigma}{\rho d}
+    + \sqrt{
+        \parens*{\frac{P}{2d} \parens*{\frac{2 a_1 - d}{P} + \frac{2 \sigma}{\rho}}}^2
+        + X^2
+        + \parens*{\frac{P^2 \sigma}{\rho d}}^2
+    }
+    \label{eq:health_blast_cap}
+\end{equation}
+
+
+\subsection{Post-Cap Model Derivation}%
+\label{sub:post_cap_model_derivation}
+
+At this point, the status buildup threshold remains constant at $c$.
+
+Since we have a constant threshold, then if we ignore pre-cap damage, any status buildup dealt will be linearly proportional to the damage it deals.
+
+We will start by forming a relation between some number of hits $k$, average status per hit $\sigma$, and a blast threshold $c$:
+\begin{equation}
+    k \coloneqq \frac{c}{\sigma}
+\end{equation}
+
+Thus, $k$ hits is required to cause a blast proc.
+
+Let $\beta'_c$ be the effective average blast damage dealt per hit, but \textit{only valid to damage dealt after $C$ damage has been dealt to the monster}:
+\begin{equation}
+    \beta'_c \coloneqq \frac{P}{k} = \frac{\sigma P}{c}
+\end{equation}
+
+Note that $\beta'_c$ does not depend on monster health.
+
+We know that each hit after reaching blast cap deals an average of $\rho + \beta'_c$ damage, and we must distribute this damage in the remaining $H - C$ health of the monster.
+
+This allows us to construct an expression involving the actual effective average blast damage dealt per hit $\beta_c$, which \textit{includes damage dealt before $C$ damage was dealt to the monster}. This expression is simply a weighted average:
+\begin{gather}
+    \rho + \beta_c = \frac{C \parens*{\rho + \beta_p(C)} + \parens*{H - C} \parens*{\rho + \beta'_c}}{H} 
+    \\
+    \beta_c = \frac{C}{H} \parens*{\rho + \beta_p(C)} + \frac{H - C}{H} \parens*{\rho + \frac{\sigma P}{c}} - \rho
+\end{gather}
+
+Rewriting $\beta_c$ as a function $[C, \infty) \to \mathbb{R}$ such that:
+\begin{equation}
+    \beta_c (H) = \frac{C}{H} \parens*{\rho + \beta_p(C)} + \frac{H - C}{H} \parens*{\rho + \frac{\sigma P}{c}} - \rho
+\end{equation}
+
+
+\subsection{Summary}%
+\label{sub:continuous_model_summary}
+
+Our model takes the following input variables:
+\begin{itemize}
+    \item $\rho$ (average raw damage of an attack)
+    \item $\sigma$ (average status application of an attack)
+    \item $H$ (monster total health)
+    \item $a_1$ (blast base)
+    \item $d$ (blast buildup)
+    \item $c$ (blast cap)
+    \item $P$ (blast damage \textit{per proc})
+\end{itemize}
+
+The \textit{effective average blast damage per hit} can be calculated as a function of monster health $\beta : [0, \infty) \to \mathbb{R}$ such that:
+\begin{equation}
+    \beta (H) =
+        \begin{cases}
+            \beta_p (H) & \text{if } H \le C \\
+            \beta_c (H) & \text{if } H > C
+        \end{cases}
+\end{equation}
+
+Functions $\beta_p : [0, \infty) \to \mathbb{R}$ and $\beta_c : [C, \infty) \to \mathbb{R}$ are defined as:
+\begin{equation}
+    \beta_p (H) = \rho \frac{B(H)}{H - B(H)}
+\end{equation}
+\begin{equation}
+    \beta_c (H) = \frac{C}{H} \parens*{\rho + \beta_p(C)} + \frac{H - C}{H} \parens*{\rho + \frac{\sigma P}{c}} - \rho
+\end{equation}
+
+$C$ is the maximum amount of health before reaching the blast cap:
+\begin{equation}
+    C = Z + \sqrt{Y^2 + X^2 + Z^2}
+\end{equation}
+
+$B(H)$ is the total blast damage dealt when we've dealt a total of $H$ damage to the monster:
+\begin{equation}
+    B (H) = \sqrt{2 H Z + Y^2} - PY
+\end{equation}
+
+Anonymous helper variables:
+\begin{equation}
+    X
+    =
+    \frac{\rho}{2 \sigma d} \parens*{c^2 + c d + a_1 d - a_1^2}
+    - PY
+\end{equation}
+\begin{equation}
+    Y
+    =
+    \frac{P}{2 d} 
+    \parens*{
+        \frac{2 a_1 - d}{P}
+        + \frac{2 \sigma}{\rho} 
+    }
+    \qquad\qquad
+    Z
+    =
+    \frac{P^2 \sigma}{\rho d} 
+\end{equation}
+
+
+\subsection{Do we ever hit blast cap?}%
+\label{sub:do_we_ever_hit_blast_cap_}
+
+\textit{(This section will be written later!)}
+
+
+\newpage
+
+
+\section{The Discrete-Procs Blast Damage Model}%
+\label{sec:the_discrete_procs_blast_damage_model}
+
+
+\subsection{Motivation}%
+\label{sub:motivation}
+
+In reality, blast damage is done on the monster only every now and then (though in a predictable manner).
+
+For example, the continuous model might calculate the total number of blast procs as the non-integer number of 25.7, leading to a total blast damage calculation of $25.7 \times 300 = 7710$.
+
+If one wishes to model the DPS fluctuations that are associated with this effect, then this total number of blast procs must be floored. In this case, the continuous model calculation of 25.7 must be floored down to 25, leading to a total blast calculation of $25 \times 300 = 7500$.
+
+
+\subsection{Incomplete Pre-Cap Model Derivation}%
+\label{sub:dbm_pre_cap_model_derivation}
+
+To enforce integer blast procs, we floor the number of blast procs $n$ from \eqref{eq:continuous_num_procs}:
+\begin{equation}
+    \frac{B}{P}
+    = \floor*{n}
+    = \floor*{\frac{d - 3 a_1 + \sqrt{\parens*{2 a_1 - d}^2 + 8 \parens*{H - B} d \frac{\sigma}{\rho}}}{2 d}}
+\end{equation}
+
+\textit{(TODO: I don't really know how to work with this equation. We should find a different approach.)}
+
+
+\newpage
+
+
+\section{Model Extensions}%
+\label{sec:model_extensions}
+
+I left out certain interpretations of the models in order to keep discussion as simple as possible. Now that the model has been introduced, we shall expand on these additional interpretations.
+
+\subsection{Combos}%
+\label{sub:combos}
+
+It turns out that if you can predict the average amount of raw damage and status application of a single attack, you can also do it for a given sequence of attacks.
+
+Thus, $\rho$ and $\sigma$ can instead be interpreted as values for a given sequence attacks rather than just a single attack.
+
+\subsection{Target Health}%
+\label{sub:target_health}
+
+$H$ doesn't actually have to be the monster's total health pool if we don't intend on slaying it. For example, we can instead make $H$ the damage required in order to capture the monster.
+
+Multiplayer might also be considered here since multiple players share the full health pool of the monster. For example, if we assume four perfectly equal players, then we might want to divide the full 4-player health pool by 4.
+
+
+
+
+\end{document}

@@ -1,0 +1,66 @@
+{
+    "allow_low_rank":        false,
+    "allow_high_rank":       false,
+    "allow_master_rank":     true,
+
+    "weapon_selection": {
+        "class":         "GREATSWORD",
+        "allow_fire":    true,
+        "allow_water":   true,
+        "allow_thunder": true,
+        "allow_ice":     true,
+        "allow_dragon":  true,
+        "allow_poison":  true,
+        "allow_blast":   true,
+        "health_regen_required": true
+    },
+
+    "damage_model": {
+        "raw_motion_value":   264,
+        "elemental_modifier": 1.0,
+        "status_modifier":    1.0,
+
+        "hzv_raw":     60,
+        "hzv_fire":    25,
+        "hzv_water":   25,
+        "hzv_thunder": 25,
+        "hzv_ice":     25,
+        "hzv_dragon":  25,
+
+        "poison_total_procs_per_quest": 2,
+        "poison_proc_dmg": 160,
+
+        "blast_base":     102,
+        "blast_buildup":  69,
+        "blast_cap":      1541,
+        "blast_proc_dmg": 300,
+
+        "target_health": 24000
+    },
+
+    "selected_skills": {
+        "AGITATOR": 0,
+        "ATTACK_BOOST": 0,
+        "CRITICAL_BOOST": 3,
+        "CRITICAL_EYE": 0,
+        "FOCUS": 3,
+        "HANDICRAFT": 0,
+        "NON_ELEMENTAL_BOOST": 0,
+        "PEAK_PERFORMANCE": 0,
+        "WEAKNESS_EXPLOIT": 1,
+        "MASTERS_TOUCH": 1
+    },
+    "forced_skill_states": {
+        "WEAKNESS_EXPLOIT": 2
+    },
+    "force_remove_skills": [
+        "ELEMENT_ACCELERATION",
+        "TRUE_ELEMENT_ACCELERATION",
+        "FREE_ELEM_AMMO_UP"
+    ],
+
+    "misc_buffs": [
+        "POWERCHARM",
+        "POWERTALON"
+    ]
+}
