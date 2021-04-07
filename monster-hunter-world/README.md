@@ -6,6 +6,12 @@ I'll write a detailed guide on how to use this thing later.
 
 ## Issues
 
+### Compilation
+
+In my current setup, the `-flto` flag breaks the unit testing program when building the `all` target in the makefile, causing a divide-by-zero error during execution. However, the actual program still works.
+
+To run the test program properly, you can build the `asserts` target (i.e. run the command `make asserts`).
+
 ### General
 
 Major:

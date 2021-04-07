@@ -72,8 +72,7 @@ profiling : CXXFLAGS=$(CXXFLAGSBASE) -g -O3 -fno-omit-frame-pointer
 profiling : all
 
 .PHONY : debug
-#debug : CXXFLAGS=$(CXXFLAGSBASE) -fsanitize=address -g -O3
-debug : CXXFLAGS=$(CXXFLAGSBASE) -g -O3
+debug : CXXFLAGS=$(CXXFLAGSBASE) -fsanitize=address -g -O3
 debug : all
 
 ##########################################################################################
