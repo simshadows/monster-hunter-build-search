@@ -3,8 +3,8 @@
  * Author: <contact@simshadows.com>
  */
 
-#ifndef MHWIBS_DATABASE_H
-#define MHWIBS_DATABASE_H
+#ifndef MHRBS_DATABASE_H
+#define MHRBS_DATABASE_H
 
 #include <map>
 #include <unordered_set>
@@ -13,7 +13,7 @@
 #include "../core/core.h"
 
 
-namespace MHWIBuildSearch {
+namespace MHRBuildSearch {
 
 
 /****************************************************************************************
@@ -141,5 +141,5 @@ private:
 
 } // namespace
 
-#endif // MHWIBS_DATABASE_H
+#endif // MHRBS_DATABASE_H
 

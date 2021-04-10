@@ -14,7 +14,7 @@
 #include "../../utils/utils_strings.h"
 
 
-namespace MHWIBuildSearch {
+namespace MHRBuildSearch {
 
 
 const CharmsDatabase CharmsDatabase::read_db_file(const std::string& filename) {

@@ -9,7 +9,7 @@
 #include "../../database/database_skills.h"
 #include "../support.h"
 
-namespace MHWIBuildSearch
+namespace MHRBuildSearch
 {
 
 

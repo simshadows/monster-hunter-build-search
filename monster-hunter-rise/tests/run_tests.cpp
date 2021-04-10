@@ -2,7 +2,7 @@
  * File: run_tests.cpp
  * Author: <contact@simshadows.com>
  *
- * Testing for MHWI Build Search.
+ * Testing for MHR Build Search.
  */
 
 #define CATCH_CONFIG_MAIN
@@ -17,10 +17,10 @@
 #include "../src/support/support.h"
 #include "../src/utils/utils.h"
 
-namespace TestMHWIBuildSearch
+namespace TestMHRBuildSearch
 {
 
-using namespace MHWIBuildSearch;
+using namespace MHRBuildSearch;
 
 
 // Convenience function to get a variant, purely for testing purposes.

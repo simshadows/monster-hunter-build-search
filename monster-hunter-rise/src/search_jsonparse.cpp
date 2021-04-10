@@ -7,7 +7,7 @@
 #include <fstream>
 #include <iostream>
 
-#include "mhwi_build_search.h"
+#include "mhr_build_search.h"
 #include "database/database_miscbuffs.h"
 #include "database/database_skills.h"
 #include "utils/utils.h"
@@ -15,7 +15,7 @@
 #include "../dependencies/json-3-9-1/json.hpp"
 
 
-namespace MHWIBuildSearch
+namespace MHRBuildSearch
 {
 
 

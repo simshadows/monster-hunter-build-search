@@ -12,7 +12,7 @@
 #include "../../utils/utils_strings.h"
 #include "../../utils/counter.h"
 
-namespace MHWIBuildSearch
+namespace MHRBuildSearch
 {
 
 

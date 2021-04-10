@@ -3,8 +3,8 @@
  * Author: <contact@simshadows.com>
  */
 
-#ifndef MHWIBS_SUPPORT_H
-#define MHWIBS_SUPPORT_H
+#ifndef MHRBS_SUPPORT_H
+#define MHRBS_SUPPORT_H
 
 #include <unordered_map>
 
@@ -12,7 +12,7 @@
 #include "../database/database.h"
 #include "../utils/counter.h"
 
-namespace MHWIBuildSearch
+namespace MHRBuildSearch
 {
 
 
@@ -378,5 +378,5 @@ ModelCalculatedValues calculate_damage(const DamageModel&,
 
 } // namespace
 
-#endif // MHWIBS_SUPPORT_H
+#endif // MHRBS_SUPPORT_H
 

@@ -33,7 +33,7 @@ H_BASE = """
 namespace MiscBuffsDatabase
 {
 
-using MHWIBuildSearch::MiscBuff;
+using MHRBuildSearch::MiscBuff;
 
 const MiscBuff& get_miscbuff(const std::string& miscbuff_id) noexcept;
 

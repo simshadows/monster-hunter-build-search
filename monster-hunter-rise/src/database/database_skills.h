@@ -15,8 +15,8 @@
 namespace SkillsDatabase
 {
 
-using MHWIBuildSearch::Skill;
-using MHWIBuildSearch::SetBonus;
+using MHRBuildSearch::Skill;
+using MHRBuildSearch::SetBonus;
 
 extern const Skill g_skill_adrenaline;
 extern const Skill g_skill_affinity_sliding;

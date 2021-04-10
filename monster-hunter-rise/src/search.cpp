@@ -11,7 +11,7 @@
 #include <iostream>
 #include <tuple>
 
-#include "mhwi_build_search.h"
+#include "mhr_build_search.h"
 #include "core/core.h"
 #include "database/database.h"
 #include "database/database_skills.h"
@@ -24,7 +24,7 @@
 #include "utils/counter_subset_seen_map.h"
 
 
-namespace MHWIBuildSearch
+namespace MHRBuildSearch
 {
 
 

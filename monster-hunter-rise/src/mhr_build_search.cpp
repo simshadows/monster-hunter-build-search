@@ -1,5 +1,5 @@
 /*
- * File: mhwi_build_search.cpp
+ * File: mhr_build_search.cpp
  * Author: <contact@simshadows.com>
  */
 
@@ -10,7 +10,7 @@
 #include <chrono>
 #include <vector>
 
-#include "mhwi_build_search.h"
+#include "mhr_build_search.h"
 #include "core/core.h"
 #include "database/database.h"
 #include "database/database_miscbuffs.h"
@@ -20,7 +20,7 @@
 #include "utils/logging.h"
 
 
-namespace MHWIBuildSearch
+namespace MHRBuildSearch
 {
 
 
@@ -115,9 +115,9 @@ int main(int argc, char** argv) {
     auto start_t = std::chrono::steady_clock::now();
 
     if ((argc == 3) && (std::strcmp(argv[1], "search") == 0)) {
-        MHWIBuildSearch::search_cmd(std::string(argv[2]));
+        MHRBuildSearch::search_cmd(std::string(argv[2]));
     } else if (argc == 1) {
-        MHWIBuildSearch::no_args_cmd();
+        MHRBuildSearch::no_args_cmd();
     } else {
         std::cerr << "Invalid command arguments." << std::endl;
         return 1;

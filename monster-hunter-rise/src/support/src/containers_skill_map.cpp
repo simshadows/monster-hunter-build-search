@@ -11,7 +11,7 @@
 #include "../../utils/utils_strings.h"
 
 
-namespace MHWIBuildSearch
+namespace MHRBuildSearch
 {
 
 

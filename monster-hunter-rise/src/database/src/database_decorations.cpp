@@ -14,7 +14,7 @@
 #include "../../utils/utils_strings.h"
 
 
-namespace MHWIBuildSearch {
+namespace MHRBuildSearch {
 
 
 static constexpr unsigned int k_SIMPLE_DECO_SKILL_LVL = 1;

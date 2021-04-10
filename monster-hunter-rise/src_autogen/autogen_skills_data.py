@@ -33,8 +33,8 @@ SKILLS_H_BASE = """
 namespace SkillsDatabase
 {{
 
-using MHWIBuildSearch::Skill;
-using MHWIBuildSearch::SetBonus;
+using MHRBuildSearch::Skill;
+using MHRBuildSearch::SetBonus;
 
 {skill_declarations}
 

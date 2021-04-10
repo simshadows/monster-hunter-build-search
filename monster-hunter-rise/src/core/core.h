@@ -3,15 +3,15 @@
  * Author: <contact@simshadows.com>
  */
 
-#ifndef MHWIBS_CORE_H
-#define MHWIBS_CORE_H
+#ifndef MHRBS_CORE_H
+#define MHRBS_CORE_H
 
 #include <memory>
 #include <string>
 #include <vector>
 #include <unordered_set>
 
-namespace MHWIBuildSearch
+namespace MHRBuildSearch
 {
 
 
@@ -514,5 +514,5 @@ public:
 
 } // namespace
 
-#endif // MHWIBS_CORE_H
+#endif // MHRBS_CORE_H
 

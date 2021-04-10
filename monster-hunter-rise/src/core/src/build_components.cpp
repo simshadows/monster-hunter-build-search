@@ -8,7 +8,7 @@
 
 #include "../core.h"
 
-namespace MHWIBuildSearch
+namespace MHRBuildSearch
 {
 
 

@@ -12,7 +12,7 @@
 #include "../../utils/counter.h"
 
 
-namespace MHWIBuildSearch
+namespace MHRBuildSearch
 {
 
 

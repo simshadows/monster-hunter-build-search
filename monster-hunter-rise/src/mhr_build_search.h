@@ -1,5 +1,5 @@
 /*
- * File: mhwi_build_search.h
+ * File: mhr_build_search.h
  * Author: <contact@simshadows.com>
  */
 
@@ -7,7 +7,7 @@
 #include "database/database.h"
 #include "support/support.h"
 
-namespace MHWIBuildSearch
+namespace MHRBuildSearch
 {
 
 

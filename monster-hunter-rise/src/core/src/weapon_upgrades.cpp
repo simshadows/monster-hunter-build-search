@@ -10,7 +10,7 @@
 #include "../../database/database_skills.h"
 #include "../../utils/utils.h"
 
-namespace MHWIBuildSearch
+namespace MHRBuildSearch
 {
 
 

@@ -22,8 +22,8 @@ CXXFLAGSFAST=$(CXXFLAGSALL) \
 # Using these flags by default!
 CXXFLAGS=$(CXXFLAGSALL)
 
-EXEC=mhwibs
-MAINOBJECTS=src/mhwi_build_search.o
+EXEC=mhrbs
+MAINOBJECTS=src/mhr_build_search.o
 OBJECTS=src/search.o \
 		src/search_jsonparse.o \
 		src/core/src/build_components.o \
@@ -47,7 +47,7 @@ OBJECTS=src/search.o \
 		src/database/src/database_armour.o \
 		src/database/src/database_charms.o
 
-TESTEXEC=mhwibs-test
+TESTEXEC=mhrbs-test
 TESTOBJECTS=tests/run_tests.o
 
 ##########################################################################################
@@ -93,7 +93,7 @@ clean :
 
 .PHONY : test
 test : $(TESTEXEC)
-	./mhwibs-test
+	./mhrbs-test
 
 $(TESTEXEC) : $(OBJECTS) $(TESTOBJECTS)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -o $(TESTEXEC) $(OBJECTS) $(TESTOBJECTS)

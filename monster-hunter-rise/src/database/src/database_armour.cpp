@@ -14,7 +14,7 @@
 #include "../../utils/utils_strings.h"
 
 
-namespace MHWIBuildSearch {
+namespace MHRBuildSearch {
 
 
 static constexpr std::size_t k_MAX_DECO_SLOTS_PER_PIECE = 3;
