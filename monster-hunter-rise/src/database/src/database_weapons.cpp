@@ -21,30 +21,6 @@ namespace MHRBuildSearch {
  */
 
 
-static constexpr unsigned int k_ELESTAT_BLOAT_VALUE = 10;
-
-
-static double weaponclass_to_bloat_value(const WeaponClass wt) {
-    switch (wt) {
-        case WeaponClass::greatsword:       return 4.8;
-        case WeaponClass::longsword:        return 3.3;
-        case WeaponClass::sword_and_shield: return 1.4;
-        case WeaponClass::dual_blades:      return 1.4;
-        case WeaponClass::hammer:           return 5.2;
-        case WeaponClass::hunting_horn:     return 4.2;
-        case WeaponClass::lance:            return 2.3;
-        case WeaponClass::gunlance:         return 2.3;
-        case WeaponClass::switchaxe:        return 3.5;
-        case WeaponClass::charge_blade:     return 3.6;
-        case WeaponClass::insect_glaive:    return 4.1;
-        case WeaponClass::bow:              return 1.2;
-        case WeaponClass::heavy_bowgun:     return 1.5;
-        case WeaponClass::light_bowgun:     return 1.3;
-        default:
-            throw "invalid weapon class";
-    }
-}
-
 static const std::unordered_map<std::string, WeaponAugmentationScheme> str_to_augmentation_scheme = {
     {"NONE"     , WeaponAugmentationScheme::none},
     //{"BASE_GAME", WeaponAugmentationScheme::base_game}, // Currently unused.
@@ -106,9 +82,7 @@ const WeaponsDatabase WeaponsDatabase::read_db_file(const std::string& filename)
 
         std::string name = jj["name"];
         unsigned int rarity = jj["rarity"];
-        unsigned int bloated_raw = jj["attack"];
-        unsigned int true_raw = bloated_raw / weaponclass_to_bloat_value(weapon_class);
-        assert((true_raw * weaponclass_to_bloat_value(weapon_class)) == bloated_raw);
+        unsigned int true_raw = jj["attack"];
         int affinity = jj["affinity"];
 
         EleStatVisibility elestat_visibility = str_to_elestat_visibility.at(jj["elestat_visibility"]);
@@ -119,9 +93,7 @@ const WeaponsDatabase WeaponsDatabase::read_db_file(const std::string& filename)
             elestat_value = 0;
         } else {
             elestat_type = str_to_elestat_type.at(jj["elestat_type"]);
-            const unsigned int elestat_bloat_value = jj["elestat_value"];
-            elestat_value = elestat_bloat_value / k_ELESTAT_BLOAT_VALUE;
-            assert((elestat_value * k_ELESTAT_BLOAT_VALUE) == elestat_bloat_value);
+            elestat_value = jj["elestat_value"];
             if (!elestat_value) {
                 throw std::runtime_error("Element/status values must not be zero.");
             }
