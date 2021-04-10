@@ -29,8 +29,6 @@ static const std::unordered_map<std::string, WeaponAugmentationScheme> str_to_au
 
 static const std::unordered_map<std::string, WeaponUpgradeScheme> str_to_upgrade_scheme = {
     {"NONE"           , WeaponUpgradeScheme::none},
-    {"ICEBORNE_CUSTOM", WeaponUpgradeScheme::iceborne_custom},
-    {"ICEBORNE_SAFI"  , WeaponUpgradeScheme::iceborne_safi},
 };
 
 static const std::unordered_map<std::string, EleStatVisibility> str_to_elestat_visibility = {

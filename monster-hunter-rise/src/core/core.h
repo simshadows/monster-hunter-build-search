@@ -231,8 +231,6 @@ enum class WeaponAugmentationScheme {
 
 enum class WeaponUpgradeScheme {
     none,
-    iceborne_custom,
-    iceborne_safi,
 };
 
 WeaponClass upper_snake_case_to_weaponclass(std::string s);
@@ -422,65 +420,7 @@ public:
 
 
 enum class WeaponUpgrade {
-    // IB Custom Augments
-    ib_cust_attack,
-    ib_cust_affinity,
-    ib_cust_element_status,
-    //ib_cust_defense,        // Not yet supported.
-    //ib_cust_sharpness,      // Not yet supported.
-
-    // IB Safi
-    ib_safi_attack_4,
-    ib_safi_attack_5,
-    ib_safi_attack_6,
-    ib_safi_affinity_4,
-    ib_safi_affinity_5,
-    ib_safi_affinity_6,
-    ib_safi_element_4,
-    ib_safi_element_5,
-    ib_safi_element_6,
-    ib_safi_status_4,
-    ib_safi_status_5,
-    ib_safi_status_6,
-    ib_safi_sharpness_4,
-    ib_safi_sharpness_5,
-    ib_safi_sharpness_6,
-    //ib_safi_deco_slot_1, // This upgrade doesn't exist.
-    //ib_safi_deco_slot_2, // This upgrade doesn't exist.
-    ib_safi_deco_slot_1,
-    ib_safi_deco_slot_2,
-    ib_safi_deco_slot_3,
-    ib_safi_deco_slot_6,
-    ib_safi_sb_ancient_divinity,
-    ib_safi_sb_anjanath_dominance,
-    ib_safi_sb_barioth_hidden_art,
-    ib_safi_sb_bazelgeuse_ambition,
-    ib_safi_sb_brachydios_essence,
-    ib_safi_sb_deviljho_essence,
-    ib_safi_sb_diablos_ambition,
-    ib_safi_sb_glavenus_essence,
-    ib_safi_sb_gold_rathian_essence,
-    ib_safi_sb_kirin_divinity,
-    ib_safi_sb_kushala_daora_flight,
-    ib_safi_sb_legiana_ambition,
-    ib_safi_sb_lunastra_essence,
-    ib_safi_sb_namielle_divinity,
-    ib_safi_sb_nargacuga_essence,
-    ib_safi_sb_nergigante_ambition,
-    ib_safi_sb_odogaron_essence,
-    ib_safi_sb_rajangs_rage,
-    ib_safi_sb_rathalos_essence,
-    ib_safi_sb_rathian_essence,
-    ib_safi_sb_shara_ishvalda_divinity,
-    ib_safi_sb_silver_rathalos_essence,
-    ib_safi_sb_teostra_technique,
-    ib_safi_sb_tigrex_essence,
-    ib_safi_sb_uragaan_ambition,
-    ib_safi_sb_vaal_soulvein,
-    ib_safi_sb_velkhana_divinity,
-    ib_safi_sb_zinogre_essence,
-    ib_safi_sb_zorah_magdaros_essence,
-    // Many other Safi awakenings are not yet supported.
+    not_implemented,
 };
 
 

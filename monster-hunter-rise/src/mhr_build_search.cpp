@@ -57,9 +57,9 @@ void no_args_cmd() {
     WeaponInstance weapon(db.weapons.at("SAFIS_SHATTERSPLITTER"));
     weapon.augments->set_augment(WeaponAugment::augment_lvl, 3);
     weapon.augments->set_augment(WeaponAugment::attack_increase, 1);
-    weapon.upgrades->add_upgrade(WeaponUpgrade::ib_safi_sharpness_6);
-    weapon.upgrades->add_upgrade(WeaponUpgrade::ib_safi_sharpness_5);
-    weapon.upgrades->add_upgrade(WeaponUpgrade::ib_safi_sharpness_5);
+    //weapon.upgrades->add_upgrade(WeaponUpgrade::ib_safi_sharpness_6);
+    //weapon.upgrades->add_upgrade(WeaponUpgrade::ib_safi_sharpness_5);
+    //weapon.upgrades->add_upgrade(WeaponUpgrade::ib_safi_sharpness_5);
 
     ArmourEquips armour;
     armour.add(db.armour.at("Raging Brachy",

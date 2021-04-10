@@ -39,7 +39,7 @@
         "skill" : null,
 
         "augmentation_scheme": "ICEBORNE",
-        "upgrade_scheme"     : "ICEBORNE_CUSTOM"
+        "upgrade_scheme"     : "NONE"
     },
     "RUINOUS_ATROCITY": {
         "class" : "GREATSWORD",
@@ -81,7 +81,7 @@
         "skill" : null,
 
         "augmentation_scheme": "ICEBORNE",
-        "upgrade_scheme"     : "ICEBORNE_CUSTOM"
+        "upgrade_scheme"     : "NONE"
     },
     "PALADIRE": {
         "class" : "GREATSWORD",
@@ -123,6 +123,6 @@
         "skill" : null,
 
         "augmentation_scheme": "ICEBORNE",
-        "upgrade_scheme"     : "ICEBORNE_CUSTOM"
+        "upgrade_scheme"     : "NONE"
     }
 }

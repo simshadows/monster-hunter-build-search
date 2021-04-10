@@ -47,8 +47,8 @@ OBJECTS=src/search.o \
 		src/database/src/database_armour.o \
 		src/database/src/database_charms.o
 
-TESTEXEC=mhrbs-test
-TESTOBJECTS=tests/run_tests.o
+#TESTEXEC=mhrbs-test
+#TESTOBJECTS=tests/run_tests.o
 
 ##########################################################################################
 # Main Targets ###########################################################################
@@ -56,7 +56,7 @@ TESTOBJECTS=tests/run_tests.o
 
 # 'all' is intended for a high-portability executable.
 .PHONY : all
-all : $(EXEC) test
+all : $(EXEC) #test
 
 # 'fast' is intended for a faster executable, at the cost of portability.
 .PHONY : fast
@@ -82,7 +82,7 @@ debug : all
 .PHONY : clean
 clean :
 	rm -f $(EXEC)
-	rm -f $(TESTEXEC)
+	#rm -f $(TESTEXEC)
 	rm -f $(OBJECTS)
 	rm -f $(MAINOBJECTS)
 	rm -f $(TESTOBJECTS)
@@ -91,12 +91,12 @@ clean :
 # Testing ################################################################################
 ##########################################################################################
 
-.PHONY : test
-test : $(TESTEXEC)
-	./mhrbs-test
+#.PHONY : test
+#test : $(TESTEXEC)
+#	./mhrbs-test
 
-$(TESTEXEC) : $(OBJECTS) $(TESTOBJECTS)
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -o $(TESTEXEC) $(OBJECTS) $(TESTOBJECTS)
+#$(TESTEXEC) : $(OBJECTS) $(TESTOBJECTS)
+#	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -o $(TESTEXEC) $(OBJECTS) $(TESTOBJECTS)
 
 ##########################################################################################
 # Compiling the project ##################################################################
